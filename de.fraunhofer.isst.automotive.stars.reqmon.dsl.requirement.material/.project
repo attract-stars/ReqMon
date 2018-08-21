@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.material</name>
+	<comment></comment>
+	<projects>
+		<project>de.fraunhofer.isst.stars</project>
+		<project>de.fraunhofer.isst.stars.ide</project>
+		<project>de.fraunhofer.isst.stars.tests</project>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+	</natures>
+</projectDescription>
