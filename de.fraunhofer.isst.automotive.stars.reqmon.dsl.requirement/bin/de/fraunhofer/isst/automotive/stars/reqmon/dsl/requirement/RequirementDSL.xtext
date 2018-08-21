@@ -7,7 +7,8 @@ generate requirementDSL "http://www.fraunhofer.de/isst/stars/RequirementDSL"
 /* =========== Model =========== */
 
 Model:
-requirements+=Requirement*;
+	requirements+=Requirement*
+;
 
 //Requirement:
 //	(condClauses+=Subclause)* (mainclauses+=Clauses) (condClauses+=Subclause)*
@@ -24,13 +25,14 @@ RequirementText:
 
 /* =========== Clauses =========== */
 
+ConditionalClause:
+	ordinator=ClauseOrdinator clauses=Clauses
+;
+
 MainClause:
 	(modifier=Modifier)? clauses+=Clause //(conjunction+=Conjunction clauses+=MainClause)*
 ;
 
-ConditionalClause:
-	ordinator=ClauseOrdinator clauses=Clauses
-;
 
 Clauses:
 	clauses+= Clause (conjunction+=Conjunction clauses+=Clause)*
@@ -49,7 +51,8 @@ Subjects:
 
 Object:
 	// object=ID id=ID? | object=STRING;
-    determiner=Determiner? (object=ID | object=STRING);
+    determiner=Determiner? (object=ID | object=STRING)
+;
 
 
 /* =========== VERB FORMS =========== */
@@ -94,10 +97,11 @@ Constraints:
 
 Constraint:
 	constraintOrdinators=ConstraintOrdinators (constraint=ObjectConstraint | constraint=UnitConstraints | constraint= SetConstraint)
-	;	
+;	
 
 ConstraintOrdinators:
-	stuffing=StuffWord? adverbial=Adverbial comperator=Comperators?;
+	stuffing=StuffWord? adverbial=Adverbial comperator=Comperators?
+;
 
 
 	
@@ -107,14 +111,17 @@ SetConstraint:
 ;
 
 TimeConstraint:
-	ordinator=ConstraintOrdinators time=INT unit=TimeUnits;
+	ordinator=ConstraintOrdinators time=INT unit=TimeUnits
+;
 
 ObjectConstraint:
-	  object=Object;
+	  object=Object
+;
 
 
 UnitConstraints:
-	 SingleValueConstraints | IntervallConstraints;
+	 SingleValueConstraints | IntervallConstraints
+;
 
 
 IntervallConstraints:
@@ -147,10 +154,12 @@ AuxiliarVerb:
 ;
 
 Comperators:
-	'than'|'as'|'to';
+	'than'|'as'|'to'
+;
 		 
 Adverbial:
-	'higher' | 'between'| 'next' | 'less'| 'more' | 'larger' | 'smaller' | 'equal' | 'on' | 'above' | 'below' | 'in' | 'within' | 'for' | 'as_long_as' | 'to' | 'by'  |'faster' | 'slower' | 'better' | 'in_front_of' | 'behind';
+	'higher' | 'between'| 'next' | 'less'| 'more' | 'larger' | 'smaller' | 'equal' | 'on' | 'above' | 'below' | 'in' | 'within' | 'for' | 'as_long_as' | 'to' | 'by'  |'faster' | 'slower' | 'better' | 'in_front_of' | 'behind'
+;
 
 Determiner:
 	'all' | 'every' | 'each' | 'whole' | 'any' | 'several' | 'either'
