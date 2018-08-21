@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: de.fraunhofer.isst.automotive.stars.dsl.requirement
+Bundle-ManifestVersion: 2
+Bundle-Name: de.fraunhofer.isst.automotive.stars.dsl.requirement
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement;singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext,
+ org.eclipse.xtext.xbase,
+ org.eclipse.equinox.common;bundle-version="3.5.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

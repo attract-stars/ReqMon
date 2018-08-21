@@ -1,0 +1,18 @@
+Req1: The system must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is behind the the ego vehicle and the vehicle's relative velocity is more than 5 m/s.
+Req2: The system must not perform a lane change to any lane if a vehicle is on that lane  and the vehicle is in front to the ego vehicle and the vehicle's relative velocity is less than 5 m/s.
+Req3: The system must not perform a lane change to any lane if a vehicle is on the ego lane and the vehicle in front of the ego vehicle and the vehicle's distance to the ego vehicle is less than 1m.
+Req4: The system must not perform a lane change to any lane if a vehicle is on the ego lane and the vehicle is behind the ego vehicle  and the vehicle's relative velocity is larger than 10 m/s.
+Req5: The system must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is next to the ego vehicle and the vehicle's relative velocity is less than 2m/s.
+Req5: The system must not perform a lane change to any lane if the lane's markings are solid.
+Req6: The system must not perform a lane change to any lane if the lane's markings is unknown
+Req7: The system must not perform a lane change to any lane if the lane is unknown.
+Req8: The system must not perform a lane change to any lane if the lane is not existing.
+Req9: The system must not perform a lane change to any lane if the  lane is a restricted lane.
+Req10: The system must not perform a lane change to any lane if the lane is a emergency lane.
+Req12: The system must not perform a lane change to any lane if the lane is next to a highway on-ramp.
+Req13: The system must not perform a lane change to any lane if the lane's curvature is higher than 25 rad/m.
+Req14: The system must not perform a lane change to any lane if ego vehicle's velocity is less than 10 m/s.
+Req15: The system must not perform a lane change to any lane if domain is not handled.
+Req16: The system must not perform a lane change to any lane if the driver overturns the system with more than 10 nm.
+Req17: The system must not perform a lane change to any lane if the ego vehiclöe's lateral offset to the ego lane's center is more than 0.4 m. 
+Req17b: The system must not perform a lane change to any lane if the ego vehiclöe's lateral offset to the ego lane's center is more than 0.4 m and a lane change is not in progress.
