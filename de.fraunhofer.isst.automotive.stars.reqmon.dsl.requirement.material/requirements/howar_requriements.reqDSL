@@ -1,0 +1,1 @@
+1. If there is a vehicle that is in the lane left of the ego-lane then do not change to the lane left of the ego-lane.
