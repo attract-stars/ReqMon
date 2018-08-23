@@ -49,7 +49,7 @@ ModalitySentence :
 ;
 
 PredicateSentence :
-	actors=Actors (auxiliar=ID negation?=Negation)? predicate=Predicate  constraints+=Constraints*
+	actors=Actors (auxiliar=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints*
 ;
 
 
@@ -66,7 +66,7 @@ relativeClause:
 ;
 relativeSentence :
 	pronoun=RelativePronounsSubject modelity=Modality negation?=Negation? predicate=Predicate  constraints+=Constraints*  |
-	pronoun=RelativePronounsSubject (auxiliar=ID negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
+	pronoun=RelativePronounsSubject (auxiliar=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
 	pronoun=RelativePronounsObject  (clause=ModalitySentence | clause=PredicateSentence)
 ;
 
@@ -78,16 +78,16 @@ Actors:
 ;
 
 Actor:
-    (determiner=Determiner|Articles)? (object=ID | object=STRING) 
+    (determiner=Determiner|Articles)? (object=WORD | object=STRING) 
 ;
 
 Predicate returns STRING:
 	//verb=Verb | activity=Activity
-	predicate+=ID+ | predicate+=STRING
+	predicate+=WORD+ | predicate+=STRING
 ;
 
 ExistencePreface:
-	{ExistencePreface} 'there' (modifier=Modifier?) (ID+|STRING) //defining the verbs for 'there is' / 'there are' is a problem for later usages of 'is'/'are' in other clauses
+	{ExistencePreface} 'there' (modifier=Modifier?) (WORD+|STRING) //defining the verbs for 'there is' / 'there are' is a problem for later usages of 'is'/'are' in other clauses
 ;
 
 Objects:
@@ -95,15 +95,15 @@ Objects:
 ;
 
 Object:
-    (determiner=Determiner|Articles)? (adjectives+=Adjective)* (objects=ID | objects=STRING)  
+    (determiner=Determiner|Articles)? (adjectives+=Adjective)* (objects=WORD | objects=STRING)  
 ;
 
 Adjective:
-	adjective=ID | adjective=STRING
+	adjective=WORD | adjective=STRING
 ;
 
 Adverbial:
-	SizeAdverbial | PositionAdverbial | ComparisonAdverbial	| (ID 'of')
+	SizeAdverbial | PositionAdverbial | ComparisonAdverbial	| (WORD 'of')
 ;
 
 /* =========== VALUES =========== */
@@ -180,6 +180,10 @@ ReqID returns  ecore::EString:
 	(ID|INT) ('.'|INT)*
 ;
 
+//just extension to allow naming with '-' like ego-lane
+WORD returns ecore::EString: 
+	ID('-'ID)*
+;
 /* =========== BASIC SYNTAX =========== */
 
 Conjunction:
