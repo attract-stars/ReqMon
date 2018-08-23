@@ -2,7 +2,7 @@ grammar de.fraunhofer.isst.stars.RequirementDSL with org.eclipse.xtext.common.Te
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
-generate requirementDSL "http://www.fraunhofer.de/isst/stars/RequirementDSL"
+generate requirementDSL "http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/RequirementDSL"
 
 /* =========== Model =========== */
 
@@ -87,7 +87,7 @@ Predicate returns STRING:
 ;
 
 ExistencePreface:
-	'there' (modifier=Modifier) (ID+|STRING) //defining the verbs for 'there is' / 'there are' is a problem for later usages of 'is'/'are' in other clauses
+	{ExistencePreface} 'there' (modifier=Modifier?) (ID+|STRING) //defining the verbs for 'there is' / 'there are' is a problem for later usages of 'is'/'are' in other clauses
 ;
 
 Objects:
@@ -186,7 +186,7 @@ Comperators:
 ;
 		 
 Adverbial:
-	'higher' | 'between'| 'next' | 'less'| 'more' | 'larger' | 'smaller' | 'equal' | 'on' | 'above' | 'below' | 'in' | 'within' | 'for' | 'as_long_as' | 'to' | 'by'  |'faster' | 'slower' | 'better' | 'in_front_of' | 'behind'
+	'higher' | 'between'| 'next' | 'less'| 'more' | 'larger' | 'smaller' | 'equal' | 'on' | 'above' | 'below' | 'in' | 'within' | 'for' | 'as_long_as' | 'to' | 'by'  |'faster' | 'slower' | 'better' | 'in_front_of' | 'behind' |	(ID 'of')
 ;
 
 Determiner:
