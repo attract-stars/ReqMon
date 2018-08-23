@@ -102,6 +102,10 @@ Adjective:
 	adjective=ID | adjective=STRING
 ;
 
+Adverbial:
+	SizeAdverbial | PositionAdverbial | ComparisonAdverbial	| (ID 'of')
+;
+
 /* =========== VALUES =========== */
 
 
@@ -185,8 +189,16 @@ Comperators:
 	'than'|'as'|'to'
 ;
 		 
-Adverbial:
-	'higher' | 'between'| 'next' | 'less'| 'more' | 'larger' | 'smaller' | 'equal' | 'on' | 'above' | 'below' | 'in' | 'within' | 'for' | 'as_long_as' | 'to' | 'by'  |'faster' | 'slower' | 'better' | 'in_front_of' | 'behind' |	(ID 'of')
+SizeAdverbial:
+	'higher' | 'less'| 'more' | 'larger''smaller' | 'as_long_as'
+;
+
+PositionAdverbial:
+	'between'|'next' | 'on' | 'above' | 'below' | 'in' | 'within' | 'in_front_of' | 'behind' 
+;
+
+ComparisonAdverbial:
+	'equal' | 'faster' | 'slower' | 'better' | 'to' | 'by'
 ;
 
 Determiner:
