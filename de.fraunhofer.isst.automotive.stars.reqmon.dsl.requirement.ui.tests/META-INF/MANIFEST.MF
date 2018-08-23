@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
-Automatic-Module-Name: de.fraunhofer.isst.automotive.stars.dsl.requirement.ui.tests
+Automatic-Module-Name: de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui.tests
 Bundle-ManifestVersion: 2
-Bundle-Name: de.fraunhofer.isst.automotive.stars.dsl.requirement.ui.tests
+Bundle-Name: de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui.tests
 Bundle-Vendor: My Company
 Bundle-Version: 1.0.0.qualifier
-Bundle-SymbolicName: de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui.tests;singleton:=true
+Bundle-SymbolicName: de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui.tests; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui,
  org.junit;bundle-version="4.12.0",
@@ -12,4 +12,4 @@ Require-Bundle: de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui,
  org.eclipse.xtext.xbase.testing,
  org.eclipse.xtext.junit4,
  org.eclipse.xtext.xbase.junit
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

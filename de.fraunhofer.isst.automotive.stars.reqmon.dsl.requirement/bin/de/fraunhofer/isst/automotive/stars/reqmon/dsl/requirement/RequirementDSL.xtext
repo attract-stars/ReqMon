@@ -2,7 +2,7 @@ grammar de.fraunhofer.isst.stars.RequirementDSL with org.eclipse.xtext.common.Te
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
-generate requirementDSL "http://www.fraunhofer.de/isst/stars/RequirementDSL"
+generate requirementDSL "http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/requirement/RequirementDSL"
 
 /* =========== Model =========== */
 
@@ -16,11 +16,13 @@ Model:
 
 Requirement:
 	//PROBLEM condClauses before and after mainClause lead to ambiguity
-	'Req'? reqID=ReqID? (':'|'.') text=RequirementText ('.'|';')?
+	'Req'? reqID=ReqID? (':'|'.') text=RequirementText ('.'|';')
 ;
 
 RequirementText:
-    (condClauses+=ConditionalClause)?  (mainclauses=MainClause) (condClauses+=ConditionalClause)?
+//	 ExistencePreface actors=Actors ','?   relativeClause=relativeClause  ','?  |
+    (condClauses+=ConditionalClause ','? 'then' )?  (mainclauses=MainClause) (','? condClauses+=ConditionalClause)?
+    //If mainclause is the second part then 'then' has to be added. IF maincluase is first part then 'then' is not necessary
 ;
 
 /* =========== Clauses =========== */
@@ -30,38 +32,74 @@ ConditionalClause:
 ;
 
 MainClause:
-	(modifier=Modifier)? clauses+=Clause //(conjunction+=Conjunction clauses+=MainClause)*
+	modifier=Modifier? clauses+=Clause //(conjunction+=Conjunction clauses+=MainClause)*
 ;
 
 
 Clauses:
-	clauses+= Clause (conjunction+=Conjunction clauses+=Clause)*
+	clauses+= Clause (conjunction+=Conjunction clauses+=Clause)*	
 ;
 
 Clause:
-//Evtl. kann man Verb und Activity zu Predicate vereinen als String
-// subject=Subjects (modelity=Modality negation?=Negation? auxverb=AuxiliarVerb? | auxverb=AuxiliarVerb negation?=Negation?)? predicate=Predicate constraints+=Constraints*
- subject=Subjects modelity=Modality? (negation?=Negation? & auxverb=AuxiliarVerb?) predicate=Predicate constraints+=Constraints*
- //PROBLEM dass hier 'is' als AuxiliarVerb das is als Verb im Predicate überdeckt! -> Lösung? Auxiliary Verbs als Predicates skippen!?
+	ModalitySentence |  PredicateSentence | ExistenceSentence
 ;
 
-Subjects:
-	(subject+=Object) (conjunction+=Conjunction subject+=Object)*
+ModalitySentence :
+	actors=Actors modelity=Modality negation?=Negation? predicate=Predicate  constraints+=Constraints* 
+;
+
+PredicateSentence :
+	actors=Actors (auxiliar=ID negation?=Negation)? predicate=Predicate  constraints+=Constraints*
+;
+
+
+
+ExistenceSentence :
+	ExistencePreface actors=Actors ','   relativeClause=relativeClause  ',' 
+;
+/* =========== RELATIVE CLAUSE =========== */
+
+
+relativeClause:
+//  pronoun=RelativePronouns actors=Actors? modelity=Modality? negation?=Negation? predicate=Predicate constraints+=Constraints*
+	sentence= relativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*	
+;
+relativeSentence :
+	pronoun=RelativePronounsSubject modelity=Modality negation?=Negation? predicate=Predicate  constraints+=Constraints*  |
+	pronoun=RelativePronounsSubject (auxiliar=ID negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
+	pronoun=RelativePronounsObject  (clause=ModalitySentence | clause=PredicateSentence)
+;
+
+/* =========== CLAUSE ITEMS =========== */
+
+
+Actors:
+	(actors+=Actor) (conjunction+=Conjunction actors+=Actor)*
+;
+
+Actor:
+    (determiner=Determiner|Articles)? (object=ID | object=STRING) 
+;
+
+Predicate returns STRING:
+	//verb=Verb | activity=Activity
+	predicate+=ID+ | predicate+=STRING
+;
+
+ExistencePreface:
+	{ExistencePreface} 'there' (modifier=Modifier?) (ID+|STRING) //defining the verbs for 'there is' / 'there are' is a problem for later usages of 'is'/'are' in other clauses
+;
+
+Objects:
+	(actors+=Object) (conjunction+=Conjunction actors+=Object)*
 ;
 
 Object:
-	// object=ID id=ID? | object=STRING;
-    determiner=Determiner? (object=ID | object=STRING)
+    (determiner=Determiner|Articles)? (adjectives+=Adjective)* (objects=ID | objects=STRING)  
 ;
 
-
-/* =========== VERB FORMS =========== */
-
-
-
-Predicate:
-	//verb=Verb | activity=Activity
-	ID | STRING
+Adjective:
+	adjective=ID | adjective=STRING
 ;
 
 /* =========== VALUES =========== */
@@ -96,7 +134,7 @@ Constraints:
 ;
 
 Constraint:
-	constraintOrdinators=ConstraintOrdinators (constraint=ObjectConstraint | constraint=UnitConstraints | constraint= SetConstraint)
+	ordinator=ConstraintOrdinators (constraint=ObjectConstraint | constraint=UnitConstraints | constraint= SetConstraint)
 ;	
 
 ConstraintOrdinators:
@@ -132,37 +170,28 @@ SingleValueConstraints:
 	 value=Value
 ;
 
-/* =========== COMPARISON =========== */
-
-
-
 /* =========== XXX =========== */
 
 ReqID returns  ecore::EString: 
-	ID ('.'|INT)* 
+	(ID|INT) ('.'|INT)*
 ;
-
 
 /* =========== BASIC SYNTAX =========== */
 
 Conjunction:
 	'and'| 'or';
 
-
-AuxiliarVerb:
-	'does' | 'do' | 'is' | 'are' | 'be' | 'been'
-;
-
 Comperators:
 	'than'|'as'|'to'
 ;
 		 
 Adverbial:
-	'higher' | 'between'| 'next' | 'less'| 'more' | 'larger' | 'smaller' | 'equal' | 'on' | 'above' | 'below' | 'in' | 'within' | 'for' | 'as_long_as' | 'to' | 'by'  |'faster' | 'slower' | 'better' | 'in_front_of' | 'behind'
+	'higher' | 'between'| 'next' | 'less'| 'more' | 'larger' | 'smaller' | 'equal' | 'on' | 'above' | 'below' | 'in' | 'within' | 'for' | 'as_long_as' | 'to' | 'by'  |'faster' | 'slower' | 'better' | 'in_front_of' | 'behind' |	(ID 'of')
 ;
 
 Determiner:
 	'all' | 'every' | 'each' | 'whole' | 'any' | 'several' | 'either'
+	'All' | 'Every' | 'Each' | 'Whole' | 'Any' | 'Several' | 'Either'
 ;
 
 Negation:
@@ -178,12 +207,26 @@ enum Modifier:
 ;
 
 enum ClauseOrdinator:
-	IF='if' | AFTER='after' | ONCE='once' | WHEN='when' | WHENEVER='whenever' | WHILE='while' | BEFORE='before' | UNTIL='until'
+	IF='if' | AFTER='after' | ONCE='once' | WHEN='when' | WHENEVER='whenever' | WHILE='while' | BEFORE='before' | UNTIL='until' |
+	IF='If' | AFTER='After' | ONCE='Once' | WHEN='When' | WHENEVER='Whenever' | WHILE='While' | BEFORE='Before' | UNTIL='Until'
+;
+
+Articles:
+	'the' | 'a' | 'an' | 
+	'The' | 'A' | 'An'
 ;
 
 StuffWord:
 	'with'
-;	
+;
+	
+// Separation of Relative Pronouns due to impact on the following sentence structure
+RelativePronounsSubject:
+	'which' | 'who' | 'that'
+;
+RelativePronounsObject:
+	'whose'| 'whom'
+;
 
 /* =========== BASIC UNITS =========== */
 
