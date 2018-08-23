@@ -10,7 +10,7 @@ Workflow {
 	component = XtextGenerator {
 		configuration = {
 			project = StandardProjectConfig {
-				baseName = "de.fraunhofer.isst.automotive.stars.dsl.requirement"
+				baseName = "de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement"
 				rootPath = rootPath
 				runtimeTest = {
 					enabled = true
@@ -30,7 +30,7 @@ Workflow {
 			}
 		}
 		language = StandardLanguage {
-			name = "de.fraunhofer.isst.automotive.stars.dsl.requirement.RequirementDSL"
+			name = "de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.RequirementDSL"
 			fileExtensions = "reqDSL"
 
 			serializer = {
@@ -38,6 +38,9 @@ Workflow {
 			}
 			validator = {
 				// composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
+			}
+			parserGenerator ={
+				debugGrammar=true
 			}
 		}
 	}
