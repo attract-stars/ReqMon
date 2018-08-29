@@ -41,22 +41,31 @@ Clauses:
 ;
 
 Clause:
-	ModalitySentence |  PredicateSentence | ExistenceSentence
+	ModalitySentence |  PredicateSentence | ExistenceSentence | PropertySentence
 ;
+
 
 ModalitySentence :
 	actors=Actors modelity=Modality negation?=Negation? predicate=Predicate  constraints+=Constraints* 
 ;
 
 PredicateSentence :
-	actors=Actors (auxiliar=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints*
+	actors=Actors  (auxiliar=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints*
 ;
-
-
 
 ExistenceSentence :
 	ExistencePreface actors=Actors ','   relativeClause=relativeClause  ',' 
 ;
+
+PropertySentence:
+	property=Property  modelity=Modality? negation?=Negation? (predicate=WORD|predicate=STRING)  constraints+=Constraints+
+	//TODO WAS IST MIT IS STARTED
+;
+
+Property:
+	(determiner=Determiner|article=Articles|article=RefArticles)? (object=WORD | object=STRING) PROPERTY_TERM (adjectives+=Adjective)* (objects=WORD | objects=STRING) 
+;
+
 /* =========== RELATIVE CLAUSE =========== */
 
 
@@ -74,16 +83,18 @@ relativeSentence :
 
 
 Actors:
-	(actors+=Actor) (conjunction+=Conjunction actors+=Actor)*
+	(actors+=Actor) (conjunction+=Conjunction actors+=Actor)* 
 ;
 
 Actor:
-    (determiner=Determiner|Articles)? (object=WORD | object=STRING) 
+  	 PreNominative? (object=WORD | object=STRING) 
+//    (determiner=Determiner|article=Articles|article=RefArticles)? (object=WORD | object=STRING) (property?=PROPERTY (adjectives+=Adjective)* (objects=WORD | objects=STRING))? 
+   
 ;
 
-Predicate returns STRING:
+Predicate:
 	//verb=Verb | activity=Activity
-	predicate+=WORD+ | predicate+=STRING
+	predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ article=PreNominative predicates+=WORD+
 ;
 
 ExistencePreface:
@@ -95,7 +106,11 @@ Objects:
 ;
 
 Object:
-    (determiner=Determiner|Articles)? (adjectives+=Adjective)* (objects=WORD | objects=STRING)  
+    PreNominative? (adjectives+=Adjective)* (objects=WORD | objects=STRING)  
+;
+
+PreNominative : 
+	(determiner=Determiner|article=Articles|article=RefArticles)
 ;
 
 Adjective:
@@ -184,21 +199,25 @@ ReqID returns  ecore::EString:
 WORD returns ecore::EString: 
 	ID('-'ID)*
 ;
+
+terminal PROPERTY_TERM returns ecore::EBoolean:
+	'\'s' |	'`s' | '´s'
+;
 /* =========== BASIC SYNTAX =========== */
 
 Conjunction:
 	'and'| 'or';
 
 Comperators:
-	'than'|'as'|'to'
+	'than'|'as'|'to' | 'of'
 ;
 		 
 SizeAdverbial:
-	'higher' | 'less'| 'more' | 'larger''smaller' | 'as_long_as'
+	'higher' | 'less'| 'more' | 'larger'|'smaller' | 'as_long_as'
 ;
 
 PositionAdverbial:
-	'between'|'next' | 'on' | 'above' | 'below' | 'in' | 'within' | 'in_front_of' | 'behind' 
+	'between'|'next' | 'on' | 'above' | 'below' | 'in' | 'within' | 'in_front_of' | 'behind' | 'out' 
 ;
 
 ComparisonAdverbial:
@@ -229,7 +248,11 @@ enum ClauseOrdinator:
 
 Articles:
 	'the' | 'a' | 'an' | 
-	'The' | 'A' | 'An'
+	'The' | 'A' | 'An' 
+;
+
+RefArticles:
+	'that' | 'this' | 'That' | 'This'
 ;
 
 StuffWord:
@@ -240,6 +263,7 @@ StuffWord:
 RelativePronounsSubject:
 	'which' | 'who' | 'that'
 ;
+
 RelativePronounsObject:
 	'whose'| 'whom'
 ;
