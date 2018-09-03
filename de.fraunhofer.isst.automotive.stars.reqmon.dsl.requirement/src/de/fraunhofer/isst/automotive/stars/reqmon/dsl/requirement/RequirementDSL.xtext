@@ -63,12 +63,9 @@ PropertySentence:
 	//TODO WAS IST MIT IS STARTED
 ;
 
-//Relation:
-//	relation=RelationDelimiter objects+=Objects
-//;
 
 Property:
-	(determiner=Determiner|article=Articles|article=RefArticles)? (object=WORD | object=STRING) PROPERTY_TERM (adjectives+=Adjective)* (property=WORD | property=STRING)
+	(determiner=Determiner|article=Articles|article=RefArticles)? (object=WORD | object=STRING) PROPERTY_TERM (property+=WORD+ | property+=STRING)
 ;
 
 /* =========== RELATIVE CLAUSE =========== */
@@ -92,7 +89,7 @@ Actors:
 ;
 
 Actor:
-  	 PreNominative? (object=WORD | object=STRING) 
+  	 PreNominative? (actor=WORD | actor=STRING) 
 //    (determiner=Determiner|article=Articles|article=RefArticles)? (object=WORD | object=STRING) (property?=PROPERTY (adjectives+=Adjective)* (objects=WORD | objects=STRING))? 
    
 ;
@@ -111,46 +108,26 @@ Objects:
 ;
 
 Object:
-    PreNominative? (adjectives+=Adjective)* (objects=WORD | objects=STRING)  
+    PreNominative? (object+=WORD+ | object+=STRING)  
 ;
 
 PreNominative : 
 	(determiner=Determiner|article=Articles|article=RefArticles)
 ;
 
-Adjective:
-	adjective=WORD | adjective=STRING
-;
-
 Adverbial:
-	SizeAdverbial | PositionAdverbial | ComparisonAdverbial	| (WORD 'of')
-;
-
-/* =========== VALUES =========== */
-
-
-ValueSet:
-	 '{' (elements+=Value) (';'elements+=Value)*'}'
-;
-
-ObjectSet:
-	  '{' (elements+=Object) (';'elements+=Object)*'}'
-;
-
-Value:
-	IntValue| FloatValue
-;
-
-IntValue:
-	value=INT unit=Unit?
-;
-
-FloatValue:
-	value=FLOAT  unit=Unit?
+	SizeAdverbial | PositionAdverbial | ComparisonAdverbial	//| (WORD 'of')
 ;
 
 /* =========== Relations =========== */
 
+Relation:
+	relation=RelationDelimiter objects+=Objects
+;
+
+RelationDelimiter:
+	'in_relation_to' | 'relative_to'
+;
 
 
 
@@ -193,6 +170,29 @@ IntervallConstraints:
 
 SingleValueConstraints:
 	 value=Value
+;
+
+/* =========== VALUES =========== */
+
+
+ValueSet:
+	 '{' (elements+=Value) (';'elements+=Value)*'}'
+;
+
+ObjectSet:
+	  '{' (elements+=Object) (';'elements+=Object)*'}'
+;
+
+Value:
+	IntValue| FloatValue
+;
+
+IntValue:
+	value=INT unit=Unit?
+;
+
+FloatValue:
+	value=FLOAT  unit=Unit?
 ;
 
 /* =========== XXX =========== */
