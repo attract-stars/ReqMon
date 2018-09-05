@@ -46,11 +46,14 @@ Clause:
 
 
 ModalitySentence :
-	actors=Actors modelity=Modality negation?=Negation? predicate=Predicate  constraints+=Constraints* 
+	actors=Actors modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  constraints+=Constraints* 
 ;
 
 PredicateSentence :
-	actors=Actors  (auxiliar=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints*
+	//actors=Actors  (auxiliarVerb+=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
+	actors=Actors  predicate=Predicate constraints+=Constraints* |	
+	actors=Actors  auxiliarVerb+=AuxiliaryVerb negation?=Negation? auxiliarVerb+=AuxiliaryVerb? predicate=Predicate  constraints+=Constraints* |
+	actors=Actors  auxiliarVerb+=AuxiliaryVerb negation?=Negation? object=PredicateObject? constraints+=Constraints* 
 ;
 
 ExistenceSentence :
@@ -58,14 +61,17 @@ ExistenceSentence :
 ;
 
 PropertySentence:
-	property=Property modelity=Modality? negation?=Negation? (predicate=WORD|predicate=STRING)  constraints+=Constraints+
+	property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  constraints+=Constraints* |
+	property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb object=PredicateObject?  constraints+=Constraints* |
+	property=Property auxiliarVerb=AuxiliaryVerb negation?=Negation? predicate=Predicate? constraints+=Constraints* |
+	property=Property (predicateWord=WORD| predicateWord=STRING) object=PredicateObject? constraints+=Constraints*
 //	property=Property relation=Relation modelity=Modality? negation?=Negation? (predicate=WORD|predicate=STRING)  constraints+=Constraints+
 	//TODO WAS IST MIT IS STARTED
 ;
 
 
 Property:
-	(determiner=Determiner|article=Articles|article=RefArticles)? (object=WORD | object=STRING) PROPERTY_TERM (property+=WORD+ | property+=STRING)
+	(determiner=Quantification|article=Articles|article=RefArticles)? (object+=WORD+ | object+=STRING) PROPERTY_TERM (property+=WORD+ | property+=STRING)
 ;
 
 /* =========== RELATIVE CLAUSE =========== */
@@ -96,7 +102,11 @@ Actor:
 
 Predicate:
 	//verb=Verb | activity=Activity
-	predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ article=PreNominative predicates+=WORD+
+	predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
+;
+
+PredicateObject:
+	article=PreNominative predicates+=WORD+
 ;
 
 ExistencePreface:
@@ -112,7 +122,7 @@ Object:
 ;
 
 PreNominative : 
-	(determiner=Determiner|article=Articles|article=RefArticles)
+	(determiner=Quantification|article=Articles|article=RefArticles)
 ;
 
 Adverbial:
@@ -123,10 +133,6 @@ Adverbial:
 
 Relation:
 	relation=RelationDelimiter objects+=Objects
-;
-
-RelationDelimiter:
-	'in_relation_to' | 'relative_to'
 ;
 
 
@@ -210,9 +216,18 @@ terminal PROPERTY_TERM returns ecore::EBoolean:
 	'\'s' |	'`s' |'´s'
 ;
 /* =========== BASIC SYNTAX =========== */
+
+RelationDelimiter:
+	'in_relation_to' | 'relative_to'
+;
+
 RelationTerm:
 	'in' 'relation' 'of'  | 'relative' 'to'
 	
+;
+
+AuxiliaryVerb:
+	'is' | 'be' | 'been' | 'has' | 'do' | 'does'
 ;
 
 Conjunction:
@@ -234,7 +249,7 @@ ComparisonAdverbial:
 	'equal' | 'faster' | 'slower' | 'better' | 'by' | 'to'
 ;
 
-Determiner:
+Quantification:
 	'all' | 'every' | 'each' | 'whole' | 'any' | 'several' | 'either'
 	'All' | 'Every' | 'Each' | 'Whole' | 'Any' | 'Several' | 'Either'
 ;
