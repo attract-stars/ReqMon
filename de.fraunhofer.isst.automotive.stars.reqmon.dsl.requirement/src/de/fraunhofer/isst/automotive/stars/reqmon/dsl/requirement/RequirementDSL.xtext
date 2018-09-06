@@ -128,10 +128,14 @@ Adverbial:
 
 /* =========== Relations =========== */
 
-Relation:
-	relation=RelationDelimiter objects+=Objects
-;
+//Currently not used -> False identification of properties
+//Relation:
+//	relation=RelationDelimiter(relElements=Objects |relElements=Properties)
+//;
 
+Properties:
+	(properties+=Property) (conjunction+=Conjunction properties+=Property)* 
+;
 
 
 /* =========== CONSTRAINTS =========== */
@@ -215,12 +219,8 @@ terminal PROPERTY_TERM returns ecore::EBoolean:
 /* =========== BASIC SYNTAX =========== */
 
 RelationDelimiter:
-	'in_relation_to' | 'relative_to'
-;
-
-RelationTerm:
-	'in' 'relation' 'of'  | 'relative' 'to'
-	
+	'in_relation_to' | 'relative_to' |
+	'in' 'relation' 'to'  | 'relative' 'to' //mutiple word relation lead tp false identification of properties
 ;
 
 AuxiliaryVerb:
