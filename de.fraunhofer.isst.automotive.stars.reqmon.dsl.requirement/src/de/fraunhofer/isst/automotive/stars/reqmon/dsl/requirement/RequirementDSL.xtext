@@ -63,14 +63,12 @@ ExistenceSentence :
 PropertySentence:
 	property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  constraints+=Constraints* |
 	property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb object=PredicateObject?  constraints+=Constraints* |
-	property=Property auxiliarVerb=AuxiliaryVerb negation?=Negation? predicate=Predicate constraints+=Constraints* |
-	property=Property auxiliarVerb=AuxiliaryVerb negation?=Negation? constraints+=Constraints+ |
+	property=Property auxiliarVerb=AuxiliaryVerb negation?=Negation? ((predicate=Predicate|object=PredicateObject) constraints+=Constraints* | constraints+=Constraints+)  |
 	property=Property (predicateWord=WORD| predicateWord=STRING) object=PredicateObject? constraints+=Constraints* //Leads to mismatch in xtext but not in AntLRworks
 ;
 
-
 Property:
-	(determiner=Quantification|article=Articles|article=RefArticles)? (object+=WORD+ | object+=STRING) PROPERTY_TERM (property+=WORD+ | property+=STRING) 
+	(quantifier=Quantification|article=Articles|article=RefArticles)? (object+=WORD+ | object+=STRING) PROPERTY_TERM (property+=WORD+ | property+=STRING)
 ;
 
 /* =========== RELATIVE CLAUSE =========== */
@@ -117,7 +115,7 @@ Objects:
 ;
 
 Object:
-    article=PreNominative? (object+=WORD+ | object+=STRING)  
+    PreNominative? (object+=WORD+ | object+=STRING)  
 ;
 
 PreNominative : 
@@ -131,11 +129,7 @@ Adverbial:
 /* =========== Relations =========== */
 
 Relation:
-	relation=RelationDelimiter(relElements=Objects |relElements=Properties)
-;
-
-Properties:
-	(properties+=Property) (conjunction+=Conjunction properties+=Property)* 
+	relation=RelationDelimiter objects+=Objects
 ;
 
 
@@ -221,7 +215,12 @@ terminal PROPERTY_TERM returns ecore::EBoolean:
 /* =========== BASIC SYNTAX =========== */
 
 RelationDelimiter:
-	'in_relation_to' | 'relative_to' | 'in' 'relation' 'of' | 'relative' 'to'
+	'in_relation_to' | 'relative_to'
+;
+
+RelationTerm:
+	'in' 'relation' 'of'  | 'relative' 'to'
+	
 ;
 
 AuxiliaryVerb:
