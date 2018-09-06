@@ -1,8 +1,8 @@
-grammar de.fraunhofer.isst.stars.RequirementDSL with org.eclipse.xtext.common.Terminals
+grammar de.fraunhofer.isst.stars.RequirementDSL with org.eclipse.xtext.common.Terminals hidden(WS, ML_COMMENT, SL_COMMENT, WS_HYPHEN)
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
-generate requirementDSL "http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/requirement/RequirementDSL"
+generate requirementDSL "http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/requirement/RequirementDSL" 
 
 /* =========== Model =========== */
 
@@ -202,16 +202,22 @@ FloatValue:
 	value=FLOAT  unit=Unit?
 ;
 
-/* =========== XXX =========== */
+/* =========== BASIC TEXT BLOCKS / WORDS =========== */
 
 ReqID returns  ecore::EString: 
 	(ID|INT) ('.'|INT)*
 ;
 
-//just extension to allow naming with '-' like ego-lane
+//just extension to allow naming with '-' like ego-lane -> ITS NOT MATCHED PROPERLY
 WORD returns ecore::EString: 
 	ID('-'ID)*
 ;
+
+//overriding ID to include hyphen words 
+@Override 
+terminal ID: '^'?('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'-'|'0'..'9')*;
+
+terminal WS_HYPHEN : ' - '; 
 
 terminal PROPERTY_TERM returns ecore::EBoolean:
 	'\'s' |	'`s' |'´s'
