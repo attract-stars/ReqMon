@@ -1,8 +1,8 @@
-grammar de.fraunhofer.isst.stars.RequirementDSL with org.eclipse.xtext.common.Terminals
+grammar de.fraunhofer.isst.stars.RequirementDSL with org.eclipse.xtext.common.Terminals hidden(WS, ML_COMMENT, SL_COMMENT, WS_HYPHEN)
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
-generate requirementDSL "http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/requirement/RequirementDSL"
+generate requirementDSL "http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/requirement/RequirementDSL" 
 
 /* =========== Model =========== */
 
@@ -41,22 +41,36 @@ Clauses:
 ;
 
 Clause:
-	ModalitySentence |  PredicateSentence | ExistenceSentence
+	ModalitySentence |  PredicateSentence | ExistenceSentence | PropertySentence
 ;
 
+
 ModalitySentence :
-	actors=Actors modelity=Modality negation?=Negation? predicate=Predicate  constraints+=Constraints* 
+	actors=Actors modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  constraints+=Constraints* 
 ;
 
 PredicateSentence :
-	actors=Actors (auxiliar=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints*
+	//actors=Actors  (auxiliarVerb+=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
+	actors=Actors  predicate=Predicate constraints+=Constraints* |	
+	actors=Actors  auxiliarVerb+=AuxiliaryVerb negation?=Negation? auxiliarVerb+=AuxiliaryVerb? predicate=Predicate  constraints+=Constraints* |
+	actors=Actors  auxiliarVerb+=AuxiliaryVerb negation?=Negation? object=PredicateObject? constraints+=Constraints* 
 ;
-
-
 
 ExistenceSentence :
 	ExistencePreface actors=Actors ','   relativeClause=relativeClause  ',' 
 ;
+
+PropertySentence:
+	property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  constraints+=Constraints* |
+	property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb object=PredicateObject?  constraints+=Constraints* |
+	property=Property auxiliarVerb=AuxiliaryVerb negation?=Negation? ((predicate=Predicate|object=PredicateObject) constraints+=Constraints* | constraints+=Constraints+)  |
+	property=Property (predicateWord=WORD| predicateWord=STRING) object=PredicateObject? constraints+=Constraints* //Leads to mismatch in xtext but not in AntLRworks
+;
+
+Property:
+	(quantifier=Quantification|article=Articles|article=RefArticles)? (object+=WORD+ | object+=STRING) PROPERTY_TERM (property+=WORD+ | property+=STRING)
+;
+
 /* =========== RELATIVE CLAUSE =========== */
 
 
@@ -74,16 +88,22 @@ relativeSentence :
 
 
 Actors:
-	(actors+=Actor) (conjunction+=Conjunction actors+=Actor)*
+	(actors+=Actor) (conjunction+=Conjunction actors+=Actor)* 
 ;
 
 Actor:
-    (determiner=Determiner|Articles)? (object=WORD | object=STRING) 
+  	 PreNominative? (actor=WORD | actor=STRING) 
+//    (determiner=Determiner|article=Articles|article=RefArticles)? (object=WORD | object=STRING) (property?=PROPERTY (adjectives+=Adjective)* (objects=WORD | objects=STRING))? 
+   
 ;
 
-Predicate returns STRING:
+Predicate:
 	//verb=Verb | activity=Activity
-	predicate+=WORD+ | predicate+=STRING
+	predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
+;
+
+PredicateObject:
+	article=PreNominative (object+=WORD+ | object+=STRING) 
 ;
 
 ExistencePreface:
@@ -91,44 +111,31 @@ ExistencePreface:
 ;
 
 Objects:
-	(actors+=Object) (conjunction+=Conjunction actors+=Object)*
+	(objects+=Object) (conjunction+=Conjunction objects+=Object)*
 ;
 
 Object:
-    (determiner=Determiner|Articles)? (adjectives+=Adjective)* (objects=WORD | objects=STRING)  
+    PreNominative? (object+=WORD+ | object+=STRING)  
 ;
 
-Adjective:
-	adjective=WORD | adjective=STRING
+PreNominative : 
+	(determiner=Quantification|article=Articles|article=RefArticles)
 ;
 
 Adverbial:
-	SizeAdverbial | PositionAdverbial | ComparisonAdverbial	| (WORD 'of')
+	SizeAdverbial | PositionAdverbial | ComparisonAdverbial	//| (WORD 'of')
 ;
 
-/* =========== VALUES =========== */
+/* =========== Relations =========== */
 
+//Currently not used -> False identification of properties
+//Relation:
+//	relation=RelationDelimiter(relElements=Objects |relElements=Properties)
+//;
 
-ValueSet:
-	 '{' (elements+=Value) (';'elements+=Value)*'}'
+Properties:
+	(properties+=Property) (conjunction+=Conjunction properties+=Property)* 
 ;
-
-ObjectSet:
-	  '{' (elements+=Object) (';'elements+=Object)*'}'
-;
-
-Value:
-	IntValue| FloatValue
-;
-
-IntValue:
-	value=INT unit=Unit?
-;
-
-FloatValue:
-	value=FLOAT  unit=Unit?
-;
-
 
 
 /* =========== CONSTRAINTS =========== */
@@ -145,8 +152,6 @@ ConstraintOrdinators:
 	stuffing=StuffWord? adverbial=Adverbial comperator=Comperators?
 ;
 
-
-	
 SetConstraint:
 	//Difference between ObjectSet and Value set in order to exclude a mixture of both in a single set
 	set=ObjectSet  | set=ValueSet
@@ -174,38 +179,80 @@ SingleValueConstraints:
 	 value=Value
 ;
 
-/* =========== XXX =========== */
+/* =========== VALUES =========== */
+
+
+ValueSet:
+	 '{' (elements+=Value) (';'elements+=Value)*'}'
+;
+
+ObjectSet:
+	  '{' (elements+=Object) (';'elements+=Object)*'}'
+;
+
+Value:
+	IntValue| FloatValue
+;
+
+IntValue:
+	value=INT unit=Unit?
+;
+
+FloatValue:
+	value=FLOAT  unit=Unit?
+;
+
+/* =========== BASIC TEXT BLOCKS / WORDS =========== */
 
 ReqID returns  ecore::EString: 
 	(ID|INT) ('.'|INT)*
 ;
 
-//just extension to allow naming with '-' like ego-lane
+//just extension to allow naming with '-' like ego-lane -> ITS NOT MATCHED PROPERLY
 WORD returns ecore::EString: 
 	ID('-'ID)*
 ;
+
+//overriding ID to include hyphen words 
+@Override 
+terminal ID: '^'?('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'-'|'0'..'9')*;
+
+terminal WS_HYPHEN : ' - '; 
+
+terminal PROPERTY_TERM returns ecore::EBoolean:
+	'\'s' |	'`s' |'´s'
+;
 /* =========== BASIC SYNTAX =========== */
+
+RelationDelimiter:
+	'in_relation_to' | 'relative_to' |
+	'in' 'relation' 'to'  | 'relative' 'to' //mutiple word relation lead tp false identification of properties
+;
+
+AuxiliaryVerb:
+	'is' | 'be' | 'been' | 'has' | 'do' | 'does'
+;
 
 Conjunction:
 	'and'| 'or';
 
 Comperators:
-	'than'|'as'|'to'
+	'than'|'as'|'to' | 'of'
 ;
 		 
 SizeAdverbial:
-	'higher' | 'less'| 'more' | 'larger''smaller' | 'as_long_as'
+	'higher' | 'less'| 'more' | 'larger'|'smaller' | 'as_long_as'
 ;
 
 PositionAdverbial:
-	'between'|'next' | 'on' | 'above' | 'below' | 'in' | 'within' | 'in_front_of' | 'behind' 
+	'between'|'next' | 'on' | 'above' | 'below' | 'in' | 'within' | 'in_front_of' | 'behind' | 'out' | 'under'
 ;
 
 ComparisonAdverbial:
-	'equal' | 'faster' | 'slower' | 'better' | 'to' | 'by'
+	'equal' | 'faster' | 'slower' | 'better' | 'by' | 'to'
 ;
 
-Determiner:
+Quantification:
 	'all' | 'every' | 'each' | 'whole' | 'any' | 'several' | 'either'
 	'All' | 'Every' | 'Each' | 'Whole' | 'Any' | 'Several' | 'Either'
 ;
@@ -229,7 +276,11 @@ enum ClauseOrdinator:
 
 Articles:
 	'the' | 'a' | 'an' | 
-	'The' | 'A' | 'An'
+	'The' | 'A' | 'An' 
+;
+
+RefArticles:
+	'that' | 'this' | 'That' | 'This'
 ;
 
 StuffWord:
@@ -240,6 +291,7 @@ StuffWord:
 RelativePronounsSubject:
 	'which' | 'who' | 'that'
 ;
+
 RelativePronounsObject:
 	'whose'| 'whom'
 ;
