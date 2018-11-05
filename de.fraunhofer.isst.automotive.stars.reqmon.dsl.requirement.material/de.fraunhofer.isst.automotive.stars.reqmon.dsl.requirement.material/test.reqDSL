@@ -1,0 +1,2 @@
+Req1: The system must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is behind the ego vehicle and the vehicle´s relative velocity falls under 5 m/s.
+1: If there is a vehicle, that is in the lane left of the ego-lane, then the ACC must not change to the lane left of the ego-lane. 

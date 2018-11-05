@@ -1,5 +1,5 @@
-Req1: The system must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is behind the the ego vehicle and the vehicle's relative velocity is more than 5 m/s.
-Req2: The system must not perform a lane change to any lane if a vehicle is on that lane  and the vehicle is in front to the ego vehicle and the vehicle's relative velocity is less than 5 m/s.
+Req1: The system must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is behind the ego vehicle and the vehicle's relative velocity is more than 5 m/s.
+Req2: The system must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is in front to the ego vehicle and the vehicle's relative velocity is less than 5 m/s.
 Req3: The system must not perform a lane change to any lane if a vehicle is on the ego lane and the vehicle in front of the ego vehicle and the vehicle's distance to the ego vehicle is less than 1m.
 Req4: The system must not perform a lane change to any lane if a vehicle is on the ego lane and the vehicle is behind the ego vehicle  and the vehicle's relative velocity is larger than 10 m/s.
 Req5: The system must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is next to the ego vehicle and the vehicle's relative velocity is less than 2m/s.
