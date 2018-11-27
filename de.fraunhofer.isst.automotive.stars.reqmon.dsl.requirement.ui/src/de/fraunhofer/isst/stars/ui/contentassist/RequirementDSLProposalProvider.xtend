@@ -3,10 +3,120 @@
  */
 package de.fraunhofer.isst.stars.ui.contentassist
 
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.Assignment
+import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
+import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
  * on how to customize the content assistant.
  */
 class RequirementDSLProposalProvider extends AbstractRequirementDSLProposalProvider {
+	
+	override void completeModel_Requirements(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.completeModel_Requirements(model, assignment, context, acceptor);
+		
+		val String proposal = "< 'Req' | 'Req' Id | Id |  > < ':' | '.' > <requirement text> < '.' | ';' >";
+		
+		val String proposal_1 = "Req requirement_id: Here is the requirement text.";
+		val String proposal_2 = "Req requirement_id. Here is the requirement text.";
+		val String proposal_3 = "Req: Here is the requirement text.";
+		val String proposal_4 = "Req. Here is the requirement text.";
+		val String proposal_5 = "requirement_id: Here is the requirement text.";
+		val String proposal_6 = "requirement_id. Here is the requirement text.";
+		val String proposal_7 = ": Here is the requirement text.";
+		val String proposal_8 = ". Here is the requirement text.";
+		val String proposal_11 = "Req requirement_id: Here is the requirement text;";
+		val String proposal_22 = "Req requirement_id. Here is the requirement text;";
+		val String proposal_33 = "Req: Here is the requirement text;";
+		val String proposal_44 = "Req. Here is the requirement text;";
+		val String proposal_55 = "requirement_id: Here is the requirement text;";
+		val String proposal_66 = "requirement_id. Here is the requirement text;";
+		val String proposal_77 = ": Here is the requirement text;";
+		val String proposal_88= ". Here is the requirement text;";
+		
+		acceptor.accept(createCompletionProposal(proposal, context));
+		
+		acceptor.accept(createCompletionProposal(proposal_1, context));
+		acceptor.accept(createCompletionProposal(proposal_2, context));
+		acceptor.accept(createCompletionProposal(proposal_3, context));
+		acceptor.accept(createCompletionProposal(proposal_4, context));
+		acceptor.accept(createCompletionProposal(proposal_5, context));
+		acceptor.accept(createCompletionProposal(proposal_6, context));
+		acceptor.accept(createCompletionProposal(proposal_7, context));
+		acceptor.accept(createCompletionProposal(proposal_8, context));
+		acceptor.accept(createCompletionProposal(proposal_11, context));
+		acceptor.accept(createCompletionProposal(proposal_22, context));
+		acceptor.accept(createCompletionProposal(proposal_33, context));
+		acceptor.accept(createCompletionProposal(proposal_44, context));
+		acceptor.accept(createCompletionProposal(proposal_55, context));
+		acceptor.accept(createCompletionProposal(proposal_66, context));
+		acceptor.accept(createCompletionProposal(proposal_77, context));
+		acceptor.accept(createCompletionProposal(proposal_88, context));
+	}
+	
+	override void completeRequirement_Text(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.completeRequirement_Text(model, assignment, context, acceptor);
+		
+		val String proposal = "< Conditional_Clause ', then' | Conditional_Clause 'then' | > < Main_Clause > < ',' Conditional_Clause | Conditional_Clause | >";
+		
+		val String proposal_1 = "If Conditional is here, then main is here, if conditional is here";
+		val String proposal_2 = "If Conditional is here, then main is here";
+		val String proposal_3 = "If Conditional is here then main is here if conditional is here";
+		val String proposal_4 = "main is here, if conditional is here";
+		val String proposal_5 = "main is here";
+		
+		acceptor.accept(createCompletionProposal(proposal, context));
+		
+		acceptor.accept(createCompletionProposal(proposal_1, context));
+		acceptor.accept(createCompletionProposal(proposal_2, context));
+		acceptor.accept(createCompletionProposal(proposal_3, context));
+		acceptor.accept(createCompletionProposal(proposal_4, context));
+		acceptor.accept(createCompletionProposal(proposal_5, context));
+	}
+	
+	override void completeRequirementText_CondClauses(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.completeRequirementText_CondClauses(model, assignment, context, acceptor);
+		
+		val String proposal = "< ClauseOrdinator > < Clauses >";
+		
+		val String proposal1 = "If Actor is doing sth";
+		val String proposal2 = "After Actor has done sth";
+		val String proposal3 = "Once Actor is doing sth";
+		val String proposal4 = "When Actor is doing sth";
+		val String proposal5 = "Whenever Actor is doing sth";
+		val String proposal6 = "While Actor is doing sth";
+		val String proposal7 = "Before Actor is doing sth";
+		val String proposal8 = "Until Actor is doing sth";
+		val String proposal11 = "if Actor is doing sth";
+		val String proposal22 = "after Actor has done sth";
+		val String proposal33 = "once Actor is doing sth";
+		val String proposal44 = "when Actor is doing sth";
+		val String proposal55 = "whenever Actor is doing sth";
+		val String proposal66 = "while Actor is doing sth";
+		val String proposal77 = "before Actor is doing sth";
+		val String proposal88 = "until Actor is doing sth";
+			
+		acceptor.accept(createCompletionProposal(proposal, context));
+		
+		acceptor.accept(createCompletionProposal(proposal1, context));	
+		acceptor.accept(createCompletionProposal(proposal2, context));	
+		acceptor.accept(createCompletionProposal(proposal3, context));	
+		acceptor.accept(createCompletionProposal(proposal4, context));	
+		acceptor.accept(createCompletionProposal(proposal5, context));	
+		acceptor.accept(createCompletionProposal(proposal6, context));	
+		acceptor.accept(createCompletionProposal(proposal7, context));	
+		acceptor.accept(createCompletionProposal(proposal8, context));
+		acceptor.accept(createCompletionProposal(proposal11, context));	
+		acceptor.accept(createCompletionProposal(proposal22, context));	
+		acceptor.accept(createCompletionProposal(proposal33, context));	
+		acceptor.accept(createCompletionProposal(proposal44, context));	
+		acceptor.accept(createCompletionProposal(proposal55, context));	
+		acceptor.accept(createCompletionProposal(proposal66, context));	
+		acceptor.accept(createCompletionProposal(proposal77, context));	
+		acceptor.accept(createCompletionProposal(proposal88, context));		
+	}
+	
+	
 }
