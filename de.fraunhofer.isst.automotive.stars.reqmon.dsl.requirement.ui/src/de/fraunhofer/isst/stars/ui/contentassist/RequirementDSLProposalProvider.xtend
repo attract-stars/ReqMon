@@ -17,105 +17,169 @@ class RequirementDSLProposalProvider extends AbstractRequirementDSLProposalProvi
 	override void completeModel_Requirements(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
 		super.completeModel_Requirements(model, assignment, context, acceptor);
 		
-		val String proposal = "< 'Req' | 'Req' Id | Id |  > < ':' | '.' > <requirement text> < '.' | ';' >";
+		// "< 'Req' | 'Req' Id | Id |  > < ':' | '.' > <Requirement Text> < '.' | ';' >";
 		
-		val String proposal_1 = "Req requirement_id: Here is the requirement text.";
-		val String proposal_2 = "Req requirement_id. Here is the requirement text.";
-		val String proposal_3 = "Req: Here is the requirement text.";
-		val String proposal_4 = "Req. Here is the requirement text.";
-		val String proposal_5 = "requirement_id: Here is the requirement text.";
-		val String proposal_6 = "requirement_id. Here is the requirement text.";
-		val String proposal_7 = ": Here is the requirement text.";
-		val String proposal_8 = ". Here is the requirement text.";
-		val String proposal_11 = "Req requirement_id: Here is the requirement text;";
-		val String proposal_22 = "Req requirement_id. Here is the requirement text;";
-		val String proposal_33 = "Req: Here is the requirement text;";
-		val String proposal_44 = "Req. Here is the requirement text;";
-		val String proposal_55 = "requirement_id: Here is the requirement text;";
-		val String proposal_66 = "requirement_id. Here is the requirement text;";
-		val String proposal_77 = ": Here is the requirement text;";
-		val String proposal_88= ". Here is the requirement text;";
+		val String proposal_00 = "Req:"; 
+		val String proposal_01 = "Req.";
+		val String proposal_02 = "Req <Id>";
+		val String proposal_03 = "<Id>";
+		val String proposal_04 = "Req <Id>:";
+		val String proposal_05 = "Req <Id>.";
+		val String proposal_06 = "<Id>:";
+		val String proposal_07 = "<Id>.";
 		
-		acceptor.accept(createCompletionProposal(proposal, context));
+		val String proposal_10 = ": <Requirement Text>";
+		val String proposal_11 = ". <Requirement Text>";
+		val String proposal_12 = "<Id>: <Requirement Text>";
+		val String proposal_13 = "<Id>. <Requirement Text>";
+		val String proposal_14 = "Req: <Requirement Text>";
+		val String proposal_15 = "Req. <Requirement Text>";
+		val String proposal_16 = "Req <Id>: <Requirement Text>";
+		val String proposal_17 = "Req <Id>. <Requirement Text>";
 		
-		acceptor.accept(createCompletionProposal(proposal_1, context));
-		acceptor.accept(createCompletionProposal(proposal_2, context));
-		acceptor.accept(createCompletionProposal(proposal_3, context));
-		acceptor.accept(createCompletionProposal(proposal_4, context));
-		acceptor.accept(createCompletionProposal(proposal_5, context));
-		acceptor.accept(createCompletionProposal(proposal_6, context));
-		acceptor.accept(createCompletionProposal(proposal_7, context));
-		acceptor.accept(createCompletionProposal(proposal_8, context));
+		val String proposal_20 = ": <Requirement Text>.";
+		val String proposal_21 = ". <Requirement Text>.";
+		val String proposal_22 = "<Id>: <Requirement Text>.";
+		val String proposal_23 = "<Id>. <Requirement Text>.";
+		val String proposal_24 = "Req: <Requirement Text>.";
+		val String proposal_25 = "Req. <Requirement Text>.";
+		val String proposal_26 = "Req <Id>: <Requirement Text>.";
+		val String proposal_27 = "Req <Id>. <Requirement Text>.";
+		
+		val String proposal_30 = ": <Requirement Text>;";
+		val String proposal_31 = ". <Requirement Text>;";
+		val String proposal_32 = "<Id>: <Requirement Text>;";
+		val String proposal_33 = "<Id>. <Requirement Text>;";
+		val String proposal_34 = "Req: <Requirement Text>;";
+		val String proposal_35 = "Req. <Requirement Text>;";
+		val String proposal_36 = "Req <Id>: <Requirement Text>;";
+		val String proposal_37 = "Req <Id>. <Requirement Text>;";
+			
+		acceptor.accept(createCompletionProposal(proposal_00, context));
+		acceptor.accept(createCompletionProposal(proposal_01, context));
+		acceptor.accept(createCompletionProposal(proposal_02, context));
+		acceptor.accept(createCompletionProposal(proposal_03, context));
+		acceptor.accept(createCompletionProposal(proposal_04, context));
+		acceptor.accept(createCompletionProposal(proposal_05, context));
+		acceptor.accept(createCompletionProposal(proposal_06, context));
+		acceptor.accept(createCompletionProposal(proposal_07, context));
+		acceptor.accept(createCompletionProposal(proposal_10, context));
+	
 		acceptor.accept(createCompletionProposal(proposal_11, context));
+		acceptor.accept(createCompletionProposal(proposal_12, context));
+		acceptor.accept(createCompletionProposal(proposal_13, context));
+		acceptor.accept(createCompletionProposal(proposal_14, context));
+		acceptor.accept(createCompletionProposal(proposal_15, context));
+		acceptor.accept(createCompletionProposal(proposal_16, context));
+		acceptor.accept(createCompletionProposal(proposal_17, context));
+	
+		acceptor.accept(createCompletionProposal(proposal_20, context));
+		acceptor.accept(createCompletionProposal(proposal_21, context));
 		acceptor.accept(createCompletionProposal(proposal_22, context));
+		acceptor.accept(createCompletionProposal(proposal_23, context));
+		acceptor.accept(createCompletionProposal(proposal_24, context));
+		acceptor.accept(createCompletionProposal(proposal_25, context));
+		acceptor.accept(createCompletionProposal(proposal_26, context));
+		acceptor.accept(createCompletionProposal(proposal_27, context));
+		
+		acceptor.accept(createCompletionProposal(proposal_30, context));
+		acceptor.accept(createCompletionProposal(proposal_31, context));
+		acceptor.accept(createCompletionProposal(proposal_32, context));
 		acceptor.accept(createCompletionProposal(proposal_33, context));
-		acceptor.accept(createCompletionProposal(proposal_44, context));
-		acceptor.accept(createCompletionProposal(proposal_55, context));
-		acceptor.accept(createCompletionProposal(proposal_66, context));
-		acceptor.accept(createCompletionProposal(proposal_77, context));
-		acceptor.accept(createCompletionProposal(proposal_88, context));
+		acceptor.accept(createCompletionProposal(proposal_34, context));
+		acceptor.accept(createCompletionProposal(proposal_35, context));
+		acceptor.accept(createCompletionProposal(proposal_36, context));
+		acceptor.accept(createCompletionProposal(proposal_37, context));
+	
 	}
 	
 	override void completeRequirement_Text(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
 		super.completeRequirement_Text(model, assignment, context, acceptor);
 		
-		val String proposal = "< Conditional_Clause ', then' | Conditional_Clause 'then' | > < Main_Clause > < ',' Conditional_Clause | Conditional_Clause | >";
+		//"< Conditional_Clause ', then' | Conditional_Clause 'then' | > < Main_Clause > < ',' Conditional_Clause | Conditional_Clause | >";
 		
-		val String proposal_1 = "If Conditional is here, then main is here, if conditional is here";
-		val String proposal_2 = "If Conditional is here, then main is here";
-		val String proposal_3 = "If Conditional is here then main is here if conditional is here";
-		val String proposal_4 = "main is here, if conditional is here";
-		val String proposal_5 = "main is here";
+		val String proposal_00 = "<Conditional Clause>";
+		val String proposal_01 = "<Conditional Clause>, then";
+		val String proposal_02 = "<Conditional Clause> then";
 		
-		acceptor.accept(createCompletionProposal(proposal, context));
+		val String proposal_10 = "<Main Clause>";
+		val String proposal_11 = "<Conditional Clause> <Main Clause>";
+		val String proposal_12 = "<Conditional Clause>, then <Main Clause>";
+		val String proposal_13 = "<Conditional Clause> then <Main Clause>";
 		
-		acceptor.accept(createCompletionProposal(proposal_1, context));
-		acceptor.accept(createCompletionProposal(proposal_2, context));
-		acceptor.accept(createCompletionProposal(proposal_3, context));
-		acceptor.accept(createCompletionProposal(proposal_4, context));
-		acceptor.accept(createCompletionProposal(proposal_5, context));
+		val String proposal_20 = "<Main Clause>, <Conditional Clause>";
+		val String proposal_21 = "<Conditional Clause> <Main Clause>, <Conditional Clause>";
+		val String proposal_22 = "<Conditional Clause>, then <Main Clause>, <Conditional Clause>";
+		val String proposal_23 = "<Conditional Clause> then <Main Clause>, <Conditional Clause>";
+		
+		val String proposal_30 = "<Main Clause> <Conditional Clause>";
+		val String proposal_31 = "<Conditional Clause> <Main Clause> <Conditional Clause>";
+		val String proposal_32 = "<Conditional Clause>, then <Main Clause> <Conditional Clause>";
+		val String proposal_33 = "<Conditional Clause> then <Main Clause> <Conditional Clause>";
+		
+		acceptor.accept(createCompletionProposal(proposal_00, context));
+		acceptor.accept(createCompletionProposal(proposal_01, context));
+		acceptor.accept(createCompletionProposal(proposal_02, context));
+		
+		acceptor.accept(createCompletionProposal(proposal_10, context));
+		acceptor.accept(createCompletionProposal(proposal_11, context));
+		acceptor.accept(createCompletionProposal(proposal_12, context));
+		acceptor.accept(createCompletionProposal(proposal_13, context));
+		
+		acceptor.accept(createCompletionProposal(proposal_20, context));
+		acceptor.accept(createCompletionProposal(proposal_21, context));
+		acceptor.accept(createCompletionProposal(proposal_22, context));
+		acceptor.accept(createCompletionProposal(proposal_23, context));
+		
+		acceptor.accept(createCompletionProposal(proposal_30, context));
+		acceptor.accept(createCompletionProposal(proposal_31, context));
+		acceptor.accept(createCompletionProposal(proposal_32, context));
+		acceptor.accept(createCompletionProposal(proposal_33, context));
+		
 	}
 	
 	override void completeRequirementText_CondClauses(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
 		super.completeRequirementText_CondClauses(model, assignment, context, acceptor);
 		
-		val String proposal = "< ClauseOrdinator > < Clauses >";
+		val String proposal_00 = "<Clause Ordinator>";
+		val String proposal_10 = "<Clause Ordinator> <Clauses>";
 		
-		val String proposal1 = "If Actor is doing sth";
-		val String proposal2 = "After Actor has done sth";
-		val String proposal3 = "Once Actor is doing sth";
-		val String proposal4 = "When Actor is doing sth";
-		val String proposal5 = "Whenever Actor is doing sth";
-		val String proposal6 = "While Actor is doing sth";
-		val String proposal7 = "Before Actor is doing sth";
-		val String proposal8 = "Until Actor is doing sth";
-		val String proposal11 = "if Actor is doing sth";
-		val String proposal22 = "after Actor has done sth";
-		val String proposal33 = "once Actor is doing sth";
-		val String proposal44 = "when Actor is doing sth";
-		val String proposal55 = "whenever Actor is doing sth";
-		val String proposal66 = "while Actor is doing sth";
-		val String proposal77 = "before Actor is doing sth";
-		val String proposal88 = "until Actor is doing sth";
+		val String proposal_20 = "if <Clauses>";
+		val String proposal_21 = "after <Clauses>";
+		val String proposal_22 = "once <Clauses>";
+		val String proposal_23 = "when <Clauses>";
+		val String proposal_24 = "whenever <Clauses>";
+		val String proposal_25 = "before <Clauses>";
+		val String proposal_26 = "until <Clauses>";
+		
+		val String proposal_30 = "If <Clauses>";
+		val String proposal_31 = "After <Clauses>";
+		val String proposal_32 = "Once <Clauses>";
+		val String proposal_33 = "When <Clauses>";
+		val String proposal_34 = "Whenever <Clauses>";
+		val String proposal_35 = "Before <Clauses>";
+		val String proposal_36 = "Until <Clauses>";
+		
+		
+		acceptor.accept(createCompletionProposal(proposal_00, context));
+		acceptor.accept(createCompletionProposal(proposal_10, context));	
+		
+		acceptor.accept(createCompletionProposal(proposal_20, context));
+		acceptor.accept(createCompletionProposal(proposal_21, context));	
+		acceptor.accept(createCompletionProposal(proposal_22, context));	
+		acceptor.accept(createCompletionProposal(proposal_23, context));	
+		acceptor.accept(createCompletionProposal(proposal_24, context));	
+		acceptor.accept(createCompletionProposal(proposal_25, context));	
+		acceptor.accept(createCompletionProposal(proposal_26, context));
 			
-		acceptor.accept(createCompletionProposal(proposal, context));
+		acceptor.accept(createCompletionProposal(proposal_30, context));
+		acceptor.accept(createCompletionProposal(proposal_31, context));	
+		acceptor.accept(createCompletionProposal(proposal_32, context));	
+		acceptor.accept(createCompletionProposal(proposal_33, context));	
+		acceptor.accept(createCompletionProposal(proposal_34, context));	
+		acceptor.accept(createCompletionProposal(proposal_35, context));	
+		acceptor.accept(createCompletionProposal(proposal_36, context));	
 		
-		acceptor.accept(createCompletionProposal(proposal1, context));	
-		acceptor.accept(createCompletionProposal(proposal2, context));	
-		acceptor.accept(createCompletionProposal(proposal3, context));	
-		acceptor.accept(createCompletionProposal(proposal4, context));	
-		acceptor.accept(createCompletionProposal(proposal5, context));	
-		acceptor.accept(createCompletionProposal(proposal6, context));	
-		acceptor.accept(createCompletionProposal(proposal7, context));	
-		acceptor.accept(createCompletionProposal(proposal8, context));
-		acceptor.accept(createCompletionProposal(proposal11, context));	
-		acceptor.accept(createCompletionProposal(proposal22, context));	
-		acceptor.accept(createCompletionProposal(proposal33, context));	
-		acceptor.accept(createCompletionProposal(proposal44, context));	
-		acceptor.accept(createCompletionProposal(proposal55, context));	
-		acceptor.accept(createCompletionProposal(proposal66, context));	
-		acceptor.accept(createCompletionProposal(proposal77, context));	
-		acceptor.accept(createCompletionProposal(proposal88, context));		
 	}
 	
 	
