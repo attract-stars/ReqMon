@@ -1,13 +1,15 @@
 # ReqMon
 
-ReqMon umfasst die Konzpetion und Implementierung der Runtime Monitors im STARS Projekt.
+ReqMon umfasst die Konzepion und Implementierung der Runtime Monitors im STARS Projekt.
 
+***
 ## Tools Libaries
 
 * xText für die Sprachentwicklung
 * Eclipse für RCP/UI Anwendung 
 * _Code-Generierung Engine offen_
 
+***
 ## Monitor-Generation Workflow
 Übersicht über den Workflow / Prozess zur Generierung der Runtime Monitore
 
@@ -26,6 +28,7 @@ Code / Executable füür
 * Situation Monitor + Situation Oracle
 * Prozessschritte
 
+***
 ### 1. Schritt: Definition Anforderungen
 Die Anforderungen werden der dafür vorgesehen Sprache / Algebra definiert und resultieren in einem Syntaxtree.
 
