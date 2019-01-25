@@ -6,6 +6,38 @@ package de.fraunhofer.isst.stars.ui.labeling
 import com.google.inject.Inject
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
 import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider
+import de.fraunhofer.isst.stars.requirementDSL.Requirement
+import de.fraunhofer.isst.stars.requirementDSL.RequirementText
+import de.fraunhofer.isst.stars.requirementDSL.ConditionalClause
+import de.fraunhofer.isst.stars.requirementDSL.MainClause
+import de.fraunhofer.isst.stars.requirementDSL.Clauses
+import de.fraunhofer.isst.stars.requirementDSL.Clause
+import de.fraunhofer.isst.stars.requirementDSL.ModalitySentence
+import de.fraunhofer.isst.stars.requirementDSL.PredicateSentence
+import de.fraunhofer.isst.stars.requirementDSL.ExistenceSentence
+import de.fraunhofer.isst.stars.requirementDSL.PropertySentence
+import de.fraunhofer.isst.stars.requirementDSL.Actors
+import de.fraunhofer.isst.stars.requirementDSL.Actor
+import de.fraunhofer.isst.stars.requirementDSL.Object
+import de.fraunhofer.isst.stars.requirementDSL.Predicate
+import de.fraunhofer.isst.stars.requirementDSL.PredicateObject
+import de.fraunhofer.isst.stars.requirementDSL.PreNominative
+import de.fraunhofer.isst.stars.requirementDSL.Constraint
+import de.fraunhofer.isst.stars.requirementDSL.ConstraintOrdinators
+import de.fraunhofer.isst.stars.requirementDSL.SetConstraint
+import de.fraunhofer.isst.stars.requirementDSL.TimeConstraint
+import de.fraunhofer.isst.stars.requirementDSL.ObjectConstraint
+import de.fraunhofer.isst.stars.requirementDSL.UnitConstraints
+import de.fraunhofer.isst.stars.requirementDSL.IntervallConstraints
+import de.fraunhofer.isst.stars.requirementDSL.SingleValueConstraints
+import de.fraunhofer.isst.stars.requirementDSL.ValueSet
+import de.fraunhofer.isst.stars.requirementDSL.ObjectSet
+import de.fraunhofer.isst.stars.requirementDSL.IntValue
+import de.fraunhofer.isst.stars.requirementDSL.FloatValue
+import de.fraunhofer.isst.stars.requirementDSL.Constraints
+import de.fraunhofer.isst.stars.requirementDSL.Modifier
+import de.fraunhofer.isst.stars.requirementDSL.Modality
+import de.fraunhofer.isst.stars.requirementDSL.Property
 
 /**
  * Provides labels for EObjects.
@@ -28,4 +60,259 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 //	def image(Greeting ele) {
 //		'Greeting.gif'
 //	}
+
+	def text(Requirement ele) {
+		if (ele.reqID !== null) {
+			"Requirement: " + ele.reqID
+		}
+		else {
+			"Requirement"
+		}
+	}
+	
+	def text(RequirementText ele) {
+		"RequirementText"
+	}
+	
+	def text(ConditionalClause ele) {
+		if (ele.ordinator !== null) {
+			"ConditionalClause: " + ele.ordinator.getName.toLowerCase
+		}
+		else {
+			"ConditionalClause"
+		}
+	}
+	
+	def text(MainClause ele) {
+		// it seems that the modifier is never null and as default "globally"
+		if (ele.modifier !== null && !ele.modifier.equals(Modifier.GLOBALLY)) {  
+			"MainClause: " + ele.modifier.getName.toLowerCase
+		}
+		else {
+			"MainClause"
+		}
+	}
+	
+	def text(Clauses ele) {
+		"Clauses"
+	}
+	
+	def text(Clause ele) {
+		"Clause"
+	}
+	
+	def text(ModalitySentence ele) {
+		if (ele.modelity !== null) {
+			if (ele.negation) {
+				if (ele.auxiliarVerb !== null) {
+					"ModalitySentence: " + ele.modelity.getName.toLowerCase + " not " + ele.auxiliarVerb
+				}
+				else {
+					"ModalitySentence: " + ele.modelity.getName.toLowerCase + " not"
+				}
+			}
+			else {
+				if (ele.auxiliarVerb !== null) {
+					"ModalitySentence: " + ele.modelity.getName.toLowerCase + " " + ele.auxiliarVerb
+				}
+				else {
+					"ModalitySentence: " + ele.modelity.getName.toLowerCase
+				}
+			}
+		}
+		else {
+			if (ele.negation) {
+				if (ele.auxiliarVerb !== null) {
+					"ModalitySentence: not " + ele.auxiliarVerb
+				}
+				else {
+					"ModalitySentence: not"
+				}
+			}
+			else {
+				if (ele.auxiliarVerb !== null) {
+					"ModalitySentence: " + ele.auxiliarVerb
+				}
+				else {
+					"ModalitySentence"
+				}
+			}
+		}
+	}
+	
+	def text(PredicateSentence ele) {
+		if (ele.auxiliarVerb !== null) {
+			"PredicateSentence: " + ele.auxiliarVerb
+		}
+		else if (ele.auxiliarVerb !== null && ele.negation) {
+			"PredicateSentence: " + ele.auxiliarVerb + " not"
+		}
+		else {
+			"PredicateSentence"
+		}
+	}
+	
+	def text(ExistenceSentence ele) {
+		"ExistenceSentence"
+	}
+	
+	def text(PropertySentence ele) {
+		// it seems that the modifier is never null and as default "shall"
+		if (ele.modelity !== null && !ele.modelity.equals(Modality.SHALL)) {
+			"PropertySentence: " + ele.modelity
+		}
+		else if (ele.modelity !== null && ele.negation) {
+			"PropertySentence: " + ele.modelity + " not"
+		} 
+		else if (ele.auxiliarVerb !== null) {
+			"PropertySentence: " + ele.auxiliarVerb
+		} 
+		else if (ele.auxiliarVerb !== null && ele.negation) {
+			"PropertySentence: " + ele.auxiliarVerb + " not"
+		} 
+		else if (ele.predicateWord !== null) {
+			"PropertySentence: " + ele.auxiliarVerb
+		} 
+		else {
+			"PropertySentence"
+		}
+	}
+	
+	def text(Property ele) {
+		if (ele.article !== null) {
+			"Property: " + ele.article + " " + ele.object + "'s " + ele.property
+		}
+		else if (ele.quantifier !== null) {
+			"Property: " + ele.quantifier + " " + ele.object + "'s " + ele.property
+		}
+		else {
+			"Property" + " " + ele.object + "'s " + ele.property
+		} 
+	}
+	
+	def text(Actors ele) {
+		"Actors"
+	}
+	
+	def text(Actor ele) {
+		"Actor: " + ele.actor
+	}
+	
+	def text(Predicate ele) {
+		if (ele.predicates !== null) {
+			"Predicate: " + ele.predicates
+		}
+		else {
+			"Predicate"
+		}
+	}
+	
+	def text(PredicateObject ele) {
+		"PredicateObject"
+	}
+	
+	def text(PreNominative ele) {
+		if (ele.article !== null && ele.actor !== null) {
+			"PreNominative: " + ele.article + " " + ele.actor
+		} 
+		else if (ele.article !== null && ele.object !== null) {
+			"PreNominative: " + ele.article + " " + ele.object
+		}
+		else if (ele.determiner !== null && ele.actor !== null) {
+			"PreNominative: " + ele.determiner + " " + ele.actor	
+		}
+		else if (ele.determiner !== null && ele.object !== null) {
+			"PreNominative: " + ele.determiner + " " + ele.object	
+		}
+	}
+	
+	def text(Object ele) {
+		"Object: " + ele.toString
+	}
+	
+	def text(Constraint ele) {
+		"Constraint"
+	}
+	
+	def text(Constraints ele) {
+		"Constraints"
+	}
+	
+	def text(ConstraintOrdinators ele) {
+		if (ele.stuffing !== null && ele.adverbial !== null && ele.comperator !== null) {
+			"ConstraintOrdinators: " + ele.stuffing + " " + ele.adverbial + " " + ele.comperator
+		}
+		else if (ele.stuffing !== null && ele.adverbial !== null) {
+			"ConstraintOrdinators: " + ele.stuffing + " " + ele.adverbial
+		}	
+		else if (ele.stuffing !== null) {
+			"ConstraintOrdinators: " + ele.stuffing
+		}
+		else if (ele.adverbial !== null && ele.comperator !== null) {
+			"ConstraintOrdinators: " + ele.adverbial + " " + ele.comperator
+		}
+		else if (ele.adverbial !== null) {
+			"ConstraintOrdinators: " + ele.adverbial
+		}
+		else if (ele.stuffing !== null && ele.comperator !== null) {
+			"ConstraintOrdinators: " + ele.stuffing + " " + ele.comperator
+		}
+		else if (ele.comperator !== null) {
+			"ConstraintOrdinators: " + ele.comperator
+		}
+		else {
+			"ConstraintOrdinators"
+		}
+	}
+	
+	def text(SetConstraint ele) {
+		"SetConstraint"
+	}
+	
+	def text(TimeConstraint ele) {
+		"TimeConstraint"
+	}
+	
+	def text(ObjectConstraint ele) {
+		"ObjectConstraint"
+	}
+	
+	def text(UnitConstraints ele) {
+		"UnitConstraint"
+	}
+	
+	def text(IntervallConstraints ele) {
+		"IntervallConstraints"
+	}
+	
+	def text(SingleValueConstraints ele) {
+		"SingleValueConstraints"
+	}
+	
+	def text(ValueSet ele) {
+		"ValueSet"
+	}
+	
+	def text(ObjectSet ele) {
+		"ObjectSet"
+	}
+	
+	def text(IntValue ele) {
+		if (ele.unit !== null) {
+			"IntValue: " + ele.value + " " + ele.unit
+		}
+		else {
+			"IntValue"
+		}
+	}
+	
+	def text(FloatValue ele) {
+		if (ele.unit !== null) {
+			"FloatValue: " + ele.value + " " + ele.unit
+		}
+		else {
+			"FloatValue"
+		}
+	}
+
 }
