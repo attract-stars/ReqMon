@@ -2,14 +2,14 @@
 
 ReqMon umfasst die Konzepion und Implementierung der Runtime Monitors im STARS Projekt.
 
-***
+
 ## Tools Libaries
 
 * xText für die Sprachentwicklung
 * Eclipse für RCP/UI Anwendung 
 * _Code-Generierung Engine offen_
 
-***
+
 ## Monitor-Generation Workflow
 Übersicht über den Workflow / Prozess zur Generierung der Runtime Monitore
 
