@@ -32,7 +32,7 @@ ConditionalClause:
 ;
 
 MainClause:
-	modifier=Modifier? clauses+=Clause //(conjunction+=Conjunction clauses+=MainClause)*
+	modifier=Modifier? clauses+=Clauses //(conjunction+=Conjunction clauses+=MainClause)*
 ;
 
 
@@ -46,14 +46,18 @@ Clause:
 
 
 ModalitySentence :
-	actors=Actors modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  constraints+=Constraints* 
+	begin=SentenceBegin? actors=Actors modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  ending=SentenceEnding?
+	//actors=Actors modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  constraints+=Constraints* 
 ;
 
 PredicateSentence :
+	begin=SentenceBegin? actors=Actors  auxNeg+=AuxNeg auxiliarVerb+=AuxiliaryVerb? preds=Preds?  ending=SentenceEnding? |
+	begin=SentenceBegin? actors=Actors  preds=Preds  ending=SentenceEnding? 
+	
 	//actors=Actors  (auxiliarVerb+=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
-	actors=Actors  predicate=Predicate constraints+=Constraints* |	
-	actors=Actors  auxiliarVerb+=AuxiliaryVerb negation?=Negation? auxiliarVerb+=AuxiliaryVerb? predicate=Predicate  constraints+=Constraints* |
-	actors=Actors  auxiliarVerb+=AuxiliaryVerb negation?=Negation? object=PredicateObject? constraints+=Constraints* 
+	//actors=Actors  predicate=Predicate constraints+=Constraints* |	
+	//actors=Actors  auxiliarVerb+=AuxiliaryVerb negation?=Negation? auxiliarVerb+=AuxiliaryVerb? predicate=Predicate  constraints+=Constraints* |
+	//actors=Actors  auxiliarVerb+=AuxiliaryVerb negation?=Negation? object=PredicateObject? constraints+=Constraints* 
 ;
 
 ExistenceSentence :
@@ -61,14 +65,27 @@ ExistenceSentence :
 ;
 
 PropertySentence:
-	property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  constraints+=Constraints* |
-	property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb object=PredicateObject?  constraints+=Constraints* |
-	property=Property auxiliarVerb=AuxiliaryVerb negation?=Negation? ((predicate=Predicate|object=PredicateObject) constraints+=Constraints* | constraints+=Constraints+)  |
-	property=Property (predicateWord=WORD| predicateWord=STRING) object=PredicateObject? constraints+=Constraints* //Leads to mismatch in xtext but not in AntLRworks
+	actors=Actors property=Property rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predObj=PredOrObject  ending=SentenceEnding? |
+	actors=Actors property=Property rela=Relation? auxNeg=AuxNeg (predObj=PredOrObject | constraints=Constraints) ending=SentenceEnding?
+	
+	//property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  constraints+=Constraints* |
+	//property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb object=PredicateObject?  constraints+=Constraints* |
+	//property=Property auxiliarVerb=AuxiliaryVerb negation?=Negation? ((predicate=Predicate|object=PredicateObject) constraints+=Constraints* | constraints+=Constraints+)  |
+	//property=Property (predicateWord=WORD| predicateWord=STRING) object=PredicateObject? constraints+=Constraints* //Leads to mismatch in xtext but not in AntLRworks
 ;
 
 Property:
-	(quantifier=Quantification|article=Articles|article=RefArticles)? (object+=WORD+ | object+=STRING) PROPERTY_TERM (property+=WORD+ | property+=STRING)
+	PROPERTY_TERM (property+=WORD+ | property+=STRING)
+;
+
+SentenceBegin:
+	(rela=Relation ',')
+;
+
+SentenceEnding:
+	const+=Constraints+ |
+	const+=Constraints* rela=Relation |
+	rela=Relation const+=Constraints+
 ;
 
 /* =========== RELATIVE CLAUSE =========== */
@@ -76,7 +93,7 @@ Property:
 
 relativeClause:
 //  pronoun=RelativePronouns actors=Actors? modelity=Modality? negation?=Negation? predicate=Predicate constraints+=Constraints*
-	sentence= relativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*	
+	sentence=relativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*	
 ;
 relativeSentence :
 	pronoun=RelativePronounsSubject modelity=Modality negation?=Negation? predicate=Predicate  constraints+=Constraints*  |
@@ -97,6 +114,10 @@ Actor:
    
 ;
 
+Preds:
+	predicate=Predicate | predObj=PredicateObject
+;
+
 Predicate:
 	//verb=Verb | activity=Activity
 	predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
@@ -106,16 +127,31 @@ PredicateObject:
 	article=PreNominative (object+=WORD+ | object+=STRING) 
 ;
 
-ExistencePreface:
-	{ExistencePreface} 'there' (modifier=Modifier?) (WORD+|STRING) //defining the verbs for 'there is' / 'there are' is a problem for later usages of 'is'/'are' in other clauses
+Object:
+	article=PreNominative? (object+=WORD+ | object+=STRING) 
 ;
 
+PredOrObject:
+	predicate=Predicate | predObj=PredicateObject
+;
+
+ExistencePreface:
+	{ExistencePreface} ('there' | 'There') (modifier=Modifier?) ('exist' | 'exists') // (WORD+|STRING) //defining the verbs for 'there is' / 'there are' is a problem for later usages of 'is'/'are' in other clauses
+;
+
+/* The same as Actors and Actor
 Objects:
 	(objects+=Object) (conjunction+=Conjunction objects+=Object)*
 ;
 
 Object:
     PreNominative? (object+=WORD+ | object+=STRING)  
+;
+*/
+
+AuxNeg:
+	auxiliarVerb=AuxiliaryVerb negation=Negation? |
+	auxiliarVerbNeg=AuxiliaryVerbNegation
 ;
 
 PreNominative : 
@@ -129,19 +165,24 @@ Adverbial:
 /* =========== Relations =========== */
 
 //Currently not used -> False identification of properties
-//Relation:
-//	relation=RelationDelimiter(relElements=Objects |relElements=Properties)
-//;
-
-Properties:
-	(properties+=Property) (conjunction+=Conjunction properties+=Property)* 
+Relation:
+	relposAdv=PositionAdverbial relDel=RelationDelimiter relComp=Comperators relElements=RelObjects
 ;
+
+RelObjects:
+	actor+=Actor property+=Property? (relConj+=RelConjunction actor+=Actor property+=Property?)*
+;
+
+
+/*Properties:
+	(properties+=Property) (conjunction+=Conjunction properties+=Property)* 
+;*/
 
 
 /* =========== CONSTRAINTS =========== */
 
 Constraints:
-	timeConstraint= TimeConstraint | constraint=Constraint
+	timeConstraint=TimeConstraint | constraint=Constraint
 ;
 
 Constraint:
@@ -187,7 +228,7 @@ ValueSet:
 ;
 
 ObjectSet:
-	  '{' (elements+=Object) (';'elements+=Object)*'}'
+	  '{' (elements+=Actor) (';'elements+=Actor)*'}'
 ;
 
 Value:
@@ -195,7 +236,7 @@ Value:
 ;
 
 IntValue:
-	value=INT unit=Unit?
+	value=INT unit=Unit? // | '\'' value=INT '\''
 ;
 
 FloatValue:
@@ -220,21 +261,27 @@ terminal ID: '^'?('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'-'|'0'..'9')*;
 terminal WS_HYPHEN : ' - '; 
 
 terminal PROPERTY_TERM returns ecore::EBoolean:
-	'\'s' |	'`s' |'´s'
+	//'\'s' |	'`s' |
+	'´s'
 ;
 /* =========== BASIC SYNTAX =========== */
 
 RelationDelimiter:
-	'in_relation_to' | 'relative_to' |
-	'in' 'relation' 'to'  | 'relative' 'to' //mutiple word relation lead tp false identification of properties
+	'relation'
+	//'in' 'relation' 'to'  | 'relative' 'to' //mutiple word relation leads to false identification of properties
 ;
 
 AuxiliaryVerb:
-	'is' | 'be' | 'been' | 'has' | 'do' | 'does'
+	'is' | 'are' | 'be' | 'been' | 'has' | 'have' | 'do' | 'does'
 ;
 
 Conjunction:
-	'and'| 'or';
+	'and'| 'or'
+;
+
+RelConjunction:
+	'and_to' | 'or_to'
+;
 
 Comperators:
 	'than'|'as'|'to' | 'of'
@@ -258,7 +305,11 @@ Quantification:
 ;
 
 Negation:
-	'not' | 'donot' | 'doesnot' | 'doesn\'t' | 'don\'t'
+	'not' //| 'donot' | 'doesnot' | 'doesn\'t' | 'don\'t'
+;
+
+AuxiliaryVerbNegation:
+	'doesn´t' | 'don´t' | 'isn´t' | 'aren´t'
 ;
 
 enum Modality:
@@ -266,11 +317,11 @@ enum Modality:
 ;
 
 enum Modifier:
-	GLOBALLY='Globally' | GLOBALLY='globally' | ALWAYS='Always' | ALWAYS='always' | SOMETIMES='Sometimes' | SOMETIMES='sometimes' | EVENTUALLY='Eventually' | EVENTUALLY='eventually'
+	GLOBALLY='Globally' | GLOBALLY_L='globally' | ALWAYS='Always' | ALWAYS_L='always' | SOMETIMES='Sometimes' | SOMETIMES_L='sometimes' | EVENTUALLY='Eventually' | EVENTUALLY_L='eventually'
 ;
 
 enum ClauseOrdinator:
-	IF='if' | AFTER='after' | ONCE='once' | WHEN='when' | WHENEVER='whenever' | WHILE='while' | BEFORE='before' | UNTIL='until' |
+	IF_L='if' | AFTER_L='after' | ONCE_L='once' | WHEN_L='when' | WHENEVER_L='whenever' | WHILE_L='while' | BEFORE_L='before' | UNTIL_L='until' |
 	IF='If' | AFTER='After' | ONCE='Once' | WHEN='When' | WHENEVER='Whenever' | WHILE='While' | BEFORE='Before' | UNTIL='Until'
 ;
 
