@@ -94,7 +94,13 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	}
 	
 	def text(Clauses ele) {
-		"Clauses"
+		if (!ele.conjunction.empty) {
+			"Clauses: " + ele.conjunction
+		}
+		else {
+			"Clauses"
+		}
+		
 	}
 	
 	def text(Clause ele) {
@@ -142,10 +148,10 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	
 	def text(PredicateSentence ele) {
 		if (ele.auxiliarVerb !== null) {
-			"PredicateSentence: " + ele.auxiliarVerb
+			"PredicateSentence: " + ele.auxiliarVerb.join(" ")
 		}
 		else if (ele.auxiliarVerb !== null && ele.negation) {
-			"PredicateSentence: " + ele.auxiliarVerb + " not"
+			"PredicateSentence: " + ele.auxiliarVerb.join(" ") + " not"
 		}
 		else {
 			"PredicateSentence"
@@ -171,7 +177,7 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 			"PropertySentence: " + ele.auxiliarVerb + " not"
 		} 
 		else if (ele.predicateWord !== null) {
-			"PropertySentence: " + ele.auxiliarVerb
+			"PropertySentence: " + ele.predicateWord
 		} 
 		else {
 			"PropertySentence"
@@ -180,18 +186,23 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	
 	def text(Property ele) {
 		if (ele.article !== null) {
-			"Property: " + ele.article + " " + ele.object + "'s " + ele.property
+			"Property: " + ele.article + " " + ele.object.join(" ") + "'s " + ele.property.join(" ")
 		}
 		else if (ele.quantifier !== null) {
-			"Property: " + ele.quantifier + " " + ele.object + "'s " + ele.property
+			"Property: " + ele.quantifier + " " + ele.object.join(" ") + "'s " + ele.property.join(" ")
 		}
 		else {
-			"Property" + " " + ele.object + "'s " + ele.property
+			"Property" + " " + ele.object.join(" ") + "'s " + ele.property.join(" ")
 		} 
 	}
 	
 	def text(Actors ele) {
-		"Actors"
+		if (!ele.conjunction.empty) {
+			"Actors and Conj: " + ele.actors.map[a | return a.actor] + " " + ele.conjunction
+		}
+		else {
+			"Actors: " + ele.actors.get(0).actor
+		}
 	}
 	
 	def text(Actor ele) {
@@ -200,7 +211,7 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	
 	def text(Predicate ele) {
 		if (ele.predicates !== null) {
-			"Predicate: " + ele.predicates
+			"Predicate: " + ele.predicates.join(" ")
 		}
 		else {
 			"Predicate"
@@ -208,22 +219,29 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	}
 	
 	def text(PredicateObject ele) {
-		"PredicateObject"
+		"PredicateObject: " + ele.object.join(" ")
 	}
 	
 	def text(PreNominative ele) {
+		if (ele.article !== null) {
+			"PreNominative: " + ele.article
+		} 
+		else if (ele.determiner !== null) {
+			"PreNominative: " + ele.determiner
+		}
+		/* 
 		if (ele.article !== null && ele.actor !== null) {
-			"PreNominative: " + ele.article + " " + ele.actor
+			"PreNominative and Actor: " + ele.article + " " + ele.actor
 		} 
 		else if (ele.article !== null && ele.object !== null) {
-			"PreNominative: " + ele.article + " " + ele.object
+			"PreNominative and Object: " + ele.article + " " + ele.object
 		}
 		else if (ele.determiner !== null && ele.actor !== null) {
-			"PreNominative: " + ele.determiner + " " + ele.actor	
+			"Determiner and Actor: " + ele.determiner + " " + ele.actor	
 		}
 		else if (ele.determiner !== null && ele.object !== null) {
-			"PreNominative: " + ele.determiner + " " + ele.object	
-		}
+			"Determiner and Object: " + ele.determiner + " " + ele.object	
+		}*/
 	}
 	
 	def text(Object ele) {
@@ -274,7 +292,7 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	}
 	
 	def text(ObjectConstraint ele) {
-		"ObjectConstraint"
+		"ObjectConstraint: " + ele.object.object.join(" ")
 	}
 	
 	def text(UnitConstraints ele) {
@@ -314,5 +332,6 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 			"FloatValue"
 		}
 	}
+	
 
 }
