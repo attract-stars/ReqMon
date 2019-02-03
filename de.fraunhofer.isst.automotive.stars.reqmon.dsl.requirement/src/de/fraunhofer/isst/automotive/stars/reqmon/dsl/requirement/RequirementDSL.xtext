@@ -170,7 +170,7 @@ Relation:
 ;
 
 RelObjects:
-	actor+=Actor property+=Property? (relConj+=RelConjunction actor+=Actor property+=Property?)*
+	object+=Object property+=Property? (relConj+=RelConjunction object+=Object property+=Property?)*
 ;
 
 

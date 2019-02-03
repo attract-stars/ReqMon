@@ -38,6 +38,13 @@ import de.fraunhofer.isst.stars.requirementDSL.Constraints
 import de.fraunhofer.isst.stars.requirementDSL.Modifier
 import de.fraunhofer.isst.stars.requirementDSL.Modality
 import de.fraunhofer.isst.stars.requirementDSL.Property
+import de.fraunhofer.isst.stars.requirementDSL.SentenceBegin
+import de.fraunhofer.isst.stars.requirementDSL.SentenceEnding
+import de.fraunhofer.isst.stars.requirementDSL.RelObjects
+import de.fraunhofer.isst.stars.requirementDSL.PredOrObject
+import de.fraunhofer.isst.stars.requirementDSL.AuxNeg
+import de.fraunhofer.isst.stars.requirementDSL.Preds
+import de.fraunhofer.isst.stars.requirementDSL.Relation
 
 /**
  * Provides labels for EObjects.
@@ -76,7 +83,7 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	
 	def text(ConditionalClause ele) {
 		if (ele.ordinator !== null) {
-			"ConditionalClause: " + ele.ordinator.getName.toLowerCase
+			"ConditionalClause: " + ele.ordinator.toString 
 		}
 		else {
 			"ConditionalClause"
@@ -84,9 +91,9 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	}
 	
 	def text(MainClause ele) {
-		// it seems that the modifier is never null and as default "globally"
+		// the modifier is never null and as default "globally"
 		if (ele.modifier !== null && !ele.modifier.equals(Modifier.GLOBALLY)) {  
-			"MainClause: " + ele.modifier.getName.toLowerCase
+			"MainClause: " + ele.modifier.toString
 		}
 		else {
 			"MainClause"
@@ -147,11 +154,8 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	}
 	
 	def text(PredicateSentence ele) {
-		if (ele.auxiliarVerb !== null) {
+		if (!ele.auxiliarVerb.empty) {
 			"PredicateSentence: " + ele.auxiliarVerb.join(" ")
-		}
-		else if (ele.auxiliarVerb !== null && ele.negation) {
-			"PredicateSentence: " + ele.auxiliarVerb.join(" ") + " not"
 		}
 		else {
 			"PredicateSentence"
@@ -163,12 +167,12 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	}
 	
 	def text(PropertySentence ele) {
-		// it seems that the modifier is never null and as default "shall"
-		if (ele.modelity !== null && !ele.modelity.equals(Modality.SHALL)) {
-			"PropertySentence: " + ele.modelity
+		// the modifier is never null and as default "shall"
+		if (ele.modality !== null && !ele.modality.equals(Modality.SHALL)) {
+			"PropertySentence: " + ele.modality
 		}
-		else if (ele.modelity !== null && ele.negation) {
-			"PropertySentence: " + ele.modelity + " not"
+		else if (ele.modality !== null && ele.negation) {
+			"PropertySentence: " + ele.modality + " not"
 		} 
 		else if (ele.auxiliarVerb !== null) {
 			"PropertySentence: " + ele.auxiliarVerb
@@ -176,23 +180,17 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 		else if (ele.auxiliarVerb !== null && ele.negation) {
 			"PropertySentence: " + ele.auxiliarVerb + " not"
 		} 
-		else if (ele.predicateWord !== null) {
-			"PropertySentence: " + ele.predicateWord
-		} 
 		else {
 			"PropertySentence"
 		}
 	}
 	
 	def text(Property ele) {
-		if (ele.article !== null) {
-			"Property: " + ele.article + " " + ele.object.join(" ") + "'s " + ele.property.join(" ")
-		}
-		else if (ele.quantifier !== null) {
-			"Property: " + ele.quantifier + " " + ele.object.join(" ") + "'s " + ele.property.join(" ")
+		if (!ele.property.empty) {
+			"Property: " + ele.property.join(" ")
 		}
 		else {
-			"Property" + " " + ele.object.join(" ") + "'s " + ele.property.join(" ")
+			"Property"
 		} 
 	}
 	
@@ -201,7 +199,7 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 			"Actors and Conj: " + ele.actors.map[a | return a.actor] + " " + ele.conjunction
 		}
 		else {
-			"Actors: " + ele.actors.get(0).actor
+			"Actors" //+ ele.actors.get(0).actor
 		}
 	}
 	
@@ -223,29 +221,25 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	}
 	
 	def text(PreNominative ele) {
-		if (ele.article !== null) {
-			"PreNominative: " + ele.article
-		} 
-		else if (ele.determiner !== null) {
-			"PreNominative: " + ele.determiner
-		}
-		/* 
 		if (ele.article !== null && ele.actor !== null) {
-			"PreNominative and Actor: " + ele.article + " " + ele.actor
+			"Article and Actor: " + ele.article + " " + ele.actor
 		} 
-		else if (ele.article !== null && ele.object !== null) {
-			"PreNominative and Object: " + ele.article + " " + ele.object
-		}
 		else if (ele.determiner !== null && ele.actor !== null) {
 			"Determiner and Actor: " + ele.determiner + " " + ele.actor	
 		}
-		else if (ele.determiner !== null && ele.object !== null) {
-			"Determiner and Object: " + ele.determiner + " " + ele.object	
-		}*/
+		else if (ele.article !== null) {
+			"Article: " + ele.article
+		}
+		else if (ele.article !== null) {
+			"Determiner: " + ele.article
+		}
+		else {
+			"PreNominative"
+		}
 	}
 	
 	def text(Object ele) {
-		"Object: " + ele.toString
+		"Object: " + ele.object.join(" ")
 	}
 	
 	def text(Constraint ele) {
@@ -292,7 +286,7 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	}
 	
 	def text(ObjectConstraint ele) {
-		"ObjectConstraint: " + ele.object.object.join(" ")
+		"ObjectConstraint"
 	}
 	
 	def text(UnitConstraints ele) {
@@ -333,5 +327,48 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 		}
 	}
 	
+	def text(SentenceBegin ele) {
+		"SentenceBegin"
+	}
+	
+	def text(SentenceEnding ele) {
+		"SentenceEnding"
+	}
+	
+	def text(Relation ele) {
+		if (ele.relComp !== null && ele.relDel !== null && ele.relposAdv !== null) {
+			"Relation: " + ele.relposAdv + " " + ele.relDel + " " + ele.relComp 
+		}
+		else {
+			"Relation" 
+		}
+	}
+	
+	def text(RelObjects ele) {
+		"RelObjects" //+ ele.actor.map[a | return a.actor]
+	}
+	
+	def text(PredOrObject ele) {
+		"PredicateOrObject"
+	}
+	
+	def text(AuxNeg ele) {
+		if (ele.auxiliarVerb !== null) {
+			"AuxNeg: " + ele.auxiliarVerb
+		}
+		else if (ele.auxiliarVerb !== null && ele.negation !== null) {
+			"AuxNeg: " + ele.auxiliarVerb + " " + ele.negation
+		}
+		else if (ele.auxiliarVerbNeg !== null) {
+			"AuxNeg: " + ele.auxiliarVerbNeg
+		}
+		else {
+			"AuxNeg"
+		}
+	}
+	
+	def text(Preds ele) {
+		"Predicate or PredicateObject"
+	}
 
 }
