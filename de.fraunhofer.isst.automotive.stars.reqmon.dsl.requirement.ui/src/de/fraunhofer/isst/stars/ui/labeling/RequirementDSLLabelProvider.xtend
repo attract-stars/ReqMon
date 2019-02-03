@@ -196,7 +196,7 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	
 	def text(Actors ele) {
 		if (!ele.conjunction.empty) {
-			"Actors and Conj: " + ele.actors.map[a | return a.actor] + " " + ele.conjunction
+			"Actors: " + ele.conjunction // + ele.actors.map[a | return a.actor]
 		}
 		else {
 			"Actors" //+ ele.actors.get(0).actor
