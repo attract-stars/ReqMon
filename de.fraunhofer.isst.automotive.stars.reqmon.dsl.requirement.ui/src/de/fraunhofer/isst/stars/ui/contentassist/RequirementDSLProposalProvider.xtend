@@ -7,6 +7,11 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.Assignment
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor
+import org.eclipse.xtext.RuleCall
+import org.eclipse.xtext.util.Strings
+import org.eclipse.jface.text.contentassist.ICompletionProposal
+import org.eclipse.xtext.GrammarUtil
+import org.eclipse.xtext.ui.editor.contentassist.ConfigurableCompletionProposal
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
@@ -19,78 +24,42 @@ class RequirementDSLProposalProvider extends AbstractRequirementDSLProposalProvi
 		
 		// "< 'Req' | 'Req' Id | Id |  > < ':' | '.' > <Requirement Text> < '.' | ';' >";
 		
-		val String proposal_00 = "Req:"; 
-		val String proposal_01 = "Req.";
-		val String proposal_02 = "Req <Id>";
-		val String proposal_03 = "<Id>";
-		val String proposal_04 = "Req <Id>:";
-		val String proposal_05 = "Req <Id>.";
-		val String proposal_06 = "<Id>:";
-		val String proposal_07 = "<Id>.";
+		helpComplete("Req:", "", context, acceptor, 0, 0, false)
+		helpComplete("Req.", "", context, acceptor, 0, 0, false)
+		helpComplete("Req ReqID", "Req <ReqID>", context, acceptor, 4, 0, true)
+		//helpComplete("ReqID", "<ReqID>", context, acceptor, 0, 0, true)
+		helpComplete("Req ReqID:", "Req <ReqID>:", context, acceptor, 4, 1, true)
+		helpComplete("Req ReqID.", "Req <ReqID>.", context, acceptor, 4, 1, true)
+		helpComplete("ReqID:", "<ReqID>:", context, acceptor, 0, 1, true)
+		helpComplete("ReqID.", "<ReqID>.", context, acceptor, 0, 1, true)
 		
-		val String proposal_10 = ": <Requirement Text>";
-		val String proposal_11 = ". <Requirement Text>";
-		val String proposal_12 = "<Id>: <Requirement Text>";
-		val String proposal_13 = "<Id>. <Requirement Text>";
-		val String proposal_14 = "Req: <Requirement Text>";
-		val String proposal_15 = "Req. <Requirement Text>";
-		val String proposal_16 = "Req <Id>: <Requirement Text>";
-		val String proposal_17 = "Req <Id>. <Requirement Text>";
+		helpComplete(": RequirementText", ": <RequirementText>", context, acceptor, 2, 0, true)
+		helpComplete(". RequirementText", ". <RequirementText>", context, acceptor, 2, 0, true)
+		helpComplete("ReqID:", "<ReqID>: <RequirementText>", context, acceptor, 0, 1, true)
+		helpComplete("ReqID.", "<ReqID>. <RequirementText>", context, acceptor, 0, 1, true)
+		helpComplete("Req: RequirementText", "Req: <RequirementText>", context, acceptor, 5, 0, true)
+		helpComplete("Req. RequirementText", "ReqID. <RequirementText>", context, acceptor, 5, 0, true)
+		helpComplete("Req ReqID:", "Req <ReqID>: <RequirementText>", context, acceptor, 4, 1, true)
+		helpComplete("Req ReqID.", "Req <ReqID>. <RequirementText>", context, acceptor, 4, 1, true)
 		
-		val String proposal_20 = ": <Requirement Text>.";
-		val String proposal_21 = ". <Requirement Text>.";
-		val String proposal_22 = "<Id>: <Requirement Text>.";
-		val String proposal_23 = "<Id>. <Requirement Text>.";
-		val String proposal_24 = "Req: <Requirement Text>.";
-		val String proposal_25 = "Req. <Requirement Text>.";
-		val String proposal_26 = "Req <Id>: <Requirement Text>.";
-		val String proposal_27 = "Req <Id>. <Requirement Text>.";
+		helpComplete(": RequirementText.", ": <RequirementText>.", context, acceptor, 2, 1, true)
+		helpComplete(". RequirementText.", ". <RequirementText>.", context, acceptor, 2, 1, true)
+		helpComplete("ReqID:", "<ReqID>: <RequirementText>.", context, acceptor, 0, 1, true)
+		helpComplete("ReqID.", "<ReqID>. <RequirementText>.", context, acceptor, 0, 1, true)
+		helpComplete("Req: RequirementText.", "Req: <RequirementText>.", context, acceptor, 5, 1, true)
+		helpComplete("Req. RequirementText.", "ReqID. <RequirementText>.", context, acceptor, 5, 1, true)
+		helpComplete("Req ReqID:", "Req <ReqID>: <RequirementText>.", context, acceptor, 4, 1, true)
+		helpComplete("Req ReqID.", "Req <ReqID>. <RequirementText>.", context, acceptor, 4, 1, true)
 		
-		val String proposal_30 = ": <Requirement Text>;";
-		val String proposal_31 = ". <Requirement Text>;";
-		val String proposal_32 = "<Id>: <Requirement Text>;";
-		val String proposal_33 = "<Id>. <Requirement Text>;";
-		val String proposal_34 = "Req: <Requirement Text>;";
-		val String proposal_35 = "Req. <Requirement Text>;";
-		val String proposal_36 = "Req <Id>: <Requirement Text>;";
-		val String proposal_37 = "Req <Id>. <Requirement Text>;";
-			
-		acceptor.accept(createCompletionProposal(proposal_00, context));
-		acceptor.accept(createCompletionProposal(proposal_01, context));
-		acceptor.accept(createCompletionProposal(proposal_02, context));
-		acceptor.accept(createCompletionProposal(proposal_03, context));
-		acceptor.accept(createCompletionProposal(proposal_04, context));
-		acceptor.accept(createCompletionProposal(proposal_05, context));
-		acceptor.accept(createCompletionProposal(proposal_06, context));
-		acceptor.accept(createCompletionProposal(proposal_07, context));
-		acceptor.accept(createCompletionProposal(proposal_10, context));
-	
-		acceptor.accept(createCompletionProposal(proposal_11, context));
-		acceptor.accept(createCompletionProposal(proposal_12, context));
-		acceptor.accept(createCompletionProposal(proposal_13, context));
-		acceptor.accept(createCompletionProposal(proposal_14, context));
-		acceptor.accept(createCompletionProposal(proposal_15, context));
-		acceptor.accept(createCompletionProposal(proposal_16, context));
-		acceptor.accept(createCompletionProposal(proposal_17, context));
-	
-		acceptor.accept(createCompletionProposal(proposal_20, context));
-		acceptor.accept(createCompletionProposal(proposal_21, context));
-		acceptor.accept(createCompletionProposal(proposal_22, context));
-		acceptor.accept(createCompletionProposal(proposal_23, context));
-		acceptor.accept(createCompletionProposal(proposal_24, context));
-		acceptor.accept(createCompletionProposal(proposal_25, context));
-		acceptor.accept(createCompletionProposal(proposal_26, context));
-		acceptor.accept(createCompletionProposal(proposal_27, context));
+		helpComplete(": RequirementText;", ": <RequirementText>;", context, acceptor, 2, 1, true)
+		helpComplete(". RequirementText;", ". <RequirementText>;", context, acceptor, 2, 1, true)
+		helpComplete("ReqID:", "<ReqID>: <RequirementText>;", context, acceptor, 0, 1, true)
+		helpComplete("ReqID.", "<ReqID>. <RequirementText>;", context, acceptor, 0, 1, true)
+		helpComplete("Req: RequirementText;", "Req: <RequirementText>;", context, acceptor, 5, 1, true)
+		helpComplete("Req. RequirementText;", "ReqID. <RequirementText>;", context, acceptor, 5, 1, true)
+		helpComplete("Req ReqID:", "Req <ReqID>: <RequirementText>;", context, acceptor, 4, 1, true)
+		helpComplete("Req ReqID.", "Req <ReqID>. <RequirementText>;", context, acceptor, 4, 1, true)
 		
-		acceptor.accept(createCompletionProposal(proposal_30, context));
-		acceptor.accept(createCompletionProposal(proposal_31, context));
-		acceptor.accept(createCompletionProposal(proposal_32, context));
-		acceptor.accept(createCompletionProposal(proposal_33, context));
-		acceptor.accept(createCompletionProposal(proposal_34, context));
-		acceptor.accept(createCompletionProposal(proposal_35, context));
-		acceptor.accept(createCompletionProposal(proposal_36, context));
-		acceptor.accept(createCompletionProposal(proposal_37, context));
-	
 	}
 	
 	override void completeRequirement_Text(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
@@ -98,89 +67,542 @@ class RequirementDSLProposalProvider extends AbstractRequirementDSLProposalProvi
 		
 		//"< Conditional_Clause ', then' | Conditional_Clause 'then' | > < Main_Clause > < ',' Conditional_Clause | Conditional_Clause | >";
 		
-		val String proposal_00 = "<Conditional Clause>";
-		val String proposal_01 = "<Conditional Clause>, then";
-		val String proposal_02 = "<Conditional Clause> then";
+		//helpComplete("ConditionalClause", "<ConditionalClause>", context, acceptor, 0, 0, true)
+		helpComplete("ConditionalClause, then", "<ConditionalClause>, then", context, acceptor, 0, 6, true)
+		helpComplete("ConditionalClause then", "<ConditionalClause> then", context, acceptor, 0, 5, true)
 		
-		val String proposal_10 = "<Main Clause>";
-		val String proposal_11 = "<Conditional Clause> <Main Clause>";
-		val String proposal_12 = "<Conditional Clause>, then <Main Clause>";
-		val String proposal_13 = "<Conditional Clause> then <Main Clause>";
+		//helpComplete("MainClause", "<MainClause>", context, acceptor, 0, 0, true)
+		helpComplete("ConditionalClause", "<ConditionalClause> <MainClause>", context, acceptor, 0, 0, true)
+		helpComplete("ConditionalClause, then", "<ConditionalClause>, then <MainClause>", context, acceptor, 0, 6, true)
+		helpComplete("ConditionalClause then", "<ConditionalClause> then <MainClause>", context, acceptor, 0, 5, true)
 		
-		val String proposal_20 = "<Main Clause>, <Conditional Clause>";
-		val String proposal_21 = "<Conditional Clause> <Main Clause>, <Conditional Clause>";
-		val String proposal_22 = "<Conditional Clause>, then <Main Clause>, <Conditional Clause>";
-		val String proposal_23 = "<Conditional Clause> then <Main Clause>, <Conditional Clause>";
+		helpComplete("MainClause,", "<MainClause>, <ConditionalClause>", context, acceptor, 0, 1, true)
+		helpComplete("ConditionalClause", "<ConditionalClause> <MainClause>, <ConditionalClause>", context, acceptor, 0, 0, true)
+		helpComplete("ConditionalClause, then", "<ConditionalClause>, then <MainClause>, <ConditionalClause>", context, acceptor, 0, 6, true)
+		helpComplete("ConditionalClause then", "<ConditionalClause> then <MainClause>, <ConditionalClause>", context, acceptor, 0, 5, true)
 		
-		val String proposal_30 = "<Main Clause> <Conditional Clause>";
-		val String proposal_31 = "<Conditional Clause> <Main Clause> <Conditional Clause>";
-		val String proposal_32 = "<Conditional Clause>, then <Main Clause> <Conditional Clause>";
-		val String proposal_33 = "<Conditional Clause> then <Main Clause> <Conditional Clause>";
-		
-		acceptor.accept(createCompletionProposal(proposal_00, context));
-		acceptor.accept(createCompletionProposal(proposal_01, context));
-		acceptor.accept(createCompletionProposal(proposal_02, context));
-		
-		acceptor.accept(createCompletionProposal(proposal_10, context));
-		acceptor.accept(createCompletionProposal(proposal_11, context));
-		acceptor.accept(createCompletionProposal(proposal_12, context));
-		acceptor.accept(createCompletionProposal(proposal_13, context));
-		
-		acceptor.accept(createCompletionProposal(proposal_20, context));
-		acceptor.accept(createCompletionProposal(proposal_21, context));
-		acceptor.accept(createCompletionProposal(proposal_22, context));
-		acceptor.accept(createCompletionProposal(proposal_23, context));
-		
-		acceptor.accept(createCompletionProposal(proposal_30, context));
-		acceptor.accept(createCompletionProposal(proposal_31, context));
-		acceptor.accept(createCompletionProposal(proposal_32, context));
-		acceptor.accept(createCompletionProposal(proposal_33, context));
+		helpComplete("MainClause", "<MainClause> <ConditionalClause>", context, acceptor, 0, 0, true)
+		helpComplete("ConditionalClause", "<ConditionalClause> <MainClause> <ConditionalClause>", context, acceptor, 0, 0, true)
+		helpComplete("ConditionalClause, then", "<ConditionalClause>, then <MainClause> <ConditionalClause>", context, acceptor, 0, 6, true)
+		helpComplete("ConditionalClause then", "<ConditionalClause> then <MainClause> <ConditionalClause>", context, acceptor, 0, 5, true)
 		
 	}
 	
 	override void completeRequirementText_CondClauses(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
 		super.completeRequirementText_CondClauses(model, assignment, context, acceptor);
 		
-		val String proposal_00 = "<Clause Ordinator>";
-		val String proposal_10 = "<Clause Ordinator> <Clauses>";
+		helpComplete("ClauseOrdinator", "<ClauseOrdinator>", context, acceptor, 0, 0, true)
+		helpComplete("ClauseOrdinator", "<ClauseOrdinator> <Clauses>", context, acceptor, 0, 0, true)
 		
-		val String proposal_20 = "if <Clauses>";
-		val String proposal_21 = "after <Clauses>";
-		val String proposal_22 = "once <Clauses>";
-		val String proposal_23 = "when <Clauses>";
-		val String proposal_24 = "whenever <Clauses>";
-		val String proposal_25 = "before <Clauses>";
-		val String proposal_26 = "until <Clauses>";
+		helpComplete("if Clauses", "if <Clauses>", context, acceptor, 3, 0, true)
+		helpComplete("after Clauses", "after <Clauses>", context, acceptor, 6, 0, true)
+		helpComplete("once Clauses", "once <Clauses>", context, acceptor, 5, 0, true)
+		helpComplete("when Clauses", "when <Clauses>", context, acceptor, 5, 0, true)
+		helpComplete("whenever Clauses", "whenever <Clauses>", context, acceptor, 9, 0, true)
+		helpComplete("before Clauses", "before <Clauses>", context, acceptor, 7, 0, true)
+		helpComplete("until Clauses", "until <Clauses>", context, acceptor, 6, 0, true)
 		
-		val String proposal_30 = "If <Clauses>";
-		val String proposal_31 = "After <Clauses>";
-		val String proposal_32 = "Once <Clauses>";
-		val String proposal_33 = "When <Clauses>";
-		val String proposal_34 = "Whenever <Clauses>";
-		val String proposal_35 = "Before <Clauses>";
-		val String proposal_36 = "Until <Clauses>";
-		
-		
-		acceptor.accept(createCompletionProposal(proposal_00, context));
-		acceptor.accept(createCompletionProposal(proposal_10, context));	
-		
-		acceptor.accept(createCompletionProposal(proposal_20, context));
-		acceptor.accept(createCompletionProposal(proposal_21, context));	
-		acceptor.accept(createCompletionProposal(proposal_22, context));	
-		acceptor.accept(createCompletionProposal(proposal_23, context));	
-		acceptor.accept(createCompletionProposal(proposal_24, context));	
-		acceptor.accept(createCompletionProposal(proposal_25, context));	
-		acceptor.accept(createCompletionProposal(proposal_26, context));
-			
-		acceptor.accept(createCompletionProposal(proposal_30, context));
-		acceptor.accept(createCompletionProposal(proposal_31, context));	
-		acceptor.accept(createCompletionProposal(proposal_32, context));	
-		acceptor.accept(createCompletionProposal(proposal_33, context));	
-		acceptor.accept(createCompletionProposal(proposal_34, context));	
-		acceptor.accept(createCompletionProposal(proposal_35, context));	
-		acceptor.accept(createCompletionProposal(proposal_36, context));	
+		helpComplete("If Clauses", "If <Clauses>", context, acceptor, 3, 0, true)
+		helpComplete("After Clauses", "After <Clauses>", context, acceptor, 6, 0, true)
+		helpComplete("Once Clauses", "Once <Clauses>", context, acceptor, 5, 0, true)
+		helpComplete("When Clauses", "When <Clauses>", context, acceptor, 5, 0, true)
+		helpComplete("Whenever Clauses", "Whenever <Clauses>", context, acceptor, 9, 0, true)
+		helpComplete("Before Clauses", "Before <Clauses>", context, acceptor, 7, 0, true)
+		helpComplete("Until Clauses", "Until <Clauses>", context, acceptor, 6, 0, true)
 		
 	}
+	
+	override void completeConditionalClause_Clauses(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.completeConditionalClause_Clauses(model, assignment, context, acceptor);
+		
+		helpComplete("Clause and", "<Clause> and", context, acceptor, 0, 4, true)
+		helpComplete("Clause or", "<Clause> or", context, acceptor, 0, 3, true)
+		helpComplete("Clause and", "<Clause> and <Clause>", context, acceptor, 0, 4, true)
+		helpComplete("Clause or", "<Clause> or <Clause>", context, acceptor, 0, 3, true)
+		
+	}
+	
+	/*override void completeConditionalClause_Ordinator(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.completeConditionalClause_Ordinator(model, assignment, context, acceptor);
+	}
+	override void completeRequirement_ReqID(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.completeRequirement_ReqID(model, assignment, context, acceptor);
+	}
+	override void completeRequirementText_Mainclauses(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeMainClause_Modifier(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeMainClause_Clauses(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeClauses_Clauses(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeClauses_Conjunction(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeModalitySentence_Begin(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeModalitySentence_Actors(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeModalitySentence_Modelity(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeModalitySentence_Negation(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeModalitySentence_AuxiliarVerb(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeModalitySentence_Predicate(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeModalitySentence_Ending(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePredicateSentence_Begin(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePredicateSentence_Actors(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePredicateSentence_AuxNeg(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePredicateSentence_AuxiliarVerb(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePredicateSentence_Preds(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePredicateSentence_Ending(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeExistenceSentence_Actors(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeExistenceSentence_RelativeClause(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePropertySentence_Actors(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePropertySentence_Property(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePropertySentence_Rela(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePropertySentence_Modality(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePropertySentence_Negation(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePropertySentence_AuxiliarVerb(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePropertySentence_PredObj(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePropertySentence_Ending(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePropertySentence_AuxNeg(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePropertySentence_Constraints(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeProperty_Property(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeSentenceBegin_Rela(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeSentenceEnding_Const(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeSentenceEnding_Rela(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeRelativeClause_Sentence(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeRelativeClause_Conjunction(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeRelativeClause_CondClauses(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeRelativeSentence_Pronoun(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeRelativeSentence_Modelity(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeRelativeSentence_Negation(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeRelativeSentence_Predicate(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeRelativeSentence_Constraints(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeRelativeSentence_Auxiliar(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeRelativeSentence_Clause(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeActors_Actors(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeActors_Conjunction(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeActor_Actor(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePreds_Predicate(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePreds_PredObj(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePredicate_Predicates(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePredicate_Object(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePredicateObject_Article(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePredicateObject_Object(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeObject_Article(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeObject_Object(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePredOrObject_Predicate(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePredOrObject_PredObj(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeExistencePreface_Modifier(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeAuxNeg_AuxiliarVerb(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeAuxNeg_Negation(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeAuxNeg_AuxiliarVerbNeg(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePreNominative_Determiner(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completePreNominative_Article(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeRelation_RelposAdv(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeRelation_RelDel(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeRelation_RelComp(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeRelation_RelElements(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeRelObjects_Actor(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeRelObjects_Property(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeRelObjects_RelConj(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeConstraints_TimeConstraint(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeConstraints_Constraint(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeConstraint_Ordinator(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeConstraint_Constraint(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeConstraintOrdinators_Stuffing(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeConstraintOrdinators_Adverbial(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeConstraintOrdinators_Comperator(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeSetConstraint_Set(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeTimeConstraint_Ordinator(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeTimeConstraint_Time(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeTimeConstraint_Unit(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeObjectConstraint_Object(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeIntervallConstraints_Lower(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeIntervallConstraints_Higher(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeSingleValueConstraints_Value(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeValueSet_Elements(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeObjectSet_Elements(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeIntValue_Value(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeIntValue_Unit(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeFloatValue_Value(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}
+	override void completeFloatValue_Unit(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	}*/
+
+	
+	
+	override void complete_Requirement(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_Requirement(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_RequirementText(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_RequirementText(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_MainClause(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_MainClause(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_ConditionalClause(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_ConditionalClause(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_Clauses(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_Clauses(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_Clause(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_Clause(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_ModalitySentence(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_ModalitySentence(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_PredicateSentence(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_PredicateSentence(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_ExistenceSentence(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_ExistenceSentence(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_PropertySentence(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_PropertySentence(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_Property(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_Property(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_SentenceBegin(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_SentenceBegin(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_SentenceEnding(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_SentenceEnding(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_relativeClause(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_relativeClause(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_relativeSentence(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_relativeSentence(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_Actors(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_Actors(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_Actor(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_Actor(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_Preds(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_Preds(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_Predicate(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_Predicate(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_PredicateObject(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_PredicateObject(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_Object(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_Object(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_PredOrObject(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_PredOrObject(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_ExistencePreface(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_ExistencePreface(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_AuxNeg(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_AuxNeg(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_PreNominative(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_PreNominative(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_Adverbial(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_Adverbial(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_Relation(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_Relation(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_RelObjects(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_RelObjects(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_Constraints(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_Constraints(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_Constraint(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_Constraint(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_ConstraintOrdinators(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_ConstraintOrdinators(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_SetConstraint(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_SetConstraint(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_TimeConstraint(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_TimeConstraint(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_ObjectConstraint(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_ObjectConstraint(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_UnitConstraints(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_UnitConstraints(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_IntervallConstraints(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_IntervallConstraints(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_SingleValueConstraints(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_SingleValueConstraints(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_ValueSet(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_ValueSet(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_ObjectSet(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_ObjectSet(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_Value(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_Value(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_IntValue(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_IntValue(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_FloatValue(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_FloatValue(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	override void complete_ReqID(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_ReqID(model, ruleCall, context, acceptor)
+		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+	}
+	
+	
+	def void helpComplete(String proposalText, String additionalText, ContentAssistContext context, ICompletionProposalAcceptor acceptor, int start, int end, Boolean box) {
+		val String displayText = if (additionalText.equals("")) proposalText else  proposalText + " - " + additionalText
+		val ICompletionProposal proposal = createCompletionProposal(proposalText, displayText, null, context)
+		
+		if (box) {
+			if (proposal instanceof ConfigurableCompletionProposal) {
+				val ConfigurableCompletionProposal configurable = proposal;
+				configurable.setSelectionStart(configurable.getReplacementOffset() + start);
+				configurable.setSelectionLength(proposalText.length() - (start + end));
+				configurable.setAutoInsertable(false);
+				configurable.setSimpleLinkedMode(context.getViewer(), '\t', ' ');
+			}
+		}
+		acceptor.accept(proposal)
+	}
+	
+	def void helpRuleComplete(RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor, int start, int end, Boolean box) {
+		val Assignment ass = GrammarUtil.containingAssignment(ruleCall);
+		val String feature = if (ass !== null && ass.getFeature().equals(ass.getFeature().toLowerCase)) Strings.toFirstUpper(ass.getFeature()) 
+								else if (ass !== null) ass.getFeature() 
+								else ""
+			
+		val String proposalText = if (feature.equals("")) Strings.toFirstUpper(ruleCall.getRule().getName().toLowerCase())
+												else feature
+		
+		val String displayText = if (!feature.equals("")) proposalText + " - " + ruleCall.getRule().getName()
+		
+		val prop = getValueConverter().toString(proposalText, ruleCall.getRule().getName())
+		
+		val ICompletionProposal proposal = createCompletionProposal(prop, displayText, null, context)
+		
+		if (box) {
+			if (proposal instanceof ConfigurableCompletionProposal) {
+				val ConfigurableCompletionProposal configurable = proposal;
+				configurable.setSelectionStart(configurable.getReplacementOffset() + start);
+				configurable.setSelectionLength(proposalText.length() - (start + end));
+				configurable.setAutoInsertable(false);
+				configurable.setSimpleLinkedMode(context.getViewer(), '\t', ' ');
+			}
+		}
+		acceptor.accept(proposal)
+	}
+	
+	/* 
+		public void complete_ID(EObject model, RuleCall ruleCall, final ContentAssistContext context,
+			ICompletionProposalAcceptor acceptor) {
+			String feature = getAssignedFeature(ruleCall);
+			String proposalText = feature != null ? feature : Strings.toFirstUpper(ruleCall.getRule().getName().toLowerCase());
+			String displayText = proposalText;
+			if (feature != null)
+				displayText = proposalText + " - " + ruleCall.getRule().getName();
+			proposalText = getValueConverter().toString(proposalText, ruleCall.getRule().getName());
+			ICompletionProposal proposal = createCompletionProposal(proposalText, displayText, null, context);
+			if (proposal instanceof ConfigurableCompletionProposal) {
+				ConfigurableCompletionProposal configurable = (ConfigurableCompletionProposal) proposal;
+				configurable.setSelectionStart(configurable.getReplacementOffset());
+				configurable.setSelectionLength(proposalText.length());
+				configurable.setAutoInsertable(false);
+				configurable.setSimpleLinkedMode(context.getViewer(), '\t', ' ');
+			}
+			acceptor.accept(proposal);
+		}
+			
+		private String getAssignedFeature(RuleCall call) {
+			Assignment ass = GrammarUtil.containingAssignment(call);
+			if (ass != null) {
+				String result = ass.getFeature();
+				if (result.equals(result.toLowerCase()))
+					result = Strings.toFirstUpper(result);
+				return result;
+			}
+			return null;
+		}	
+	*/
 	
 	
 }
