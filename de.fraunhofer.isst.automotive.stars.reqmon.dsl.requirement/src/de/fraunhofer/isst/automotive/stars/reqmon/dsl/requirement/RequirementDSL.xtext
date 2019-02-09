@@ -300,7 +300,7 @@ ComparisonAdverbial:
 ;
 
 Quantification:
-	'all' | 'every' | 'each' | 'whole' | 'any' | 'several' | 'either'
+	'all' | 'every' | 'each' | 'whole' | 'any' | 'several' | 'either' |
 	'All' | 'Every' | 'Each' | 'Whole' | 'Any' | 'Several' | 'Either'
 ;
 
