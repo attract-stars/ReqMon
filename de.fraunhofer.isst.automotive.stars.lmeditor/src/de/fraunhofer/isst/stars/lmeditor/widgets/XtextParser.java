@@ -1,6 +1,5 @@
 package de.fraunhofer.isst.stars.lmeditor.widgets;
 
-import java.io.IOException;
 import java.io.Reader;
 
 import org.eclipse.emf.ecore.EObject;
