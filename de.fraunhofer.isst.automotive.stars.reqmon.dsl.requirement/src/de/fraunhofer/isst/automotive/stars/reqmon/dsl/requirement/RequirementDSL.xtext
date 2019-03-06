@@ -16,7 +16,7 @@ Model:
 
 Requirement:
 	//PROBLEM condClauses before and after mainClause lead to ambiguity
-	'Req'? reqID=ReqID? (':'|'.') text=RequirementText ('.'|';')
+	'Req'? reqID=ReqID? ':' text=RequirementText ('.'|';') ('\n')+
 ;
 
 RequirementText:
@@ -236,17 +236,17 @@ Value:
 ;
 
 IntValue:
-	value=INT unit=Unit? // | '\'' value=INT '\''
+	value=INT unit=Unit? object+=WORD*
 ;
 
 FloatValue:
-	value=FLOAT  unit=Unit?
+	value=FLOAT  unit=Unit? object+=WORD*
 ;
 
 /* =========== BASIC TEXT BLOCKS / WORDS =========== */
 
 ReqID returns  ecore::EString: 
-	(ID|INT) ('.'|INT)*
+	(ID|INT) ('.'|INT)* 
 ;
 
 //just extension to allow naming with '-' like ego-lane -> ITS NOT MATCHED PROPERLY
@@ -259,6 +259,9 @@ WORD returns ecore::EString:
 terminal ID: '^'?('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'-'|'0'..'9')*;
 
 terminal WS_HYPHEN : ' - '; 
+
+@Override
+terminal WS : (' '|'\t'|'\r')+ ;
 
 terminal PROPERTY_TERM returns ecore::EBoolean:
 	//'\'s' |	'`s' |
@@ -349,7 +352,7 @@ RelativePronounsObject:
 
 /* =========== BASIC UNITS =========== */
 
-terminal FLOAT returns ecore::EFloat:
+FLOAT returns ecore::EFloat:
 	INT'.'INT
 ;
 
