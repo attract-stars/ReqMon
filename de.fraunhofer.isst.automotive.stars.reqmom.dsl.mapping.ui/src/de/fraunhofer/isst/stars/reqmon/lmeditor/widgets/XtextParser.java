@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.stars.lmeditor.widgets;
+package de.fraunhofer.isst.stars.reqmon.lmeditor.widgets;
 
 import java.io.Reader;
 
