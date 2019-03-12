@@ -1,20 +1,29 @@
 
 # Created by https://www.gitignore.io/api/eclipse
 # Edit at https://www.gitignore.io/?templates=eclipse
-
 ### Eclipse ###
 
+*target*
+*.jar
+*.war
+*.ear
+*.class
+
+# eclipse specific git ignore
+*.pydevproject
+.project
 .metadata
-bin/
-tmp/
+bin/**
+tmp/**
+tmp/**/*
 *.tmp
 *.bak
 *.swp
 *~.nib
 local.properties
+.classpath
 .settings/
 .loadpath
-.recommenders
 
 # External tool builders
 .externalToolBuilders/
