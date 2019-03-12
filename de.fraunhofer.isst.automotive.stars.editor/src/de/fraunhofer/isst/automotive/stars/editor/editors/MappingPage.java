@@ -1,57 +1,54 @@
-package de.fraunhofer.isst.stars.lmeditor.widgets;
+package de.fraunhofer.isst.automotive.stars.editor.editors;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
-public class LanguageMappingApplication {
+
+public class MappingPage {
 	
-	private static Display display;
-	private static CreateHelper helper; 
-	private static RequirementElement reqElem;
-
-	public static void main(String[] args) {
-
-		display = new Display();
-		helper = new CreateHelper(display);
-		reqElem = new RequirementElement();
-		
-		Shell shell = new Shell(display);
-		shell.setText("Language Mapping Editor");
-		FormLayout shellLayout = new FormLayout();
-		shell.setLayout(shellLayout);
-
-		ScrolledComposite scrolledComposite = new ScrolledComposite(shell, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+	private Composite composite;
+	//private Display display;
+	private CreateHelper helper; 
+	private RequirementElement reqElem;
+	
+	public MappingPage(Composite composite, Display display) {
+		this.composite = composite;
+		//this.display = display;
+		this.helper = new CreateHelper(display);
+		this.reqElem = new RequirementElement();
+	}
+	
+	public void createMappingPage() {
+		ScrolledComposite scrolledComposite = new ScrolledComposite(composite, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		scrolledComposite.setExpandVertical(true);
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.addListener(SWT.Resize, event -> updateMinSize(scrolledComposite));
 		
-		Composite composite = new Composite(scrolledComposite, SWT.BORDER);
+		Composite compositeInside = new Composite(scrolledComposite, SWT.BORDER);
 		FillLayout fillLayout = new FillLayout(SWT.VERTICAL);
 		fillLayout.marginWidth = 10;
 		fillLayout.marginHeight = 10;
-		composite.setLayout(fillLayout);
+		compositeInside.setLayout(fillLayout);
 		
 		reqElem.createSampleElements();
 		for (int i = 0; i < reqElem.getElementSize(); i++) {
-			helper.createBoxItem(composite, reqElem.getElement(i), i+1);
+			helper.createBoxItem(compositeInside, reqElem.getElement(i), i+1);
 		}
 		
-		scrolledComposite.setContent(composite);
+		scrolledComposite.setContent(compositeInside);
 		
-		Button reqButton = new Button(shell, SWT.PUSH);
+		Button reqButton = new Button(composite, SWT.PUSH);
 		reqButton.setText("requirements");
 		reqButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -62,7 +59,7 @@ public class LanguageMappingApplication {
 			}
 		});
 		
-		Button systemButton = new Button(shell, SWT.PUSH);
+		Button systemButton = new Button(composite, SWT.PUSH);
 		systemButton.setText("system");
 		systemButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -71,7 +68,7 @@ public class LanguageMappingApplication {
 			}
 		});
 
-		Composite buttonField = new Composite(shell, SWT.NONE);
+		Composite buttonField = new Composite(composite, SWT.NONE);
 		GridLayout buttonFieldLayout = new GridLayout();
 		buttonFieldLayout.numColumns = 3;
 		buttonField.setLayout(buttonFieldLayout);
@@ -98,30 +95,14 @@ public class LanguageMappingApplication {
 		formDataSysButton.bottom = new FormAttachment(scrolledComposite, -10);
 		formDataSysButton.right = new FormAttachment(100, -20);
 		systemButton.setLayoutData(formDataSysButton);
-
-		
-		// Color
-		//shell.setBackground(display.getSystemColor(SWT.COLOR_BLACK));
-		//composite.setBackground(display.getSystemColor(SWT.COLOR_GRAY));
-		//buttonField.setBackground(display.getSystemColor(SWT.COLOR_BLACK));
-
-		shell.setSize(800, 600);
-		shell.open();
-
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch())
-				display.sleep();
-		}
-		display.dispose();
 	}
-
-	private static void updateMinSize(ScrolledComposite scrolledComposite) {
+	
+	private void updateMinSize(ScrolledComposite scrolledComposite) {
 		Rectangle clientArea = scrolledComposite.getClientArea();
 		clientArea.width -= scrolledComposite.getVerticalBar().getSize().x;
 		Point minSize = scrolledComposite.getContent().computeSize(clientArea.width, SWT.DEFAULT);
 		scrolledComposite.setMinSize(minSize);
 	}
 	
-		
 
 }
