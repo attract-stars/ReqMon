@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.editor.editors;
+package de.fraunhofer.isst.automotive.stars.mapping.editors;
 
 
 import java.io.StringWriter;
@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FontDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.*;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.part.FileEditorInput;
@@ -126,11 +127,12 @@ public class LanguageMappingEditor extends MultiPageEditorPart implements IResou
 	void createPage3() {
 		Composite composite = new Composite(getContainer(), SWT.NONE);
 		Display display = getContainer().getDisplay();
+		Shell shell = getContainer().getShell();
 		FormLayout layout = new FormLayout();
 		composite.setLayout(layout);
 		//composite.setBackground(display.getSystemColor(SWT.COLOR_DARK_GREEN));
 		
-		MappingPage mapping = new MappingPage(composite, display);
+		MappingPage mapping = new MappingPage(composite, display, shell);
 		mapping.createMappingPage();
 		
 		int index = addPage(composite);
@@ -142,9 +144,9 @@ public class LanguageMappingEditor extends MultiPageEditorPart implements IResou
 	 */
 	protected void createPages() {
 		//setPartName("DSL Editor");
-		createPage0();
-		createPage1();
-		createPage2();
+		//createPage0();
+		//createPage1();
+		//createPage2();
 		createPage3();
 	}
 	

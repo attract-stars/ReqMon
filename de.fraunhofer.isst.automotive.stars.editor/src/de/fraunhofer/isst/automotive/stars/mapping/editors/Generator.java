@@ -1,12 +1,12 @@
-package de.fraunhofer.isst.automotive.stars.editor.editors;
+package de.fraunhofer.isst.automotive.stars.mapping.editors;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Generator {
 
-	int index;
-	List<String> generators;
+	private int index;
+	private List<String> generators;
 	
 	public Generator() {
 		this.index = 0;
@@ -15,6 +15,10 @@ public class Generator {
 
 	public int getIndex() {
 		return index;
+	}
+	
+	public boolean hasNext() {
+		return index < generators.size();
 	}
 
 	public void setIndex(int index) {
@@ -42,15 +46,12 @@ public class Generator {
 	}
 	
 	public void generateSampleList() {
-		generators.add("Generator_1");
-		generators.add("Generator_2");
-		generators.add("Generator_3");
+		generators.add("Generator 1");
+		generators.add("Generator 2");
+		generators.add("Generator 3");
 	}
 	
 	public String getNextGenerator() {
-		if (index == generators.size()) {
-			index = 0;
-		}
 		return generators.get(index++);
 	}
 	

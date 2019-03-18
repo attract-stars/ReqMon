@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.editor.editors;
+package de.fraunhofer.isst.automotive.stars.mapping.editors;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -13,14 +13,20 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 import de.fraunhofer.isst.stars.RequirementDSLRuntimeModule;
+import de.fraunhofer.isst.stars.RequirementDSLStandaloneSetup;
 
 public class ReqDSLParser {
 	
 	@Inject
 	private IParser parser;
 	
-	public ReqDSLParser() {
-		setupParser();
+	public ReqDSLParser(boolean isApp) {
+		if (isApp) {
+			setupAppParser();
+		}
+		else {
+			setupParser();
+		}
 	}
 	
 	private void setupParser() {
@@ -28,6 +34,11 @@ public class ReqDSLParser {
 		//Injector injector = Guice.createInjector(module);
 		//injector.injectMembers(this);
 		System.out.println("\nModule: " + module.getClass().getName());
+	}
+	
+	private void setupAppParser() {
+		Injector injector = new RequirementDSLStandaloneSetup().createInjectorAndDoEMFRegistration();
+		injector.injectMembers(this);
 	}
 	
 	public EObject parse(Reader reader) throws ParseException {

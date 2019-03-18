@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.editor.editors;
+package de.fraunhofer.isst.automotive.stars.mapping.editors;
 
 import org.eclipse.jface.action.*;
 import org.eclipse.jface.dialogs.MessageDialog;
