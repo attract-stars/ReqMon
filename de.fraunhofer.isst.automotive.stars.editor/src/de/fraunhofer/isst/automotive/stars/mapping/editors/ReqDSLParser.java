@@ -1,29 +1,42 @@
-package de.fraunhofer.isst.stars.reqmon.lmeditor.widgets;
+package de.fraunhofer.isst.automotive.stars.mapping.editors;
 
 import java.io.Reader;
 import java.io.StringReader;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.xtext.parser.IParseResult;
 import org.eclipse.xtext.parser.IParser;
 import org.eclipse.xtext.parser.ParseException;
 
+import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
+import de.fraunhofer.isst.stars.RequirementDSLRuntimeModule;
 import de.fraunhofer.isst.stars.RequirementDSLStandaloneSetup;
 
-public class XtextParser {
+public class ReqDSLParser {
+	
 	@Inject
 	private IParser parser;
 	
-	public XtextParser() {
-		setupParser();
+	public ReqDSLParser(boolean isApp) {
+		if (isApp) {
+			setupAppParser();
+		}
+		else {
+			setupParser();
+		}
 	}
 	
 	private void setupParser() {
+		RequirementDSLRuntimeModule module = new RequirementDSLRuntimeModule();
+		//Injector injector = Guice.createInjector(module);
+		//injector.injectMembers(this);
+		System.out.println("\nModule: " + module.getClass().getName());
+	}
+	
+	private void setupAppParser() {
 		Injector injector = new RequirementDSLStandaloneSetup().createInjectorAndDoEMFRegistration();
 		injector.injectMembers(this);
 	}
