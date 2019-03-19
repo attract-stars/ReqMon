@@ -21,7 +21,11 @@ ruleRequirement:
 		    |
 		';'
 	)
-	'\n'+
+	(
+		'\n'+
+		    |
+		'EOF'
+	)
 ;
 
 // Rule RequirementText

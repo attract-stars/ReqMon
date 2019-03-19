@@ -32,6 +32,7 @@ public class RequirementDSLParser extends AbstractContentAssistParser {
 		
 		private static void init(ImmutableMap.Builder<AbstractElement, String> builder, RequirementDSLGrammarAccess grammarAccess) {
 			builder.put(grammarAccess.getRequirementAccess().getAlternatives_4(), "rule__Requirement__Alternatives_4");
+			builder.put(grammarAccess.getRequirementAccess().getAlternatives_5(), "rule__Requirement__Alternatives_5");
 			builder.put(grammarAccess.getClauseAccess().getAlternatives(), "rule__Clause__Alternatives");
 			builder.put(grammarAccess.getPredicateSentenceAccess().getAlternatives(), "rule__PredicateSentence__Alternatives");
 			builder.put(grammarAccess.getPropertySentenceAccess().getAlternatives(), "rule__PropertySentence__Alternatives");

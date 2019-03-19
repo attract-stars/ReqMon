@@ -1868,6 +1868,34 @@ finally {
 	restoreStackSize(stackSize);
 }
 
+rule__Requirement__Alternatives_5
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		(
+			{ before(grammarAccess.getRequirementAccess().getLineFeedKeyword_5_0()); }
+			('\n')
+			{ after(grammarAccess.getRequirementAccess().getLineFeedKeyword_5_0()); }
+		)
+		(
+			{ before(grammarAccess.getRequirementAccess().getLineFeedKeyword_5_0()); }
+			('\n')*
+			{ after(grammarAccess.getRequirementAccess().getLineFeedKeyword_5_0()); }
+		)
+	)
+	|
+	(
+		{ before(grammarAccess.getRequirementAccess().getEOFKeyword_5_1()); }
+		'EOF'
+		{ after(grammarAccess.getRequirementAccess().getEOFKeyword_5_1()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
 rule__Clause__Alternatives
 	@init {
 		int stackSize = keepStackSize();
@@ -3783,16 +3811,9 @@ rule__Requirement__Group__5__Impl
 	}
 :
 (
-	(
-		{ before(grammarAccess.getRequirementAccess().getLineFeedKeyword_5()); }
-		('\n')
-		{ after(grammarAccess.getRequirementAccess().getLineFeedKeyword_5()); }
-	)
-	(
-		{ before(grammarAccess.getRequirementAccess().getLineFeedKeyword_5()); }
-		('\n')*
-		{ after(grammarAccess.getRequirementAccess().getLineFeedKeyword_5()); }
-	)
+	{ before(grammarAccess.getRequirementAccess().getAlternatives_5()); }
+	(rule__Requirement__Alternatives_5)
+	{ after(grammarAccess.getRequirementAccess().getAlternatives_5()); }
 )
 ;
 finally {

@@ -25,8 +25,8 @@ public class RequirementDSLSyntacticSequencer extends AbstractSyntacticSequencer
 	protected AbstractElementAlias match_ExistencePreface_ThereKeyword_1_0_or_ThereKeyword_1_1;
 	protected AbstractElementAlias match_RequirementText_CommaKeyword_0_1_q;
 	protected AbstractElementAlias match_RequirementText_CommaKeyword_2_0_q;
+	protected AbstractElementAlias match_Requirement_EOFKeyword_5_1_or_LineFeedKeyword_5_0_p;
 	protected AbstractElementAlias match_Requirement_FullStopKeyword_4_0_or_SemicolonKeyword_4_1;
-	protected AbstractElementAlias match_Requirement_LineFeedKeyword_5_p;
 	protected AbstractElementAlias match_Requirement_ReqKeyword_0_q;
 	
 	@Inject
@@ -36,8 +36,8 @@ public class RequirementDSLSyntacticSequencer extends AbstractSyntacticSequencer
 		match_ExistencePreface_ThereKeyword_1_0_or_ThereKeyword_1_1 = new AlternativeAlias(false, false, new TokenAlias(false, false, grammarAccess.getExistencePrefaceAccess().getThereKeyword_1_0()), new TokenAlias(false, false, grammarAccess.getExistencePrefaceAccess().getThereKeyword_1_1()));
 		match_RequirementText_CommaKeyword_0_1_q = new TokenAlias(false, true, grammarAccess.getRequirementTextAccess().getCommaKeyword_0_1());
 		match_RequirementText_CommaKeyword_2_0_q = new TokenAlias(false, true, grammarAccess.getRequirementTextAccess().getCommaKeyword_2_0());
+		match_Requirement_EOFKeyword_5_1_or_LineFeedKeyword_5_0_p = new AlternativeAlias(false, false, new TokenAlias(false, false, grammarAccess.getRequirementAccess().getEOFKeyword_5_1()), new TokenAlias(true, false, grammarAccess.getRequirementAccess().getLineFeedKeyword_5_0()));
 		match_Requirement_FullStopKeyword_4_0_or_SemicolonKeyword_4_1 = new AlternativeAlias(false, false, new TokenAlias(false, false, grammarAccess.getRequirementAccess().getFullStopKeyword_4_0()), new TokenAlias(false, false, grammarAccess.getRequirementAccess().getSemicolonKeyword_4_1()));
-		match_Requirement_LineFeedKeyword_5_p = new TokenAlias(true, false, grammarAccess.getRequirementAccess().getLineFeedKeyword_5());
 		match_Requirement_ReqKeyword_0_q = new TokenAlias(false, true, grammarAccess.getRequirementAccess().getReqKeyword_0());
 	}
 	
@@ -85,10 +85,10 @@ public class RequirementDSLSyntacticSequencer extends AbstractSyntacticSequencer
 				emit_RequirementText_CommaKeyword_0_1_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_RequirementText_CommaKeyword_2_0_q.equals(syntax))
 				emit_RequirementText_CommaKeyword_2_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_Requirement_EOFKeyword_5_1_or_LineFeedKeyword_5_0_p.equals(syntax))
+				emit_Requirement_EOFKeyword_5_1_or_LineFeedKeyword_5_0_p(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_Requirement_FullStopKeyword_4_0_or_SemicolonKeyword_4_1.equals(syntax))
 				emit_Requirement_FullStopKeyword_4_0_or_SemicolonKeyword_4_1(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_Requirement_LineFeedKeyword_5_p.equals(syntax))
-				emit_Requirement_LineFeedKeyword_5_p(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_Requirement_ReqKeyword_0_q.equals(syntax))
 				emit_Requirement_ReqKeyword_0_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
@@ -146,30 +146,36 @@ public class RequirementDSLSyntacticSequencer extends AbstractSyntacticSequencer
 	
 	/**
 	 * Ambiguous syntax:
+	 *     (
+	  *         '
+	  *         '+ | 
+	  *         'EOF'
+	  *     )
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     text=RequirementText ('.' | ';') (ambiguity) (rule end)
+	 */
+	protected void emit_Requirement_EOFKeyword_5_1_or_LineFeedKeyword_5_0_p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Ambiguous syntax:
 	 *     '.' | ';'
 	 *
 	 * This ambiguous syntax occurs at:
 	 *     (
 	 *         text=RequirementText 
 	 *         (ambiguity) 
-	 *         '
-	 *         '+ 
+	 *         (
+	 *             '
+	 *             '+ | 
+	 *             'EOF'
+	 *         ) 
 	 *         (rule end)
 	 *     )
 	 */
 	protected void emit_Requirement_FullStopKeyword_4_0_or_SemicolonKeyword_4_1(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Ambiguous syntax:
-	 *     '
-	  *     '+
-	 *
-	 * This ambiguous syntax occurs at:
-	 *     text=RequirementText ('.' | ';') (ambiguity) (rule end)
-	 */
-	protected void emit_Requirement_LineFeedKeyword_5_p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

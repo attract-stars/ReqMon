@@ -53,17 +53,19 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Alternatives cAlternatives_4 = (Alternatives)cGroup.eContents().get(4);
 		private final Keyword cFullStopKeyword_4_0 = (Keyword)cAlternatives_4.eContents().get(0);
 		private final Keyword cSemicolonKeyword_4_1 = (Keyword)cAlternatives_4.eContents().get(1);
-		private final Keyword cLineFeedKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Alternatives cAlternatives_5 = (Alternatives)cGroup.eContents().get(5);
+		private final Keyword cLineFeedKeyword_5_0 = (Keyword)cAlternatives_5.eContents().get(0);
+		private final Keyword cEOFKeyword_5_1 = (Keyword)cAlternatives_5.eContents().get(1);
 		
 		////Requirement:
 		////	(condClauses+=Subclause)* (mainclauses+=Clauses) (condClauses+=Subclause)*
 		////	;
 		//Requirement: //PROBLEM condClauses before and after mainClause lead to ambiguity
-		//	'Req'? reqID=ReqID? ':' text=RequirementText ('.' | ';') '\n'+;
+		//	'Req'? reqID=ReqID? ':' text=RequirementText ('.' | ';') ('\n'+ | 'EOF');
 		@Override public ParserRule getRule() { return rule; }
 		
 		////PROBLEM condClauses before and after mainClause lead to ambiguity
-		//'Req'? reqID=ReqID? ':' text=RequirementText ('.' | ';') '\n'+
+		//'Req'? reqID=ReqID? ':' text=RequirementText ('.' | ';') ('\n'+ | 'EOF')
 		public Group getGroup() { return cGroup; }
 		
 		////PROBLEM condClauses before and after mainClause lead to ambiguity
@@ -94,8 +96,14 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//';'
 		public Keyword getSemicolonKeyword_4_1() { return cSemicolonKeyword_4_1; }
 		
+		//'\n'+ | 'EOF'
+		public Alternatives getAlternatives_5() { return cAlternatives_5; }
+		
 		//'\n'+
-		public Keyword getLineFeedKeyword_5() { return cLineFeedKeyword_5; }
+		public Keyword getLineFeedKeyword_5_0() { return cLineFeedKeyword_5_0; }
+		
+		//'EOF'
+		public Keyword getEOFKeyword_5_1() { return cEOFKeyword_5_1; }
 	}
 	public class RequirementTextElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.fraunhofer.isst.stars.RequirementDSL.RequirementText");
@@ -3231,7 +3239,7 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 	////	(condClauses+=Subclause)* (mainclauses+=Clauses) (condClauses+=Subclause)*
 	////	;
 	//Requirement: //PROBLEM condClauses before and after mainClause lead to ambiguity
-	//	'Req'? reqID=ReqID? ':' text=RequirementText ('.' | ';') '\n'+;
+	//	'Req'? reqID=ReqID? ':' text=RequirementText ('.' | ';') ('\n'+ | 'EOF');
 	public RequirementElements getRequirementAccess() {
 		return pRequirement;
 	}

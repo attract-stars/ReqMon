@@ -173,11 +173,18 @@ ruleRequirement returns [EObject current=null]
 			}
 		)
 		(
-			otherlv_6='\n'
+			(
+				otherlv_6='\n'
+				{
+					newLeafNode(otherlv_6, grammarAccess.getRequirementAccess().getLineFeedKeyword_5_0());
+				}
+			)+
+			    |
+			otherlv_7='EOF'
 			{
-				newLeafNode(otherlv_6, grammarAccess.getRequirementAccess().getLineFeedKeyword_5());
+				newLeafNode(otherlv_7, grammarAccess.getRequirementAccess().getEOFKeyword_5_1());
 			}
-		)+
+		)
 	)
 ;
 
