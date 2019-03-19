@@ -13,25 +13,25 @@ import com.google.inject.Injector;
 import de.fraunhofer.isst.stars.RequirementDSLStandaloneSetup;
 
 public class XtextParser {
-	@Inject
-	private IParser parser;
-	
-	public XtextParser() {
-		setupParser();
+    @Inject
+    private IParser parser;
+
+    public XtextParser() {
+	setupParser();
+    }
+
+    private void setupParser() {
+	Injector injector = new RequirementDSLStandaloneSetup().createInjectorAndDoEMFRegistration();
+
+	injector.injectMembers(this);
+    }
+
+    public EObject parse(Reader reader) throws ParseException {
+	IParseResult result = parser.parse(reader);
+	if (result.hasSyntaxErrors()) {
+	    throw new ParseException("Provided inputs contains syntax errors.");
 	}
-	
-	private void setupParser() {
-		Injector injector = new RequirementDSLStandaloneSetup().createInjectorAndDoEMFRegistration();
-		injector.injectMembers(this);
-	}
-	
-	public EObject parse(Reader reader) throws ParseException {
-		IParseResult result = parser.parse(reader);
-		if (result.hasSyntaxErrors()) {
-			throw new ParseException("Provided inputs contains syntax errors.");
-		}
-		return result.getRootASTElement();
-	}
-	
+	return result.getRootASTElement();
+    }
 
 }
