@@ -10,7 +10,7 @@
             extensions="dslm"
             icon="icons/sample.png"
             id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor1"
-            name="Mapping Editor">
+            name="STARS Mapping Editor">
       </editor>
    </extension>
 
