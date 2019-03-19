@@ -8,7 +8,7 @@ Automatic-Module-Name: de.fraunhofer.isst.automotive.stars.reqmon.dsl.requiremen
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime,
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement;bundle-version="1.0.0",
- de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui;bundle-version="1.0.0",
- org.eclipse.emf.common
+ org.eclipse.emf.common,
+ de.fraunhofer.isst.automotive.stars.reqmon.mapping.editor;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.emf.ecore

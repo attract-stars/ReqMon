@@ -1,9 +1,10 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.analyzer;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 
+import de.fraunhofer.isst.automotive.stars.reqmon.mapping.importer.IDslAnalyzer;
 import de.fraunhofer.isst.stars.requirementDSL.ConditionalClause;
 import de.fraunhofer.isst.stars.requirementDSL.Model;
 import de.fraunhofer.isst.stars.requirementDSL.Requirement;
@@ -13,7 +14,7 @@ import de.fraunhofer.isst.stars.requirementDSL.RequirementText;
  * @author mmauritz
  *
  */
-public class RequirementDslAstAnalyzer implements IAstAnalyzer {
+public class RequirementDslAstAnalyzer implements IDslAnalyzer {
 
     /*
      * (non-Javadoc)

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data;
+package de.fraunhofer.isst.automotive.stars.reqmon.mapping.importer;
 
 import de.fraunhofer.isst.stars.requirementDSL.Model;
 
@@ -9,7 +9,7 @@ import de.fraunhofer.isst.stars.requirementDSL.Model;
  * @author mmauritz
  *
  */
-public interface IAstAnalyzer {
+public interface IDslAnalyzer {
 
     /**
      * Takes the EMF-Model of the AST anad analyzes it.

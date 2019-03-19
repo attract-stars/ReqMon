@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data;
+package de.fraunhofer.isst.automotive.stars.reqmon.mapping.importer;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -21,7 +21,7 @@ import de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage;
  *
  */
 // TODO
-public class AstAnalyzerHandler {
+public class DSLAnalyzerHandler {
 
     private static final String IASTANALYZER_ID = "de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.analyzer";
 
@@ -37,8 +37,8 @@ public class AstAnalyzerHandler {
 		for (int i = 0; i < configs.length; i++) {
 		    Object o = configs[i].createExecutableExtension("class");
 		    if (configs[i].getAttribute("lanng").equals(RequirementDSLPackage.eNAME)
-			    & o instanceof IAstAnalyzer) {
-			executeAnalyzer((IAstAnalyzer) o, model);
+			    & o instanceof IDslAnalyzer) {
+			executeAnalyzer((IDslAnalyzer) o, model);
 		    }
 		}
 	    }
@@ -47,7 +47,7 @@ public class AstAnalyzerHandler {
 	}
     }
 
-    private void executeAnalyzer(IAstAnalyzer analyzer, final Model model) {
+    private void executeAnalyzer(IDslAnalyzer analyzer, final Model model) {
 	ISafeRunnable runnable = new ISafeRunnable() {
 	    @Override
 	    public void handleException(Throwable e) {
