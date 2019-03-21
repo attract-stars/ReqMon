@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.AstAnalyzerHandler;
 import de.fraunhofer.isst.stars.requirementDSL.Model;
 
 public class LanguageMappingApplication {
@@ -78,8 +77,8 @@ public class LanguageMappingApplication {
 			true);
 		EObject obj = parser.parse(testfileUri);
 		if (obj != null && obj instanceof Model) {
-		    AstAnalyzerHandler reqHandler = new AstAnalyzerHandler();
-		    reqHandler.execute((Model) obj);
+		    // AstAnalyzerHandler reqHandler = new AstAnalyzerHandler();
+		    // reqHandler.execute((Model) obj);
 		}
 		// RequirementTable table = new RequirementTable(display);
 		// table.createTable();

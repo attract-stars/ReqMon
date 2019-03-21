@@ -2,11 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="de.fraunhofer.isst.automotive.stars.reqmon.mapping.editor.DslAnalyzer">
-      <client
-            class="de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.analyzer.RequirementDslAstAnalyzer"
-            lang="http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/requirement/RequirementDSL">
-      </client>
+         point="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.DslAnalyzer">
    </extension>
 
 </plugin>
