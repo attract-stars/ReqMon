@@ -4,7 +4,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.mapping.importer.IDslAnalyzer;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.importer.IDslAnalyzer;
 import de.fraunhofer.isst.stars.requirementDSL.ConditionalClause;
 import de.fraunhofer.isst.stars.requirementDSL.Model;
 import de.fraunhofer.isst.stars.requirementDSL.Requirement;

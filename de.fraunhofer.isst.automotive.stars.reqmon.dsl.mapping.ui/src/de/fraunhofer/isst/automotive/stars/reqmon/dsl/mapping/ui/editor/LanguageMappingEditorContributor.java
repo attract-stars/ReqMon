@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.mapping.editors;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor;
 
 import org.eclipse.ui.part.EditorActionBarContributor;
 

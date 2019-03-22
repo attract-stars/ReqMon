@@ -1,5 +1,7 @@
-package de.fraunhofer.isst.automotive.stars.mapping.editors;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor;
 
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.ControlDecoration;
@@ -31,6 +33,10 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.importer.DSLAnalyzerHandler;
+import de.fraunhofer.isst.stars.reqmon.lmeditor.widgets.XtextParserEclipse;
+import de.fraunhofer.isst.stars.requirementDSL.Model;
 
 public class CreateHelper {
 	
@@ -96,15 +102,24 @@ public class CreateHelper {
 				FileDialog fd = new FileDialog(shell, SWT.OPEN);
 		        fd.setText("Open");
 		        fd.setFilterPath("C:/");
-		        String[] filterExt = { "*.txt", "*.doc", ".rtf", "*.*" };
+		String[] filterExt = { "*.txt", "*.doc", ".rtf", "*.*", "*.reqDSL" };
 		        fd.setFilterExtensions(filterExt);
 		        String selected = fd.open();
 		        if (selected != null) {
-		        	System.out.println(selected);
-		        	reqElem.setPath(selected);
-		        	reqPath.setText(selected);
-		        	reqElem.readFile();
-		        	updateList();
+		    URI reqFile = URI.createFileURI(selected);
+		    // URI testfileUri = URI.createPlatformResourceURI(
+		    // "/de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.material/de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.material/de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.material//de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.material/de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.material/dadas_redesign_20180320.reqDSL",
+		    // true);
+
+		    XtextParserEclipse parser = new XtextParserEclipse();
+		    EObject obj = parser.parse(reqFile);
+		    // EObject obj = parser.parse(new StringReader(selected));
+		    if (obj != null && obj instanceof Model) {
+			DSLAnalyzerHandler reqHandler = new DSLAnalyzerHandler();
+			reqHandler.execute((Model) obj);
+		    }
+		    // RequirementTable table = new RequirementTable(display);
+		    // table.createTable();
 		        }
 			}
 		});
@@ -117,7 +132,7 @@ public class CreateHelper {
 				FileDialog fd = new FileDialog(shell, SWT.OPEN);
 		        fd.setText("Open");
 		        fd.setFilterPath("C:/");
-		        String[] filterExt = { "*.txt", "*.doc", ".rtf", "*.*" };
+		String[] filterExt = { "*.txt", "*.doc", ".rtf", "*.*" };
 		        fd.setFilterExtensions(filterExt);
 		        String selected = fd.open();
 		        if (selected != null) {

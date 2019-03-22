@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.fraunhofer.isst.automotive.stars.reqmon.mapping.importer;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.importer;
 
 import de.fraunhofer.isst.stars.requirementDSL.Model;
 

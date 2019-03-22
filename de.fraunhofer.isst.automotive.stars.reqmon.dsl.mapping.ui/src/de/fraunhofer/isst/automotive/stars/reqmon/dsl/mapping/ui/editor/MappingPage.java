@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.mapping.editors;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -25,6 +25,9 @@ public class MappingPage {
 		this.shell = shell;
 	}
 	
+    /**
+     * @wbp.parser.entryPoint
+     */
 	public void createMappingPage() {
 		Composite maincomp = new Composite(composite, SWT.NONE);
 		maincomp.setLayout(new FillLayout());

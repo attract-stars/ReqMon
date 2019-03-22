@@ -1,25 +1,35 @@
 package de.fraunhofer.isst.stars.reqmon.lmeditor.widgets;
 
-import java.io.IOException;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.parser.ParseException;
+import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.resource.XtextResourceSet;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
+
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.test.TestActivatorEx;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui.internal.RequirementActivator;
 
 public class XtextParserEclipse {
     @Inject
-    private XtextResourceSet resourceSet;
+    XtextResourceSet resourceSet;
+    @Inject
+    IResourceServiceProvider resourceSetProvider;
 
     public XtextParserEclipse() {
 	setupParser();
     }
 
     private void setupParser() {
-
+//	Injector injector = TestActivatorEx.getInstance()
+//		.getInjector(RequirementActivator.DE_FRAUNHOFER_ISST_STARS_REQUIREMENTDSL);
+    //DAS HIER FUNKTIONIERT!!!!
+	Injector injector = RequirementActivator.getInstance()
+			.getInjector(RequirementActivator.DE_FRAUNHOFER_ISST_STARS_REQUIREMENTDSL);
+	injector.injectMembers(this);
     }
 
     public EObject parse(URI uri) throws ParseException {
@@ -29,9 +39,10 @@ public class XtextParserEclipse {
 		resource.load(null);
 	    }
 	    return resource.getContents().get(0);
-	} catch (IOException e) {
+	} catch (Exception e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
+	    System.out.println(e.getLocalizedMessage());
 //	    Resource resource = resourceSet.createResource(uri);
 	    return null;
 	}
