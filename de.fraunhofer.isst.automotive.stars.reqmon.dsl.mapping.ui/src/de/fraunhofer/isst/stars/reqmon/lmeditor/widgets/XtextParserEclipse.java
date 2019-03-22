@@ -10,7 +10,6 @@ import org.eclipse.xtext.resource.XtextResourceSet;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.test.TestActivatorEx;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui.internal.RequirementActivator;
 
 public class XtextParserEclipse {
@@ -24,9 +23,6 @@ public class XtextParserEclipse {
     }
 
     private void setupParser() {
-//	Injector injector = TestActivatorEx.getInstance()
-//		.getInjector(RequirementActivator.DE_FRAUNHOFER_ISST_STARS_REQUIREMENTDSL);
-    //DAS HIER FUNKTIONIERT!!!!
 	Injector injector = RequirementActivator.getInstance()
 			.getInjector(RequirementActivator.DE_FRAUNHOFER_ISST_STARS_REQUIREMENTDSL);
 	injector.injectMembers(this);
@@ -40,10 +36,9 @@ public class XtextParserEclipse {
 	    }
 	    return resource.getContents().get(0);
 	} catch (Exception e) {
-	    // TODO Auto-generated catch block
+	    // TODO Better Exception Handling
 	    e.printStackTrace();
 	    System.out.println(e.getLocalizedMessage());
-//	    Resource resource = resourceSet.createResource(uri);
 	    return null;
 	}
     }

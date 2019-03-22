@@ -23,20 +23,20 @@ import de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage;
 // TODO
 public class DSLAnalyzerHandler {
 
-	private static final String IASTANALYZER_ID = "de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.analyzer";
+	private static final String DSLANALYZER_ID = "de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.DslAnalyzer";
 
 	@Execute
 	public void execute(final Model model) {
 		System.out.println("DSL Analyzer Handler inititated");
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IExtensionPoint ep = registry.getExtensionPoint(IASTANALYZER_ID);
+		IExtensionPoint ep = registry.getExtensionPoint(DSLANALYZER_ID);
 		IExtension[] extensions = ep.getExtensions();
 		try {
 			for (IExtension ext : extensions) {
 				IConfigurationElement[] configs = ext.getConfigurationElements();
 				for (int i = 0; i < configs.length; i++) {
 					Object o = configs[i].createExecutableExtension("class");
-					if (configs[i].getAttribute("lanng").equals(RequirementDSLPackage.eNAME)
+					if (configs[i].getAttribute("lang").equals(RequirementDSLPackage.eNS_URI)
 							& o instanceof IDslAnalyzer) {
 						System.out.println("STARTING ANALYZER");
 						executeAnalyzer((IDslAnalyzer) o, model);
