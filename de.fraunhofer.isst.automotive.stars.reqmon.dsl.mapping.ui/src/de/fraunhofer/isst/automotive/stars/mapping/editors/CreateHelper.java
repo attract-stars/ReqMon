@@ -260,7 +260,7 @@ public class CreateHelper {
 	
 	public void createButtons(Composite comp) {
 		GridLayout buttonFieldLayout = new GridLayout();
-		buttonFieldLayout.numColumns = 3;
+		buttonFieldLayout.numColumns = 4;
 		comp.setLayout(buttonFieldLayout);
 		
 		Composite box = new Composite(comp, SWT.NONE);
@@ -297,8 +297,15 @@ public class CreateHelper {
 			}
 		});
 		
-		//Composite buttonGroup = new Composite(comp, SWT.NONE);
-		//buttonGroup.setLayout(new GridLayout(2, false));
+		Button genButton = new Button(box, SWT.PUSH);
+		genButton.setText("Generate (G1)");
+		genButton.setAlignment(SWT.CENTER);
+		genButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				System.out.println("Generate called!");
+			}
+		});
 
 		Generator gen = new Generator();
 		gen.generateSampleList();
@@ -309,7 +316,16 @@ public class CreateHelper {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("Selected: " + comboDropDown.getText());
-				
+				if (comboDropDown.getText().contains("1")) {
+					genButton.setText("Generate (G1)");
+				}
+				else if (comboDropDown.getText().contains("2")) {
+					genButton.setText("Generate (G2)");
+				}
+				else if (comboDropDown.getText().contains("3")) {
+					genButton.setText("Generate (G3)");
+				}
+				box.layout(true);
 			}
 			
 			@Override
