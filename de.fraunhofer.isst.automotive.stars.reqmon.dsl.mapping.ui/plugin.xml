@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="de.fraunhofer.isst.automotive.stars.reqmon.sdl.mapping.generator" name="Generator" schema="schema/de.fraunhofer.isst.automotive.stars.reqmon.sdl.mapping.generator.exsd"/>
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="de.fraunhofer.isst.automotive.stars.mapping.editors.LanguageMappingEditor"
-            contributorClass="de.fraunhofer.isst.automotive.stars.mapping.editors.LanguageMappingEditorContributor"
+            class="de.fraunhofer.isst.automotive.stars.reqmon.mapping.editors.LanguageMappingEditor"
+            contributorClass="de.fraunhofer.isst.automotive.stars.reqmon.mapping.editors.LanguageMappingEditorContributor"
             default="false"
             extensions="dslm"
             icon="icons/sample.png"
