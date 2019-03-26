@@ -3,7 +3,8 @@
  */
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.importer;
 
-import de.fraunhofer.isst.stars.requirementDSL.Model;
+import org.eclipse.emf.ecore.EObject;
+
 
 /**
  * @author mmauritz
@@ -17,6 +18,6 @@ public interface IDslAnalyzer {
      * @param model
      */
     // TODO WHAT IS THE RETURN TYPE??
-    public void analyze(Model model);
+    public void analyze(EObject model);
 
 }

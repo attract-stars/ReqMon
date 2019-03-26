@@ -24,8 +24,9 @@ public class RequirementDslAstAnalyzer implements IDslAnalyzer {
      * analyze(de.fraunhofer.isst.stars.requirementDSL.Model)
      */
     @Override
-    public void analyze(Model model) {
-	TreeIterator<EObject> modelIterator = model.eAllContents();
+    public void analyze(EObject model) {
+    System.out.println("Analyzing Requirement DSL");
+   	TreeIterator<EObject> modelIterator = model.eAllContents();
 	// TODO We might have to implement a Specific Adapter for the Work on the
 	// Leaves-> Leaves seems the only think interesting for consolidating the Data
 	// Model objects

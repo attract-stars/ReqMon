@@ -2,6 +2,7 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.ControlDecoration;
@@ -111,10 +112,9 @@ public class CreateHelper {
 				URI testfileUri = URI.createFileURI("C:/Users/mmauritz/Git/reqmon/de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.material/de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.material/dadas_redesign_20180320.reqDSL");
 				XtextParserEclipse parser = new XtextParserEclipse();
 				EObject obj = parser.parse(testfileUri);
-				// EObject obj = parser.parse(new StringReader(selected));
-				if (obj != null && obj instanceof Model) {
+				if (obj != null) {
 					DSLAnalyzerHandler reqHandler = new DSLAnalyzerHandler();
-					reqHandler.execute((Model) obj);
+					reqHandler.execute(obj);
 				}
 				// RequirementTable table = new RequirementTable(display);
 				// table.createTable();

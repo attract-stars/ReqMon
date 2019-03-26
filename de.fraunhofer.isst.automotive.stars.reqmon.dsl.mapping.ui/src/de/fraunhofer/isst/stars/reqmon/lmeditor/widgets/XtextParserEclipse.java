@@ -1,7 +1,9 @@
 package de.fraunhofer.isst.stars.reqmon.lmeditor.widgets;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.parser.ParseException;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
