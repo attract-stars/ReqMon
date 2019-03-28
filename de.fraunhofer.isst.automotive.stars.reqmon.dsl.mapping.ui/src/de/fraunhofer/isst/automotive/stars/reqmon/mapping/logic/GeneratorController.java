@@ -19,10 +19,6 @@ public class GeneratorController {
 		return index;
 	}
 	
-	public boolean hasNext() {
-		return index < generators.size();
-	}
-
 	public List<String> getGenerators() {
 		return generators;
 	}
@@ -76,15 +72,9 @@ public class GeneratorController {
 		return "";
 	}
 	
-	public String getNextGenerator() {
-		if (index >= generators.size()) {
-			return "";
-		}
-		return generators.get(index++);
-	}
-	
-	public void activateGenerator() {
+	public String getActiveGenerator() {
 		System.out.println("Call the " + generateLabels.get(index));
+		return generators.get(index);
 	}
 
 }

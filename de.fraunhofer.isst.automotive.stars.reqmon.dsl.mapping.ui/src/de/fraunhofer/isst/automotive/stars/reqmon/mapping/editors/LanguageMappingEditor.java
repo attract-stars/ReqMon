@@ -1,6 +1,8 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.mapping.editors;
 
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormLayout;
@@ -29,7 +31,6 @@ public class LanguageMappingEditor extends EditorPart {
 
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
-		// TODO Auto-generated method stub
 		setSite(site);
 		setInput(input);
 		String name = input.getName();
@@ -52,18 +53,11 @@ public class LanguageMappingEditor extends EditorPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		// TODO Auto-generated method stub
 		Composite composite = new Composite(parent, SWT.NONE);
 		Display display = parent.getDisplay();
 		Shell shell = parent.getShell();
 		FormLayout layout = new FormLayout();
 		composite.setLayout(layout);
-		
-		//composite.setLayout(new FillLayout());
-		//Label label = new Label(composite, SWT.BORDER);
-		//label.setText("Hello Editor");
-		
-		//composite.setBackground(display.getSystemColor(SWT.COLOR_DARK_GREEN));
 		
 		MappingPage mapping = new MappingPage(composite, display, shell);
 		mapping.createMappingPage();

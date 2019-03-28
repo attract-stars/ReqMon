@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import de.fraunhofer.isst.automotive.stars.reqmon.mapping.logic.ExistingGeneratorsHandler;
 import de.fraunhofer.isst.automotive.stars.reqmon.mapping.logic.GeneratorController;
 import de.fraunhofer.isst.automotive.stars.reqmon.mapping.logic.ReqDSLParser;
 import de.fraunhofer.isst.automotive.stars.reqmon.mapping.models.RequirementElement;
@@ -291,6 +292,8 @@ public class CreateHelper {
 		        System.out.println(selected);
 			}
 		});
+		
+		ExistingGeneratorsHandler handler = new ExistingGeneratorsHandler();
 
 		Button checkButton = new Button(box, SWT.PUSH);
 		checkButton.setText("Check");
@@ -299,11 +302,15 @@ public class CreateHelper {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("Check called!");
+				handler.execute();
 			}
 		});
 		
 		GeneratorController gen = new GeneratorController();
-		gen.generateSampleList();
+		handler.generateGeneratorList(gen);
+		if (gen.getGenerators().isEmpty()) {
+			gen.generateSampleList();
+		}
 		
 		Button genButton = new Button(box, SWT.PUSH);
 		genButton.setText(gen.getGenerateLabels().get(0));
@@ -311,7 +318,7 @@ public class CreateHelper {
 		genButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				gen.activateGenerator();
+				handler.executeSelectedGenerator(gen.getActiveGenerator());
 			}
 		});
 
@@ -334,8 +341,8 @@ public class CreateHelper {
 			}
 		});
 	    
-	    while (gen.hasNext()) {
-	      comboDropDown.add(" " + gen.getNextGenerator());
+	    for (String name : gen.getGenerators()) {
+	      comboDropDown.add(" " + name);
 	    }
 	    comboDropDown.select(0);
 	}
