@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Codegenerator
+Bundle-SymbolicName: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: de.fraunhofer.isst.automotive.stars.reqmon.mapping.codegenerator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui;bundle-version="1.0.0",
+ org.eclipse.core.runtime;bundle-version="3.15.0"
+Import-Package: de.fraunhofer.isst.automotive.stars.reqmon.mapping.definitions
