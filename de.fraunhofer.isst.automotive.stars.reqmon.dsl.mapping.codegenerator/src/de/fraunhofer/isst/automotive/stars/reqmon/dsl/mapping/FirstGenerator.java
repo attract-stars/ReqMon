@@ -1,6 +1,6 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.mapping;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.mapping.definitions.IGenerator;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.IGenerator;
 
 public class FirstGenerator implements IGenerator {
 

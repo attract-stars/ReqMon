@@ -4,7 +4,7 @@
    <extension
          point="de.fraunhofer.isst.automotive.stars.reqmon.sdl.mapping.generator">
       <client
-            class="de.fraunhofer.isst.automotive.stars.reqmon.mapping.FirstGenerator"></client>
+            class="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.FirstGenerator"></client>
    </extension>
 
 </plugin>
