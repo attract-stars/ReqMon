@@ -1,8 +1,5 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.editor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
 import org.eclipse.jface.fieldassist.ControlDecoration;
@@ -11,8 +8,6 @@ import org.eclipse.jface.fieldassist.SimpleContentProposalProvider;
 import org.eclipse.jface.fieldassist.TextContentAdapter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.ControlAdapter;
-import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -37,7 +32,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic.ExistingGeneratorsHandler;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic.ExtensionsHandler;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic.GeneratorController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic.ReqDSLParser;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.models.RequirementElement;
@@ -48,11 +43,12 @@ public class MappingPage {
 	private Composite composite;
 	private Display display;
 	private RequirementElement reqElem;
-	private SystemElement sysElem;
 	private Shell shell;
+	private SystemElement sysElem;
 	private Boolean isApp;
 	private ReqDSLParser parser;
 	private Composite compositeInside;
+	private ExtensionsHandler extensionsHandler;
 	
 	
 	public MappingPage(Composite composite, Display display, Shell shell, boolean isApp) {
@@ -64,6 +60,7 @@ public class MappingPage {
 		this.shell = shell;
 		this.isApp = isApp;
 		this.parser = new ReqDSLParser(isApp);
+		this.extensionsHandler = new ExtensionsHandler();
 	}
 	
 	public RequirementElement getReqElem() {
@@ -82,11 +79,6 @@ public class MappingPage {
 		scrolledComposite.addListener(SWT.Resize, event -> updateMinSize(scrolledComposite));
 		
 		compositeInside = new Composite(scrolledComposite, SWT.BORDER);
-		/*FillLayout insideLayout = new FillLayout(SWT.VERTICAL);
-		insideLayout.marginWidth = 10;
-		insideLayout.marginHeight = 10;
-		insideLayout.spacing = 10;
-		compositeInside.setLayout(insideLayout);*/
 		
 		GridLayout insideLayout = new GridLayout(1, false);
 		insideLayout.marginWidth = 10;
@@ -103,13 +95,9 @@ public class MappingPage {
 		Composite top = new Composite(composite, SWT.NONE);
 		createTop(top);
 		
-		/*Composite buttonField = new Composite(composite, SWT.NONE);
-		createButtons(buttonField);
-		setPositons(maincomp, buttonField, top);*/
-		
-		Composite buttonFieldOne = new Composite(shell, SWT.NONE);
+		Composite buttonFieldOne = new Composite(composite, SWT.NONE);
 		createSaveAndCheckButtons(buttonFieldOne);
-		Composite buttonFieldTwo = new Composite(shell, SWT.NONE);
+		Composite buttonFieldTwo = new Composite(composite, SWT.NONE);
 		createGenerateButtons(buttonFieldTwo);
 		setPositons(maincomp, buttonFieldOne, buttonFieldTwo, top);
 	}
@@ -355,7 +343,6 @@ public class MappingPage {
 			}
 		});
 		
-		ExistingGeneratorsHandler handler = new ExistingGeneratorsHandler();
 
 		Button checkButton = new Button(box, SWT.PUSH);
 		checkButton.setText("  Check   ");
@@ -364,7 +351,7 @@ public class MappingPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("Check called!");
-				handler.execute();
+				extensionsHandler.checkExtensions();
 			}
 		});
 	}
@@ -381,13 +368,7 @@ public class MappingPage {
 		boxlayout.spacing = 15;
 		box.setLayout(boxlayout);
 		
-		ExistingGeneratorsHandler handler = new ExistingGeneratorsHandler();
-		
-		GeneratorController gen = new GeneratorController();
-		handler.generateGeneratorList(gen);
-		if (gen.getGenerators().isEmpty()) {
-			gen.generateSampleList();
-		}
+		GeneratorController gen = new GeneratorController(extensionsHandler);
 		
 		Combo comboDropDown = new Combo(box, SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
 		
@@ -397,7 +378,7 @@ public class MappingPage {
 		genButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				handler.executeSelectedGenerator(gen.getActiveGenerator());
+				gen.executeSelectedGenerator();
 			}
 		});
 		
@@ -412,7 +393,6 @@ public class MappingPage {
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 		});
@@ -452,8 +432,7 @@ public class MappingPage {
 			}
 		});
 		
-		ExistingGeneratorsHandler handler = new ExistingGeneratorsHandler();
-
+		
 		Button checkButton = new Button(box, SWT.PUSH);
 		checkButton.setText("Check");
 		checkButton.setAlignment(SWT.CENTER);
@@ -461,15 +440,11 @@ public class MappingPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("Check called!");
-				handler.execute();
+				extensionsHandler.checkExtensions();
 			}
 		});
 		
-		GeneratorController gen = new GeneratorController();
-		handler.generateGeneratorList(gen);
-		if (gen.getGenerators().isEmpty()) {
-			gen.generateSampleList();
-		}
+		GeneratorController gen = new GeneratorController(extensionsHandler);
 		
 		Combo comboDropDown = new Combo(box, SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
 		
@@ -479,7 +454,7 @@ public class MappingPage {
 		genButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				handler.executeSelectedGenerator(gen.getActiveGenerator());
+				gen.executeSelectedGenerator();
 			}
 		});
 		
@@ -494,7 +469,6 @@ public class MappingPage {
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 		});

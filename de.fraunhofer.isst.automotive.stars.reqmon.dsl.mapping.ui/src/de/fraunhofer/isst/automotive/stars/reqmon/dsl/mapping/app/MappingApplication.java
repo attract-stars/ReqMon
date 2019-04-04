@@ -1,11 +1,9 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.app;
 
-import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -40,11 +38,6 @@ public class MappingApplication {
 		scrolledComposite.addListener(SWT.Resize, event -> helper.updateMinSize(scrolledComposite));
 		
 		Composite composite = new Composite(scrolledComposite, SWT.BORDER);
-		/*FillLayout fillLayout = new FillLayout(SWT.VERTICAL);
-		fillLayout.marginWidth = 10;
-		fillLayout.marginHeight = 10;
-		fillLayout.spacing = 10;
-		composite.setLayout(fillLayout);*/
 		
 		GridLayout insideLayout = new GridLayout(1, false);
 		insideLayout.marginWidth = 10;
@@ -67,7 +60,7 @@ public class MappingApplication {
 		helper.createSaveAndCheckButtons(buttonFieldOne);
 		Composite buttonFieldTwo = new Composite(shell, SWT.NONE);
 		helper.createGenerateButtons(buttonFieldTwo);
-		//helper.createButtons(buttonField);
+		
 		helper.setPositons(maincomp, buttonFieldOne, buttonFieldTwo, top);
 
 		shell.setSize(1000, 600);

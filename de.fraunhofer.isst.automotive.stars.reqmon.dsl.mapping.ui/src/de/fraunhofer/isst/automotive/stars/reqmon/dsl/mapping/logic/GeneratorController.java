@@ -8,11 +8,18 @@ public class GeneratorController {
 	private int index;
 	private List<String> generators;
 	private List<String> generateLabels;
+	private ExtensionsHandler handler;
 	
-	public GeneratorController() {
+	public GeneratorController(ExtensionsHandler handler) {
 		this.index = 0;
 		this.generators = new ArrayList<String>();
 		this.generateLabels = new ArrayList<String>();
+		this.handler = handler;
+		
+		handler.generateGeneratorList(this);
+		if (getGenerators().isEmpty()) {
+			generateSampleList();
+		}
 	}
 
 	public int getIndex() {
@@ -72,9 +79,14 @@ public class GeneratorController {
 		return "";
 	}
 	
-	public String getActiveGenerator() {
+	public void executeSelectedGenerator() {
+		handler.executeSelectedGenerator(getActiveGenerator());
+	}
+	
+	private String getActiveGenerator() {
 		System.out.println("Call the " + generateLabels.get(index));
 		return generators.get(index);
 	}
-
+	
+	
 }

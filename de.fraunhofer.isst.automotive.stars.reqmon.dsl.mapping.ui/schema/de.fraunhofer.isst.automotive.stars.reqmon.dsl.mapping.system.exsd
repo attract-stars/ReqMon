@@ -3,7 +3,7 @@
 <schema targetNamespace="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui" id="de.fraunhofer.isst.automotive.stars.reqmon.sdl.mapping.generator" name="Generator"/>
+         <meta.schema plugin="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui" id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.system" name="System"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -17,7 +17,7 @@
          </appinfo>
       </annotation>
       <complexType>
-         <choice minOccurs="1" maxOccurs="unbounded">
+         <choice>
             <element ref="client"/>
          </choice>
          <attribute name="point" type="string" use="required">
@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":de.fraunhofer.isst.automotive.stars.reqmon.mapping.definitions.IGenerator"/>
+                  <meta.attribute kind="java" basedOn=":ISystem"/>
                </appinfo>
             </annotation>
          </attribute>
