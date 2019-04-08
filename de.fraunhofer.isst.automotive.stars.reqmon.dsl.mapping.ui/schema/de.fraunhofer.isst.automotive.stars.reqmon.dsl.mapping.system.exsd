@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":ISystem"/>
+                  <meta.attribute kind="java" basedOn="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.SystemElement:"/>
                </appinfo>
             </annotation>
          </attribute>

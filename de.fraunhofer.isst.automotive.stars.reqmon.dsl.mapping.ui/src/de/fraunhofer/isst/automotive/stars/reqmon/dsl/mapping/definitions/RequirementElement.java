@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.models;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,15 +20,12 @@ public class RequirementElement {
 	}
 	
 	public void createSampleElements() {
-		//for (int i = 0; i < 10; i++) {
-			nameList.add("An Object ...");
-			nameList.add("A Relation ...");
-			nameList.add("A Function ...");
-			type.add("object");
-			type.add("relation");
-			type.add("function");
-		//}
-		
+		nameList.add("An Object ...");
+		nameList.add("A Relation ...");
+		nameList.add("A Function ...");
+		type.add("object");
+		type.add("relation");
+		type.add("function");
 	}
 	
 	public String getPath() {
@@ -40,6 +37,11 @@ public class RequirementElement {
 
 	public void setPath(String path) {
 		this.pathname = path;
+	}
+	
+	public String[] getFilterExt() {
+		String[] filterExt = { "*.txt", "*.doc", ".rtf", "*.*" };
+		return filterExt;
 	}
 	
 	public String getElement(int i) {
@@ -110,7 +112,7 @@ public class RequirementElement {
 		if (/*num < 40 ||*/ line.equals("") || !line.contains("-")) {
 		}
 		else {
-			System.out.println("num: " + num);
+			//System.out.println("num: " + num);
 			String[] words = line.split("-");
 			String last = words[words.length - 1];
 			if(last.contains("object")) {
@@ -127,7 +129,7 @@ public class RequirementElement {
 			}
 			String sub = line.substring(0, line.length()-last.length()-2);
 			nameList.add(sub);
-			System.out.println("line: " + line + ", sub: " + nameList + ", types: " + type);
+			//System.out.println("line: " + line + ", sub: " + nameList + ", types: " + type);
 			/*if (num == 20) {
 				System.out.println(num);
 				return;

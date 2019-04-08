@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.models;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions;
 
 public class SystemElement {
 	
@@ -13,6 +13,11 @@ public class SystemElement {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+	
+	public String[] getFilterExt() {
+		String[] filterExt = { "*.txt", "*.doc", ".rtf", "*.*" };
+		return filterExt;
 	}
 
 }

@@ -35,16 +35,17 @@ import org.eclipse.swt.widgets.Text;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic.ExtensionsHandler;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic.GeneratorController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic.ReqDSLParser;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.models.RequirementElement;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.models.SystemElement;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic.RequirementController;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic.SystemController;
+
 
 public class MappingPage {
 	
 	private Composite composite;
 	private Display display;
-	private RequirementElement reqElem;
+	private RequirementController reqCon;
 	private Shell shell;
-	private SystemElement sysElem;
+	private SystemController sysCon;
 	private Boolean isApp;
 	private ReqDSLParser parser;
 	private Composite compositeInside;
@@ -54,17 +55,16 @@ public class MappingPage {
 	public MappingPage(Composite composite, Display display, Shell shell, boolean isApp) {
 		this.composite = composite;
 		this.display = display;
-		this.reqElem = new RequirementElement();
-		reqElem.createSampleElements();
-		this.sysElem = new SystemElement();
 		this.shell = shell;
 		this.isApp = isApp;
 		this.parser = new ReqDSLParser(isApp);
 		this.extensionsHandler = new ExtensionsHandler();
+		this.reqCon = new RequirementController(extensionsHandler);
+		this.sysCon = new SystemController(extensionsHandler);
 	}
 	
-	public RequirementElement getReqElem() {
-		return reqElem;
+	public RequirementController getReqCon() {
+		return reqCon;
 	}
 	
 	public void createMappingPage() {
@@ -86,7 +86,7 @@ public class MappingPage {
 		insideLayout.horizontalSpacing = 10;
 		compositeInside.setLayout(insideLayout);
 		
-		for (int i = 0; i < reqElem.getElementSize(); i++) {
+		for (int i = 0; i < reqCon.getElementSize(); i++) {
 			createBoxItem(compositeInside, i, i+1);
 		}
 		
@@ -142,19 +142,17 @@ public class MappingPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("Requirements called!");
-				//RequirementTable table = new RequirementTable(display);
-				//table.createTable();
 				FileDialog fd = new FileDialog(shell, SWT.OPEN);
 		        fd.setText("Open");
 		        fd.setFilterPath("C:/");
-		        String[] filterExt = { "*.txt", "*.doc", ".rtf", "*.*" };
+		        String[] filterExt = reqCon.getFilterExt();
 		        fd.setFilterExtensions(filterExt);
 		        String selected = fd.open();
 		        if (selected != null) {
 		        	System.out.println(selected);
-		        	reqElem.setPath(selected);
+		        	reqCon.setPath(selected);
 		        	reqPath.setText(selected);
-		        	reqElem.readFile();
+		        	reqCon.executeRequirement();
 		        	updateList();
 		        }
 			}
@@ -168,12 +166,12 @@ public class MappingPage {
 				FileDialog fd = new FileDialog(shell, SWT.OPEN);
 		        fd.setText("Open");
 		        fd.setFilterPath("C:/");
-		        String[] filterExt = { "*.txt", "*.doc", ".rtf", "*.*" };
+		        String[] filterExt = sysCon.getFilterExt();
 		        fd.setFilterExtensions(filterExt);
 		        String selected = fd.open();
 		        if (selected != null) {
 		        	System.out.println(selected);
-			        sysElem.setPath(selected);
+			        sysCon.setPath(selected);
 			        sysPath.setText(selected);
 		        }
 			}
@@ -213,12 +211,12 @@ public class MappingPage {
 		number.setText("  " + num + ". ");
 		number.setAlignment(SWT.CENTER);
 		
-		String name = reqElem.getElement(index);
-		String type = reqElem.getType(index);
+		String name = reqCon.getElement(index);
+		String type = reqCon.getType(index);
 		int len = 0;
 		if (name != null) {
 			len = name.length();
-			System.out.println(num + " len: " + len);
+			//System.out.println(num + " len: " + len);
 		}
 		
 		Composite textcomp = new Composite(group, SWT.NONE);
@@ -291,7 +289,6 @@ public class MappingPage {
 		GridData gridData_2 = new GridData();
 		gridData_2.horizontalAlignment = SWT.FILL;
 		gridData_2.grabExcessHorizontalSpace = true;
-		//gridData_2.grabExcessVerticalSpace = true;
 		gridData_2.minimumHeight = 75;
 		gridData_2.minimumWidth = 200;
 		gridData_2.heightHint = 75;
@@ -523,9 +520,8 @@ public class MappingPage {
 		for (Control con : compositeInside.getChildren()) {
 			con.dispose();
 		}
-		for (int i = 0; i < reqElem.getElementSize(); i++) {
+		for (int i = 0; i < reqCon.getElementSize(); i++) {
 			createBoxItem(compositeInside, i, i+1);
-			//controlChildSize(compositeInside);
 			compositeInside.pack();
 			compositeInside.layout(true);
 			updateMinSize(compositeInside.getParent());

@@ -1,11 +1,6 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.app;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -26,42 +21,7 @@ public class MappingApplication {
 		shell.setLayout(shellLayout);
 		
 		helper = new MappingPage(shell, display, shell, true);
-		
-		Composite maincomp = new Composite(shell, SWT.NONE);
-		maincomp.setLayout(new FillLayout());
-		Composite inner = new Composite(maincomp, SWT.NONE);
-		helper.createBorder(inner);
-		
-		ScrolledComposite scrolledComposite = new ScrolledComposite(inner, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-		scrolledComposite.setExpandVertical(true);
-		scrolledComposite.setExpandHorizontal(true);
-		scrolledComposite.addListener(SWT.Resize, event -> helper.updateMinSize(scrolledComposite));
-		
-		Composite composite = new Composite(scrolledComposite, SWT.BORDER);
-		
-		GridLayout insideLayout = new GridLayout(1, false);
-		insideLayout.marginWidth = 10;
-		insideLayout.marginHeight = 10;
-		insideLayout.horizontalSpacing = 10;
-		composite.setLayout(insideLayout);
-		
-		helper.setListComposite(composite);
-		
-		for (int i = 0; i < helper.getReqElem().getElementSize(); i++) {
-			helper.createBoxItem(composite, i, i+1);
-		}
-		
-		scrolledComposite.setContent(composite);
-		
-		Composite top = new Composite(shell, SWT.NONE);
-		helper.createTop(top);
-		
-		Composite buttonFieldOne = new Composite(shell, SWT.NONE);
-		helper.createSaveAndCheckButtons(buttonFieldOne);
-		Composite buttonFieldTwo = new Composite(shell, SWT.NONE);
-		helper.createGenerateButtons(buttonFieldTwo);
-		
-		helper.setPositons(maincomp, buttonFieldOne, buttonFieldTwo, top);
+		helper.createMappingPage();
 
 		shell.setSize(1000, 600);
 		shell.open();

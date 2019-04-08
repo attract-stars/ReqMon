@@ -10,6 +10,8 @@ import org.eclipse.core.runtime.SafeRunner;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.IGenerator;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.IRequirement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.ISystem;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.RequirementElement;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.SystemElement;
 
 public class ExtensionsHandler {
 	
@@ -25,6 +27,8 @@ public class ExtensionsHandler {
 	private IConfigurationElement[] configReq;
 	private IConfigurationElement[] configSys;
 	private boolean isRegistry;
+	private boolean isRequirement;
+	private RequirementElement reqElem;
 	
 	public ExtensionsHandler() {
 		registry = Platform.getExtensionRegistry();
@@ -40,6 +44,17 @@ public class ExtensionsHandler {
 			configGen = registry.getConfigurationElementsFor(IGENERATOR_ID);
 			configReq = registry.getConfigurationElementsFor(IREQUIREMENT_ID);
 			configSys = registry.getConfigurationElementsFor(ISYSTEM_ID);
+		}
+		if (isRegistry && configReq.length == 0) {
+			isRequirement = false;
+			System.out.println("No Requirement registered!");
+		}
+		else if (!isRegistry) {
+			isRequirement = false;
+		}
+		else {
+			isRequirement = true;
+			System.out.println("Requirement registered: " + configReq);
 		}
 	}
 	
@@ -58,14 +73,14 @@ public class ExtensionsHandler {
 			for (IConfigurationElement e : configReq) {
 				System.out.println("Evaluating requirement extension");
 				final Object o = e.createExecutableExtension("class");
-				if (o instanceof IRequirement) {
+				if (o instanceof RequirementElement) {
 					testReqExtension(o);
 				}
 			}
 			for (IConfigurationElement e : configSys) {
 				System.out.println("Evaluating system extension");
 				final Object o = e.createExecutableExtension("class");
-				if (o instanceof ISystem) {
+				if (o instanceof SystemElement) {
 					testSysExtension(o);
 				}
 			}
@@ -109,6 +124,161 @@ public class ExtensionsHandler {
 		}
 	}
 	
+	public boolean isRequirement() {
+		return isRequirement;
+	}
+	
+	public void createRequirementElement() {
+		if (!isRegistry) {
+			return;
+		}
+		try {
+			if (configReq.length == 0) {
+				return;
+			}
+			final Object o = configReq[0].createExecutableExtension("class");
+			if (o instanceof RequirementElement) {
+				reqElem = (RequirementElement) o;
+			}
+			
+		} catch (CoreException ex) {
+			System.out.println(ex.getMessage());
+		}
+	}
+	
+	public void setRequirementPath(String path) {
+		if (!isRegistry) {
+			return;
+		}
+		ISafeRunnable runnable = new ISafeRunnable() {
+			
+			@Override
+			public void run() throws Exception {
+				reqElem.setPath(path);
+			}
+			
+			@Override
+			public void handleException(Throwable e) {
+				System.out.println("Exception in requirement client: can not set path!");
+			}
+		};
+		SafeRunner.run(runnable);
+	}
+	
+	public void setRequirementFilterExt(RequirementController rc) {
+		if (!isRegistry) {
+			return;
+		}
+		ISafeRunnable runnable = new ISafeRunnable() {
+			
+			@Override
+			public void run() throws Exception {
+				rc.setFilterExt(reqElem.getFilterExt());
+			}
+			
+			@Override
+			public void handleException(Throwable e) {
+				System.out.println("Exception in requirement client: can not get filter!");
+			}
+		};
+		SafeRunner.run(runnable);
+	}
+	
+	public void setRequirementElemSize(RequirementController rc) {
+		if (!isRegistry) {
+			return;
+		}
+		ISafeRunnable runnable = new ISafeRunnable() {
+			
+			@Override
+			public void run() throws Exception {
+				rc.setElementSize(reqElem.getElementSize());
+			}
+			
+			@Override
+			public void handleException(Throwable e) {
+				System.out.println("Exception in requirement client: can not get element size!");
+			}
+		};
+		SafeRunner.run(runnable);
+	}
+	
+	public void setRequirementElement(int index, RequirementController rc) {
+		if (!isRegistry) {
+			return;
+		}
+		ISafeRunnable runnable = new ISafeRunnable() {
+			
+			@Override
+			public void run() throws Exception {
+				rc.setElement(reqElem.getElement(index));
+			}
+			
+			@Override
+			public void handleException(Throwable e) {
+				System.out.println("Exception in requirement client: can not get element!");
+			}
+		};
+		SafeRunner.run(runnable);
+	}
+	
+	public void setRequirementType(int index, RequirementController rc) {
+		if (!isRegistry) {
+			return;
+		}
+		ISafeRunnable runnable = new ISafeRunnable() {
+			
+			@Override
+			public void run() throws Exception {
+				rc.setType(reqElem.getType(index));
+			}
+			
+			@Override
+			public void handleException(Throwable e) {
+				System.out.println("Exception in requirement client: can not get type!");
+			}
+		};
+		SafeRunner.run(runnable);
+	}
+	
+	public void readRequirements() {
+		if (!isRegistry) {
+			return;
+		}
+		ISafeRunnable runnable = new ISafeRunnable() {
+			
+			@Override
+			public void run() throws Exception {
+				reqElem.readFile();
+			}
+			
+			@Override
+			public void handleException(Throwable e) {
+				System.out.println("Exception in requirement client: can not read File!");
+			}
+		};
+		SafeRunner.run(runnable);
+	}
+	
+	public void createSampleElements() {
+		if (!isRegistry) {
+			return;
+		}
+		ISafeRunnable runnable = new ISafeRunnable() {
+			
+			@Override
+			public void run() throws Exception {
+				reqElem.createSampleElements();
+			}
+			
+			@Override
+			public void handleException(Throwable e) {
+				System.out.println("Exception in requirement client: can not create samples!");
+			}
+		};
+		SafeRunner.run(runnable);
+	}
+	
 	private void testGenExtension(final Object o) {
 		ISafeRunnable runnable = new ISafeRunnable() {
 			
@@ -130,7 +300,7 @@ public class ExtensionsHandler {
 			
 			@Override
 			public void run() throws Exception {
-				System.out.println("Requirement for files with the extensions: " + ((IRequirement) o).getFileExtension() + " exists.");
+				System.out.println("Requirement for files with the extensions: " + ((RequirementElement) o).getFilterExt() + " exists.");
 			}
 			
 			@Override
@@ -147,7 +317,7 @@ public class ExtensionsHandler {
 			
 			@Override
 			public void run() throws Exception {
-				System.out.println("System for files with the extensions: " + ((ISystem) o).getFileExtension() + " exists.");
+				System.out.println("System for files with the extensions: " + ((SystemElement) o).getFilterExt() + " exists.");
 			}
 			
 			@Override
