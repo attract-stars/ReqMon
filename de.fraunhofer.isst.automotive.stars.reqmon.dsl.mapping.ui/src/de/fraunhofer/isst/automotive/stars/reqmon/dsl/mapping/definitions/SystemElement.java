@@ -20,4 +20,8 @@ public class SystemElement {
 		return filterExt;
 	}
 
+	public void execute() {
+		System.out.println("System executed!");
+	}
+
 }

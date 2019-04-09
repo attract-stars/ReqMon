@@ -101,7 +101,7 @@ public class RequirementElement {
 		} finally {
 			  try { 
 				  reader.close();
-				  System.out.println("closed!");
+				  //System.out.println("closed!");
 			  } catch ( Exception e ) { 
 				  System.out.println("Unknown Exception!");
 			  }

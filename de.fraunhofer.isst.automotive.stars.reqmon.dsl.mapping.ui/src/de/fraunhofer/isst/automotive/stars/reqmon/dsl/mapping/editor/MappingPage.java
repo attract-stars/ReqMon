@@ -68,23 +68,26 @@ public class MappingPage {
 	}
 	
 	public void createMappingPage() {
+		setColor(composite, SWT.COLOR_WHITE);
 		Composite maincomp = new Composite(composite, SWT.NONE);
 		maincomp.setLayout(new FillLayout());
-		Composite inner = new Composite(maincomp, SWT.NONE);
-		createBorder(inner);
+		//Composite inner = new Composite(maincomp, SWT.NONE);
+		//createBorder(inner);
 		
-		ScrolledComposite scrolledComposite = new ScrolledComposite(inner, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+		ScrolledComposite scrolledComposite = new ScrolledComposite(maincomp, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		scrolledComposite.setExpandVertical(true);
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.addListener(SWT.Resize, event -> updateMinSize(scrolledComposite));
 		
-		compositeInside = new Composite(scrolledComposite, SWT.BORDER);
+		compositeInside = new Composite(scrolledComposite, SWT.NONE);
 		
 		GridLayout insideLayout = new GridLayout(1, false);
 		insideLayout.marginWidth = 10;
 		insideLayout.marginHeight = 10;
 		insideLayout.horizontalSpacing = 10;
 		compositeInside.setLayout(insideLayout);
+		//setColor(compositeInside, SWT.COLOR_GRAY);
+		setColor(compositeInside, SWT.COLOR_WIDGET_DARK_SHADOW);
 		
 		for (int i = 0; i < reqCon.getElementSize(); i++) {
 			createBoxItem(compositeInside, i, i+1);
@@ -173,6 +176,7 @@ public class MappingPage {
 		        	System.out.println(selected);
 			        sysCon.setPath(selected);
 			        sysPath.setText(selected);
+			        sysCon.executeSystem();
 		        }
 			}
 		});
@@ -189,7 +193,7 @@ public class MappingPage {
 		innerlayout.marginHeight = 1;
 		innerlayout.marginWidth = 1;
 		inner.setLayout(innerlayout);
-		inner.setBackground(display.getSystemColor(SWT.COLOR_WIDGET_DARK_SHADOW));
+		//inner.setBackground(display.getSystemColor(SWT.COLOR_WIDGET_DARK_SHADOW));
 	}
 	
 	public void createBoxItem(Composite parent, int index, int num) {
@@ -219,17 +223,18 @@ public class MappingPage {
 			//System.out.println(num + " len: " + len);
 		}
 		
-		Composite textcomp = new Composite(group, SWT.NONE);
+		Composite textcomp = new Composite(group, SWT.BORDER);
 		textcomp.setLayout(new FillLayout());
 		
 		Text reqLabel;
 		if (len >= 150) {
-			reqLabel = new Text(textcomp, SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
+			reqLabel = new Text(textcomp, SWT.MULTI | SWT.V_SCROLL | SWT.WRAP | SWT.CENTER);
 		}
 		else {
-			reqLabel = new Text(textcomp, SWT.MULTI | SWT.WRAP); 
+			reqLabel = new Text(textcomp, SWT.MULTI | SWT.WRAP | SWT.CENTER); 
 		}
 		reqLabel.setEditable(false);
+		reqLabel.setBackground(display.getSystemColor(SWT.COLOR_WHITE));
 		
 		if (name == null) {
 			System.out.println("No name!");
@@ -239,10 +244,10 @@ public class MappingPage {
 			reqLabel.setText("\nRequirement element name Description");
 		}
 		else {
-			if (len <= 60) {
+			if (len <= 100) {
 				reqLabel.setText("\n\n"+name);
 			}
-			else if (len <= 100) {
+			else if (len <= 140) {
 				reqLabel.setText("\n"+name);
 			}
 			else {
@@ -288,7 +293,6 @@ public class MappingPage {
 
 		GridData gridData_2 = new GridData();
 		gridData_2.horizontalAlignment = SWT.FILL;
-		gridData_2.grabExcessHorizontalSpace = true;
 		gridData_2.minimumHeight = 75;
 		gridData_2.minimumWidth = 200;
 		gridData_2.heightHint = 75;
@@ -502,10 +506,8 @@ public class MappingPage {
 		top.setLayoutData(formDataTop);
 	}
 	
-	public void setColor(Composite shell, Composite composite, Composite buttonField) {
-		shell.setBackground(display.getSystemColor(SWT.COLOR_BLACK));
-		composite.setBackground(display.getSystemColor(SWT.COLOR_GRAY));
-		buttonField.setBackground(display.getSystemColor(SWT.COLOR_BLACK));
+	public void setColor(Composite comp, int color) {
+		comp.setBackground(display.getSystemColor(color));
 	}
 	
 	public void setListComposite(Composite composite2) {
