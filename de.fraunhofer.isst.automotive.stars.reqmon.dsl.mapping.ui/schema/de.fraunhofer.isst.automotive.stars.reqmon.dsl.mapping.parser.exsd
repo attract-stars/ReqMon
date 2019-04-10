@@ -3,7 +3,7 @@
 <schema targetNamespace="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui" id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.system" name="System"/>
+         <meta.schema plugin="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui" id="de.fraunhofer.isst.stars.reqmon.dsl.mapping.parser" name="Parser"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -49,21 +49,21 @@
 
    <element name="client">
       <complexType>
+         <attribute name="lang" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
          <attribute name="class" type="string">
             <annotation>
                <documentation>
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.SystemElement:"/>
+                  <meta.attribute kind="java" basedOn=":de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.ILanguageParser"/>
                </appinfo>
-            </annotation>
-         </attribute>
-         <attribute name="lang" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
             </annotation>
          </attribute>
       </complexType>
