@@ -79,7 +79,6 @@ public class MappingPage {
 		insideLayout.marginHeight = 10;
 		insideLayout.horizontalSpacing = 10;
 		compositeInside.setLayout(insideLayout);
-		//setColor(compositeInside, SWT.COLOR_GRAY);
 		setColor(compositeInside, SWT.COLOR_WIDGET_DARK_SHADOW);
 		
 		for (int i = 0; i < reqCon.getElementSize(); i++) {
@@ -98,7 +97,7 @@ public class MappingPage {
 		setPositons(maincomp, buttonFieldOne, buttonFieldTwo, top);
 	}
 	
-	public void updateMinSize(Composite comp) {
+	private void updateMinSize(Composite comp) {
 		Rectangle clientArea = comp.getClientArea();
 		
 		if (comp instanceof ScrolledComposite) {
@@ -276,7 +275,6 @@ public class MappingPage {
 		gridData_1.horizontalAlignment = SWT.FILL;
 
 		GridData gridData_2 = new GridData();
-		//gridData_2.horizontalAlignment = SWT.FILL;
 		gridData_2.minimumHeight = 75;
 		gridData_2.minimumWidth = 200;
 		gridData_2.heightHint = 75;
