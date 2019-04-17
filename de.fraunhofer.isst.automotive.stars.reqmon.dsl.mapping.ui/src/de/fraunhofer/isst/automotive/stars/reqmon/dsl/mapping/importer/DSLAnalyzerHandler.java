@@ -40,15 +40,18 @@ public class DSLAnalyzerHandler {
 							&& o instanceof IDslAnalyzer) {
 						System.out.println("Starting DSL Analyzer");
 						executeAnalyzer((IDslAnalyzer) o, obj);
+						return;//Jump out if found to not hit error
 					}
 				}
 			}
 		} catch (CoreException ex) {
 			System.out.println(ex.getMessage());
 		}
+		throw new UnknownError("Language is not known for Analysis!");
 	}
 
 	private void executeAnalyzer(IDslAnalyzer analyzer, final EObject model) {
+		//TODO Think about Eclipse Job API
 		ISafeRunnable runnable = new ISafeRunnable() {
 			@Override
 			public void handleException(Throwable e) {
@@ -59,6 +62,7 @@ public class DSLAnalyzerHandler {
 			public void run() throws Exception {
 				analyzer.analyze(model);
 			}
+			
 		};
 		SafeRunner.run(runnable);
 	}

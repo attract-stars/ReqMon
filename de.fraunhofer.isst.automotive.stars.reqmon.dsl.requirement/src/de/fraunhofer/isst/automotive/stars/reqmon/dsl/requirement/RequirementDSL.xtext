@@ -16,7 +16,7 @@ Model:
 
 Requirement:
 	//PROBLEM condClauses before and after mainClause lead to ambiguity
-	'Req'? reqID=ReqID? ':' text=RequirementText ('.'|';') ('\n'+|'EOF')
+	'Req'? reqID=ReqID? ':' text=RequirementText ('.'|';') ('\n')+
 ;
 
 RequirementText:

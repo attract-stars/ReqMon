@@ -5,8 +5,10 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.importer.IDslAnalyzer;
+import de.fraunhofer.isst.stars.requirementDSL.Actor;
 import de.fraunhofer.isst.stars.requirementDSL.ConditionalClause;
 import de.fraunhofer.isst.stars.requirementDSL.Model;
+import de.fraunhofer.isst.stars.requirementDSL.Object;
 import de.fraunhofer.isst.stars.requirementDSL.Requirement;
 import de.fraunhofer.isst.stars.requirementDSL.RequirementText;
 
@@ -28,31 +30,28 @@ public class RequirementDslAstAnalyzer implements IDslAnalyzer {
     System.out.println("Analyzing Requirement DSL");
    	TreeIterator<EObject> modelIterator = model.eAllContents();
 	// TODO We might have to implement a Specific Adapter for the Work on the
-	// Leaves-> Leaves seems the only think interesting for consolidating the Data
+	// Leaves-> Leaves seems the only think interesting for consolidating the Data -> No also prior objects like constraints are interesting
 	// Model objects
 	// Whats with relations that are defined over a particular set of other objects
 	// / types /etc.
-	if (modelIterator.hasNext()) {
+	while (modelIterator.hasNext()) {
 	    EObject obj = modelIterator.next();
-	    System.out.println(obj.toString());
+	    if(obj instanceof Requirement) {
+	    	System.out.println(obj.toString());
+	    }
+	    if(obj instanceof Object) {
+	    	System.out.println(obj.toString());
+	    }
+	    if(obj instanceof Actor) {
+	    	System.out.println(obj.toString());
+	    }
 	}
-	// EList<EStructuralFeature> features =
-	// object.eClass().getEAllStructuralFeatures();// gives only Attributes and
-	// // References
-	// for (EStructuralFeature feat : features) {
-	// if(object.eIsSet(feat)) {
-	//
-	// } else {
-	// Object featObj = object.eGet(feat);
-	// if(featObj instanceof EObject) {
-	//
-	// }
-	// }
-	//
-	//
-	// }
 	
-	// throw new UnknownError("Language is not known for Analysis!");
+	//TODO WAS IST HIER EIGENTLICH DER RÜCKGABEWERT?
+//	Wir brauchen einmal die Elemente für das Mapping(Editor) -> Die annotieren wir hier ja sowieso
+//	Wir brauchen den Lookup für die einzelnen Elemente / Typen / Entitäten um sie in der Code Analyse nutzen zu können
+//	->Brauchen wir ein Lookup Repository?
+	
     }
 
     protected void analyzeRequirements(org.eclipse.emf.common.util.EList<Requirement> requirements) {
