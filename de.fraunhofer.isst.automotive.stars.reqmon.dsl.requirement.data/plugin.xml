@@ -8,10 +8,5 @@
             lang="http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/requirement/RequirementDSL">
       </client>
    </extension>
-   <extension
-         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.analyzer.RequirementDslElementRepository"
-         name="http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/requirement/RequirementDSL"
-         point="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.ElementRepository">
-   </extension>
 
 </plugin>

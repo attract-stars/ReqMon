@@ -2,17 +2,17 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.analytics.re
 
 import java.util.HashMap;
 
-import org.eclipse.core.resources.IFile;
+import org.eclipse.emf.ecore.resource.Resource;
 
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.SemanticTextElement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.SemanticTextElementMapping;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.analytics.repository.ITextElementRepository;
 
 /**
  * The singelton Repository to save all references between syntactic elements and semantic elements specific for each file.
  * @author mmauritz
  *
  */
-public class TextElementRepository extends HashMap<IFile, SemanticTextElementMapping<?, ?>> implements ITextElementRepository<IFile, SemanticTextElementMapping<?, ?>> {
+public class TextElementRepository extends HashMap<Resource, SemanticTextElementMapping<?, ? extends SemanticTextElement>> {
 
 	/**
 	 * 
