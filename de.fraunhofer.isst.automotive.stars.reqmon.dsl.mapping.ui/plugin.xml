@@ -2,6 +2,11 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="DslAnalyzer" name="DSL Analyzer" schema="schema/DslAnalyzer.exsd"/>
+   <extension-point id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.generator" name="Generator" schema="schema/de.fraunhofer.isst.automotive.stars.reqmon.sdl.mapping.generator.exsd"/>
+   <extension-point id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.requirement" name="Requirement" schema="schema/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.requirement.exsd"/>
+   <extension-point id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.system" name="System" schema="schema/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.system.exsd"/>
+   <extension-point id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.parser" name="Parser" schema="schema/de.fraunhofer.isst.stars.reqmon.dsl.mapping.parser.exsd"/>
+   <extension-point id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.proposal" name="Proposal" schema="schema/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.proposal.exsd"/>
    <extension
          point="org.eclipse.ui.editors">
       <editor

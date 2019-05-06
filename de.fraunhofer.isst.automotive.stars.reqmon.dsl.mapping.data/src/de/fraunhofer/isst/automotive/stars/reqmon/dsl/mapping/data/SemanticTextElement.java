@@ -4,6 +4,15 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data;
 public class SemanticTextElement {
 
 	
+	public SemanticTextElement(String str) {
+		text=str;
+	}
+	
+	public SemanticTextElement() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	
 	String text;
 
 	public String getText() {
@@ -34,6 +43,7 @@ public class SemanticTextElement {
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;

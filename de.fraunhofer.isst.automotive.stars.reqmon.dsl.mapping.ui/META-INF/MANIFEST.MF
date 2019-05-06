@@ -3,6 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Ui
 Bundle-SymbolicName: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: de.fraunhofer.isst.automotive.stars.reqmon.dsl.test.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
@@ -11,8 +12,12 @@ Require-Bundle: org.eclipse.core.runtime,
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement,
  org.eclipse.e4.core.di.annotations,
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui,
- org.eclipse.xtext.ui
+ org.eclipse.xtext.ui,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data
 Export-Package: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.importer;uses:="de.fraunhofer.isst.stars.requirementDSL"
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui
-Import-Package: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data
+Import-Package: org.eclipse.e4.core.di;bundle-version="1.7.100",
+ org.eclipse.e4.ui.di;bundle-version="1.2.500"
+Export-Package: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.importer

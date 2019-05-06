@@ -4,4 +4,12 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.SemanticTextE
 
 public class RequirementTextElement extends SemanticTextElement {
 
+	
+	public RequirementTextElement(String text) {
+		super(text);
+	}
+	
+	public RequirementTextElement() {
+		// TODO Auto-generated constructor stub
+	}
 }

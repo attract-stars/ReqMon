@@ -2,7 +2,7 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data;
 
 import java.util.HashMap;
 
-import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.SemanticTextElementMapping;
 
@@ -11,7 +11,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.SemanticTextE
  * @author mmauritz
  *
  */
-public class RequirementTextElementMapping extends HashMap<EClassifier, RequirementTextElement> implements SemanticTextElementMapping<EClassifier, RequirementTextElement>{
+public class RequirementTextElementMapping extends HashMap<EObject, RequirementTextElement> implements SemanticTextElementMapping<EObject, RequirementTextElement>{
 
 	/**
 	 * 

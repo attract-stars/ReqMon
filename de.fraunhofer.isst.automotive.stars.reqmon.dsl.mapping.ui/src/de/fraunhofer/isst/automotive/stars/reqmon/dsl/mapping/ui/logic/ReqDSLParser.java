@@ -1,15 +1,16 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic;
 
 import java.io.Reader;
 import java.io.StringReader;
 
-import javax.inject.Inject;
-
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.mwe.internal.core.ast.util.Injector;
 import org.eclipse.xtext.parser.IParseResult;
 import org.eclipse.xtext.parser.IParser;
 import org.eclipse.xtext.parser.ParseException;
+
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+
 import de.fraunhofer.isst.stars.RequirementDSLRuntimeModule;
 import de.fraunhofer.isst.stars.RequirementDSLStandaloneSetup;
 
@@ -35,8 +36,8 @@ public class ReqDSLParser {
 	}
 	
 	private void setupAppParser() {
-//		Injector injector = new RequirementDSLStandaloneSetup().createInjectorAndDoEMFRegistration();
-//		injector.injectMembers(this);
+		Injector injector = new RequirementDSLStandaloneSetup().createInjectorAndDoEMFRegistration();
+		injector.injectMembers(this);
 	}
 	
 	public EObject parse(Reader reader) throws ParseException {

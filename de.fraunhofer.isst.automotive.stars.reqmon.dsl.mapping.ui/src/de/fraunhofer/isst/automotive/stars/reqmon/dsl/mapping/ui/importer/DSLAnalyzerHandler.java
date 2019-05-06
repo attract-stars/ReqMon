@@ -1,7 +1,9 @@
 /**
  * 
  */
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.importer;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.importer;
+
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -13,6 +15,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.emf.ecore.EObject;
+
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.SemanticTextElement;
 
 /**
  * @author mmauritz
@@ -60,7 +64,7 @@ public class DSLAnalyzerHandler {
 
 			@Override
 			public void run() throws Exception {
-				analyzer.analyze(model);
+				Set<SemanticTextElement> elements = analyzer.analyze(model);
 			}
 			
 		};

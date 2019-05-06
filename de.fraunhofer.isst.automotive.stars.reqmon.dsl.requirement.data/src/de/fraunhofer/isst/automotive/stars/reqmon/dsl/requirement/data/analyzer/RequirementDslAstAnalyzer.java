@@ -7,12 +7,11 @@ import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.SemanticTextElement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.analytics.repository.impl.TextElementRepository;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.importer.IDslAnalyzer;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.importer.IDslAnalyzer;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.RequirementTextElement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.RequirementTextElementMapping;
 import de.fraunhofer.isst.stars.requirementDSL.Actor;
@@ -30,18 +29,19 @@ public class RequirementDslAstAnalyzer implements IDslAnalyzer {
 	
 		
 	class DslTextElement {
-		EClassifier type;
+		//TODO REWORK
+		Class<?> type;
 		String text;
 		
-		public DslTextElement(EClassifier eType, String text) {
-			this.type=eType;
+		public DslTextElement(Class<?> type, String text) {
+			this.type=type;
 			this.text=text;
 		}
 		
 		/**
 		 * @return the type
 		 */
-		public EClassifier getType() {
+		public Class<?> getType() {
 			return type;
 		}
 
@@ -136,11 +136,29 @@ public class RequirementDslAstAnalyzer implements IDslAnalyzer {
 	// Whats with relations that are defined over a particular set of other objects
 	// / types /etc.
 	while (modelIterator.hasNext()) {
-	    EObject obj = modelIterator.next();
+	    EObject obj = modelIterator.next();   
+	    
+	    //TODO hier muss jetzt eigentlich der Typ und Text gefunden werden.
 	    if(obj instanceof Requirement) {
 	    	System.out.println(obj.toString());
 	    }
 	    if(obj instanceof Object) {
+	    	for (String text : ((Object) obj).getObject()) {
+	    		//TODO REWORk
+	    		boolean exits=false;
+	    		for (DslTextElement element : lookup.keySet()) {
+					if(element.getText().equals(text)) {
+						exits=true;
+					}
+				} 
+	    		if(!exits) { //TODO PROBLEM TO FIND DE ELEMNT WITH TEXT
+	    			RequirementTextElement texElement = new RequirementTextElement(text);
+	    			lookup.put(new DslTextElement(String.class,text), texElement);
+	    			mapping.put(obj, texElement);//TODO PROBLEM STRINGS SIND KEINE EOBJECT WERDEN ABER SO VERWALTET
+	    			semElements.add(texElement);
+	    		}
+			}
+	    	
 	    	System.out.println(obj.toString());
 	    }
 	    if(obj instanceof Actor) {

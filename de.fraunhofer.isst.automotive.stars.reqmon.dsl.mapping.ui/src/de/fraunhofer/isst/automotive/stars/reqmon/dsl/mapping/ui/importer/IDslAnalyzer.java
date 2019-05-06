@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.importer;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.importer;
 
 import java.util.Set;
 
