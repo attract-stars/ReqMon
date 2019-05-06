@@ -13,11 +13,11 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.e4.core.di.annotations,
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui,
  org.eclipse.xtext.ui,
- de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data,
+ org.eclipse.e4.core.di,
+ org.eclipse.e4.ui.di
 Export-Package: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.importer;uses:="de.fraunhofer.isst.stars.requirementDSL"
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui
-Import-Package: org.eclipse.e4.core.di;bundle-version="1.7.100",
- org.eclipse.e4.ui.di;bundle-version="1.2.500"
 Export-Package: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions,
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.importer
