@@ -1,5 +1,7 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor;
 
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
@@ -25,11 +27,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.importer.DSLAnalyzerHandler;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.GeneratorController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.ParserController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.ProposalController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.RequirementController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.SystemController;
+import de.fraunhofer.isst.stars.reqmon.lmeditor.widgets.XtextParserEclipse;
 
 
 public class MappingPage {
@@ -137,19 +141,27 @@ public class MappingPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("Requirements called!");
-				FileDialog fd = new FileDialog(shell, SWT.OPEN);
-		        fd.setText("Open");
-		        fd.setFilterPath("C:/");
-		        String[] filterExt = reqCon.getFilterExt();
-		        fd.setFilterExtensions(filterExt);
-		        String selected = fd.open();
-		        if (selected != null) {
-		        	System.out.println(selected);
-		        	reqCon.setPath(selected);
-		        	reqPath.setText(selected);
-		        	reqCon.executeRequirement();
-		        	updateList();
-		        }
+//				FileDialog fd = new FileDialog(shell, SWT.OPEN);
+//		        fd.setText("Open");
+//		        fd.setFilterPath("C:/");
+//		        String[] filterExt = reqCon.getFilterExt();
+//		        fd.setFilterExtensions(filterExt);
+//		        String selected = fd.open();
+//		        if (selected != null) {
+//		        	System.out.println(selected);
+//		        	reqCon.setPath(selected);
+//		        	reqPath.setText(selected);
+//		        	reqCon.executeRequirement();
+//		        	updateList();
+//		        }
+				URI testfileUri = URI.createFileURI("C:/Users/mmauritz/Git/reqmon/de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.material/de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.material/dadas_redesign_20180320.reqDSL");
+				reqPath.setText(testfileUri.devicePath());
+				XtextParserEclipse parser = new XtextParserEclipse();
+				EObject obj = parser.parse(testfileUri);
+				if (obj != null) {
+					DSLAnalyzerHandler reqHandler = new DSLAnalyzerHandler();
+					reqHandler.execute(obj);
+				}
 			}
 		});
 		

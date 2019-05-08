@@ -27,8 +27,11 @@ import de.fraunhofer.isst.stars.requirementDSL.RequirementText;
 //TODO THIS CLASS NEEDS AN LOOKUP FOR EXISTING ELEMENTS
 public class RequirementDslAstAnalyzer implements IDslAnalyzer {
 	
+
+	
+	static class  DslTextElement {
 		
-	class DslTextElement {
+		
 		//TODO REWORK
 		Class<?> type;
 		String text;
