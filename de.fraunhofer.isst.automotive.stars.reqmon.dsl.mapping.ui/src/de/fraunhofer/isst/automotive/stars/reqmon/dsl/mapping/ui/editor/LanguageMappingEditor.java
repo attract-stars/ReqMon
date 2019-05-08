@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.editor;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;

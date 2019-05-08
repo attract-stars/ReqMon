@@ -1,6 +1,6 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.testApp;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.IRequirementElement;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement;
 
 public class TestAppRequirementElement implements IRequirementElement {
 	

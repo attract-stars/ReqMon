@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -8,8 +8,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.swt.widgets.Text;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.IMappingParser;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.testApp.TestAppProposal;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMappingParser;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppProposal;
 
 public class ProposalController {
 	

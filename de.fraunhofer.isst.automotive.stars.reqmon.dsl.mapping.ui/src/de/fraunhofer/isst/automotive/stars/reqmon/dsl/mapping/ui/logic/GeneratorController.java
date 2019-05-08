@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.IGenerator;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IGenerator;
 
 public class GeneratorController {
 	

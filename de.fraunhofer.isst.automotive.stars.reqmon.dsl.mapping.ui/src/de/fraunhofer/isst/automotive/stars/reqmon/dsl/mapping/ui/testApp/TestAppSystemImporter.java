@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.testApp;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp;
 
 public class TestAppSystemImporter {
 	

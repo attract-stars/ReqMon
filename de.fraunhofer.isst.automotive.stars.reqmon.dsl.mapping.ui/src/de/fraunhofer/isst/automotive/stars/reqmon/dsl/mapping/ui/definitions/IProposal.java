@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions;
 
 import org.eclipse.swt.widgets.Text;
 

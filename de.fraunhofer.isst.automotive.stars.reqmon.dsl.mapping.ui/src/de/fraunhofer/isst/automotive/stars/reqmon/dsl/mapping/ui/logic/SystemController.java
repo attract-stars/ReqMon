@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -7,8 +7,8 @@ import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.ISystemImorter;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.testApp.TestAppSystemImporter;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.ISystemImorter;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppSystemImporter;
 
 public class SystemController {
 	

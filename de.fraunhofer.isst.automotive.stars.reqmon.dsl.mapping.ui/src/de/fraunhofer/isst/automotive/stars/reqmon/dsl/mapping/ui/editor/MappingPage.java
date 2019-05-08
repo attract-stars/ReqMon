@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.editor;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor;
 
 import java.util.List;
 
@@ -27,17 +27,17 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic.GeneratorController;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic.ParserController;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic.ProposalController;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic.RequirementController;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic.SystemController;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.testApp.TestAppProposal;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.testApp.TestAppRequirementElement;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.testApp.TestAppRequirementImporter;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.testApp.TestAppGenerator;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.testApp.TestAppSystemImporter;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.testApp.TestAppMappingParser;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.GeneratorController;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.ParserController;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.ProposalController;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.RequirementController;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.SystemController;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppGenerator;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppMappingParser;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppProposal;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppRequirementElement;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppRequirementImporter;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppSystemImporter;
 
 /**
  * This class creates the GUI of the language mapping editor. 

@@ -1,10 +1,10 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.testApp;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp;
 
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.editor.MappingPage;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.MappingPage;
 
 public class MappingApplication {
 	

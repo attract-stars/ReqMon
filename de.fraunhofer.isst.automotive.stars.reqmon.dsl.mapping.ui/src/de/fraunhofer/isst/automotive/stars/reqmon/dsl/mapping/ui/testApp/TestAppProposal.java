@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.testApp;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp;
 
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;

@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.testApp;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,10 +8,10 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.IRequirementElement;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.IRequirementImporter;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.editor.MappingPage;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic.RequirementController;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementImporter;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.MappingPage;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.RequirementController;
 
 public class TestAppRequirementImporter implements IRequirementImporter {
 	

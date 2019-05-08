@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -11,7 +11,7 @@ import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.IMappingParser;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMappingParser;
 
 
 
