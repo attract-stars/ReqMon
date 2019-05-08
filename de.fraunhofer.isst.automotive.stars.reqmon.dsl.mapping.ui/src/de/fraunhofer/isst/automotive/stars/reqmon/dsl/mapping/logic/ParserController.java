@@ -11,7 +11,9 @@ import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.ILanguageParser;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.IMappingParser;
+
+
 
 public class ParserController {
 	
@@ -22,8 +24,7 @@ public class ParserController {
 	private IConfigurationElement[] configPars;
 	private boolean isExtPars;
 	private boolean isRegistry;
-	private ReqDSLParser reqParser;
-	private ILanguageParser parserExt;
+	private IMappingParser parser;
 	
 	public ParserController(boolean isApp) {
 		registry = Platform.getExtensionRegistry();
@@ -51,9 +52,6 @@ public class ParserController {
 			isExtPars = false;
 		}
 		
-		if (!isExtPars) {
-			reqParser = new ReqDSLParser(isApp);
-		}
 	}
 	
 	public void checkExtensions() {
@@ -64,7 +62,7 @@ public class ParserController {
 			for (IConfigurationElement e : configPars) {
 				System.out.println("Evaluating parser extension");
 				final Object o = e.createExecutableExtension("class");
-				if (o instanceof ILanguageParser) {
+				if (o instanceof IMappingParser) {
 					testParsExtension(o);
 				}
 			}
@@ -76,9 +74,6 @@ public class ParserController {
 	public void parserInput(String input) {
 		if (isExtPars) {
 			parseInputExt(input);
-		}
-		else {
-			reqParser.parserInput(input);
 		}
 	}
 	
@@ -108,8 +103,8 @@ public class ParserController {
 				return;
 			}
 			final Object o = configPars[0].createExecutableExtension("class");
-			if (o instanceof ILanguageParser) {
-				parserExt = (ILanguageParser) o;
+			if (o instanceof IMappingParser) {
+				parser = (IMappingParser) o;
 			}
 			
 		} catch (CoreException ex) {
@@ -121,7 +116,7 @@ public class ParserController {
 		Job job = new Job("Parse input") { 
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
-					parserExt.parserInput(input);
+					parser.parserInput(input);
 				} 
 				catch (Exception ex) {
 					System.out.println("Exception in parser client: can not parse input!");

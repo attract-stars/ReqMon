@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.testApp;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,24 +8,27 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RequirementElement {
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.IRequirementElement;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.IRequirementImporter;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.editor.MappingPage;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic.RequirementController;
+
+public class TestAppRequirementImporter implements IRequirementImporter {
 	
-	private List<String> nameList;
-	private List<String> type;
+	private List<IRequirementElement> requirements;
 	private String pathname;
+	private MappingPage mp;
 	
-	public RequirementElement() {
-		this.nameList = new ArrayList<String>();
-		this.type = new ArrayList<String>();
+	public TestAppRequirementImporter(MappingPage mp) {
+		this.mp = mp;
+		requirements = new ArrayList<IRequirementElement>();
+		createSampleElements();
 	}
 	
 	public void createSampleElements() {
-		nameList.add("An Object ...");
-		nameList.add("A Relation ...");
-		nameList.add("A Function ...");
-		type.add("object");
-		type.add("relation");
-		type.add("function");
+		requirements.add(new TestAppRequirementElement("An Object ...", "object"));
+		requirements.add(new TestAppRequirementElement("A Relation ...", "realtion"));
+		requirements.add(new TestAppRequirementElement("A Function ...", "function"));
 	}
 	
 	public String getPath() {
@@ -44,28 +47,21 @@ public class RequirementElement {
 		return filterExt;
 	}
 	
-	public String getElement(int i) {
-		if (i < nameList.size()) {
-			return nameList.get(i);
-		}
-		return null;
+	
+	public List<IRequirementElement> getRequirements() {
+		return requirements;
+	}
+
+	
+	@Override
+	public void execute(RequirementController rc) {
+		readFile();
+		mp.updateList();
 	}
 	
-	public String getType(int i) {
-		if (i < type.size()) {
-			return type.get(i);
-		}
-		return null;
-	}
-	
-	public int getElementSize() {
-		return nameList.size();
-	}
-	
-	public void readFile() {
+	private void readFile() {
 		Reader reader = null;
-		nameList = new ArrayList<String>();
-		type = new ArrayList<String>();
+		requirements = new ArrayList<IRequirementElement>();
 		
 		try {
 			if (pathname == null) {
@@ -113,22 +109,24 @@ public class RequirementElement {
 		}
 		else {
 			//System.out.println("num: " + num);
+			TestAppRequirementElement reqElem = new TestAppRequirementElement();
 			String[] words = line.split("-");
 			String last = words[words.length - 1];
 			if(last.contains("object")) {
-				type.add("object");
+				reqElem.setElementType("object");
 			}
 			else if (last.contains("relation")) {
-				type.add("relation");
+				reqElem.setElementType("relation");
 			}
 			else if (last.contains("function")) {
-				type.add("function");
+				reqElem.setElementType("function");
 			}
 			else {
-				type.add("unknown");
+				reqElem.setElementType("unknown");
 			}
 			String sub = line.substring(0, line.length()-last.length()-2);
-			nameList.add(sub);
+			reqElem.setElementName(sub);
+			requirements.add(reqElem);
 			//System.out.println("line: " + line + ", sub: " + nameList + ", types: " + type);
 			/*if (num == 20) {
 				System.out.println(num);
@@ -136,5 +134,7 @@ public class RequirementElement {
 			}*/
 		}
 	}
+
+	
 
 }

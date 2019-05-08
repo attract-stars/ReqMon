@@ -8,8 +8,8 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.swt.widgets.Text;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.ILanguageParser;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.Proposal;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.IMappingParser;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.testApp.TestAppProposal;
 
 public class ProposalController {
 	
@@ -19,8 +19,8 @@ public class ProposalController {
 	private IExtensionRegistry registry;
 	private IConfigurationElement[] configProp;
 	private boolean isRegistry;
-	private Proposal proposalExt;
-	private Proposal proposal;
+	private TestAppProposal proposalExt;
+	private TestAppProposal proposal;
 	private boolean isExtProp;
 	
 	public ProposalController() {
@@ -50,7 +50,7 @@ public class ProposalController {
 		}
 		
 		if (!isExtProp) {
-			this.proposal = new Proposal();
+			this.proposal = new TestAppProposal();
 		}
 	}
 	
@@ -80,7 +80,7 @@ public class ProposalController {
 			for (IConfigurationElement e : configProp) {
 				System.out.println("Evaluating proposal extension");
 				final Object o = e.createExecutableExtension("class");
-				if (o instanceof ILanguageParser) {
+				if (o instanceof IMappingParser) {
 					testPropExtension(o);
 				}
 			}
@@ -150,8 +150,8 @@ public class ProposalController {
 				return;
 			}
 			final Object o = configProp[0].createExecutableExtension("class");
-			if (o instanceof Proposal) {
-				proposalExt = (Proposal) o;
+			if (o instanceof TestAppProposal) {
+				proposalExt = (TestAppProposal) o;
 			}
 			
 		} catch (CoreException ex) {

@@ -54,9 +54,10 @@ public class GeneratorController {
 		this.generateLabels = new ArrayList<String>();
 		
 		generateGeneratorList();
-		if (getGenerators().isEmpty()) {
-			generateSampleList();
+		if (generators.isEmpty()) {
+			addGenerator("No Generator!", "Can't generate");
 		}
+		
 	}
 	
 	public void checkExtensions() {
@@ -149,11 +150,6 @@ public class GeneratorController {
 		return false;
 	}
 	
-	public void generateSampleList() {
-		addGenerator("Generator 1", "Generate (G1)");
-		addGenerator("Generator 2", "Generate (G2)");
-		addGenerator("Generator 3", "Generate (G3)");
-	}
 	
 	public String getLabel(String name) {
 		for (int i = 0; i < generators.size(); i++) {

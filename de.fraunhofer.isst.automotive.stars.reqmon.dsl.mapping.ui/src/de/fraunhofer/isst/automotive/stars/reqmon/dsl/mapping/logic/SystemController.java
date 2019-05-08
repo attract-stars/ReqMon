@@ -7,7 +7,8 @@ import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.SystemElement;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.definitions.ISystemImorter;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.testApp.TestAppSystemImporter;
 
 public class SystemController {
 	
@@ -17,12 +18,12 @@ public class SystemController {
 	private IExtensionRegistry registry;
 	private IConfigurationElement[] configSys;
 	private boolean isRegistry;
-	private SystemElement sysElem;
-	private SystemElement sysElemExt;
+	private ISystemImorter sysImporter;
 	private String[] filter;
 	private boolean isExtSys;
 	
 	public SystemController() {
+		// test if there is a registry. (If not, the MappingPage is started by the testApp) 
 		registry = Platform.getExtensionRegistry();
 		if (registry == null) {
 			System.out.println("No registry!");
@@ -40,7 +41,7 @@ public class SystemController {
 			}
 			else {
 				isExtSys = true;
-				createSystemElement();
+				createSystemImporter();
 				System.out.println("System registered");
 			}
 		}
@@ -48,9 +49,7 @@ public class SystemController {
 			isExtSys = false;
 		}
 		
-		if (!isExtSys) {
-			this.sysElem = new SystemElement();
-		}
+		
 	}
 	
 	public void checkExtensions() {
@@ -61,7 +60,7 @@ public class SystemController {
 			for (IConfigurationElement e : configSys) {
 				System.out.println("Evaluating system extension");
 				final Object o = e.createExecutableExtension("class");
-				if (o instanceof SystemElement) {
+				if (o instanceof TestAppSystemImporter) {
 					testSysExtension(o);
 				}
 			}
@@ -73,9 +72,6 @@ public class SystemController {
 	public void setPath(String path) {
 		if (isExtSys) {
 			setSystemPath(path);
-		}
-		else {
-			sysElem.setPath(path);
 		}
 	}
 	
@@ -90,18 +86,14 @@ public class SystemController {
 			return this.filter;
 		}
 		else {
-			System.out.println("Default-Filter");
-			return sysElem.getFilterExt();
+			return null; 
 		}
 	}
 	
 	public void executeSystem() {
 		if (isExtSys) {
 			System.out.println("Extern System executed");
-			executeExtSystem();
-		}
-		else {
-			sysElem.execute();
+			executeSystemImporter();
 		}
 	}
 	
@@ -113,7 +105,7 @@ public class SystemController {
 			
 			@Override
 			public void run() throws Exception {
-				sysElemExt.setPath(path);
+				sysImporter.setPath(path);
 			}
 			
 			@Override
@@ -132,7 +124,7 @@ public class SystemController {
 			
 			@Override
 			public void run() throws Exception {
-				setFilterExt(sysElemExt.getFilterExt());
+				setFilterExt(sysImporter.getFilterExt());
 			}
 			
 			@Override
@@ -143,7 +135,7 @@ public class SystemController {
 		SafeRunner.run(runnable);
 	}
 	
-	public void executeExtSystem() {
+	public void executeSystemImporter() {
 		if (!isRegistry) {
 			return;
 		}
@@ -151,7 +143,7 @@ public class SystemController {
 			
 			@Override
 			public void run() throws Exception {
-				sysElemExt.execute();
+				sysImporter.execute();
 			}
 			
 			@Override
@@ -179,7 +171,7 @@ public class SystemController {
 		
 	}
 	
-	private void createSystemElement() {
+	private void createSystemImporter() {
 		if (!isRegistry) {
 			return;
 		}
@@ -188,8 +180,8 @@ public class SystemController {
 				return;
 			}
 			final Object o = configSys[0].createExecutableExtension("class");
-			if (o instanceof SystemElement) {
-				sysElemExt = (SystemElement) o;
+			if (o instanceof TestAppSystemImporter) {
+				sysImporter = (ISystemImorter) o;
 			}
 			
 		} catch (CoreException ex) {

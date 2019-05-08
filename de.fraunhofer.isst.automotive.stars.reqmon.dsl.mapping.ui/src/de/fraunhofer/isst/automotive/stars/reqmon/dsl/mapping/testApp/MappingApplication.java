@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.app;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.testApp;
 
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Display;

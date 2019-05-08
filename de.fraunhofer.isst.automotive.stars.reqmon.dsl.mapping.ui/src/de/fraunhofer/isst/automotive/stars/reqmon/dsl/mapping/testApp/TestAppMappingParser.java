@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.logic;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.testApp;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -14,12 +14,12 @@ import com.google.inject.Injector;
 import de.fraunhofer.isst.stars.RequirementDSLRuntimeModule;
 import de.fraunhofer.isst.stars.RequirementDSLStandaloneSetup;
 
-public class ReqDSLParser {
+public class TestAppMappingParser {
 	
 	@Inject
 	private IParser parser;
 	
-	public ReqDSLParser(boolean isApp) {
+	public TestAppMappingParser(boolean isApp) {
 		if (isApp) {
 			setupAppParser();
 		}
