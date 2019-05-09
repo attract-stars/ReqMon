@@ -120,10 +120,10 @@ public class MappingPage {
 		scrolledComposite.setContent(compositeInside);
 		
 		// create three example items
-		int elemSize = isApp ? reqImporter.getRequirements().size() : reqCon.getRequirements().size();
+	/*	int elemSize = isApp ? reqImporter.getRequirements().size() : reqCon.getRequirements().size();
 		for (int i = 0; i < elemSize; i++) {
 			createBoxItem(compositeInside, i, i+1);
-		}
+		}*/
 		
 		// create the top
 		Composite top = new Composite(composite, SWT.NONE);
