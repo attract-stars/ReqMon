@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp;
 
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.fieldassist.ContentProposalAdapter;
@@ -10,7 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Text;
 
-public class Proposal {
+public class TestAppProposal {
 	
 	public void createDeco(Text text) {
 		ControlDecoration deco = new ControlDecoration(text, SWT.TOP | SWT.LEFT);

@@ -11,6 +11,10 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
+/**
+ * This class extends EditorPart. It creates the MappingPage for the language mapping editor.
+ * @author sgraf
+ */
 public class LanguageMappingEditor extends EditorPart {
 
 	@Override
@@ -25,6 +29,9 @@ public class LanguageMappingEditor extends EditorPart {
 		
 	}
 
+	/**
+	 * Sets the site, the input and sets the name of the file as part name. 
+	 */
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
@@ -47,6 +54,9 @@ public class LanguageMappingEditor extends EditorPart {
 		return false;
 	}
 
+	/**
+	 * Creates a MappingPage.
+	 */
 	@Override
 	public void createPartControl(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);

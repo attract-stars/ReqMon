@@ -1,5 +1,7 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic;
 
+import java.util.List;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -11,7 +13,10 @@ import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.RequirementElement;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.MappingPage;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppRequirementElement;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppRequirementImporter;
 
 public class RequirementController {
 	
@@ -19,17 +24,19 @@ public class RequirementController {
 			"de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.requirement";
 	private IExtensionRegistry registry;
 	private IConfigurationElement[] configReq;
-	private RequirementElement reqElem;
 	private boolean isRegistry;
 	private boolean isExtReq;
-	private RequirementElement reqElemExt;
+	private TestAppRequirementImporter reqElem;
+	private List<IRequirementElement> requirements;
 	private String[] filter;
 	private int elemSize;
 	private String element;
 	private String type;
+	private MappingPage mp;
 	
-	public RequirementController() {
+	public RequirementController(MappingPage mp) {
 		registry = Platform.getExtensionRegistry();
+		this.mp = mp;
 		if (registry == null) {
 			System.out.println("No registry!");
 			isRegistry = false;
@@ -54,15 +61,22 @@ public class RequirementController {
 		else {
 			isExtReq = false;
 		}
-		
-		
-		
-		if (!isExtReq) {
-			this.reqElem = new RequirementElement();
-			reqElem.createSampleElements();
-		}
 	}
 	
+	
+	
+	public List<IRequirementElement> getRequirements() {
+		return requirements;
+	}
+
+
+
+	public void setRequirements(List<IRequirementElement> requirements) {
+		this.requirements = requirements;
+	}
+
+
+
 	public void checkExtensions() {
 		if (!isRegistry) {
 			return;
@@ -71,7 +85,7 @@ public class RequirementController {
 			for (IConfigurationElement e : configReq) {
 				System.out.println("Evaluating requirement extension");
 				final Object o = e.createExecutableExtension("class");
-				if (o instanceof RequirementElement) {
+				if (o instanceof TestAppRequirementElement) {
 					testReqExtension(o);
 				}
 			}
@@ -83,9 +97,6 @@ public class RequirementController {
 	public void setPath(String path) {
 		if (isExtReq) {
 			setRequirementPath(path);
-		}
-		else {
-			reqElem.setPath(path);
 		}
 	}
 	
@@ -99,49 +110,7 @@ public class RequirementController {
 			return filter;
 		}
 		else {
-			return reqElem.getFilterExt();
-		}
-	}
-
-	public void setElementSize(int elemSize) {
-		this.elemSize = elemSize;
-	}
-
-	public int getElementSize() {
-		if (isExtReq) {
-			setRequirementElemSize();
-			return elemSize;
-		}
-		else {
-			return reqElem.getElementSize();
-		}
-	}
-	
-	public void setElement(String element) {
-		this.element = element;
-	}
-	
-	public String getElement(int index) {
-		if (isExtReq ) {
-			setRequirementElement(index);
-			return element;
-		}
-		else {
-			return reqElem.getElement(index);
-		}
-	}
-	
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getType(int index) {
-		if (isExtReq) {
-			setRequirementType(index);
-			return type;
-		}
-		else {
-			return reqElem.getType(index);
+			return null;
 		}
 	}
 
@@ -149,9 +118,10 @@ public class RequirementController {
 		if (isExtReq) {
 			readRequirements();
 		}
-		else {
-			reqElem.readFile();
-		}
+	}
+	
+	public void updateList() {
+		mp.updateList();
 	}
 	
 	
@@ -163,7 +133,7 @@ public class RequirementController {
 			
 			@Override
 			public void run() throws Exception {
-				reqElemExt.setPath(path);
+				reqElem.setPath(path);
 			}
 			
 			@Override
@@ -182,7 +152,7 @@ public class RequirementController {
 			
 			@Override
 			public void run() throws Exception {
-				setFilterExt(reqElemExt.getFilterExt());
+				setFilterExt(reqElem.getFilterExt());
 			}
 			
 			@Override
@@ -193,7 +163,7 @@ public class RequirementController {
 		SafeRunner.run(runnable);
 	}
 	
-	private void setRequirementElemSize() {
+	/*private void setRequirementElemSize() {
 		if (!isRegistry) {
 			return;
 		}
@@ -201,7 +171,7 @@ public class RequirementController {
 			
 			@Override
 			public void run() throws Exception {
-				setElementSize(reqElemExt.getElementSize());
+				setElementSize(reqElem.getElementSize());
 			}
 			
 			@Override
@@ -220,7 +190,7 @@ public class RequirementController {
 			
 			@Override
 			public void run() throws Exception {
-				setElement(reqElemExt.getElement(index));
+				setElement(reqElem.getElement(index));
 			}
 			
 			@Override
@@ -239,7 +209,7 @@ public class RequirementController {
 			
 			@Override
 			public void run() throws Exception {
-				setType(reqElemExt.getType(index));
+				setType(reqElem.getType(index));
 			}
 			
 			@Override
@@ -248,19 +218,20 @@ public class RequirementController {
 			}
 		};
 		SafeRunner.run(runnable);
-	}
+	}*/
 	
 	private void readRequirements() {
 		if (!isRegistry) {
 			return;
 		}
-		Job job = new Job("Read file") { 
+		Job job = new Job("Parse file") { 
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
-					reqElemExt.readFile();
+					reqElem.execute(null);
 				} 
 				catch (Exception ex) {
 					System.out.println("Exception in requirement client: can not read file!");
+					ex.printStackTrace();
 				}
 				return Status.OK_STATUS;
 			}
@@ -296,12 +267,12 @@ public class RequirementController {
 				return;
 			}
 			final Object o = configReq[0].createExecutableExtension("class");
-			if (o instanceof RequirementElement) {
-				reqElemExt = (RequirementElement) o;
+			if (o instanceof TestAppRequirementElement) {
+				reqElem = (TestAppRequirementImporter) o;
 			}
 			
 		} catch (CoreException ex) {
-			System.out.println(ex.getMessage());
+			ex.printStackTrace();
 		}
 	}
 	
@@ -313,12 +284,13 @@ public class RequirementController {
 			
 			@Override
 			public void run() throws Exception {
-				reqElemExt.createSampleElements();
+				reqElem.createSampleElements();
 			}
 			
 			@Override
 			public void handleException(Throwable e) {
 				System.out.println("Exception in requirement client: can not create samples!");
+				e.printStackTrace();
 			}
 		};
 		SafeRunner.run(runnable);

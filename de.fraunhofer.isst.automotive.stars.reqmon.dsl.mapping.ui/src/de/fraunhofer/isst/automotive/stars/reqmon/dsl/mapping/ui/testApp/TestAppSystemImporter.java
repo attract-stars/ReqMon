@@ -1,6 +1,6 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp;
 
-public class SystemElement {
+public class TestAppSystemImporter {
 	
 	private String path;
 
