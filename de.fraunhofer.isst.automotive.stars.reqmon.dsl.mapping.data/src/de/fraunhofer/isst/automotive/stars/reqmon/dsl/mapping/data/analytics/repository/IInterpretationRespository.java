@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.interpretation.repository;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.analytics.repository;
 
 import java.util.Map;
 
