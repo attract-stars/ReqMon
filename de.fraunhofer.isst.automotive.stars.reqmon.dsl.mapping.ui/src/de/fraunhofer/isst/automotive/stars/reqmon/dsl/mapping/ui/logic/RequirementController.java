@@ -1,6 +1,7 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -12,26 +13,26 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.swt.widgets.Display;
 
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementImporter;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.MappingPage;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppRequirementElement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppRequirementImporter;
 
-public class RequirementController {
+public class RequirementController implements IRequirementController {
 	
 	private static final String IREQUIREMENT_ID =
-			"de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.requirement";
+			"de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.requirementimporter";
 	private IExtensionRegistry registry;
 	private IConfigurationElement[] configReq;
 	private boolean isRegistry;
 	private boolean isExtReq;
-	private TestAppRequirementImporter reqElem;
+	private IRequirementImporter reqImp;
 	private List<IRequirementElement> requirements;
 	private String[] filter;
-	private int elemSize;
-	private String element;
-	private String type;
 	private MappingPage mp;
 	
 	public RequirementController(MappingPage mp) {
@@ -53,8 +54,7 @@ public class RequirementController {
 			}
 			else {
 				isExtReq = true;
-				createRequirementElement();
-				createSampleElements();
+				createRequirementImporter();
 				System.out.println("Requirement registered");
 			}
 		}
@@ -70,7 +70,7 @@ public class RequirementController {
 	}
 
 
-
+	@Override
 	public void setRequirements(List<IRequirementElement> requirements) {
 		this.requirements = requirements;
 	}
@@ -114,12 +114,14 @@ public class RequirementController {
 		}
 	}
 
-	public void executeRequirement() {
+	public void execute(Display display) {
 		if (isExtReq) {
-			readRequirements();
+			exectuteRequirementImporter(this, display);
+			System.out.println(requirements.size());
 		}
 	}
 	
+	@Override
 	public void updateList() {
 		mp.updateList();
 	}
@@ -133,12 +135,13 @@ public class RequirementController {
 			
 			@Override
 			public void run() throws Exception {
-				reqElem.setPath(path);
+				reqImp.setPath(path);
 			}
 			
 			@Override
 			public void handleException(Throwable e) {
 				System.out.println("Exception in requirement client: can not set path!");
+				e.printStackTrace();
 			}
 		};
 		SafeRunner.run(runnable);
@@ -152,82 +155,39 @@ public class RequirementController {
 			
 			@Override
 			public void run() throws Exception {
-				setFilterExt(reqElem.getFilterExt());
+				setFilterExt(reqImp.getFilterExt());
 			}
 			
 			@Override
 			public void handleException(Throwable e) {
 				System.out.println("Exception in requirement client: can not get filter!");
+				e.printStackTrace();
 			}
 		};
 		SafeRunner.run(runnable);
 	}
 	
-	/*private void setRequirementElemSize() {
-		if (!isRegistry) {
-			return;
-		}
-		ISafeRunnable runnable = new ISafeRunnable() {
-			
-			@Override
-			public void run() throws Exception {
-				setElementSize(reqElem.getElementSize());
-			}
-			
-			@Override
-			public void handleException(Throwable e) {
-				System.out.println("Exception in requirement client: can not get element size!");
-			}
-		};
-		SafeRunner.run(runnable);
-	}
 	
-	private void setRequirementElement(int index) {
+	private void exectuteRequirementImporter(IRequirementController rc, Display display) {
 		if (!isRegistry) {
 			return;
 		}
-		ISafeRunnable runnable = new ISafeRunnable() {
-			
-			@Override
-			public void run() throws Exception {
-				setElement(reqElem.getElement(index));
-			}
-			
-			@Override
-			public void handleException(Throwable e) {
-				System.out.println("Exception in requirement client: can not get element!");
-			}
-		};
-		SafeRunner.run(runnable);
-	}
-	
-	private void setRequirementType(int index) {
-		if (!isRegistry) {
-			return;
-		}
-		ISafeRunnable runnable = new ISafeRunnable() {
-			
-			@Override
-			public void run() throws Exception {
-				setType(reqElem.getType(index));
-			}
-			
-			@Override
-			public void handleException(Throwable e) {
-				System.out.println("Exception in requirement client: can not get type!");
-			}
-		};
-		SafeRunner.run(runnable);
-	}*/
-	
-	private void readRequirements() {
-		if (!isRegistry) {
-			return;
-		}
+		
 		Job job = new Job("Parse file") { 
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
-					reqElem.execute(null);
+					//TimeUnit.SECONDS.sleep(5);
+					reqImp.execute(rc);
+					rc.setRequirements(reqImp.getRequirements());
+					
+					display.asyncExec(new Runnable() {
+					
+					@Override
+					public void run() {
+						rc.updateList();
+					}
+				});
+					
 				} 
 				catch (Exception ex) {
 					System.out.println("Exception in requirement client: can not read file!");
@@ -239,7 +199,11 @@ public class RequirementController {
 		
 		job.setPriority(Job.SHORT);
 		job.schedule();
+		
+		
+		
 	}
+	
 	
 	private void testReqExtension(Object o) {
 		ISafeRunnable runnable = new ISafeRunnable() {
@@ -258,7 +222,7 @@ public class RequirementController {
 		
 	}
 	
-	private void createRequirementElement() {
+	private void createRequirementImporter() {
 		if (!isRegistry) {
 			return;
 		}
@@ -267,8 +231,8 @@ public class RequirementController {
 				return;
 			}
 			final Object o = configReq[0].createExecutableExtension("class");
-			if (o instanceof TestAppRequirementElement) {
-				reqElem = (TestAppRequirementImporter) o;
+			if (o instanceof IRequirementImporter) {
+				reqImp = (IRequirementImporter) o;
 			}
 			
 		} catch (CoreException ex) {
@@ -276,24 +240,62 @@ public class RequirementController {
 		}
 	}
 	
-	private void createSampleElements() {
-		if (!isRegistry) {
-			return;
-		}
-		ISafeRunnable runnable = new ISafeRunnable() {
-			
-			@Override
-			public void run() throws Exception {
-				reqElem.createSampleElements();
-			}
-			
-			@Override
-			public void handleException(Throwable e) {
-				System.out.println("Exception in requirement client: can not create samples!");
-				e.printStackTrace();
-			}
-		};
-		SafeRunner.run(runnable);
+	/*private void setRequirementElemSize() {
+	if (!isRegistry) {
+		return;
 	}
+	ISafeRunnable runnable = new ISafeRunnable() {
+		
+		@Override
+		public void run() throws Exception {
+			setElementSize(reqElem.getElementSize());
+		}
+		
+		@Override
+		public void handleException(Throwable e) {
+			System.out.println("Exception in requirement client: can not get element size!");
+		}
+	};
+	SafeRunner.run(runnable);
+}
+
+private void setRequirementElement(int index) {
+	if (!isRegistry) {
+		return;
+	}
+	ISafeRunnable runnable = new ISafeRunnable() {
+		
+		@Override
+		public void run() throws Exception {
+			setElement(reqElem.getElement(index));
+		}
+		
+		@Override
+		public void handleException(Throwable e) {
+			System.out.println("Exception in requirement client: can not get element!");
+		}
+	};
+	SafeRunner.run(runnable);
+}
+
+private void setRequirementType(int index) {
+	if (!isRegistry) {
+		return;
+	}
+	ISafeRunnable runnable = new ISafeRunnable() {
+		
+		@Override
+		public void run() throws Exception {
+			setType(reqElem.getType(index));
+		}
+		
+		@Override
+		public void handleException(Throwable e) {
+			System.out.println("Exception in requirement client: can not get type!");
+		}
+	};
+	SafeRunner.run(runnable);
+}*/
+	
 
 }

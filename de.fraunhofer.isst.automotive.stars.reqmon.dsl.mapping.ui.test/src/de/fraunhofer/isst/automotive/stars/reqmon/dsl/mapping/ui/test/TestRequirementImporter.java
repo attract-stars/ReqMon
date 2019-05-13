@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,24 +11,17 @@ import java.util.List;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementImporter;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.MappingPage;
 
-public class TestAppRequirementImporter implements IRequirementImporter {
+
+public class TestRequirementImporter implements IRequirementImporter {
 	
 	private List<IRequirementElement> requirements;
+	
 	private String pathname;
-	private MappingPage mp;
+
 	
-	public TestAppRequirementImporter(MappingPage mp) {
-		this.mp = mp;
+	public TestRequirementImporter() {
 		requirements = new ArrayList<IRequirementElement>();
-		createSampleElements();
-	}
-	
-	public void createSampleElements() {
-		requirements.add(new TestAppRequirementElement("An Object ...", "object"));
-		requirements.add(new TestAppRequirementElement("A Relation ...", "realtion"));
-		requirements.add(new TestAppRequirementElement("A Function ...", "function"));
 	}
 	
 	public String getPath() {
@@ -51,14 +44,13 @@ public class TestAppRequirementImporter implements IRequirementImporter {
 	public List<IRequirementElement> getRequirements() {
 		return requirements;
 	}
-
 	
 	@Override
 	public void execute(IRequirementController rc) {
 		readFile();
-		mp.updateList();
+		//rc.updateList();
 	}
-	
+
 	private void readFile() {
 		Reader reader = null;
 		requirements = new ArrayList<IRequirementElement>();
@@ -83,10 +75,8 @@ public class TestAppRequirementImporter implements IRequirementImporter {
 					if (c != 13 && c != 194) {
 						line += (char) c;
 					}
-					//System.out.println("line with c: " + c + " " + line);
 				}
 				c = reader.read();
-				//System.out.println("Next c: " + c);
 			}
 			addElements(line, num);
 			
@@ -97,7 +87,6 @@ public class TestAppRequirementImporter implements IRequirementImporter {
 		} finally {
 			  try { 
 				  reader.close();
-				  //System.out.println("closed!");
 			  } catch ( Exception e ) { 
 				  System.out.println("Unknown Exception!");
 			  }
@@ -105,11 +94,10 @@ public class TestAppRequirementImporter implements IRequirementImporter {
 	}
 	
 	private void addElements(String line, int num) {
-		if (/*num < 40 ||*/ line.equals("") || !line.contains("-")) {
+		if (line.equals("") || !line.contains("-")) {
 		}
 		else {
-			//System.out.println("num: " + num);
-			TestAppRequirementElement reqElem = new TestAppRequirementElement();
+			TestRequirementElement reqElem = new TestRequirementElement();
 			String[] words = line.split("-");
 			String last = words[words.length - 1];
 			if(last.contains("object")) {
@@ -127,11 +115,6 @@ public class TestAppRequirementImporter implements IRequirementImporter {
 			String sub = line.substring(0, line.length()-last.length()-2);
 			reqElem.setElementName(sub);
 			requirements.add(reqElem);
-			//System.out.println("line: " + line + ", sub: " + nameList + ", types: " + type);
-			/*if (num == 20) {
-				System.out.println(num);
-				return;
-			}*/
 		}
 	}
 
