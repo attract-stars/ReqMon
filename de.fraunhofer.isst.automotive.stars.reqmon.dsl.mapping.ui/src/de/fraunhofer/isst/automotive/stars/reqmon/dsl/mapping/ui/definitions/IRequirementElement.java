@@ -5,6 +5,6 @@ public interface IRequirementElement {
 	public String getElementName();
 	public String getElementType();
 	public void setElementName(String name);
-	public void setElementType(String name);
+	public void setElementType(String type);
 	
 }

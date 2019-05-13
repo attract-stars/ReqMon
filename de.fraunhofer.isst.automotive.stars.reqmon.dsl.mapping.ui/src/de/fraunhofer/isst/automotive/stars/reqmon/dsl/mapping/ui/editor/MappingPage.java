@@ -35,7 +35,6 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.SystemCon
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppGenerator;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppMappingParser;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppProposal;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppRequirementElement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppRequirementImporter;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppSystemImporter;
 
@@ -83,7 +82,7 @@ public class MappingPage {
 			this.parserCon = new ParserController(isApp);
 			this.genCon = new GeneratorController();
 		}
-		// create Elements for the TestApp
+		/** create Elements for the TestApp */
 		else {
 			this.syselem = new TestAppSystemImporter();
 			this.proposal = new TestAppProposal();
@@ -99,12 +98,12 @@ public class MappingPage {
 	 * and the bottom with the save, check and generate buttons.
 	 */
 	public void createMappingPage() {
-		// set parameters for the parent and the main Composite
+		/** set parameters for the parent and the main Composite */
 		setColor(composite, SWT.COLOR_WHITE);
 		Composite maincomp = new Composite(composite, SWT.NONE);
 		maincomp.setLayout(new FillLayout());
 		
-		// create the main part with a scrollable composite
+		/** create the main part with a scrollable composite */
 		ScrolledComposite scrolledComposite = new ScrolledComposite(maincomp, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		scrolledComposite.setExpandVertical(true);
 		scrolledComposite.setExpandHorizontal(true);
@@ -119,23 +118,23 @@ public class MappingPage {
 		setColor(compositeInside, SWT.COLOR_WIDGET_DARK_SHADOW);
 		scrolledComposite.setContent(compositeInside);
 		
-		// create three example items
-	/*	int elemSize = isApp ? reqImporter.getRequirements().size() : reqCon.getRequirements().size();
+		/** create three example items */
+		int elemSize = isApp ? reqImporter.getRequirements().size() : 0;
 		for (int i = 0; i < elemSize; i++) {
 			createBoxItem(compositeInside, i, i+1);
-		}*/
+		}
 		
-		// create the top
+		/** create the top */
 		Composite top = new Composite(composite, SWT.NONE);
 		createTop(top);
 		
-		// create the buttons at the bottom
+		/** create the buttons at the bottom */
 		Composite buttonFieldOne = new Composite(composite, SWT.NONE);
 		createSaveAndCheckButtons(buttonFieldOne);
 		Composite buttonFieldTwo = new Composite(composite, SWT.NONE);
 		createGenerateButtons(buttonFieldTwo);
 		
-		// set the positions of the parts of the GUI
+		/** set the positions of the parts of the GUI */
 		setPositons(maincomp, buttonFieldOne, buttonFieldTwo, top);
 	}
 	
@@ -166,14 +165,14 @@ public class MappingPage {
 	private void createTop(Composite top) {
 		top.setLayout(new FillLayout());
 		
-		// a Composite for the requirement button and requirement path and one for the system button and system path  
+		/** a Composite for the requirement button and requirement path and one for the system button and system path  */
 		Composite reqComp = new Composite(top, SWT.NONE);
 		Composite sysComp = new Composite(top, SWT.NONE);
 		GridLayout compLayout = new GridLayout(2, false);
 		reqComp.setLayout(compLayout);
 		sysComp.setLayout(compLayout);
 		
-		// create the path labels as non editable Text
+		/** create the path labels as non editable Text */
 		Text reqPath = new Text(reqComp, SWT.BORDER);
 		Text sysPath = new Text(sysComp, SWT.BORDER);
 		reqPath.setText("path of the requirement file ...");
@@ -181,7 +180,7 @@ public class MappingPage {
 		sysPath.setText("path of the system file ...");
 		sysPath.setEditable(false);
 		
-		// create the buttons
+		/** create the buttons */
 		Button reqButton = new Button(reqComp, SWT.PUSH);
 		Button sysButton = new Button(sysComp, SWT.PUSH);
 		reqButton.setText(" Requirement ");
@@ -195,31 +194,30 @@ public class MappingPage {
 		        fd.setText("Open");
 		        fd.setFilterPath("C:/");
 		        
-		        // show the files with the correct file extension
+		        /** show the files with the correct file extension */
 		        String[] filterExt = isApp ? reqImporter.getFilterExt() : reqCon.getFilterExt();
 		        fd.setFilterExtensions(filterExt);
 		        
 		        String selected = fd.open();
 		        if (selected != null) {
 		        	System.out.println(selected);
-		        	// save the selected file path in a RequirementElement 
+		        	/** save the selected file path in a RequirementImporter */
 		        	if (isApp) {
 		        		reqImporter.setPath(selected);
 		        	}
 		        	else {
 		        		reqCon.setPath(selected);
 		        	}
-		        	// show the selected file path
+		        	/** show the selected file path*/
 		        	reqPath.setText(selected);
-		        	// execute the Parser of the RequirementElement
+		        	/** execute the Parser of the RequirementImporter*/
 		        	if (isApp) {
 		        		reqImporter.execute(null);
 		        	}
 		        	else {
-		        		reqCon.executeRequirement();
+		        		reqCon.execute(display);
 		        	}
-		        	// update the element list of the main GUI part
-		        	//updateList();
+		        	
 		        }
 			}
 		});
@@ -233,23 +231,23 @@ public class MappingPage {
 		        fd.setText("Open");
 		        fd.setFilterPath("C:/");
 		        
-		        // show the files with the correct file extension
+		        /** show the files with the correct file extension */
 		        String[] filterExt = isApp ? syselem.getFilterExt() : sysCon.getFilterExt();
 		        fd.setFilterExtensions(filterExt);
 		        
 		        String selected = fd.open();
 		        if (selected != null) {
 		        	System.out.println(selected);
-		        	// save the selected file path in a SystemElement 
+		        	/** save the selected file path in a SystemElement */
 		        	if (isApp) {
 		        		syselem.setPath(selected);
 		        	}
 		        	else {
 		        		sysCon.setPath(selected);
 		        	}
-			        // show the selected file path
+			        /** show the selected file path */
 			        sysPath.setText(selected);
-			        // execute the Parser of the SystemElement
+			        /** execute the Parser of the SystemElement */
 			        if (isApp) {
 		        		syselem.execute();
 		        	}
@@ -278,7 +276,7 @@ public class MappingPage {
 		Composite child = new Composite(parent, SWT.NONE);
 		child.setLayout(new FillLayout());
 		
-		// create a Group for the item
+		/** create a Group for the item */
 		Group group = new Group(child, SWT.NONE);
 		GridLayout layout = new GridLayout(4, false);
 	    layout.marginWidth = 5;
@@ -290,12 +288,12 @@ public class MappingPage {
 		gridData.grabExcessHorizontalSpace = true;
 		child.setLayoutData(gridData);
 	    
-		// create the number label
+		/** create the number label */
 	    Label number = new Label(group, SWT.NONE);
 		number.setText("  " + num + ". ");
 		number.setAlignment(SWT.CENTER);
 		
-		// create the requirement element label
+		/** create the requirement element label */
 		String name = isApp ? reqImporter.getRequirements().get(index).getElementName() : reqCon.getRequirements().get(index).getElementName();
 		String type = isApp? reqImporter.getRequirements().get(index).getElementType() : reqCon.getRequirements().get(index).getElementType();
 		int len = 0;
@@ -311,7 +309,7 @@ public class MappingPage {
 		
 		Label reqLabel = new Label(reqLabelcomp, SWT.WRAP | SWT.CENTER);
 		
-		// set the requirement element name
+		/** set the requirement element name */
 		if (name == null) {
 			System.out.println("No name!");
 			reqLabel.setText("Requirement element name Description");
@@ -320,7 +318,7 @@ public class MappingPage {
 			reqLabel.setText("\nRequirement element name Description");
 		}
 		else {
-			// positioning of the element name in the label
+			/** positioning of the element name in the label */
 			if (len <= 100) {
 				reqLabel.setText("\n\n"+name);
 			}
@@ -330,7 +328,7 @@ public class MappingPage {
 			else {
 				reqLabel.setText(name);
 			}
-			// set the type
+			/** set the type */
 			if(type.equals("object")) {
 				group.setText("Object");
 			}
@@ -342,12 +340,12 @@ public class MappingPage {
 			}
 		}
 
-		// set the symbol
+		/** set the symbol */
 		Label symbol = new Label(group, SWT.NONE);
 		symbol.setText("  <=>  \t");
 		symbol.setAlignment(SWT.CENTER);
 		
-		// create the Text for the mapping, the info decoration and the proposal 
+		/** create the Text for the mapping, the info decoration and the proposal */
 		Text text = new Text(group, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.WRAP);
 		createDecoAndProposal(text);
 		
@@ -367,7 +365,7 @@ public class MappingPage {
 			}
 		});
 		
-		
+		/** Set LayoutData for the GridLayout of the box item */
 		GridData gridData_1 = new GridData();
 		gridData_1.horizontalAlignment = SWT.FILL;
 
@@ -535,17 +533,25 @@ public class MappingPage {
 		comp.setBackground(display.getSystemColor(color));
 	}
 	
+	
 	/**
 	 * Updates the element list of the main GUI part
 	 */
 	public void updateList() {
+		System.out.println("In updateList, Requirements: " + (reqCon.getRequirements() != null));
 		if (compositeInside == null) {
 			return;
 		}
 		for (Control con : compositeInside.getChildren()) {
 			con.dispose();
 		}
-		int elemSize = isApp ? reqImporter.getRequirements().size() : reqCon.getRequirements().size();
+		int elemSize = 0;
+		if (isApp) {
+			elemSize = reqImporter.getRequirements().size();
+		}
+		else if (reqCon.getRequirements() != null) {
+			elemSize = reqCon.getRequirements().size();
+		}
 		for (int i = 0; i < elemSize; i++) {
 			createBoxItem(compositeInside, i, i+1);
 			compositeInside.pack();
@@ -565,4 +571,5 @@ public class MappingPage {
 		}
 	}
 
+	
 }
