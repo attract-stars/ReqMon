@@ -12,7 +12,16 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRe
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementImporter;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.MappingPage;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.RequirementType;
 
+/**
+ * This is a test class for the MappingApplication.
+ * It implements the IRequirementImporter. It reads a text file with the names and types of the requirement elements and 
+ * creates for each name an IRequirementElement.
+ * 
+ * @author sgraf
+ *
+ */
 public class TestAppRequirementImporter implements IRequirementImporter {
 	
 	private List<IRequirementElement> requirements;
@@ -26,9 +35,9 @@ public class TestAppRequirementImporter implements IRequirementImporter {
 	}
 	
 	public void createSampleElements() {
-		requirements.add(new TestAppRequirementElement("An Object ...", "object"));
-		requirements.add(new TestAppRequirementElement("A Relation ...", "realtion"));
-		requirements.add(new TestAppRequirementElement("A Function ...", "function"));
+		requirements.add(new TestAppRequirementElement("An Object ...", RequirementType.OBJECT));
+		requirements.add(new TestAppRequirementElement("A Relation ...", RequirementType.RELATION));
+		requirements.add(new TestAppRequirementElement("A Function ...", RequirementType.FUNCTION));
 	}
 	
 	public String getPath() {
@@ -47,28 +56,28 @@ public class TestAppRequirementImporter implements IRequirementImporter {
 		return filterExt;
 	}
 	
-	@Override
+	
 	public List<IRequirementElement> getRequirements() {
 		return requirements;
 	}
 
 	
 	@Override
-	public void execute(IRequirementController rc) {
-		readFile();
+	public void execute(IRequirementController rc, String path) {
+		readFile(path);
 		mp.updateList();
 	}
 	
-	private void readFile() {
+	private void readFile(String path) {
 		Reader reader = null;
 		requirements = new ArrayList<IRequirementElement>();
 		
 		try {
-			if (pathname == null) {
+			if (path == null) {
 				System.out.println("The path is empty!");
 				return;
 			}
-			reader = new FileReader(new File(pathname));
+			reader = new FileReader(new File(path));
 			int c = reader.read();
 			String line = "";
 			int num = 0;
@@ -91,9 +100,9 @@ public class TestAppRequirementImporter implements IRequirementImporter {
 			addElements(line, num);
 			
 		} catch (FileNotFoundException e) {
-			System.out.println("The file does not exist or can not be read: " + pathname);
+			System.out.println("The file does not exist or can not be read: " + path);
 		} catch (IOException io) {
-			System.out.println("The character of the file can not be read: " + pathname);
+			System.out.println("The character of the file can not be read: " + path);
 		} finally {
 			  try { 
 				  reader.close();
@@ -113,17 +122,15 @@ public class TestAppRequirementImporter implements IRequirementImporter {
 			String[] words = line.split("-");
 			String last = words[words.length - 1];
 			if(last.contains("object")) {
-				reqElem.setElementType("object");
+				reqElem.setElementType(RequirementType.OBJECT);
 			}
 			else if (last.contains("relation")) {
-				reqElem.setElementType("relation");
+				reqElem.setElementType(RequirementType.RELATION);
 			}
 			else if (last.contains("function")) {
-				reqElem.setElementType("function");
+				reqElem.setElementType(RequirementType.FUNCTION);
 			}
-			else {
-				reqElem.setElementType("unknown");
-			}
+			
 			String sub = line.substring(0, line.length()-last.length()-2);
 			reqElem.setElementName(sub);
 			requirements.add(reqElem);

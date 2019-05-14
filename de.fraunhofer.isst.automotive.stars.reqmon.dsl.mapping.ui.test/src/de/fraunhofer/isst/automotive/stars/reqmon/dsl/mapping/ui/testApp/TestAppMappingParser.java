@@ -11,7 +11,6 @@ import org.eclipse.xtext.parser.ParseException;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
-import de.fraunhofer.isst.stars.RequirementDSLRuntimeModule;
 import de.fraunhofer.isst.stars.RequirementDSLStandaloneSetup;
 
 public class TestAppMappingParser {
@@ -19,20 +18,8 @@ public class TestAppMappingParser {
 	@Inject
 	private IParser parser;
 	
-	public TestAppMappingParser(boolean isApp) {
-		if (isApp) {
-			setupAppParser();
-		}
-		else {
-			setupParser();
-		}
-	}
-	
-	private void setupParser() {
-		RequirementDSLRuntimeModule module = new RequirementDSLRuntimeModule();
-		//Injector injector = Guice.createInjector(module);
-		//injector.injectMembers(this);
-		System.out.println("\nModule: " + module.getClass().getName());
+	public TestAppMappingParser() {
+		setupAppParser();
 	}
 	
 	private void setupAppParser() {

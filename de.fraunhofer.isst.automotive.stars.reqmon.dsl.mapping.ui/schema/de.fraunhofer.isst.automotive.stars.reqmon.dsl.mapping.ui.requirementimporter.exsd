@@ -3,7 +3,7 @@
 <schema targetNamespace="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui" id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.requirementimporter" name="RequirementImporter"/>
+         <meta.schema plugin="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui" id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.requirementimporter" name="RequirmentImporter"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <choice minOccurs="1" maxOccurs="unbounded">
-            <element ref="client"/>
+            <element ref="client" minOccurs="1" maxOccurs="unbounded"/>
          </choice>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -49,7 +49,7 @@
 
    <element name="client">
       <complexType>
-         <attribute name="class" type="string">
+         <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
                   

@@ -26,7 +26,7 @@ public class ParserController {
 	private boolean isRegistry;
 	private IMappingParser parser;
 	
-	public ParserController(boolean isApp) {
+	public ParserController() {
 		registry = Platform.getExtensionRegistry();
 		if (registry == null) {
 			System.out.println("No registry!");

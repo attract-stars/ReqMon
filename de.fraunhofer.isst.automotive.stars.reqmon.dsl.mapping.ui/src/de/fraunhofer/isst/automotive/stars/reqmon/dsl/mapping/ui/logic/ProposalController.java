@@ -9,7 +9,7 @@ import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.swt.widgets.Text;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMappingParser;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppProposal;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IProposal;
 
 public class ProposalController {
 	
@@ -19,8 +19,7 @@ public class ProposalController {
 	private IExtensionRegistry registry;
 	private IConfigurationElement[] configProp;
 	private boolean isRegistry;
-	private TestAppProposal proposalExt;
-	private TestAppProposal proposal;
+	private IProposal proposal;
 	private boolean isExtProp;
 	
 	public ProposalController() {
@@ -49,26 +48,17 @@ public class ProposalController {
 			isExtProp = false;
 		}
 		
-		if (!isExtProp) {
-			this.proposal = new TestAppProposal();
-		}
 	}
 	
 	public void createDeco(Text text) {
 		if (isExtProp) {
 			createDecoExt(text);
 		}
-		else {
-			proposal.createDeco(text);
-		}
 	}
 	
 	public void getProposal(Text text) {
 		if (isExtProp) {
 			getProposalExt(text);
-		}
-		else {
-			proposal.getProposal(text);
 		}
 	}
 	
@@ -96,7 +86,7 @@ public class ProposalController {
 			
 			@Override
 			public void run() throws Exception {
-				proposalExt.createDeco(text);
+				proposal.createDeco(text);
 			}
 			
 			@Override
@@ -112,7 +102,7 @@ public class ProposalController {
 			
 			@Override
 			public void run() throws Exception {
-				proposalExt.getProposal(text);
+				proposal.getProposal(text);
 			}
 			
 			@Override
@@ -150,8 +140,8 @@ public class ProposalController {
 				return;
 			}
 			final Object o = configProp[0].createExecutableExtension("class");
-			if (o instanceof TestAppProposal) {
-				proposalExt = (TestAppProposal) o;
+			if (o instanceof IProposal) {
+				proposal = (IProposal) o;
 			}
 			
 		} catch (CoreException ex) {
