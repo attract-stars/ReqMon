@@ -3,17 +3,29 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.analyzer
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.parser.ParseException;
+import org.eclipse.xtext.resource.IResourceServiceProvider;
+import org.eclipse.xtext.resource.XtextResourceSet;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.SemanticTextElement;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.analytics.repository.impl.TextElementRepository;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.importer.IDslAnalyzer;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementController;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementImporter;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.RequirementTextElement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.RequirementTextElementMapping;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.SemanticTextElement;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui.internal.RequirementActivator;
 import de.fraunhofer.isst.stars.requirementDSL.Actor;
 import de.fraunhofer.isst.stars.requirementDSL.ConditionalClause;
 import de.fraunhofer.isst.stars.requirementDSL.Object;
@@ -25,10 +37,10 @@ import de.fraunhofer.isst.stars.requirementDSL.RequirementText;
  *
  */
 //TODO THIS CLASS NEEDS AN LOOKUP FOR EXISTING ELEMENTS
-public class RequirementDslAstAnalyzer implements IDslAnalyzer {
+public class RequirementDslParser implements IRequirementImporter {
 	
 
-	
+	final static String[] FILTERS_LLIST = {"reqDSL"};
 	static class  DslTextElement {
 		
 		
@@ -47,7 +59,8 @@ public class RequirementDslAstAnalyzer implements IDslAnalyzer {
 		public Class<?> getType() {
 			return type;
 		}
-
+		
+		
 		/**
 		 * @return the text
 		 */
@@ -100,21 +113,22 @@ public class RequirementDslAstAnalyzer implements IDslAnalyzer {
 		
 	}
 	
+    @Inject
+    XtextResourceSet resourceSet;
+    @Inject
+    IResourceServiceProvider resourceSetProvider;
 	
-	
-	public RequirementDslAstAnalyzer() {
-		
+	public RequirementDslParser() {
+		setupXtextParser();
 	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.IAstAnalyzer#
-     * analyze(de.fraunhofer.isst.stars.requirementDSL.Model)
-     */
-    @Override
-    public Set<SemanticTextElement> analyze(EObject model) {
+    private void setupXtextParser() {
+	Injector injector = RequirementActivator.getInstance()
+			.getInjector(RequirementActivator.DE_FRAUNHOFER_ISST_STARS_REQUIREMENTDSL);
+	injector.injectMembers(this);
+    }
+    
+    private Set<SemanticTextElement> analyze(EObject model) {
     System.out.println("Analyzing Requirement DSL");
    	TreeIterator<EObject> modelIterator = model.eAllContents();   	
    	
@@ -210,4 +224,39 @@ public class RequirementDslAstAnalyzer implements IDslAnalyzer {
 
     }
 
+	@Override
+	//Entry Point for Parsing
+	public void execute(IRequirementController rc) {
+		throw new UnsupportedOperationException("Not yet Implemented");
+	}
+
+	@Override
+	public List<IRequirementElement> getRequirements() {
+		throw new UnsupportedOperationException("Not yet Implemented");
+	}
+
+	@Override
+	public void setPath(String path) {
+		throw new UnsupportedOperationException("Not yet Implemented");		
+	}
+
+	@Override
+	public String[] getFilterExt() {
+		return FILTERS_LLIST;
+	}
+
+	private EObject parseDslRequirementFile(IFile file) throws ParseException {
+		try {
+		    Resource resource = resourceSet.getResource(uri, true);
+		    if (!resource.isLoaded()) {
+			resource.load(null);
+		    }
+		    return resource.getContents().get(0);
+		} catch (Exception e) {
+		    // TODO Better Exception Handling
+		    e.printStackTrace();
+		    System.out.println(e.getLocalizedMessage());
+		    return null;
+		}
+	}
 }

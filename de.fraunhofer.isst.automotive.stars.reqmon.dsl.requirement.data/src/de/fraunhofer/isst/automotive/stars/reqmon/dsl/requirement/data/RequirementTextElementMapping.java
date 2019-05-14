@@ -4,14 +4,14 @@ import java.util.HashMap;
 
 import org.eclipse.emf.ecore.EObject;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.SemanticTextElementMapping;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.analytics.IRequirementElementMapping;
 
 /**
  * 
  * @author mmauritz
  *
  */
-public class RequirementTextElementMapping extends HashMap<EObject, RequirementTextElement> implements SemanticTextElementMapping<EObject, RequirementTextElement>{
+public class RequirementTextElementMapping extends HashMap<EObject, SemanticTextElement> implements IRequirementElementMapping<EObject, SemanticTextElement>{
 
 	/**
 	 * 

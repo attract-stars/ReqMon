@@ -19,5 +19,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.e4.ui.di
 Export-Package: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions,
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.importer,
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic,
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp

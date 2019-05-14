@@ -1,7 +1,9 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data;
+
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement;
 
 //TODO BUILD A SPECIFIC SUB CLASS THAT CAN CONTAIN THE REFERENCES
-public class SemanticTextElement {
+public class SemanticTextElement implements IRequirementElement {
 
 	
 	public SemanticTextElement(String str) {
@@ -58,6 +60,30 @@ public class SemanticTextElement {
 		} else if (!text.equals(other.text))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String getElementName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getElementType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setElementName(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setElementType(String type) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
