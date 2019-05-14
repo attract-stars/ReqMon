@@ -1,19 +1,14 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp;
 
 import java.util.List;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -27,215 +22,88 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.GeneratorController;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.ParserController;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.ProposalController;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.RequirementController;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.SystemController;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.MappingPage;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.RequirementType;
 
-/**
- * This class creates the GUI of the language mapping editor. 
- * 
- * @author sgraf
- *
- */
-public class MappingPage {
+
+
+public class TestAppMappingPage extends MappingPage {
 	
-	private Display display;
-	private Shell shell;
-	private Composite parentComposite;
-	private Composite compositeInScroll;
-	private Composite maincomp;
-	private ScrolledComposite scrolledComposite;
-	private RequirementController reqCon;
-	private SystemController sysCon;
-	private ParserController parserCon;
-	private ProposalController propCon;
-	private GeneratorController genCon;
-	
-	
-	/**
-	 * The Constructor creates controllers for all parts of the GUI that can be extended.
-	 * @param parentComposite the parent Composite
-	 * @param display the parent Display
-	 */
-	public MappingPage(Composite parentComposite, Display display, Shell shell) {
-		this.parentComposite = parentComposite;
-		this.display = display;
-		this.shell = shell;
+	private TestAppSystemImporter syselem;
+	private TestAppProposal proposal;
+	private TestAppRequirementImporter reqImporter;
+	private TestAppMappingParser mapParser;
+	private TestAppGenerator generator;
+
+	public TestAppMappingPage(Composite composite, Display display, Shell shell) {
+		super(composite, display, shell);
 		
-		this.maincomp = new Composite(parentComposite, SWT.NONE);
-		this.scrolledComposite = new ScrolledComposite(maincomp, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-		this.compositeInScroll = new Composite(scrolledComposite, SWT.NONE);
-		
-		this.reqCon = new RequirementController(this);
-		this.sysCon = new SystemController();
-		this.propCon = new ProposalController();
-		this.parserCon = new ParserController();
-		this.genCon = new GeneratorController();
+		this.syselem = new TestAppSystemImporter();
+		this.proposal = new TestAppProposal();
+		this.reqImporter = new TestAppRequirementImporter(this);
+		this.mapParser = new TestAppMappingParser();
+		this.generator = new TestAppGenerator();
 	}
 	
-	/**
-	 * Creates the GUI for the language mapping editor. The GUI consists of three parts: the top with the file buttons and the file path labels,
-	 * the main part for the items that consists of a requirement element on the left side and a mapping field on the right side, 
-	 * and the bottom with the save, check and generate buttons.
-	 */
+	@Override
 	public void createMappingPage() {
 		/** set parameters for the parent and the main Composite */
-		setColor(parentComposite, SWT.COLOR_WHITE);
-		maincomp.setLayout(new FillLayout());
+		setColor(getParentComposite(), SWT.COLOR_WHITE);
+		getMaincomp().setLayout(new FillLayout());
 		
 		/** create the main part with a scrollable composite */
-		scrolledComposite.setExpandVertical(true);
-		scrolledComposite.setExpandHorizontal(true);
-		scrolledComposite.addListener(SWT.Resize, event -> updateMinSize(scrolledComposite));
+		getScrolledComposite().setExpandVertical(true);
+		getScrolledComposite().setExpandHorizontal(true);
+		getScrolledComposite().addListener(SWT.Resize, event -> updateMinSize(getScrolledComposite()));
 		
 		GridLayout insideLayout = new GridLayout(1, false);
 		insideLayout.marginWidth = 10;
 		insideLayout.marginHeight = 10;
 		insideLayout.horizontalSpacing = 10;
-		compositeInScroll.setLayout(insideLayout);
-		setColor(compositeInScroll, SWT.COLOR_WIDGET_DARK_SHADOW);
-		scrolledComposite.setContent(compositeInScroll);
+		getCompositeInScroll().setLayout(insideLayout);
+		setColor(getCompositeInScroll(), SWT.COLOR_WIDGET_DARK_SHADOW);
+		getScrolledComposite().setContent(getCompositeInScroll());
 		
 		/** create three example items */
-		/*int elemSize = 0;
+		int elemSize = reqImporter.getRequirements().size();
 		for (int i = 0; i < elemSize; i++) {
-			createBoxItem(compositeInside, i, i+1);
-		}*/
+			createBoxItem(getCompositeInScroll(), i, i+1);
+		}
 		
 		/** create the top */
-		Composite top = new Composite(parentComposite, SWT.NONE);
+		Composite top = new Composite(getParentComposite(), SWT.NONE);
 		createTop(top);
 		
 		/** create the buttons at the bottom */
-		Composite buttonFieldOne = new Composite(parentComposite, SWT.NONE);
+		Composite buttonFieldOne = new Composite(getParentComposite(), SWT.NONE);
 		createSaveAndCheckButtons(buttonFieldOne);
-		Composite buttonFieldTwo = new Composite(parentComposite, SWT.NONE);
+		Composite buttonFieldTwo = new Composite(getParentComposite(), SWT.NONE);
 		createGenerateButtons(buttonFieldTwo);
 		
 		/** set the positions of the parts of the GUI */
-		setPositons(maincomp, buttonFieldOne, buttonFieldTwo, top);
+		setPositons(getMaincomp(), buttonFieldOne, buttonFieldTwo, top);
 	}
 	
 	
-	/**
-	 * Updates the requirement list of the main GUI part.
-	 */
 	public void updateList() {
-		if (compositeInScroll == null) {
+		if (getCompositeInScroll() == null) {
 			return;
 		}
-		for (Control con : compositeInScroll.getChildren()) {
+		for (Control con : getCompositeInScroll().getChildren()) {
 			con.dispose();
 		}
 		int elemSize = 0;
 		
-		if (reqCon.getRequirements() != null) {
-			elemSize = reqCon.getRequirements().size();
-		}
+		elemSize = reqImporter.getRequirements().size();
+		
 		for (int i = 0; i < elemSize; i++) {
-			createBoxItem(compositeInScroll, i, i+1);
-			compositeInScroll.pack();
-			compositeInScroll.layout(true);
-			updateMinSize(compositeInScroll.getParent());
+			createBoxItem(getCompositeInScroll(), i, i+1);
+			getCompositeInScroll().pack();
+			getCompositeInScroll().layout(true);
+			updateMinSize(getCompositeInScroll().getParent());
 		}
 	}
 	
-	public Composite getParentComposite() {
-		return parentComposite;
-	}
-
-	public Display getDisplay() {
-		return display;
-	}
-
-	public Shell getShell() {
-		return shell;
-	}
-
-	public Composite getCompositeInScroll() {
-		return compositeInScroll;
-	}
-	
-	public Composite getMaincomp() {
-		return maincomp;
-	}
-
-	public ScrolledComposite getScrolledComposite() {
-		return scrolledComposite;
-	}
-	
-	
-	/**
-	 * This method updates the size of the Composite after changing of its inside so that all elements inside of it are still visible. 
-	 * @param comp  the Composite
-	 */
-	protected void updateMinSize(Composite comp) {
-		Rectangle clientArea = comp.getClientArea();
-		
-		if (comp instanceof ScrolledComposite) {
-			clientArea.width -= comp.getVerticalBar().getSize().x;
-			Point minSize = ((ScrolledComposite)comp).getContent().computeSize(clientArea.width, SWT.DEFAULT);
-			((ScrolledComposite)comp).setMinSize(minSize);
-		}
-		else {
-			Point minSize = comp.computeSize(clientArea.width, SWT.DEFAULT);
-			comp.setSize(minSize);
-		}
-		
-	}
-	
-	/** 
-	 * Sets the relative positions of the GUI elements for the FormLayout of the main Composite.
-	 * 
-	 * @param maincomp the main Composite
-	 * @param buttonFieldOne the bottom Composite on the left (save and check buttons)
-	 * @param buttonFieldTwo the bottom Composite on the right (generator combo and generate button)
-	 * @param top the top Composite (requirement and system importers)
-	 */
-	protected void setPositons(Composite maincomp, Composite buttonFieldOne, Composite buttonFieldTwo, Composite top) {
-		FormData formData = new FormData();
-		formData.top = new FormAttachment(0, 80);
-		formData.bottom = new FormAttachment(100, -80);
-		formData.left = new FormAttachment(0, 20);
-		formData.right = new FormAttachment(100, -20);
-		maincomp.setLayoutData(formData);
-		
-		FormData formDataButtonOne = new FormData();
-		formDataButtonOne.top = new FormAttachment(maincomp, 5);
-		formDataButtonOne.left = new FormAttachment(0, 20);
-		buttonFieldOne.setLayoutData(formDataButtonOne);
-		
-		FormData formDataButtonTwo = new FormData();
-		formDataButtonTwo.top = new FormAttachment(maincomp, 5);
-		formDataButtonTwo.right = new FormAttachment(100, -20);
-		buttonFieldTwo.setLayoutData(formDataButtonTwo);
-		
-		FormData formDataTop = new FormData();
-		formDataTop.top = new FormAttachment(0, 20);
-		formDataTop.bottom = new FormAttachment(maincomp, -10);
-		formDataTop.left = new FormAttachment(0, 20);
-		formDataTop.right = new FormAttachment(100, -20);
-		top.setLayoutData(formDataTop);
-	}
-	
-	/**
-	 * Sets the given SystemColor of the Display as Integer to the given Composite.
-	 * 
-	 * @param comp the Composite
-	 * @param color the Color
-	 */
-	protected void setColor(Composite comp, int color) {
-		comp.setBackground(display.getSystemColor(color));
-	}
-
-	
-	/**
-	 * Creates the top elements of the GUI: A button for the requirement importer, a button for the system importer,
-	 * a label for the path of the requirement file and a label for the path of the system file.
-	 * @param top the Composite at the top of the GUI
-	 */
 	private void createTop(Composite top) {
 		top.setLayout(new FillLayout());
 		
@@ -264,21 +132,23 @@ public class MappingPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("Requirements called!");
-				FileDialog fd = new FileDialog(shell, SWT.OPEN);
+				FileDialog fd = new FileDialog(getShell(), SWT.OPEN);
 		        fd.setText("Open");
 		        fd.setFilterPath("C:/");
 		        
 		        /** show the files with the correct file extension */
-		        String[] filterExt = {"*.*"};
+		        String[] filterExt = reqImporter.getFilterExt();
 		        fd.setFilterExtensions(filterExt);
 		        
 		        String selected = fd.open();
 		        if (selected != null) {
 		        	System.out.println(selected);
+		        	/** save the selected file path in a RequirementImporter */
+		        	reqImporter.setPath(selected);
 		        	/** show the selected file path*/
-		        	reqPath.setText(selected);
-		        	/** execute the RequirementImporter*/
-		        	reqCon.execute(display, selected);
+		        	//reqPath.setText(selected);
+		        	/** execute the Parser of the RequirementImporter*/
+		        	reqImporter.execute(null, selected);
 		        }
 			}
 		});
@@ -288,24 +158,27 @@ public class MappingPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("System called!");
-				FileDialog fd = new FileDialog(shell, SWT.OPEN);
+				FileDialog fd = new FileDialog(getShell(), SWT.OPEN);
 		        fd.setText("Open");
 		        fd.setFilterPath("C:/");
 		        
 		        /** show the files with the correct file extension */
-		        String[] filterExt = {"*.*"};
+		        String[] filterExt = syselem.getFilterExt();
 		        fd.setFilterExtensions(filterExt);
 		        
 		        String selected = fd.open();
 		        if (selected != null) {
 		        	System.out.println(selected);
-		        	/** show the selected file path */
+		        	/** save the selected file path in a SystemElement */
+		        	syselem.setPath(selected);
+			        /** show the selected file path */
 			        sysPath.setText(selected);
-			        /** execute the SystemImporter */
-			        sysCon.execute(selected);
+			        /** execute the Parser of the SystemElement */
+			        syselem.execute();
 		        }
 			}
 		});
+		
 		
 		GridData gridData = new GridData(SWT.FILL,SWT.FILL, true, false);
 		reqPath.setLayoutData(gridData);
@@ -313,13 +186,6 @@ public class MappingPage {
 		
 	}
 	
-	/**
-	 * Creates an item for the main part. The item consists of four parts: a number, a requirement element of the type 'object', 'relation' or 'function', 
-	 * an arrow symbol and a text field for the mapping.
-	 * @param parent the parent Composite in the scrollable Composite
-	 * @param index the index of the requirement element list
-	 * @param num the number of the item
-	 */
 	private void createBoxItem(Composite parent, int index, int num) {
 		Composite child = new Composite(parent, SWT.NONE);
 		child.setLayout(new FillLayout());
@@ -342,8 +208,8 @@ public class MappingPage {
 		number.setAlignment(SWT.CENTER);
 		
 		/** create the requirement element label */
-		String name = reqCon.getRequirements().get(index).getElementName();
-		RequirementType type = reqCon.getRequirements().get(index).getElementType();
+		String name = reqImporter.getRequirements().get(index).getElementName();
+		RequirementType type = reqImporter.getRequirements().get(index).getElementType();
 		int len = 0;
 		if (name != null) {
 			len = name.length();
@@ -403,7 +269,7 @@ public class MappingPage {
 			public void modifyText(ModifyEvent e) {
 				String writed = text.getText();
 				if (writed.endsWith(" ") || writed.endsWith(".")) {
-					parserCon.parserInput(writed);
+					mapParser.parserInput(writed);
 				}
 			}
 		});
@@ -434,10 +300,6 @@ public class MappingPage {
 		
 	}
 	
-	/**
-	 * Creates the save and the check buttons at the bottom of the GUI.
-	 * @param comp the parent Composite
-	 */
 	private void createSaveAndCheckButtons(Composite comp) {
 		GridLayout buttonFieldLayout = new GridLayout();
 		buttonFieldLayout.numColumns = 1;
@@ -458,10 +320,10 @@ public class MappingPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("Save called!");
-				FileDialog fd = new FileDialog(shell, SWT.SAVE);
+				FileDialog fd = new FileDialog(getShell(), SWT.SAVE);
 		        fd.setText("Save");
 		        fd.setFilterPath("C:/");
-		        String[] filterExt = { "*.txt", "*.doc", ".rtf", "*.*" }; // TODO 
+		        String[] filterExt = { "*.txt", "*.doc", ".rtf", "*.*" }; 
 		        fd.setFilterExtensions(filterExt);
 		        String selected = fd.open();
 		        System.out.println(selected);
@@ -476,22 +338,12 @@ public class MappingPage {
 		checkButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				System.out.println("Check called!"); // TODO
-				/** only for test  */
-				genCon.checkExtensions();
-				reqCon.checkExtensions();
-				sysCon.checkExtensions();
-				parserCon.checkExtensions();
-				propCon.checkExtensions();
+				System.out.println("Check called!"); 
 			}
 		});
 	}
 	
-	/**
-	 * Creates a combo box for the selecting of the wished generator and the generate button.
-	 * 
-	 * @param comp the parent Composite
-	 */
+	
 	private void createGenerateButtons(Composite comp) {
 		GridLayout buttonFieldLayout = new GridLayout();
 		buttonFieldLayout.numColumns = 1;
@@ -509,21 +361,22 @@ public class MappingPage {
 		Button genButton = new Button(box, SWT.PUSH);
 		
 		/** take the labels of the generators in the generator list for the combo items */
-		List<String> genList = genCon.getGenerators();
+		List<String> genList = generator.getGenerators();
 	    for (String name : genList) {
 	      comboDropDown.add(" " + name);
 	    }
 	    comboDropDown.select(0);
 		
 		/** take the label of the first generator in the generator list for the generate button */
-		genButton.setText(genCon.getGenerateLabels().get(0));
+		genButton.setText(generator.getGenerateLabels().get(0));
+		
 		genButton.setAlignment(SWT.CENTER);
 		
 		/** execute the generator that is actual selected in the combo */
 		genButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				genCon.executeSelectedGenerator();
+				generator.executeSelectedGenerator();
 			}
 		});
 		
@@ -532,7 +385,7 @@ public class MappingPage {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("Selected: " + comboDropDown.getText());	
-				String genLabel = genCon.getLabel(comboDropDown.getText());
+				String genLabel = generator.getLabel(comboDropDown.getText());
 				genButton.setText(genLabel);
 				box.layout(true);
 			}
@@ -543,17 +396,9 @@ public class MappingPage {
 	    
 	}
 	
-	
-
-	/**
-	 * Creates the decoration of the mapping text field and the proposals for the input. 
-	 * 
-	 * @param text the mapping text field
-	 */
 	private void createDecoAndProposal(Text text) {
-		propCon.createDeco(text);
-		propCon.getProposal(text);
+		proposal.createDeco(text);
+		proposal.getProposal(text);
 	}
 
-	
 }

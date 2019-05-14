@@ -2,7 +2,7 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+//import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -55,7 +55,7 @@ public class GeneratorController {
 		
 		generateGeneratorList();
 		if (generators.isEmpty()) {
-			addGenerator("No Generator!", "Can't generate");
+			addGenerator("No generator!", "Can't generate code");
 		}
 		
 	}

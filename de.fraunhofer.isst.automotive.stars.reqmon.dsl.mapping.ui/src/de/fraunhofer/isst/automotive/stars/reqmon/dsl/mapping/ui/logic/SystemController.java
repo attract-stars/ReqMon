@@ -1,29 +1,31 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic;
 
+import java.util.regex.Pattern;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ISafeRunnable;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.ISystemImorter;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp.TestAppSystemImporter;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.ISystemImporter;
 
 public class SystemController {
 	
 	private static final String ISYSTEM_ID =
-			"de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.system";
+			"de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.systemimporter";
 	
 	private IExtensionRegistry registry;
 	private IConfigurationElement[] configSys;
 	private boolean isRegistry;
-	private ISystemImorter sysImporter;
-	private String[] filter;
-	private boolean isExtSys;
+	private ISystemImporter sysImporter;
 	
 	public SystemController() {
-		// test if there is a registry. (If not, the MappingPage is started by the testApp) 
 		registry = Platform.getExtensionRegistry();
 		if (registry == null) {
 			System.out.println("No registry!");
@@ -36,20 +38,9 @@ public class SystemController {
 			configSys = registry.getConfigurationElementsFor(ISYSTEM_ID);
 			
 			if (configSys.length == 0) {
-				isExtSys = false;
-				System.out.println("No System registered!");
-			}
-			else {
-				isExtSys = true;
-				createSystemImporter();
-				System.out.println("System registered");
+				System.out.println("No SystemImporter registered!");
 			}
 		}
-		else {
-			isExtSys = false;
-		}
-		
-		
 	}
 	
 	public void checkExtensions() {
@@ -58,9 +49,9 @@ public class SystemController {
 		}
 		try {
 			for (IConfigurationElement e : configSys) {
-				System.out.println("Evaluating system extension");
+				System.out.println("Evaluating SystemImporter extension");
 				final Object o = e.createExecutableExtension("class");
-				if (o instanceof TestAppSystemImporter) {
+				if (o instanceof ISystemImporter) {
 					testSysExtension(o);
 				}
 			}
@@ -69,89 +60,48 @@ public class SystemController {
 		}
 	}
 	
-	public void setPath(String path) {
-		if (isExtSys) {
-			setSystemPath(path);
-		}
-	}
 	
-	public void setFilterExt(String[] filterExt) {
-		this.filter = filterExt;
-	}
-	
-	public String[] getFilterExt() {
-		if (isExtSys) {
-			setSystemFilterExt();
-			System.out.println("filter: " + filter[0]);
-			return this.filter;
-		}
-		else {
-			return null; 
-		}
-	}
-	
-	public void executeSystem() {
-		if (isExtSys) {
-			System.out.println("Extern System executed");
-			executeSystemImporter();
-		}
-	}
-	
-	public void setSystemPath(String path) {
+	public void execute(String path) {
 		if (!isRegistry) {
 			return;
 		}
-		ISafeRunnable runnable = new ISafeRunnable() {
-			
-			@Override
-			public void run() throws Exception {
-				sysImporter.setPath(path);
-			}
-			
-			@Override
-			public void handleException(Throwable e) {
-				System.out.println("Exception in system client: can not set path!");
-			}
-		};
-		SafeRunner.run(runnable);
-	}
-	
-	public void setSystemFilterExt() {
-		if (!isRegistry) {
-			return;
-		}
-		ISafeRunnable runnable = new ISafeRunnable() {
-			
-			@Override
-			public void run() throws Exception {
-				setFilterExt(sysImporter.getFilterExt());
-			}
-			
-			@Override
-			public void handleException(Throwable e) {
-				System.out.println("Exception in system client: can not get filter!");
-			}
-		};
-		SafeRunner.run(runnable);
-	}
-	
-	public void executeSystemImporter() {
-		if (!isRegistry) {
-			return;
-		}
-		ISafeRunnable runnable = new ISafeRunnable() {
-			
-			@Override
-			public void run() throws Exception {
-				sysImporter.execute();
-			}
-			
-			@Override
-			public void handleException(Throwable e) {
-				System.out.println("Exception in system client: can not be executed!");
+		
+		Job job = new Job("Parse file") { 
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					//TimeUnit.SECONDS.sleep(5);
+					sysImporter = null;
+					/** select the importer that can read the file of the given path */
+					for (IConfigurationElement e : configSys) {
+						final Object o = e.createExecutableExtension("class");
+						if (o instanceof ISystemImporter) {
+							System.out.println("Filter: " + e.getAttribute("filter"));
+							String filter = e.getAttribute("filter");
+							String[] words = path.split(Pattern.quote("."));
+							if (words.length > 0 && filter.contains(words[words.length-1])) {
+								sysImporter = (ISystemImporter) o;
+								break;
+							}
+						}
+					}
+					if (sysImporter != null) {
+						sysImporter.execute(path);
+					}
+					else {
+						System.out.println("There is no SystemImporter for this file!");
+					}
+					
+				} 
+				catch (Exception ex) {
+					System.out.println("Exception in system importer client:");
+					ex.printStackTrace();
+				}
+				return Status.OK_STATUS;
 			}
 		};
-		SafeRunner.run(runnable);
+		
+		job.setPriority(Job.SHORT);
+		job.schedule();
 	}
 	
 	private void testSysExtension(Object o) {
@@ -159,36 +109,19 @@ public class SystemController {
 			
 			@Override
 			public void run() throws Exception {
-				System.out.println("System exists.");
+				System.out.println("SystemImporter exists.");
 			}
 			
 			@Override
 			public void handleException(Throwable e) {
-				System.out.println("Exception in system client");
+				System.out.println("Exception in system importer client");
 			}
 		};
 		SafeRunner.run(runnable);
 		
 	}
 	
-	private void createSystemImporter() {
-		if (!isRegistry) {
-			return;
-		}
-		try {
-			if (configSys.length == 0) {
-				return;
-			}
-			final Object o = configSys[0].createExecutableExtension("class");
-			if (o instanceof TestAppSystemImporter) {
-				sysImporter = (ISystemImorter) o;
-			}
-			
-		} catch (CoreException ex) {
-			System.out.println(ex.getMessage());
-		}
-	}
-
+	
 	
 	
 }

@@ -2,12 +2,24 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.requirement">
+         point="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.systemimporter">
       <client
-            class="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test.TestRequirementImporter"
+            class="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test.TestSystemImporter"
             filter="txt"
             lang="test">
       </client>
+      <client
+            class="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test.TestOtherSystemImporter"
+            filter="xml"
+            lang="test2">
+      </client>
    </extension>
-
+   <extension
+   		point="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.requirementimporter">
+   	<client
+   			class="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test.TestRequirementImporter"
+   			filter="txt"
+   			lang="test">
+   	</client>
+	</extension>
 </plugin>

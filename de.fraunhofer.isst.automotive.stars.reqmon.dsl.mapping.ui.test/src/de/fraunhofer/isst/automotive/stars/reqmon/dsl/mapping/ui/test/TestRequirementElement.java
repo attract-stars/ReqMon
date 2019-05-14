@@ -1,11 +1,18 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.RequirementType;
 
+/**
+ * This class implements the IRequirementElement.
+ * 
+ * @author sgraf
+ *
+ */
 public class TestRequirementElement implements IRequirementElement {
 	
 	private String name;
-	private String type;
+	private RequirementType type;
 	
 	
 	@Override
@@ -14,7 +21,7 @@ public class TestRequirementElement implements IRequirementElement {
 	}
 
 	@Override
-	public String getElementType() {
+	public RequirementType getElementType() {
 		return this.type;
 	}
 
@@ -24,7 +31,7 @@ public class TestRequirementElement implements IRequirementElement {
 	}
 
 	@Override
-	public void setElementType(String type) {
+	public void setElementType(RequirementType type) {
 		this.type = type;
 	}
 

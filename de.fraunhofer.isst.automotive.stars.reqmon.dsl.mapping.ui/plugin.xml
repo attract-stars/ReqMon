@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="DslAnalyzer" name="DSL Analyzer" schema="schema/DslAnalyzer.exsd"/>
-   <extension-point id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.generator" name="Generator" schema="schema/de.fraunhofer.isst.automotive.stars.reqmon.sdl.mapping.generator.exsd"/>
-   <extension-point id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.requirement" name="Requirement" schema="schema/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.requirementimporter.exsd"/>
-   <extension-point id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.system" name="System" schema="schema/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.system.exsd"/>
-   <extension-point id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.parser" name="Parser" schema="schema/de.fraunhofer.isst.stars.reqmon.dsl.mapping.parser.exsd"/>
-   <extension-point id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.proposal" name="Proposal" schema="schema/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.proposal.exsd"/>
+   <extension-point id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.systemimporter" name="SystemImporter" schema="schema/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.systemimporter.exsd"/>
+   <extension-point id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.requirementimporter" name="RequirmentImporter" schema="schema/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.requirementimporter.exsd"/>
    <extension
          point="org.eclipse.ui.editors">
       <editor

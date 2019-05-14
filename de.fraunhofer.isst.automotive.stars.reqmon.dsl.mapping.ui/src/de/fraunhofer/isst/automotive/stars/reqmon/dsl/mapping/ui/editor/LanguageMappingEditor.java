@@ -65,7 +65,7 @@ public class LanguageMappingEditor extends EditorPart {
 		FormLayout layout = new FormLayout();
 		composite.setLayout(layout);
 		
-		MappingPage mapping = new MappingPage(composite, display, shell, false);
+		MappingPage mapping = new MappingPage(composite, display, shell);
 		mapping.createMappingPage();
 	}
 
