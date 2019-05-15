@@ -1,8 +1,9 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions;
 
 /**
- * An implementation of this interface must be able to import a requirement file: parse its content 
- * and update the mapping list of the language mapping editor with the updateList method of the IRequirementController.  
+ * An implementation of this interface should be able to import a requirement file: 
+ * parse its content and update the mapping list of the language mapping editor 
+ * with the updateList method of the IRequirementController.  
  * 
  * @author sgraf
  *

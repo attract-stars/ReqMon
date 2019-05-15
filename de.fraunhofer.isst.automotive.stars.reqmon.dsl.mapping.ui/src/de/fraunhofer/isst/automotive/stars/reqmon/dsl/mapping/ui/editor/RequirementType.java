@@ -1,7 +1,7 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor;
 
 /**
- * This enum describes the possible types for the requirement element
+ * This enum describes the possible types for the requirement elements.
  * 
  * @author sgraf
  *

@@ -26,7 +26,14 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.MappingP
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.RequirementType;
 
 
-
+/**
+ * This class extends the MappingPage. It provides similar methods as the MappingPage. 
+ * The methods are modified so that they do not call a controller but call the TestApp classes directly
+ * because there are no extensions to be managed.
+ * 
+ * @author sgraf
+ *
+ */
 public class TestAppMappingPage extends MappingPage {
 	
 	private TestAppSystemImporter syselem;
@@ -84,7 +91,7 @@ public class TestAppMappingPage extends MappingPage {
 		setPositons(getMaincomp(), buttonFieldOne, buttonFieldTwo, top);
 	}
 	
-	
+	@Override
 	public void updateList() {
 		if (getCompositeInScroll() == null) {
 			return;
@@ -103,6 +110,7 @@ public class TestAppMappingPage extends MappingPage {
 			updateMinSize(getCompositeInScroll().getParent());
 		}
 	}
+	
 	
 	private void createTop(Composite top) {
 		top.setLayout(new FillLayout());
@@ -376,7 +384,7 @@ public class TestAppMappingPage extends MappingPage {
 		genButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				generator.executeSelectedGenerator();
+				generator.generate();
 			}
 		});
 		

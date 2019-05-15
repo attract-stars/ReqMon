@@ -15,6 +15,12 @@ import org.eclipse.core.runtime.jobs.Job;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.ISystemImporter;
 
+/**
+ * This class manages the SystemImporter extensions.
+ * 
+ * @author sgraf
+ *
+ */
 public class SystemController {
 	
 	private static final String ISYSTEM_ID =
@@ -25,6 +31,9 @@ public class SystemController {
 	private boolean isRegistry;
 	private ISystemImporter sysImporter;
 	
+	/**
+	 * This constructor checks if a registry exists and if SystemImporters are registered.
+	 */
 	public SystemController() {
 		registry = Platform.getExtensionRegistry();
 		if (registry == null) {
@@ -33,8 +42,6 @@ public class SystemController {
 		}
 		else {
 			isRegistry = true;
-		}
-		if (isRegistry) {
 			configSys = registry.getConfigurationElementsFor(ISYSTEM_ID);
 			
 			if (configSys.length == 0) {
@@ -43,6 +50,9 @@ public class SystemController {
 		}
 	}
 	
+	/**
+	 * Checks if the registered SystemImporters are executable.
+	 */
 	public void checkExtensions() {
 		if (!isRegistry) {
 			return;
@@ -60,7 +70,11 @@ public class SystemController {
 		}
 	}
 	
-	
+	/**
+	 * Executes the SystemImporter for the given system file path.
+	 * The SystemImporter is selected in dependence of the file extension.
+	 * @param path the path of the system file
+	 */
 	public void execute(String path) {
 		if (!isRegistry) {
 			return;
@@ -104,6 +118,10 @@ public class SystemController {
 		job.schedule();
 	}
 	
+	/**
+	 * Checks if the SystemImporter is executable.
+	 * @param o an object of the type ISystemImporter
+	 */
 	private void testSysExtension(Object o) {
 		ISafeRunnable runnable = new ISafeRunnable() {
 			
