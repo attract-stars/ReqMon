@@ -1,6 +1,7 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.RequirementType;
 
 //TODO BUILD A SPECIFIC SUB CLASS THAT CAN CONTAIN THE REFERENCES
 public class SemanticTextElement implements IRequirementElement {
@@ -14,7 +15,7 @@ public class SemanticTextElement implements IRequirementElement {
 		// TODO Auto-generated constructor stub
 	}
 	
-	
+	//TODO INSERT TYPE
 	String text;
 
 	public String getText() {
@@ -69,7 +70,7 @@ public class SemanticTextElement implements IRequirementElement {
 	}
 
 	@Override
-	public String getElementType() {
+	public RequirementType getElementType() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -81,10 +82,9 @@ public class SemanticTextElement implements IRequirementElement {
 	}
 
 	@Override
-	public void setElementType(String type) {
+	public void setElementType(RequirementType type) {
 		// TODO Auto-generated method stub
 		
 	}
-	
 	
 }

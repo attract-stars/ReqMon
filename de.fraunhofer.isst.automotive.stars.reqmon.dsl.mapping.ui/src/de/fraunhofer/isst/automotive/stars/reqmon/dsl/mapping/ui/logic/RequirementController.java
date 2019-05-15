@@ -82,8 +82,8 @@ public class RequirementController implements IRequirementController {
 	}
 	
 	@Override
-	public void updateList(List<IRequirementElement> requirements) {
-		this.requirements = requirements;
+	public void updateList(List<? extends IRequirementElement> requirements) {
+		this.requirements = (List<IRequirementElement>) requirements;
 		mp.updateList();
 	}
 	
@@ -94,6 +94,7 @@ public class RequirementController implements IRequirementController {
 		}
 		
 		Job job = new Job("Parse file") { 
+			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
 					//TimeUnit.SECONDS.sleep(5);

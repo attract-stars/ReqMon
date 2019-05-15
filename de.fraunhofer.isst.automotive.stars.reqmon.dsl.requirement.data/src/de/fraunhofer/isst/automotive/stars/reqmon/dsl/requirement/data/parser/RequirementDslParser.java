@@ -1,14 +1,13 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.analyzer;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.parser;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.parser.ParseException;
@@ -18,11 +17,10 @@ import org.eclipse.xtext.resource.XtextResourceSet;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.analytics.repository.impl.TextElementRepository;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.analytics.repository.RequirementElementMappingRepository;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementImporter;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.RequirementTextElement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.RequirementTextElementMapping;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.SemanticTextElement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui.internal.RequirementActivator;
@@ -39,85 +37,13 @@ import de.fraunhofer.isst.stars.requirementDSL.RequirementText;
 //TODO THIS CLASS NEEDS AN LOOKUP FOR EXISTING ELEMENTS
 public class RequirementDslParser implements IRequirementImporter {
 	
-
-	final static String[] FILTERS_LLIST = {"reqDSL"};
-	static class  DslTextElement {
-		
-		
-		//TODO REWORK
-		Class<?> type;
-		String text;
-		
-		public DslTextElement(Class<?> type, String text) {
-			this.type=type;
-			this.text=text;
-		}
-		
-		/**
-		 * @return the type
-		 */
-		public Class<?> getType() {
-			return type;
-		}
-		
-		
-		/**
-		 * @return the text
-		 */
-		public String getText() {
-			return text;
-		}
-
-		/* (non-Javadoc)
-		 * @see java.lang.Object#hashCode()
-		 */
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + ((text == null) ? 0 : text.hashCode());
-			result = prime * result + ((type == null) ? 0 : type.hashCode());
-			return result;
-		}
-
-		/* (non-Javadoc)
-		 * @see java.lang.Object#equals(java.lang.Object)
-		 */
-		@Override
-		public boolean equals(java.lang.Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			DslTextElement other = (DslTextElement) obj;
-//			if (!getOuterType().equals(other.getOuterType()))
-//				return false;
-			if (text == null) {
-				if (other.text != null)
-					return false;
-			} else if (!text.equals(other.text))
-				return false;
-			if (type == null) {
-				if (other.type != null)
-					return false;
-			} else if (!type.equals(other.type))
-				return false;
-			return true;
-		}
-
-//		private RequirementDslAstAnalyzer getOuterType() {
-//			return RequirementDslAstAnalyzer.this;
-//		}		
-		
-	}
-	
     @Inject
     XtextResourceSet resourceSet;
     @Inject
     IResourceServiceProvider resourceSetProvider;
 	
+    
+    
 	public RequirementDslParser() {
 		setupXtextParser();
 	}
@@ -128,23 +54,23 @@ public class RequirementDslParser implements IRequirementImporter {
 	injector.injectMembers(this);
     }
     
-    private Set<SemanticTextElement> analyze(EObject model) {
+    private List<SemanticTextElement> analyze(EObject model) {
     System.out.println("Analyzing Requirement DSL");
    	TreeIterator<EObject> modelIterator = model.eAllContents();   	
    	
    	//lets lookup if an analysis of the resource exists
-   	TextElementRepository eleRepo = TextElementRepository.getInstance();
+   	RequirementElementMappingRepository eleRepo = RequirementElementMappingRepository.getInstance();
    	if( eleRepo.containsKey(model.eResource())) {
    		System.out.println("Resource has been analyzed. Recovering previous results");
    		Collection<SemanticTextElement> values = (Collection<SemanticTextElement>) eleRepo.get(model.eResource()).values();
-  		return new HashSet<SemanticTextElement>(values);
+  		return new ArrayList<SemanticTextElement>(values);
    	}
    	
    	//STARTING THE ANALYSIS
    	System.out.println("STARTING: Analysis of AST");
-   	Set<SemanticTextElement> semElements = new HashSet<SemanticTextElement>();//output for the Mapping View
+   	List<SemanticTextElement> semElements = new ArrayList<SemanticTextElement>();//output for the Mapping View
    	RequirementTextElementMapping mapping = new RequirementTextElementMapping();// THe mapping from syn to sem save in the repository
-   	HashMap<DslTextElement, RequirementTextElement> lookup = new HashMap<DslTextElement,RequirementTextElement>();//local lookup to find existing sem elements
+   	HashMap<String, SemanticTextElement> lookup = new HashMap<String,SemanticTextElement>();//local lookup to find existing sem elements
    	
    	
 	// TODO We might have to implement a Specific Adapter for the Work on the
@@ -163,14 +89,14 @@ public class RequirementDslParser implements IRequirementImporter {
 	    	for (String text : ((Object) obj).getObject()) {
 	    		//TODO REWORk
 	    		boolean exits=false;
-	    		for (DslTextElement element : lookup.keySet()) {
-					if(element.getText().equals(text)) {
+	    		for (String str : lookup.keySet()) {
+					if(str.equals(text)) {
 						exits=true;
 					}
 				} 
 	    		if(!exits) { //TODO PROBLEM TO FIND DE ELEMNT WITH TEXT
-	    			RequirementTextElement texElement = new RequirementTextElement(text);
-	    			lookup.put(new DslTextElement(String.class,text), texElement);
+	    			SemanticTextElement texElement = new SemanticTextElement(text);
+	    			lookup.put(text, texElement);
 	    			mapping.put(obj, texElement);//TODO PROBLEM STRINGS SIND KEINE EOBJECT WERDEN ABER SO VERWALTET
 	    			semElements.add(texElement);
 	    		}
@@ -224,30 +150,10 @@ public class RequirementDslParser implements IRequirementImporter {
 
     }
 
-	@Override
-	//Entry Point for Parsing
-	public void execute(IRequirementController rc) {
-		throw new UnsupportedOperationException("Not yet Implemented");
-	}
 
-	@Override
-	public List<IRequirementElement> getRequirements() {
-		throw new UnsupportedOperationException("Not yet Implemented");
-	}
-
-	@Override
-	public void setPath(String path) {
-		throw new UnsupportedOperationException("Not yet Implemented");		
-	}
-
-	@Override
-	public String[] getFilterExt() {
-		return FILTERS_LLIST;
-	}
-
-	private EObject parseDslRequirementFile(IFile file) throws ParseException {
+	private EObject parseDslRequirementFile(URI file) throws ParseException {
 		try {
-		    Resource resource = resourceSet.getResource(uri, true);
+		    Resource resource = resourceSet.getResource(file, true);
 		    if (!resource.isLoaded()) {
 			resource.load(null);
 		    }
@@ -258,5 +164,22 @@ public class RequirementDslParser implements IRequirementImporter {
 		    System.out.println(e.getLocalizedMessage());
 		    return null;
 		}
+	}
+
+	@Override
+	public void execute(IRequirementController rc, String path) {
+		//TODO CATCH OR FORWARD PARSEEXCEPTION
+		EObject modelObject = parseDslRequirementFile(URI.createFileURI(path));
+		if(modelObject==null) {
+			//if nothing in the file or error give empty list back
+			rc.updateList(new ArrayList<IRequirementElement>());
+		}
+		//TODO INTERFERENCE!?
+		List<? extends IRequirementElement> testElements = analyze(modelObject);
+		if(testElements==null) {
+			//if nothing in the file or error give empty list back
+			rc.updateList(new ArrayList<IRequirementElement>());
+		}
+		rc.updateList(testElements);
 	}
 }
