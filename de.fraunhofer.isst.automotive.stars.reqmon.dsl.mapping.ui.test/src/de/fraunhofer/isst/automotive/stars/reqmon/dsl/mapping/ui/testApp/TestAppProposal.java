@@ -10,8 +10,18 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Text;
 
-public class TestAppProposal {
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IProposal;
+
+/**
+ * This class implements the IProposal interface and provides a decoration with an info text for the mapping text field 
+ * and some proposals.
+ * 
+ * @author sgraf
+ *
+ */
+public class TestAppProposal implements IProposal {
 	
+	@Override
 	public void createDeco(Text text) {
 		ControlDecoration deco = new ControlDecoration(text, SWT.TOP | SWT.LEFT);
 		Image image = FieldDecorationRegistry.getDefault()
@@ -31,6 +41,7 @@ public class TestAppProposal {
 		});
 	}
 	
+	@Override
 	public void getProposal(Text text) {
 		char[] autoActivationCharacters = new char[] { '.', ' ' };
 		KeyStroke keyStroke;
@@ -43,6 +54,11 @@ public class TestAppProposal {
 		} catch (org.eclipse.jface.bindings.keys.ParseException e1) {
 			System.out.println("Key Binding Parse Exception!");
 		}
+	}
+
+	@Override
+	public char[] getAutoActivationCharacters() {
+		return new char[] { '.', ' ' };
 	}
 
 }

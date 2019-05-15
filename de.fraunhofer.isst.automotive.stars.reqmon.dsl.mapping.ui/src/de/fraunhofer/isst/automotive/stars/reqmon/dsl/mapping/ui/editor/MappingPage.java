@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.GeneratorController;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.ParserController;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.MappingParserController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.ProposalController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.RequirementController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.SystemController;
@@ -49,7 +49,7 @@ public class MappingPage {
 	private ScrolledComposite scrolledComposite;
 	private RequirementController reqCon;
 	private SystemController sysCon;
-	private ParserController parserCon;
+	private MappingParserController parserCon;
 	private ProposalController propCon;
 	private GeneratorController genCon;
 	
@@ -71,7 +71,7 @@ public class MappingPage {
 		this.reqCon = new RequirementController(this);
 		this.sysCon = new SystemController();
 		this.propCon = new ProposalController();
-		this.parserCon = new ParserController();
+		this.parserCon = new MappingParserController();
 		this.genCon = new GeneratorController();
 	}
 	
@@ -397,6 +397,9 @@ public class MappingPage {
 		Text text = new Text(group, SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.WRAP);
 		createDecoAndProposal(text);
 		
+		/** create the appropriate mapping parser */
+		parserCon.selectMappingParser("test"); // TODO: get the appropriate language
+		
 		text.addModifyListener(new ModifyListener() {
 
 			@Override
@@ -551,6 +554,7 @@ public class MappingPage {
 	 * @param text the mapping text field
 	 */
 	private void createDecoAndProposal(Text text) {
+		propCon.selectProposal("test"); // TODO: get the appropriate language
 		propCon.createDeco(text);
 		propCon.getProposal(text);
 	}

@@ -21,6 +21,13 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRe
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementImporter;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.MappingPage;
 
+/**
+ * This class implements the IRequirementController interface.
+ * It manages the RequirementImporter extensions.
+ * 
+ * @author sgraf
+ *
+ */
 public class RequirementController implements IRequirementController {
 	
 	private static final String IREQUIREMENT_ID =
@@ -32,6 +39,9 @@ public class RequirementController implements IRequirementController {
 	private List<IRequirementElement> requirements;
 	private MappingPage mp;
 	
+	/**
+	 * This constructor checks if a registry exists and if RequirementImporters are registered.
+	 */
 	public RequirementController(MappingPage mp) {
 		registry = Platform.getExtensionRegistry();
 		this.mp = mp;
@@ -41,8 +51,6 @@ public class RequirementController implements IRequirementController {
 		}
 		else {
 			isRegistry = true;
-		}
-		if (isRegistry) {
 			configReq = registry.getConfigurationElementsFor(IREQUIREMENT_ID);
 			
 			if (configReq.length == 0) {
@@ -51,14 +59,17 @@ public class RequirementController implements IRequirementController {
 		}
 	}
 	
-	
-	
+	/**
+	 * Returns the list of requirement elements.
+	 * @return the list of requirement elements
+	 */
 	public List<IRequirementElement> getRequirements() {
 		return requirements;
 	}
 
-
-
+	/**
+	 * Checks if the registered RequirementImporters are executable.
+	 */
 	public void checkExtensions() {
 		if (!isRegistry) {
 			return;
@@ -76,7 +87,11 @@ public class RequirementController implements IRequirementController {
 		}
 	}
 	
-
+	/**
+	 * Executes the RequirementImporter for the given requirement file path.
+	 * @param display the Display (to make an asynchronous update of the GUI possible)
+	 * @param path the path of the requirement file
+	 */
 	public void execute(Display display, String path) {
 		exectuteRequirementImporter(this, display, path);
 	}
@@ -87,7 +102,12 @@ public class RequirementController implements IRequirementController {
 		mp.updateList();
 	}
 	
-	
+	/**
+	 * Executes the RequirementImporter. The RequirementImporter is selected in dependence of the file extension.
+	 * @param rc this
+	 * @param display the Display
+	 * @param path the path of the requirement file
+	 */
 	private void exectuteRequirementImporter(IRequirementController rc, Display display, String path) {
 		if (!isRegistry) {
 			return;
@@ -141,7 +161,10 @@ public class RequirementController implements IRequirementController {
 		
 	}
 	
-	
+	/**
+	 * Checks if the RequirementImporter is executable.
+	 * @param o an object of the type IRequirementImporter
+	 */
 	private void testReqExtension(Object o) {
 		ISafeRunnable runnable = new ISafeRunnable() {
 			

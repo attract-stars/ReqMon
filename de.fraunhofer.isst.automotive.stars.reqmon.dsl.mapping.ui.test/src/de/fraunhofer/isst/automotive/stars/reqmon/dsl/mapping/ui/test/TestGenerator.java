@@ -1,29 +1,19 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test;
 
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IGenerator;
 
-public class TestGenerator {
+/**
+ * This class implements the IGenerator interface to test if this extension is registered correctly. 
+ * 
+ * @author sgraf
+ *
+ */
+public class TestGenerator implements IGenerator {
 
-	private String name;
-	private String label;
 	
-	public TestGenerator() {
-		this.name = "FirstGenerator";
-		this.label = "Generate First Code";
-	}
-
-	//@Override
-	public String getName() {
-		return name;
-	}
-
-	//@Override
-	public String getLabel() {
-		return label;
-	}
-
-	//@Override
+	@Override
 	public void generate() {
-		System.out.println("FirstGenerator called!");
+		System.out.println("TestGenerator called!");
 		
 	}
 

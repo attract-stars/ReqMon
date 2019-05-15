@@ -21,5 +21,39 @@
    			filter="txt"
    			lang="test">
    	</client>
+   	<client
+   			class="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test.TestOtherReqImporter"
+   			filter="xml"
+   			lang="test2">
+   	</client>
 	</extension>
+   <extension
+         point="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.mappingparser">
+      <client
+            class="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test.TestMappingParser"
+            lang="test">
+      </client>
+   </extension>
+   <extension
+         point="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.proposal">
+      <client
+            class="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test.TestProposal"
+            lang="test">
+      </client>
+   </extension>
+   <extension
+         point="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.generator">
+      <client
+            class="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test.TestGenerator"
+            label="Generate (Test)"
+            lang="test"
+            name="TestGenerator">
+      </client>
+      <client
+            class="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test.TestOtherGenerator"
+            label="Generate (Other)"
+            lang="test2"
+            name="OtherGenerator">
+      </client>
+   </extension>
 </plugin>

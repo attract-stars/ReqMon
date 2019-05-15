@@ -12,7 +12,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
 /**
- * This class extends EditorPart. It creates the MappingPage for the language mapping editor.
+ * This class extends the EditorPart. It creates the MappingPage for the language mapping editor.
  * @author sgraf
  */
 public class LanguageMappingEditor extends EditorPart {
