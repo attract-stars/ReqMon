@@ -7,17 +7,18 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.Requirem
 public class SemanticTextElement implements IRequirementElement {
 
 	
-	public SemanticTextElement(String str) {
-		text=str;
+	public SemanticTextElement(String text,RequirementType type) {
+		this.text=text;
+		this.type = type;
 	}
 	
 	public SemanticTextElement() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	//TODO INSERT TYPE
 	String text;
-
+	RequirementType type;
+	
 	public String getText() {
 		return text;
 	}
@@ -26,9 +27,23 @@ public class SemanticTextElement implements IRequirementElement {
 		this.text = text;
 	}
 
+	/**
+	 * @return the type
+	 */
+	public RequirementType getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(RequirementType type) {
+		this.type = type;
+	}
+
 	@Override
 	public String toString() {
-		return "SemanticTextElement [text=" + text + "]";
+		return "SemanticTextElement [text=" + text +"; type="+ type+ "]";
 	}
 
 	/* (non-Javadoc)
@@ -39,6 +54,7 @@ public class SemanticTextElement implements IRequirementElement {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((text == null) ? 0 : text.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
 	
@@ -60,31 +76,29 @@ public class SemanticTextElement implements IRequirementElement {
 				return false;
 		} else if (!text.equals(other.text))
 			return false;
+		if (type != other.type)
+			return false;
 		return true;
 	}
 
 	@Override
 	public String getElementName() {
-		// TODO Auto-generated method stub
-		return null;
+		return getText();
 	}
 
 	@Override
 	public RequirementType getElementType() {
-		// TODO Auto-generated method stub
-		return null;
+		return getType();
 	}
 
 	@Override
 	public void setElementName(String name) {
-		// TODO Auto-generated method stub
-		
+		setText(name);
 	}
 
 	@Override
 	public void setElementType(RequirementType type) {
-		// TODO Auto-generated method stub
-		
+		setType(type);		
 	}
 	
 }

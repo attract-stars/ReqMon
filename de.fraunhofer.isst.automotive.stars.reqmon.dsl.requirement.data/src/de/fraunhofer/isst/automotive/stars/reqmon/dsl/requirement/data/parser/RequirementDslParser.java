@@ -21,6 +21,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.analytics.rep
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementImporter;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.RequirementType;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.RequirementTextElementMapping;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.SemanticTextElement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui.internal.RequirementActivator;
@@ -82,6 +83,7 @@ public class RequirementDslParser implements IRequirementImporter {
 	    EObject obj = modelIterator.next();   
 	    
 	    //TODO hier muss jetzt eigentlich der Typ und Text gefunden werden.
+	    //TODO MACHT HIER EINE ANALYZER FACTORY SINN DIE FÜR JEDES ELEMENT EINE EIGENEN ANALYSE CLASSE AUFRUFT? -> Erweiterbarkeit
 	    if(obj instanceof Requirement) {
 	    	System.out.println(obj.toString());
 	    }
@@ -95,7 +97,7 @@ public class RequirementDslParser implements IRequirementImporter {
 					}
 				} 
 	    		if(!exits) { //TODO PROBLEM TO FIND DE ELEMNT WITH TEXT
-	    			SemanticTextElement texElement = new SemanticTextElement(text);
+	    			SemanticTextElement texElement = new SemanticTextElement(text,RequirementType.OBJECT);
 	    			lookup.put(text, texElement);
 	    			mapping.put(obj, texElement);//TODO PROBLEM STRINGS SIND KEINE EOBJECT WERDEN ABER SO VERWALTET
 	    			semElements.add(texElement);
