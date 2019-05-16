@@ -1,9 +1,7 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.analytics.repository;
 
 import java.util.HashMap;
-
-import org.eclipse.emf.ecore.resource.Resource;
-
+import org.eclipse.emf.common.util.URI;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.analytics.IRequirementElementMapping;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement;
 
@@ -12,7 +10,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRe
  * @author mmauritz
  *
  */
-public class RequirementElementMappingRepository extends HashMap<Resource, IRequirementElementMapping<?, ? extends IRequirementElement>>  {
+public class RequirementElementMappingRepository extends HashMap<URI, IRequirementElementMapping<?, ? extends IRequirementElement>>  {
 
 	/**
 	 * 
@@ -30,7 +28,7 @@ public class RequirementElementMappingRepository extends HashMap<Resource, IRequ
 	    	RequirementElementMappingRepository.INSTANCE= new RequirementElementMappingRepository();
 	    }
 	    return RequirementElementMappingRepository.INSTANCE;
-	  }
+	}
 
 
 }

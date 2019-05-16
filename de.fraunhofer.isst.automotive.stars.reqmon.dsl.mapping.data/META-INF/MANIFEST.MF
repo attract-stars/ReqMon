@@ -8,7 +8,8 @@ Bundle-Vendor: Fraunhofer ISST
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
- de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui,
+ org.eclipse.emf.common
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data
 Bundle-ActivationPolicy: lazy
