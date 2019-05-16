@@ -15,7 +15,7 @@ public interface IRequirementController {
 	 * Updates the mapping list with the given elements.
 	 * @param requirements List of RequirementElements
 	 */
-	public void updateList(List<IRequirementElement> requirements);
+	public void updateList(List<? extends IRequirementElement> requirements);
 	
 
 }

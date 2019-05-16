@@ -88,7 +88,7 @@ public class MappingParserController {
 		}
 		try {
 			for (IConfigurationElement e : configPars) {
-				System.out.println("Evaluating parser extension");
+				System.out.println("\nEvaluating parser extension");
 				final Object o = e.createExecutableExtension("class");
 				if (o instanceof IMappingParser) {
 					testParsExtension(o);

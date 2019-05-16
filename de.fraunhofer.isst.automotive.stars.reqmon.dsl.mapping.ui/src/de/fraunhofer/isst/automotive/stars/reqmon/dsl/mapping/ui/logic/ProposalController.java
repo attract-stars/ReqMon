@@ -8,7 +8,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.swt.widgets.Text;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMappingParser;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IProposal;
 
 /**
@@ -86,9 +85,9 @@ public class ProposalController {
 		}
 		try {
 			for (IConfigurationElement e : configProp) {
-				System.out.println("Evaluating proposal extension");
+				System.out.println("\nEvaluating proposal extension");
 				final Object o = e.createExecutableExtension("class");
-				if (o instanceof IMappingParser) {
+				if (o instanceof IProposal) {
 					testPropExtension(o);
 				}
 			}
