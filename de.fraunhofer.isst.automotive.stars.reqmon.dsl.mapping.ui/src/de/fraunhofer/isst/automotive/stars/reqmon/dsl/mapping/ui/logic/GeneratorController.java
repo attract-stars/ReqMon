@@ -137,10 +137,11 @@ public class GeneratorController {
 	 * @param label the label of the generator
 	 * @return if the deleting was successfully
 	 */
-	public boolean deleteGenerator(String name, String label) {
-		if (generators.contains(name) && generateLabels.contains(label)) {
+	public boolean deleteGenerator(String name) {
+		if (generators.contains(name)) {
+			int i = generators.indexOf(name);
 			generators.remove(name);
-			generateLabels.remove(label);
+			generateLabels.remove(generateLabels.get(i));
 			return true;
 		}
 		return false;
@@ -153,11 +154,8 @@ public class GeneratorController {
 	 * @return the label of the selected generator.
 	 */
 	public String getLabel(String name) {
-		for (int i = 0; i < generators.size(); i++) {
-			if (name.contains(generators.get(i))) {
-				index = i;
-				break;
-			}
+		if (generators.contains(name)) {
+			index = generators.indexOf(name);
 		}
 		return generateLabels.get(index);
 	}

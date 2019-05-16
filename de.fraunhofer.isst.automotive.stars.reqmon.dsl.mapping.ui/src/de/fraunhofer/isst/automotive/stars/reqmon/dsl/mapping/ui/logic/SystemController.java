@@ -59,7 +59,7 @@ public class SystemController {
 		}
 		try {
 			for (IConfigurationElement e : configSys) {
-				System.out.println("Evaluating SystemImporter extension");
+				System.out.println("\nEvaluating SystemImporter extension");
 				final Object o = e.createExecutableExtension("class");
 				if (o instanceof ISystemImporter) {
 					testSysExtension(o);

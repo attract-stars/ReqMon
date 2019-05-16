@@ -534,8 +534,8 @@ public class MappingPage {
 	    comboDropDown.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				System.out.println("Selected: " + comboDropDown.getText());	
-				String genLabel = genCon.getLabel(comboDropDown.getText());
+				System.out.println("Selected: " + comboDropDown.getText().substring(1));	
+				String genLabel = genCon.getLabel(comboDropDown.getText().substring(1));
 				genButton.setText(genLabel);
 				box.layout(true);
 			}

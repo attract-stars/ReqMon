@@ -76,7 +76,7 @@ public class RequirementController implements IRequirementController {
 		}
 		try {
 			for (IConfigurationElement e : configReq) {
-				System.out.println("Evaluating RequirementImporter extension");
+				System.out.println("\nEvaluating RequirementImporter extension");
 				final Object o = e.createExecutableExtension("class");
 				if (o instanceof IRequirementImporter) {
 					testReqExtension(o);
@@ -96,11 +96,14 @@ public class RequirementController implements IRequirementController {
 		exectuteRequirementImporter(this, display, path);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void updateList(List<? extends IRequirementElement> requirements) {
 		this.requirements = (List<IRequirementElement>) requirements;
 		mp.updateList();
+		
 	}
+	
 	
 	/**
 	 * Executes the RequirementImporter. The RequirementImporter is selected in dependence of the file extension.
@@ -182,6 +185,8 @@ public class RequirementController implements IRequirementController {
 		SafeRunner.run(runnable);
 		
 	}
+
+	
 	
 	
 }
