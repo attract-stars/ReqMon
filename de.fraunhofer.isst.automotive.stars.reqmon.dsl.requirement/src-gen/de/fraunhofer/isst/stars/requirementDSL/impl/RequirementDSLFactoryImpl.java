@@ -13,6 +13,7 @@ import de.fraunhofer.isst.stars.requirementDSL.ConditionalClause;
 import de.fraunhofer.isst.stars.requirementDSL.Constraint;
 import de.fraunhofer.isst.stars.requirementDSL.ConstraintOrdinators;
 import de.fraunhofer.isst.stars.requirementDSL.Constraints;
+import de.fraunhofer.isst.stars.requirementDSL.Existence;
 import de.fraunhofer.isst.stars.requirementDSL.ExistencePreface;
 import de.fraunhofer.isst.stars.requirementDSL.ExistenceSentence;
 import de.fraunhofer.isst.stars.requirementDSL.FloatValue;
@@ -35,6 +36,8 @@ import de.fraunhofer.isst.stars.requirementDSL.Property;
 import de.fraunhofer.isst.stars.requirementDSL.PropertySentence;
 import de.fraunhofer.isst.stars.requirementDSL.RelObjects;
 import de.fraunhofer.isst.stars.requirementDSL.Relation;
+import de.fraunhofer.isst.stars.requirementDSL.RelativeClause;
+import de.fraunhofer.isst.stars.requirementDSL.RelativeSentence;
 import de.fraunhofer.isst.stars.requirementDSL.Requirement;
 import de.fraunhofer.isst.stars.requirementDSL.RequirementDSLFactory;
 import de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage;
@@ -47,8 +50,6 @@ import de.fraunhofer.isst.stars.requirementDSL.TimeConstraint;
 import de.fraunhofer.isst.stars.requirementDSL.UnitConstraints;
 import de.fraunhofer.isst.stars.requirementDSL.Value;
 import de.fraunhofer.isst.stars.requirementDSL.ValueSet;
-import de.fraunhofer.isst.stars.requirementDSL.relativeClause;
-import de.fraunhofer.isst.stars.requirementDSL.relativeSentence;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -125,8 +126,8 @@ public class RequirementDSLFactoryImpl extends EFactoryImpl implements Requireme
       case RequirementDSLPackage.PROPERTY: return createProperty();
       case RequirementDSLPackage.SENTENCE_BEGIN: return createSentenceBegin();
       case RequirementDSLPackage.SENTENCE_ENDING: return createSentenceEnding();
-      case RequirementDSLPackage.RELATIVE_CLAUSE: return createrelativeClause();
-      case RequirementDSLPackage.RELATIVE_SENTENCE: return createrelativeSentence();
+      case RequirementDSLPackage.RELATIVE_CLAUSE: return createRelativeClause();
+      case RequirementDSLPackage.RELATIVE_SENTENCE: return createRelativeSentence();
       case RequirementDSLPackage.ACTORS: return createActors();
       case RequirementDSLPackage.ACTOR: return createActor();
       case RequirementDSLPackage.PREDS: return createPreds();
@@ -134,7 +135,7 @@ public class RequirementDSLFactoryImpl extends EFactoryImpl implements Requireme
       case RequirementDSLPackage.PREDICATE_OBJECT: return createPredicateObject();
       case RequirementDSLPackage.OBJECT: return createObject();
       case RequirementDSLPackage.PRED_OR_OBJECT: return createPredOrObject();
-      case RequirementDSLPackage.EXISTENCE_PREFACE: return createExistencePreface();
+      case RequirementDSLPackage.EXISTENCE: return createExistence();
       case RequirementDSLPackage.AUX_NEG: return createAuxNeg();
       case RequirementDSLPackage.PRE_NOMINATIVE: return createPreNominative();
       case RequirementDSLPackage.RELATION: return createRelation();
@@ -153,6 +154,7 @@ public class RequirementDSLFactoryImpl extends EFactoryImpl implements Requireme
       case RequirementDSLPackage.VALUE: return createValue();
       case RequirementDSLPackage.INT_VALUE: return createIntValue();
       case RequirementDSLPackage.FLOAT_VALUE: return createFloatValue();
+      case RequirementDSLPackage.EXISTENCE_PREFACE: return createExistencePreface();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -359,9 +361,9 @@ public class RequirementDSLFactoryImpl extends EFactoryImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
-  public relativeClause createrelativeClause()
+  public RelativeClause createRelativeClause()
   {
-    relativeClauseImpl relativeClause = new relativeClauseImpl();
+    RelativeClauseImpl relativeClause = new RelativeClauseImpl();
     return relativeClause;
   }
 
@@ -370,9 +372,9 @@ public class RequirementDSLFactoryImpl extends EFactoryImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
-  public relativeSentence createrelativeSentence()
+  public RelativeSentence createRelativeSentence()
   {
-    relativeSentenceImpl relativeSentence = new relativeSentenceImpl();
+    RelativeSentenceImpl relativeSentence = new RelativeSentenceImpl();
     return relativeSentence;
   }
 
@@ -458,10 +460,10 @@ public class RequirementDSLFactoryImpl extends EFactoryImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
-  public ExistencePreface createExistencePreface()
+  public Existence createExistence()
   {
-    ExistencePrefaceImpl existencePreface = new ExistencePrefaceImpl();
-    return existencePreface;
+    ExistenceImpl existence = new ExistenceImpl();
+    return existence;
   }
 
   /**
@@ -660,6 +662,17 @@ public class RequirementDSLFactoryImpl extends EFactoryImpl implements Requireme
   {
     FloatValueImpl floatValue = new FloatValueImpl();
     return floatValue;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ExistencePreface createExistencePreface()
+  {
+    ExistencePrefaceImpl existencePreface = new ExistencePrefaceImpl();
+    return existencePreface;
   }
 
   /**

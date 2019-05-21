@@ -9,23 +9,23 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>relative Clause</b></em>'.
+ * A representation of the model object '<em><b>Relative Clause</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.relativeClause#getSentence <em>Sentence</em>}</li>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.relativeClause#getConjunction <em>Conjunction</em>}</li>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.relativeClause#getCondClauses <em>Cond Clauses</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.RelativeClause#getSentence <em>Sentence</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.RelativeClause#getConjunction <em>Conjunction</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.RelativeClause#getCondClauses <em>Cond Clauses</em>}</li>
  * </ul>
  *
- * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getrelativeClause()
+ * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getRelativeClause()
  * @model
  * @generated
  */
-public interface relativeClause extends EObject
+public interface RelativeClause extends EObject
 {
   /**
    * Returns the value of the '<em><b>Sentence</b></em>' containment reference.
@@ -36,22 +36,22 @@ public interface relativeClause extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Sentence</em>' containment reference.
-   * @see #setSentence(relativeSentence)
-   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getrelativeClause_Sentence()
+   * @see #setSentence(RelativeSentence)
+   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getRelativeClause_Sentence()
    * @model containment="true"
    * @generated
    */
-  relativeSentence getSentence();
+  RelativeSentence getSentence();
 
   /**
-   * Sets the value of the '{@link de.fraunhofer.isst.stars.requirementDSL.relativeClause#getSentence <em>Sentence</em>}' containment reference.
+   * Sets the value of the '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeClause#getSentence <em>Sentence</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Sentence</em>' containment reference.
    * @see #getSentence()
    * @generated
    */
-  void setSentence(relativeSentence value);
+  void setSentence(RelativeSentence value);
 
   /**
    * Returns the value of the '<em><b>Conjunction</b></em>' attribute list.
@@ -63,7 +63,7 @@ public interface relativeClause extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Conjunction</em>' attribute list.
-   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getrelativeClause_Conjunction()
+   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getRelativeClause_Conjunction()
    * @model unique="false"
    * @generated
    */
@@ -79,10 +79,10 @@ public interface relativeClause extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Cond Clauses</em>' containment reference list.
-   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getrelativeClause_CondClauses()
+   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getRelativeClause_CondClauses()
    * @model containment="true"
    * @generated
    */
   EList<ConditionalClause> getCondClauses();
 
-} // relativeClause
+} // RelativeClause

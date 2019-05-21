@@ -7,8 +7,8 @@ import de.fraunhofer.isst.stars.requirementDSL.Clause;
 import de.fraunhofer.isst.stars.requirementDSL.Constraints;
 import de.fraunhofer.isst.stars.requirementDSL.Modality;
 import de.fraunhofer.isst.stars.requirementDSL.Predicate;
+import de.fraunhofer.isst.stars.requirementDSL.RelativeSentence;
 import de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage;
-import de.fraunhofer.isst.stars.requirementDSL.relativeSentence;
 
 import java.util.Collection;
 
@@ -28,24 +28,24 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>relative Sentence</b></em>'.
+ * An implementation of the model object '<em><b>Relative Sentence</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.relativeSentenceImpl#getPronoun <em>Pronoun</em>}</li>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.relativeSentenceImpl#getModelity <em>Modelity</em>}</li>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.relativeSentenceImpl#isNegation <em>Negation</em>}</li>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.relativeSentenceImpl#getPredicate <em>Predicate</em>}</li>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.relativeSentenceImpl#getConstraints <em>Constraints</em>}</li>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.relativeSentenceImpl#getAuxiliar <em>Auxiliar</em>}</li>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.relativeSentenceImpl#getClause <em>Clause</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.RelativeSentenceImpl#getPronoun <em>Pronoun</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.RelativeSentenceImpl#getModelity <em>Modelity</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.RelativeSentenceImpl#isNegation <em>Negation</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.RelativeSentenceImpl#getPredicate <em>Predicate</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.RelativeSentenceImpl#getConstraints <em>Constraints</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.RelativeSentenceImpl#getAuxiliar <em>Auxiliar</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.RelativeSentenceImpl#getClause <em>Clause</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class relativeSentenceImpl extends MinimalEObjectImpl.Container implements relativeSentence
+public class RelativeSentenceImpl extends MinimalEObjectImpl.Container implements RelativeSentence
 {
   /**
    * The default value of the '{@link #getPronoun() <em>Pronoun</em>}' attribute.
@@ -162,7 +162,7 @@ public class relativeSentenceImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
-  protected relativeSentenceImpl()
+  protected RelativeSentenceImpl()
   {
     super();
   }
@@ -551,4 +551,4 @@ public class relativeSentenceImpl extends MinimalEObjectImpl.Container implement
     return result.toString();
   }
 
-} //relativeSentenceImpl
+} //RelativeSentenceImpl

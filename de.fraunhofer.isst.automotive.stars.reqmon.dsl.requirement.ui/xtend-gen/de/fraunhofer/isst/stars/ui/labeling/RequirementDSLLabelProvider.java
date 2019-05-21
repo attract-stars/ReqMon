@@ -293,40 +293,20 @@ public class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
   
   public String text(final PreNominative ele) {
     String _xifexpression = null;
-    if (((ele.getArticle() != null) && (ele.getActor() != null))) {
-      String _article = ele.getArticle();
-      String _plus = ("Article and Actor: " + _article);
-      String _plus_1 = (_plus + " ");
-      String _actor = ele.getActor();
-      _xifexpression = (_plus_1 + _actor);
+    String _article = ele.getArticle();
+    boolean _tripleNotEquals = (_article != null);
+    if (_tripleNotEquals) {
+      String _article_1 = ele.getArticle();
+      _xifexpression = ("Article: " + _article_1);
     } else {
       String _xifexpression_1 = null;
-      if (((ele.getDeterminer() != null) && (ele.getActor() != null))) {
-        String _determiner = ele.getDeterminer();
-        String _plus_2 = ("Determiner and Actor: " + _determiner);
-        String _plus_3 = (_plus_2 + " ");
-        String _actor_1 = ele.getActor();
-        _xifexpression_1 = (_plus_3 + _actor_1);
+      String _article_2 = ele.getArticle();
+      boolean _tripleNotEquals_1 = (_article_2 != null);
+      if (_tripleNotEquals_1) {
+        String _article_3 = ele.getArticle();
+        _xifexpression_1 = ("Determiner: " + _article_3);
       } else {
-        String _xifexpression_2 = null;
-        String _article_1 = ele.getArticle();
-        boolean _tripleNotEquals = (_article_1 != null);
-        if (_tripleNotEquals) {
-          String _article_2 = ele.getArticle();
-          _xifexpression_2 = ("Article: " + _article_2);
-        } else {
-          String _xifexpression_3 = null;
-          String _article_3 = ele.getArticle();
-          boolean _tripleNotEquals_1 = (_article_3 != null);
-          if (_tripleNotEquals_1) {
-            String _article_4 = ele.getArticle();
-            _xifexpression_3 = ("Determiner: " + _article_4);
-          } else {
-            _xifexpression_3 = "PreNominative";
-          }
-          _xifexpression_2 = _xifexpression_3;
-        }
-        _xifexpression_1 = _xifexpression_2;
+        _xifexpression_1 = "PreNominative";
       }
       _xifexpression = _xifexpression_1;
     }

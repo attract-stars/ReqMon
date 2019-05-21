@@ -53,19 +53,17 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Alternatives cAlternatives_4 = (Alternatives)cGroup.eContents().get(4);
 		private final Keyword cFullStopKeyword_4_0 = (Keyword)cAlternatives_4.eContents().get(0);
 		private final Keyword cSemicolonKeyword_4_1 = (Keyword)cAlternatives_4.eContents().get(1);
-		private final Alternatives cAlternatives_5 = (Alternatives)cGroup.eContents().get(5);
-		private final Keyword cLineFeedKeyword_5_0 = (Keyword)cAlternatives_5.eContents().get(0);
-		private final Keyword cEOFKeyword_5_1 = (Keyword)cAlternatives_5.eContents().get(1);
+		private final Keyword cLineFeedKeyword_5 = (Keyword)cGroup.eContents().get(5);
 		
 		////Requirement:
 		////	(condClauses+=Subclause)* (mainclauses+=Clauses) (condClauses+=Subclause)*
 		////	;
 		//Requirement: //PROBLEM condClauses before and after mainClause lead to ambiguity
-		//	'Req'? reqID=ReqID? ':' text=RequirementText ('.' | ';') ('\n'+ | 'EOF');
+		//	'Req'? reqID=ReqID? ':' text=RequirementText ('.' | ';') '\n'+;
 		@Override public ParserRule getRule() { return rule; }
 		
 		////PROBLEM condClauses before and after mainClause lead to ambiguity
-		//'Req'? reqID=ReqID? ':' text=RequirementText ('.' | ';') ('\n'+ | 'EOF')
+		//'Req'? reqID=ReqID? ':' text=RequirementText ('.' | ';') '\n'+
 		public Group getGroup() { return cGroup; }
 		
 		////PROBLEM condClauses before and after mainClause lead to ambiguity
@@ -96,14 +94,8 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//';'
 		public Keyword getSemicolonKeyword_4_1() { return cSemicolonKeyword_4_1; }
 		
-		//'\n'+ | 'EOF'
-		public Alternatives getAlternatives_5() { return cAlternatives_5; }
-		
 		//'\n'+
-		public Keyword getLineFeedKeyword_5_0() { return cLineFeedKeyword_5_0; }
-		
-		//'EOF'
-		public Keyword getEOFKeyword_5_1() { return cEOFKeyword_5_1; }
+		public Keyword getLineFeedKeyword_5() { return cLineFeedKeyword_5; }
 	}
 	public class RequirementTextElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.fraunhofer.isst.stars.RequirementDSL.RequirementText");
@@ -463,7 +455,7 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 	public class ExistenceSentenceElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.fraunhofer.isst.stars.RequirementDSL.ExistenceSentence");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final RuleCall cExistencePrefaceParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final RuleCall cExistenceParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final Assignment cActorsAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cActorsActorsParserRuleCall_1_0 = (RuleCall)cActorsAssignment_1.eContents().get(0);
 		private final Keyword cCommaKeyword_2 = (Keyword)cGroup.eContents().get(2);
@@ -472,14 +464,14 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cCommaKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
 		//ExistenceSentence:
-		//	ExistencePreface actors=Actors ',' relativeClause=relativeClause ',';
+		//	Existence actors=Actors ',' relativeClause=RelativeClause ',';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//ExistencePreface actors=Actors ',' relativeClause=relativeClause ','
+		//Existence actors=Actors ',' relativeClause=RelativeClause ','
 		public Group getGroup() { return cGroup; }
 		
-		//ExistencePreface
-		public RuleCall getExistencePrefaceParserRuleCall_0() { return cExistencePrefaceParserRuleCall_0; }
+		//Existence
+		public RuleCall getExistenceParserRuleCall_0() { return cExistenceParserRuleCall_0; }
 		
 		//actors=Actors
 		public Assignment getActorsAssignment_1() { return cActorsAssignment_1; }
@@ -490,10 +482,10 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//','
 		public Keyword getCommaKeyword_2() { return cCommaKeyword_2; }
 		
-		//relativeClause=relativeClause
+		//relativeClause=RelativeClause
 		public Assignment getRelativeClauseAssignment_3() { return cRelativeClauseAssignment_3; }
 		
-		//relativeClause
+		//RelativeClause
 		public RuleCall getRelativeClauseRelativeClauseParserRuleCall_3_0() { return cRelativeClauseRelativeClauseParserRuleCall_3_0; }
 		
 		//','
@@ -547,15 +539,18 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
+		////TODO HIER SOLLTE MAN DOCH (ACTOR+PROPERTY)* haben!?
 		//actors=Actors property=Property rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb?
 		//predObj=PredOrObject ending=SentenceEnding? | actors=Actors property=Property rela=Relation? auxNeg=AuxNeg
 		//(predObj=PredOrObject | constraints=Constraints) ending=SentenceEnding?
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
+		////TODO HIER SOLLTE MAN DOCH (ACTOR+PROPERTY)* haben!?
 		//actors=Actors property=Property rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb?
 		//predObj=PredOrObject ending=SentenceEnding?
 		public Group getGroup_0() { return cGroup_0; }
 		
+		////TODO HIER SOLLTE MAN DOCH (ACTOR+PROPERTY)* haben!?
 		//actors=Actors
 		public Assignment getActorsAssignment_0_0() { return cActorsAssignment_0_0; }
 		
@@ -771,7 +766,7 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		public RuleCall getConstConstraintsParserRuleCall_2_1_0() { return cConstConstraintsParserRuleCall_2_1_0; }
 	}
 	public class RelativeClauseElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.fraunhofer.isst.stars.RequirementDSL.relativeClause");
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.fraunhofer.isst.stars.RequirementDSL.RelativeClause");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cSentenceAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final RuleCall cSentenceRelativeSentenceParserRuleCall_0_0 = (RuleCall)cSentenceAssignment_0.eContents().get(0);
@@ -781,19 +776,19 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cCondClausesAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
 		private final RuleCall cCondClausesConditionalClauseParserRuleCall_1_1_0 = (RuleCall)cCondClausesAssignment_1_1.eContents().get(0);
 		
-		///* =========== RELATIVE CLAUSE =========== */ relativeClause:
-		//	sentence=relativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*;
+		///* =========== RELATIVE CLAUSE =========== */ RelativeClause:
+		//	sentence=RelativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*;
 		@Override public ParserRule getRule() { return rule; }
 		
 		////  pronoun=RelativePronouns actors=Actors? modelity=Modality? negation?=Negation? predicate=Predicate constraints+=Constraints*
-		//sentence=relativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*
+		//sentence=RelativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*
 		public Group getGroup() { return cGroup; }
 		
 		////  pronoun=RelativePronouns actors=Actors? modelity=Modality? negation?=Negation? predicate=Predicate constraints+=Constraints*
-		//sentence=relativeSentence
+		//sentence=RelativeSentence
 		public Assignment getSentenceAssignment_0() { return cSentenceAssignment_0; }
 		
-		//relativeSentence
+		//RelativeSentence
 		public RuleCall getSentenceRelativeSentenceParserRuleCall_0_0() { return cSentenceRelativeSentenceParserRuleCall_0_0; }
 		
 		//(conjunction+=Conjunction condClauses+=ConditionalClause)*
@@ -812,7 +807,7 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		public RuleCall getCondClausesConditionalClauseParserRuleCall_1_1_0() { return cCondClausesConditionalClauseParserRuleCall_1_1_0; }
 	}
 	public class RelativeSentenceElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.fraunhofer.isst.stars.RequirementDSL.relativeSentence");
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.fraunhofer.isst.stars.RequirementDSL.RelativeSentence");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
 		private final Assignment cPronounAssignment_0_0 = (Assignment)cGroup_0.eContents().get(0);
@@ -846,7 +841,7 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cClauseAssignment_2_1_1 = (Assignment)cAlternatives_2_1.eContents().get(1);
 		private final RuleCall cClausePredicateSentenceParserRuleCall_2_1_1_0 = (RuleCall)cClauseAssignment_2_1_1.eContents().get(0);
 		
-		//relativeSentence:
+		//RelativeSentence:
 		//	pronoun=RelativePronounsSubject modelity=Modality negation?=Negation? predicate=Predicate constraints+=Constraints* |
 		//	pronoun=RelativePronounsSubject (auxiliar=WORD negation?=Negation)? predicate=Predicate constraints+=Constraints* |
 		//	pronoun=RelativePronounsObject (clause=ModalitySentence | clause=PredicateSentence);
@@ -992,7 +987,8 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 	public class ActorElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.fraunhofer.isst.stars.RequirementDSL.Actor");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final RuleCall cPreNominativeParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final Assignment cPreNominativeAssignment_0 = (Assignment)cGroup.eContents().get(0);
+		private final RuleCall cPreNominativePreNominativeParserRuleCall_0_0 = (RuleCall)cPreNominativeAssignment_0.eContents().get(0);
 		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
 		private final Assignment cActorAssignment_1_0 = (Assignment)cAlternatives_1.eContents().get(0);
 		private final RuleCall cActorWORDParserRuleCall_1_0_0 = (RuleCall)cActorAssignment_1_0.eContents().get(0);
@@ -1000,14 +996,17 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cActorSTRINGTerminalRuleCall_1_1_0 = (RuleCall)cActorAssignment_1_1.eContents().get(0);
 		
 		//Actor:
-		//	PreNominative? (actor=WORD | actor=STRING);
+		//	PreNominative=PreNominative? (actor=WORD | actor=STRING);
 		@Override public ParserRule getRule() { return rule; }
 		
-		//PreNominative? (actor=WORD | actor=STRING)
+		//PreNominative=PreNominative? (actor=WORD | actor=STRING)
 		public Group getGroup() { return cGroup; }
 		
-		//PreNominative?
-		public RuleCall getPreNominativeParserRuleCall_0() { return cPreNominativeParserRuleCall_0; }
+		//PreNominative=PreNominative?
+		public Assignment getPreNominativeAssignment_0() { return cPreNominativeAssignment_0; }
+		
+		//PreNominative
+		public RuleCall getPreNominativePreNominativeParserRuleCall_0_0() { return cPreNominativePreNominativeParserRuleCall_0_0; }
 		
 		//actor=WORD | actor=STRING
 		public Alternatives getAlternatives_1() { return cAlternatives_1; }
@@ -1205,8 +1204,8 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//PredicateObject
 		public RuleCall getPredObjPredicateObjectParserRuleCall_1_0() { return cPredObjPredicateObjectParserRuleCall_1_0; }
 	}
-	public class ExistencePrefaceElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.fraunhofer.isst.stars.RequirementDSL.ExistencePreface");
+	public class ExistenceElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.fraunhofer.isst.stars.RequirementDSL.Existence");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cExistencePrefaceAction_0 = (Action)cGroup.eContents().get(0);
 		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
@@ -1218,7 +1217,7 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cExistKeyword_3_0 = (Keyword)cAlternatives_3.eContents().get(0);
 		private final Keyword cExistsKeyword_3_1 = (Keyword)cAlternatives_3.eContents().get(1);
 		
-		//ExistencePreface:
+		//Existence:
 		//	{ExistencePreface} ('there' | 'There') modifier=Modifier? ('exist' | 'exists');
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -1370,7 +1369,7 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cRelElementsAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cRelElementsRelObjectsParserRuleCall_3_0 = (RuleCall)cRelElementsAssignment_3.eContents().get(0);
 		
-		///* =========== Relations =========== */ //Currently not used -> False identification of properties
+		///* =========== Relations =========== */ //TODO WAS IST WENN MAN HIER 'IN' SAGT?!?!? DUPLIUCATE RULE?
 		//Relation:
 		//	relposAdv=PositionAdverbial relDel=RelationDelimiter relComp=Comperators relElements=RelObjects;
 		@Override public ParserRule getRule() { return rule; }
@@ -3055,7 +3054,7 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 	private final PredicateObjectElements pPredicateObject;
 	private final ObjectElements pObject;
 	private final PredOrObjectElements pPredOrObject;
-	private final ExistencePrefaceElements pExistencePreface;
+	private final ExistenceElements pExistence;
 	private final AuxNegElements pAuxNeg;
 	private final PreNominativeElements pPreNominative;
 	private final AdverbialElements pAdverbial;
@@ -3142,7 +3141,7 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		this.pPredicateObject = new PredicateObjectElements();
 		this.pObject = new ObjectElements();
 		this.pPredOrObject = new PredOrObjectElements();
-		this.pExistencePreface = new ExistencePrefaceElements();
+		this.pExistence = new ExistenceElements();
 		this.pAuxNeg = new AuxNegElements();
 		this.pPreNominative = new PreNominativeElements();
 		this.pAdverbial = new AdverbialElements();
@@ -3239,7 +3238,7 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 	////	(condClauses+=Subclause)* (mainclauses+=Clauses) (condClauses+=Subclause)*
 	////	;
 	//Requirement: //PROBLEM condClauses before and after mainClause lead to ambiguity
-	//	'Req'? reqID=ReqID? ':' text=RequirementText ('.' | ';') ('\n'+ | 'EOF');
+	//	'Req'? reqID=ReqID? ':' text=RequirementText ('.' | ';') '\n'+;
 	public RequirementElements getRequirementAccess() {
 		return pRequirement;
 	}
@@ -3331,7 +3330,7 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//ExistenceSentence:
-	//	ExistencePreface actors=Actors ',' relativeClause=relativeClause ',';
+	//	Existence actors=Actors ',' relativeClause=RelativeClause ',';
 	public ExistenceSentenceElements getExistenceSentenceAccess() {
 		return pExistenceSentence;
 	}
@@ -3387,8 +3386,8 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		return getSentenceEndingAccess().getRule();
 	}
 	
-	///* =========== RELATIVE CLAUSE =========== */ relativeClause:
-	//	sentence=relativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*;
+	///* =========== RELATIVE CLAUSE =========== */ RelativeClause:
+	//	sentence=RelativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*;
 	public RelativeClauseElements getRelativeClauseAccess() {
 		return pRelativeClause;
 	}
@@ -3397,7 +3396,7 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		return getRelativeClauseAccess().getRule();
 	}
 	
-	//relativeSentence:
+	//RelativeSentence:
 	//	pronoun=RelativePronounsSubject modelity=Modality negation?=Negation? predicate=Predicate constraints+=Constraints* |
 	//	pronoun=RelativePronounsSubject (auxiliar=WORD negation?=Negation)? predicate=Predicate constraints+=Constraints* |
 	//	pronoun=RelativePronounsObject (clause=ModalitySentence | clause=PredicateSentence);
@@ -3420,7 +3419,7 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Actor:
-	//	PreNominative? (actor=WORD | actor=STRING);
+	//	PreNominative=PreNominative? (actor=WORD | actor=STRING);
 	public ActorElements getActorAccess() {
 		return pActor;
 	}
@@ -3479,14 +3478,14 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		return getPredOrObjectAccess().getRule();
 	}
 	
-	//ExistencePreface:
+	//Existence:
 	//	{ExistencePreface} ('there' | 'There') modifier=Modifier? ('exist' | 'exists');
-	public ExistencePrefaceElements getExistencePrefaceAccess() {
-		return pExistencePreface;
+	public ExistenceElements getExistenceAccess() {
+		return pExistence;
 	}
 	
-	public ParserRule getExistencePrefaceRule() {
-		return getExistencePrefaceAccess().getRule();
+	public ParserRule getExistenceRule() {
+		return getExistenceAccess().getRule();
 	}
 	
 	///* The same as Actors and Actor
@@ -3528,7 +3527,7 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		return getAdverbialAccess().getRule();
 	}
 	
-	///* =========== Relations =========== */ //Currently not used -> False identification of properties
+	///* =========== Relations =========== */ //TODO WAS IST WENN MAN HIER 'IN' SAGT?!?!? DUPLIUCATE RULE?
 	//Relation:
 	//	relposAdv=PositionAdverbial relDel=RelationDelimiter relComp=Comperators relElements=RelObjects;
 	public RelationElements getRelationAccess() {

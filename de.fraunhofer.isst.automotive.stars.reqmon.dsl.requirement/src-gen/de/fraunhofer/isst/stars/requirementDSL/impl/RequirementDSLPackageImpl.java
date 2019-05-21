@@ -13,6 +13,7 @@ import de.fraunhofer.isst.stars.requirementDSL.ConditionalClause;
 import de.fraunhofer.isst.stars.requirementDSL.Constraint;
 import de.fraunhofer.isst.stars.requirementDSL.ConstraintOrdinators;
 import de.fraunhofer.isst.stars.requirementDSL.Constraints;
+import de.fraunhofer.isst.stars.requirementDSL.Existence;
 import de.fraunhofer.isst.stars.requirementDSL.ExistencePreface;
 import de.fraunhofer.isst.stars.requirementDSL.ExistenceSentence;
 import de.fraunhofer.isst.stars.requirementDSL.FloatValue;
@@ -35,6 +36,8 @@ import de.fraunhofer.isst.stars.requirementDSL.Property;
 import de.fraunhofer.isst.stars.requirementDSL.PropertySentence;
 import de.fraunhofer.isst.stars.requirementDSL.RelObjects;
 import de.fraunhofer.isst.stars.requirementDSL.Relation;
+import de.fraunhofer.isst.stars.requirementDSL.RelativeClause;
+import de.fraunhofer.isst.stars.requirementDSL.RelativeSentence;
 import de.fraunhofer.isst.stars.requirementDSL.Requirement;
 import de.fraunhofer.isst.stars.requirementDSL.RequirementDSLFactory;
 import de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage;
@@ -47,8 +50,6 @@ import de.fraunhofer.isst.stars.requirementDSL.TimeConstraint;
 import de.fraunhofer.isst.stars.requirementDSL.UnitConstraints;
 import de.fraunhofer.isst.stars.requirementDSL.Value;
 import de.fraunhofer.isst.stars.requirementDSL.ValueSet;
-import de.fraunhofer.isst.stars.requirementDSL.relativeClause;
-import de.fraunhofer.isst.stars.requirementDSL.relativeSentence;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -232,7 +233,7 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass existencePrefaceEClass = null;
+  private EClass existenceEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -359,6 +360,13 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
    * @generated
    */
   private EClass floatValueEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass existencePrefaceEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -969,7 +977,7 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getrelativeClause()
+  public EClass getRelativeClause()
   {
     return relativeClauseEClass;
   }
@@ -979,7 +987,7 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getrelativeClause_Sentence()
+  public EReference getRelativeClause_Sentence()
   {
     return (EReference)relativeClauseEClass.getEStructuralFeatures().get(0);
   }
@@ -989,7 +997,7 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getrelativeClause_Conjunction()
+  public EAttribute getRelativeClause_Conjunction()
   {
     return (EAttribute)relativeClauseEClass.getEStructuralFeatures().get(1);
   }
@@ -999,7 +1007,7 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getrelativeClause_CondClauses()
+  public EReference getRelativeClause_CondClauses()
   {
     return (EReference)relativeClauseEClass.getEStructuralFeatures().get(2);
   }
@@ -1009,7 +1017,7 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getrelativeSentence()
+  public EClass getRelativeSentence()
   {
     return relativeSentenceEClass;
   }
@@ -1019,7 +1027,7 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getrelativeSentence_Pronoun()
+  public EAttribute getRelativeSentence_Pronoun()
   {
     return (EAttribute)relativeSentenceEClass.getEStructuralFeatures().get(0);
   }
@@ -1029,7 +1037,7 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getrelativeSentence_Modelity()
+  public EAttribute getRelativeSentence_Modelity()
   {
     return (EAttribute)relativeSentenceEClass.getEStructuralFeatures().get(1);
   }
@@ -1039,7 +1047,7 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getrelativeSentence_Negation()
+  public EAttribute getRelativeSentence_Negation()
   {
     return (EAttribute)relativeSentenceEClass.getEStructuralFeatures().get(2);
   }
@@ -1049,7 +1057,7 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getrelativeSentence_Predicate()
+  public EReference getRelativeSentence_Predicate()
   {
     return (EReference)relativeSentenceEClass.getEStructuralFeatures().get(3);
   }
@@ -1059,7 +1067,7 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getrelativeSentence_Constraints()
+  public EReference getRelativeSentence_Constraints()
   {
     return (EReference)relativeSentenceEClass.getEStructuralFeatures().get(4);
   }
@@ -1069,7 +1077,7 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getrelativeSentence_Auxiliar()
+  public EAttribute getRelativeSentence_Auxiliar()
   {
     return (EAttribute)relativeSentenceEClass.getEStructuralFeatures().get(5);
   }
@@ -1079,7 +1087,7 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getrelativeSentence_Clause()
+  public EReference getRelativeSentence_Clause()
   {
     return (EReference)relativeSentenceEClass.getEStructuralFeatures().get(6);
   }
@@ -1129,9 +1137,19 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
+  public EReference getActor_PreNominative()
+  {
+    return (EReference)actorEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EAttribute getActor_Actor()
   {
-    return (EAttribute)actorEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)actorEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1289,9 +1307,9 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getExistencePreface()
+  public EClass getExistence()
   {
-    return existencePrefaceEClass;
+    return existenceEClass;
   }
 
   /**
@@ -1299,9 +1317,9 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getExistencePreface_Actors()
+  public EReference getExistence_Actors()
   {
-    return (EReference)existencePrefaceEClass.getEStructuralFeatures().get(0);
+    return (EReference)existenceEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1309,19 +1327,9 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getExistencePreface_RelativeClause()
+  public EReference getExistence_RelativeClause()
   {
-    return (EReference)existencePrefaceEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getExistencePreface_Modifier()
-  {
-    return (EAttribute)existencePrefaceEClass.getEStructuralFeatures().get(2);
+    return (EReference)existenceEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1839,6 +1847,26 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getExistencePreface()
+  {
+    return existencePrefaceEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getExistencePreface_Modifier()
+  {
+    return (EAttribute)existencePrefaceEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EEnum getModality()
   {
     return modalityEEnum;
@@ -1979,6 +2007,7 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
     createEAttribute(actorsEClass, ACTORS__CONJUNCTION);
 
     actorEClass = createEClass(ACTOR);
+    createEReference(actorEClass, ACTOR__PRE_NOMINATIVE);
     createEAttribute(actorEClass, ACTOR__ACTOR);
 
     predsEClass = createEClass(PREDS);
@@ -2001,10 +2030,9 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
     createEReference(predOrObjectEClass, PRED_OR_OBJECT__PREDICATE);
     createEReference(predOrObjectEClass, PRED_OR_OBJECT__PRED_OBJ);
 
-    existencePrefaceEClass = createEClass(EXISTENCE_PREFACE);
-    createEReference(existencePrefaceEClass, EXISTENCE_PREFACE__ACTORS);
-    createEReference(existencePrefaceEClass, EXISTENCE_PREFACE__RELATIVE_CLAUSE);
-    createEAttribute(existencePrefaceEClass, EXISTENCE_PREFACE__MODIFIER);
+    existenceEClass = createEClass(EXISTENCE);
+    createEReference(existenceEClass, EXISTENCE__ACTORS);
+    createEReference(existenceEClass, EXISTENCE__RELATIVE_CLAUSE);
 
     auxNegEClass = createEClass(AUX_NEG);
     createEAttribute(auxNegEClass, AUX_NEG__AUXILIAR_VERB);
@@ -2075,6 +2103,9 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
     floatValueEClass = createEClass(FLOAT_VALUE);
     createEAttribute(floatValueEClass, FLOAT_VALUE__VALUE);
 
+    existencePrefaceEClass = createEClass(EXISTENCE_PREFACE);
+    createEAttribute(existencePrefaceEClass, EXISTENCE_PREFACE__MODIFIER);
+
     // Create enums
     modalityEEnum = createEEnum(MODALITY);
     modifierEEnum = createEEnum(MODIFIER);
@@ -2114,12 +2145,12 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
     predicateSentenceEClass.getESuperTypes().add(this.getClause());
     existenceSentenceEClass.getESuperTypes().add(this.getClause());
     propertySentenceEClass.getESuperTypes().add(this.getClause());
-    existencePrefaceEClass.getESuperTypes().add(this.getExistenceSentence());
-    preNominativeEClass.getESuperTypes().add(this.getActor());
+    existenceEClass.getESuperTypes().add(this.getExistenceSentence());
     intervallConstraintsEClass.getESuperTypes().add(this.getUnitConstraints());
     singleValueConstraintsEClass.getESuperTypes().add(this.getUnitConstraints());
     intValueEClass.getESuperTypes().add(this.getValue());
     floatValueEClass.getESuperTypes().add(this.getValue());
+    existencePrefaceEClass.getESuperTypes().add(this.getExistence());
 
     // Initialize classes and features; add operations and parameters
     initEClass(modelEClass, Model.class, "Model", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2188,25 +2219,26 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
     initEReference(getSentenceEnding_Const(), this.getConstraints(), null, "const", null, 0, -1, SentenceEnding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getSentenceEnding_Rela(), this.getRelation(), null, "rela", null, 0, 1, SentenceEnding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(relativeClauseEClass, relativeClause.class, "relativeClause", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getrelativeClause_Sentence(), this.getrelativeSentence(), null, "sentence", null, 0, 1, relativeClause.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getrelativeClause_Conjunction(), ecorePackage.getEString(), "conjunction", null, 0, -1, relativeClause.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getrelativeClause_CondClauses(), this.getConditionalClause(), null, "condClauses", null, 0, -1, relativeClause.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(relativeClauseEClass, RelativeClause.class, "RelativeClause", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getRelativeClause_Sentence(), this.getRelativeSentence(), null, "sentence", null, 0, 1, RelativeClause.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getRelativeClause_Conjunction(), ecorePackage.getEString(), "conjunction", null, 0, -1, RelativeClause.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRelativeClause_CondClauses(), this.getConditionalClause(), null, "condClauses", null, 0, -1, RelativeClause.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(relativeSentenceEClass, relativeSentence.class, "relativeSentence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getrelativeSentence_Pronoun(), ecorePackage.getEString(), "pronoun", null, 0, 1, relativeSentence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getrelativeSentence_Modelity(), this.getModality(), "modelity", null, 0, 1, relativeSentence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getrelativeSentence_Negation(), ecorePackage.getEBoolean(), "negation", null, 0, 1, relativeSentence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getrelativeSentence_Predicate(), this.getPredicate(), null, "predicate", null, 0, 1, relativeSentence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getrelativeSentence_Constraints(), this.getConstraints(), null, "constraints", null, 0, -1, relativeSentence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getrelativeSentence_Auxiliar(), ecorePackage.getEString(), "auxiliar", null, 0, 1, relativeSentence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getrelativeSentence_Clause(), this.getClause(), null, "clause", null, 0, 1, relativeSentence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(relativeSentenceEClass, RelativeSentence.class, "RelativeSentence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getRelativeSentence_Pronoun(), ecorePackage.getEString(), "pronoun", null, 0, 1, RelativeSentence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getRelativeSentence_Modelity(), this.getModality(), "modelity", null, 0, 1, RelativeSentence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getRelativeSentence_Negation(), ecorePackage.getEBoolean(), "negation", null, 0, 1, RelativeSentence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRelativeSentence_Predicate(), this.getPredicate(), null, "predicate", null, 0, 1, RelativeSentence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRelativeSentence_Constraints(), this.getConstraints(), null, "constraints", null, 0, -1, RelativeSentence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getRelativeSentence_Auxiliar(), ecorePackage.getEString(), "auxiliar", null, 0, 1, RelativeSentence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRelativeSentence_Clause(), this.getClause(), null, "clause", null, 0, 1, RelativeSentence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(actorsEClass, Actors.class, "Actors", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getActors_Actors(), this.getActor(), null, "actors", null, 0, -1, Actors.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getActors_Conjunction(), ecorePackage.getEString(), "conjunction", null, 0, -1, Actors.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(actorEClass, Actor.class, "Actor", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getActor_PreNominative(), this.getPreNominative(), null, "PreNominative", null, 0, 1, Actor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getActor_Actor(), ecorePackage.getEString(), "actor", null, 0, 1, Actor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(predsEClass, Preds.class, "Preds", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2229,10 +2261,9 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
     initEReference(getPredOrObject_Predicate(), this.getPredicate(), null, "predicate", null, 0, 1, PredOrObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getPredOrObject_PredObj(), this.getPredicateObject(), null, "predObj", null, 0, 1, PredOrObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(existencePrefaceEClass, ExistencePreface.class, "ExistencePreface", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getExistencePreface_Actors(), this.getActors(), null, "actors", null, 0, 1, ExistencePreface.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getExistencePreface_RelativeClause(), this.getrelativeClause(), null, "relativeClause", null, 0, 1, ExistencePreface.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getExistencePreface_Modifier(), this.getModifier(), "modifier", null, 0, 1, ExistencePreface.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(existenceEClass, Existence.class, "Existence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getExistence_Actors(), this.getActors(), null, "actors", null, 0, 1, Existence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getExistence_RelativeClause(), this.getRelativeClause(), null, "relativeClause", null, 0, 1, Existence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(auxNegEClass, AuxNeg.class, "AuxNeg", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getAuxNeg_AuxiliarVerb(), ecorePackage.getEString(), "auxiliarVerb", null, 0, 1, AuxNeg.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2302,6 +2333,9 @@ public class RequirementDSLPackageImpl extends EPackageImpl implements Requireme
 
     initEClass(floatValueEClass, FloatValue.class, "FloatValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getFloatValue_Value(), ecorePackage.getEFloat(), "value", null, 0, 1, FloatValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(existencePrefaceEClass, ExistencePreface.class, "ExistencePreface", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getExistencePreface_Modifier(), this.getModifier(), "modifier", null, 0, 1, ExistencePreface.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Initialize enums and add enum literals
     initEEnum(modalityEEnum, Modality.class, "Modality");

@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.Actor#getPreNominative <em>Pre Nominative</em>}</li>
  *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.Actor#getActor <em>Actor</em>}</li>
  * </ul>
  *
@@ -23,6 +24,32 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Actor extends EObject
 {
+  /**
+   * Returns the value of the '<em><b>Pre Nominative</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Pre Nominative</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Pre Nominative</em>' containment reference.
+   * @see #setPreNominative(PreNominative)
+   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getActor_PreNominative()
+   * @model containment="true"
+   * @generated
+   */
+  PreNominative getPreNominative();
+
+  /**
+   * Sets the value of the '{@link de.fraunhofer.isst.stars.requirementDSL.Actor#getPreNominative <em>Pre Nominative</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Pre Nominative</em>' containment reference.
+   * @see #getPreNominative()
+   * @generated
+   */
+  void setPreNominative(PreNominative value);
+
   /**
    * Returns the value of the '<em><b>Actor</b></em>' attribute.
    * <!-- begin-user-doc -->

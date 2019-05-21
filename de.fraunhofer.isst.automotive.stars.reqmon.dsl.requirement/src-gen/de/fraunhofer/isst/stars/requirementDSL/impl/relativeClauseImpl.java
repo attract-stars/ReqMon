@@ -4,9 +4,9 @@
 package de.fraunhofer.isst.stars.requirementDSL.impl;
 
 import de.fraunhofer.isst.stars.requirementDSL.ConditionalClause;
+import de.fraunhofer.isst.stars.requirementDSL.RelativeClause;
+import de.fraunhofer.isst.stars.requirementDSL.RelativeSentence;
 import de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage;
-import de.fraunhofer.isst.stars.requirementDSL.relativeClause;
-import de.fraunhofer.isst.stars.requirementDSL.relativeSentence;
 
 import java.util.Collection;
 
@@ -27,20 +27,20 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>relative Clause</b></em>'.
+ * An implementation of the model object '<em><b>Relative Clause</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.relativeClauseImpl#getSentence <em>Sentence</em>}</li>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.relativeClauseImpl#getConjunction <em>Conjunction</em>}</li>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.relativeClauseImpl#getCondClauses <em>Cond Clauses</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.RelativeClauseImpl#getSentence <em>Sentence</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.RelativeClauseImpl#getConjunction <em>Conjunction</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.impl.RelativeClauseImpl#getCondClauses <em>Cond Clauses</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class relativeClauseImpl extends MinimalEObjectImpl.Container implements relativeClause
+public class RelativeClauseImpl extends MinimalEObjectImpl.Container implements RelativeClause
 {
   /**
    * The cached value of the '{@link #getSentence() <em>Sentence</em>}' containment reference.
@@ -50,7 +50,7 @@ public class relativeClauseImpl extends MinimalEObjectImpl.Container implements 
    * @generated
    * @ordered
    */
-  protected relativeSentence sentence;
+  protected RelativeSentence sentence;
 
   /**
    * The cached value of the '{@link #getConjunction() <em>Conjunction</em>}' attribute list.
@@ -77,7 +77,7 @@ public class relativeClauseImpl extends MinimalEObjectImpl.Container implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  protected relativeClauseImpl()
+  protected RelativeClauseImpl()
   {
     super();
   }
@@ -98,7 +98,7 @@ public class relativeClauseImpl extends MinimalEObjectImpl.Container implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public relativeSentence getSentence()
+  public RelativeSentence getSentence()
   {
     return sentence;
   }
@@ -108,9 +108,9 @@ public class relativeClauseImpl extends MinimalEObjectImpl.Container implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetSentence(relativeSentence newSentence, NotificationChain msgs)
+  public NotificationChain basicSetSentence(RelativeSentence newSentence, NotificationChain msgs)
   {
-    relativeSentence oldSentence = sentence;
+    RelativeSentence oldSentence = sentence;
     sentence = newSentence;
     if (eNotificationRequired())
     {
@@ -125,7 +125,7 @@ public class relativeClauseImpl extends MinimalEObjectImpl.Container implements 
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setSentence(relativeSentence newSentence)
+  public void setSentence(RelativeSentence newSentence)
   {
     if (newSentence != sentence)
     {
@@ -219,7 +219,7 @@ public class relativeClauseImpl extends MinimalEObjectImpl.Container implements 
     switch (featureID)
     {
       case RequirementDSLPackage.RELATIVE_CLAUSE__SENTENCE:
-        setSentence((relativeSentence)newValue);
+        setSentence((RelativeSentence)newValue);
         return;
       case RequirementDSLPackage.RELATIVE_CLAUSE__CONJUNCTION:
         getConjunction().clear();
@@ -244,7 +244,7 @@ public class relativeClauseImpl extends MinimalEObjectImpl.Container implements 
     switch (featureID)
     {
       case RequirementDSLPackage.RELATIVE_CLAUSE__SENTENCE:
-        setSentence((relativeSentence)null);
+        setSentence((RelativeSentence)null);
         return;
       case RequirementDSLPackage.RELATIVE_CLAUSE__CONJUNCTION:
         getConjunction().clear();
@@ -293,4 +293,4 @@ public class relativeClauseImpl extends MinimalEObjectImpl.Container implements 
     return result.toString();
   }
 
-} //relativeClauseImpl
+} //RelativeClauseImpl

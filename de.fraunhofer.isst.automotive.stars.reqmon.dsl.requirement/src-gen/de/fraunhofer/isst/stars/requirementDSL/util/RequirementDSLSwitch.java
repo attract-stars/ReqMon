@@ -12,6 +12,7 @@ import de.fraunhofer.isst.stars.requirementDSL.ConditionalClause;
 import de.fraunhofer.isst.stars.requirementDSL.Constraint;
 import de.fraunhofer.isst.stars.requirementDSL.ConstraintOrdinators;
 import de.fraunhofer.isst.stars.requirementDSL.Constraints;
+import de.fraunhofer.isst.stars.requirementDSL.Existence;
 import de.fraunhofer.isst.stars.requirementDSL.ExistencePreface;
 import de.fraunhofer.isst.stars.requirementDSL.ExistenceSentence;
 import de.fraunhofer.isst.stars.requirementDSL.FloatValue;
@@ -32,6 +33,8 @@ import de.fraunhofer.isst.stars.requirementDSL.Property;
 import de.fraunhofer.isst.stars.requirementDSL.PropertySentence;
 import de.fraunhofer.isst.stars.requirementDSL.RelObjects;
 import de.fraunhofer.isst.stars.requirementDSL.Relation;
+import de.fraunhofer.isst.stars.requirementDSL.RelativeClause;
+import de.fraunhofer.isst.stars.requirementDSL.RelativeSentence;
 import de.fraunhofer.isst.stars.requirementDSL.Requirement;
 import de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage;
 import de.fraunhofer.isst.stars.requirementDSL.RequirementText;
@@ -43,8 +46,6 @@ import de.fraunhofer.isst.stars.requirementDSL.TimeConstraint;
 import de.fraunhofer.isst.stars.requirementDSL.UnitConstraints;
 import de.fraunhofer.isst.stars.requirementDSL.Value;
 import de.fraunhofer.isst.stars.requirementDSL.ValueSet;
-import de.fraunhofer.isst.stars.requirementDSL.relativeClause;
-import de.fraunhofer.isst.stars.requirementDSL.relativeSentence;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -218,15 +219,15 @@ public class RequirementDSLSwitch<T> extends Switch<T>
       }
       case RequirementDSLPackage.RELATIVE_CLAUSE:
       {
-        relativeClause relativeClause = (relativeClause)theEObject;
-        T result = caserelativeClause(relativeClause);
+        RelativeClause relativeClause = (RelativeClause)theEObject;
+        T result = caseRelativeClause(relativeClause);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
       case RequirementDSLPackage.RELATIVE_SENTENCE:
       {
-        relativeSentence relativeSentence = (relativeSentence)theEObject;
-        T result = caserelativeSentence(relativeSentence);
+        RelativeSentence relativeSentence = (RelativeSentence)theEObject;
+        T result = caseRelativeSentence(relativeSentence);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -279,12 +280,12 @@ public class RequirementDSLSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case RequirementDSLPackage.EXISTENCE_PREFACE:
+      case RequirementDSLPackage.EXISTENCE:
       {
-        ExistencePreface existencePreface = (ExistencePreface)theEObject;
-        T result = caseExistencePreface(existencePreface);
-        if (result == null) result = caseExistenceSentence(existencePreface);
-        if (result == null) result = caseClause(existencePreface);
+        Existence existence = (Existence)theEObject;
+        T result = caseExistence(existence);
+        if (result == null) result = caseExistenceSentence(existence);
+        if (result == null) result = caseClause(existence);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -299,7 +300,6 @@ public class RequirementDSLSwitch<T> extends Switch<T>
       {
         PreNominative preNominative = (PreNominative)theEObject;
         T result = casePreNominative(preNominative);
-        if (result == null) result = caseActor(preNominative);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -416,6 +416,16 @@ public class RequirementDSLSwitch<T> extends Switch<T>
         FloatValue floatValue = (FloatValue)theEObject;
         T result = caseFloatValue(floatValue);
         if (result == null) result = caseValue(floatValue);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case RequirementDSLPackage.EXISTENCE_PREFACE:
+      {
+        ExistencePreface existencePreface = (ExistencePreface)theEObject;
+        T result = caseExistencePreface(existencePreface);
+        if (result == null) result = caseExistence(existencePreface);
+        if (result == null) result = caseExistenceSentence(existencePreface);
+        if (result == null) result = caseClause(existencePreface);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -648,33 +658,33 @@ public class RequirementDSLSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>relative Clause</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Relative Clause</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>relative Clause</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Relative Clause</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caserelativeClause(relativeClause object)
+  public T caseRelativeClause(RelativeClause object)
   {
     return null;
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>relative Sentence</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Relative Sentence</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>relative Sentence</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Relative Sentence</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caserelativeSentence(relativeSentence object)
+  public T caseRelativeSentence(RelativeSentence object)
   {
     return null;
   }
@@ -792,17 +802,17 @@ public class RequirementDSLSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Existence Preface</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Existence</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Existence Preface</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Existence</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseExistencePreface(ExistencePreface object)
+  public T caseExistence(Existence object)
   {
     return null;
   }
@@ -1091,6 +1101,22 @@ public class RequirementDSLSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseFloatValue(FloatValue object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Existence Preface</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Existence Preface</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseExistencePreface(ExistencePreface object)
   {
     return null;
   }

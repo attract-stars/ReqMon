@@ -3,6 +3,7 @@
  */
 package de.fraunhofer.isst.stars.requirementDSL;
 
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -21,7 +22,7 @@ package de.fraunhofer.isst.stars.requirementDSL;
  * @model
  * @generated
  */
-public interface PreNominative extends Actor
+public interface PreNominative extends EObject
 {
   /**
    * Returns the value of the '<em><b>Determiner</b></em>' attribute.

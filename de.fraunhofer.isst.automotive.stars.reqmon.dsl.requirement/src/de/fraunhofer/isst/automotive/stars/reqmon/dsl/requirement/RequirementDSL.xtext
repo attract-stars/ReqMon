@@ -61,7 +61,7 @@ PredicateSentence :
 ;
 
 ExistenceSentence :
-	ExistencePreface actors=Actors ','   relativeClause=relativeClause  ',' 
+	Existence actors=Actors ','   relativeClause=RelativeClause  ',' 
 ;
 
 PropertySentence:
@@ -92,11 +92,11 @@ SentenceEnding:
 /* =========== RELATIVE CLAUSE =========== */
 
 
-relativeClause:
+RelativeClause:
 //  pronoun=RelativePronouns actors=Actors? modelity=Modality? negation?=Negation? predicate=Predicate constraints+=Constraints*
-	sentence=relativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*	
+	sentence=RelativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*	
 ;
-relativeSentence :
+RelativeSentence :
 	pronoun=RelativePronounsSubject modelity=Modality negation?=Negation? predicate=Predicate  constraints+=Constraints*  |
 	pronoun=RelativePronounsSubject (auxiliar=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
 	pronoun=RelativePronounsObject  (clause=ModalitySentence | clause=PredicateSentence)
@@ -136,7 +136,7 @@ PredOrObject:
 	predicate=Predicate | predObj=PredicateObject
 ;
 
-ExistencePreface:
+Existence:
 	{ExistencePreface} ('there' | 'There') (modifier=Modifier?) ('exist' | 'exists') // (WORD+|STRING) //defining the verbs for 'there is' / 'there are' is a problem for later usages of 'is'/'are' in other clauses
 ;
 
@@ -165,7 +165,7 @@ Adverbial:
 
 /* =========== Relations =========== */
 
-//Currently not used -> False identification of properties
+//TODO WAS IST WENN MAN HIER 'IN' SAGT?!?!? DUPLIUCATE RULE?
 Relation:
 	relposAdv=PositionAdverbial relDel=RelationDelimiter relComp=Comperators relElements=RelObjects
 ;

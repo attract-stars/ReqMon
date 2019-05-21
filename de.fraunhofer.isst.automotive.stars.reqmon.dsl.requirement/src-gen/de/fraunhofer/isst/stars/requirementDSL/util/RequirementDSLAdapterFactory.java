@@ -12,6 +12,7 @@ import de.fraunhofer.isst.stars.requirementDSL.ConditionalClause;
 import de.fraunhofer.isst.stars.requirementDSL.Constraint;
 import de.fraunhofer.isst.stars.requirementDSL.ConstraintOrdinators;
 import de.fraunhofer.isst.stars.requirementDSL.Constraints;
+import de.fraunhofer.isst.stars.requirementDSL.Existence;
 import de.fraunhofer.isst.stars.requirementDSL.ExistencePreface;
 import de.fraunhofer.isst.stars.requirementDSL.ExistenceSentence;
 import de.fraunhofer.isst.stars.requirementDSL.FloatValue;
@@ -32,6 +33,8 @@ import de.fraunhofer.isst.stars.requirementDSL.Property;
 import de.fraunhofer.isst.stars.requirementDSL.PropertySentence;
 import de.fraunhofer.isst.stars.requirementDSL.RelObjects;
 import de.fraunhofer.isst.stars.requirementDSL.Relation;
+import de.fraunhofer.isst.stars.requirementDSL.RelativeClause;
+import de.fraunhofer.isst.stars.requirementDSL.RelativeSentence;
 import de.fraunhofer.isst.stars.requirementDSL.Requirement;
 import de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage;
 import de.fraunhofer.isst.stars.requirementDSL.RequirementText;
@@ -43,8 +46,6 @@ import de.fraunhofer.isst.stars.requirementDSL.TimeConstraint;
 import de.fraunhofer.isst.stars.requirementDSL.UnitConstraints;
 import de.fraunhofer.isst.stars.requirementDSL.Value;
 import de.fraunhofer.isst.stars.requirementDSL.ValueSet;
-import de.fraunhofer.isst.stars.requirementDSL.relativeClause;
-import de.fraunhofer.isst.stars.requirementDSL.relativeSentence;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
@@ -187,14 +188,14 @@ public class RequirementDSLAdapterFactory extends AdapterFactoryImpl
         return createSentenceEndingAdapter();
       }
       @Override
-      public Adapter caserelativeClause(relativeClause object)
+      public Adapter caseRelativeClause(RelativeClause object)
       {
-        return createrelativeClauseAdapter();
+        return createRelativeClauseAdapter();
       }
       @Override
-      public Adapter caserelativeSentence(relativeSentence object)
+      public Adapter caseRelativeSentence(RelativeSentence object)
       {
-        return createrelativeSentenceAdapter();
+        return createRelativeSentenceAdapter();
       }
       @Override
       public Adapter caseActors(Actors object)
@@ -232,9 +233,9 @@ public class RequirementDSLAdapterFactory extends AdapterFactoryImpl
         return createPredOrObjectAdapter();
       }
       @Override
-      public Adapter caseExistencePreface(ExistencePreface object)
+      public Adapter caseExistence(Existence object)
       {
-        return createExistencePrefaceAdapter();
+        return createExistenceAdapter();
       }
       @Override
       public Adapter caseAuxNeg(AuxNeg object)
@@ -325,6 +326,11 @@ public class RequirementDSLAdapterFactory extends AdapterFactoryImpl
       public Adapter caseFloatValue(FloatValue object)
       {
         return createFloatValueAdapter();
+      }
+      @Override
+      public Adapter caseExistencePreface(ExistencePreface object)
+      {
+        return createExistencePrefaceAdapter();
       }
       @Override
       public Adapter defaultCase(EObject object)
@@ -559,31 +565,31 @@ public class RequirementDSLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link de.fraunhofer.isst.stars.requirementDSL.relativeClause <em>relative Clause</em>}'.
+   * Creates a new adapter for an object of class '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeClause <em>Relative Clause</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see de.fraunhofer.isst.stars.requirementDSL.relativeClause
+   * @see de.fraunhofer.isst.stars.requirementDSL.RelativeClause
    * @generated
    */
-  public Adapter createrelativeClauseAdapter()
+  public Adapter createRelativeClauseAdapter()
   {
     return null;
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence <em>relative Sentence</em>}'.
+   * Creates a new adapter for an object of class '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence <em>Relative Sentence</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see de.fraunhofer.isst.stars.requirementDSL.relativeSentence
+   * @see de.fraunhofer.isst.stars.requirementDSL.RelativeSentence
    * @generated
    */
-  public Adapter createrelativeSentenceAdapter()
+  public Adapter createRelativeSentenceAdapter()
   {
     return null;
   }
@@ -694,16 +700,16 @@ public class RequirementDSLAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link de.fraunhofer.isst.stars.requirementDSL.ExistencePreface <em>Existence Preface</em>}'.
+   * Creates a new adapter for an object of class '{@link de.fraunhofer.isst.stars.requirementDSL.Existence <em>Existence</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see de.fraunhofer.isst.stars.requirementDSL.ExistencePreface
+   * @see de.fraunhofer.isst.stars.requirementDSL.Existence
    * @generated
    */
-  public Adapter createExistencePrefaceAdapter()
+  public Adapter createExistenceAdapter()
   {
     return null;
   }
@@ -974,6 +980,21 @@ public class RequirementDSLAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createFloatValueAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link de.fraunhofer.isst.stars.requirementDSL.ExistencePreface <em>Existence Preface</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see de.fraunhofer.isst.stars.requirementDSL.ExistencePreface
+   * @generated
+   */
+  public Adapter createExistencePrefaceAdapter()
   {
     return null;
   }

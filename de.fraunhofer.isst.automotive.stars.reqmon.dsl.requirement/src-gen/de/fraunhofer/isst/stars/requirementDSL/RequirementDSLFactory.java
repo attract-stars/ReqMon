@@ -150,22 +150,22 @@ public interface RequirementDSLFactory extends EFactory
   SentenceEnding createSentenceEnding();
 
   /**
-   * Returns a new object of class '<em>relative Clause</em>'.
+   * Returns a new object of class '<em>Relative Clause</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>relative Clause</em>'.
+   * @return a new object of class '<em>Relative Clause</em>'.
    * @generated
    */
-  relativeClause createrelativeClause();
+  RelativeClause createRelativeClause();
 
   /**
-   * Returns a new object of class '<em>relative Sentence</em>'.
+   * Returns a new object of class '<em>Relative Sentence</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>relative Sentence</em>'.
+   * @return a new object of class '<em>Relative Sentence</em>'.
    * @generated
    */
-  relativeSentence createrelativeSentence();
+  RelativeSentence createRelativeSentence();
 
   /**
    * Returns a new object of class '<em>Actors</em>'.
@@ -231,13 +231,13 @@ public interface RequirementDSLFactory extends EFactory
   PredOrObject createPredOrObject();
 
   /**
-   * Returns a new object of class '<em>Existence Preface</em>'.
+   * Returns a new object of class '<em>Existence</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Existence Preface</em>'.
+   * @return a new object of class '<em>Existence</em>'.
    * @generated
    */
-  ExistencePreface createExistencePreface();
+  Existence createExistence();
 
   /**
    * Returns a new object of class '<em>Aux Neg</em>'.
@@ -400,6 +400,15 @@ public interface RequirementDSLFactory extends EFactory
    * @generated
    */
   FloatValue createFloatValue();
+
+  /**
+   * Returns a new object of class '<em>Existence Preface</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Existence Preface</em>'.
+   * @generated
+   */
+  ExistencePreface createExistencePreface();
 
   /**
    * Returns the package supported by this factory.

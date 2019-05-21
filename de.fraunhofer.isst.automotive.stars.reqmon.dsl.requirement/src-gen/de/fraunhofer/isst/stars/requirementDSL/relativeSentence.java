@@ -9,27 +9,27 @@ import org.eclipse.emf.ecore.EObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>relative Sentence</b></em>'.
+ * A representation of the model object '<em><b>Relative Sentence</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getPronoun <em>Pronoun</em>}</li>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getModelity <em>Modelity</em>}</li>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#isNegation <em>Negation</em>}</li>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getPredicate <em>Predicate</em>}</li>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getConstraints <em>Constraints</em>}</li>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getAuxiliar <em>Auxiliar</em>}</li>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getClause <em>Clause</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getPronoun <em>Pronoun</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getModelity <em>Modelity</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#isNegation <em>Negation</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getPredicate <em>Predicate</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getConstraints <em>Constraints</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getAuxiliar <em>Auxiliar</em>}</li>
+ *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getClause <em>Clause</em>}</li>
  * </ul>
  *
- * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getrelativeSentence()
+ * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getRelativeSentence()
  * @model
  * @generated
  */
-public interface relativeSentence extends EObject
+public interface RelativeSentence extends EObject
 {
   /**
    * Returns the value of the '<em><b>Pronoun</b></em>' attribute.
@@ -41,14 +41,14 @@ public interface relativeSentence extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Pronoun</em>' attribute.
    * @see #setPronoun(String)
-   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getrelativeSentence_Pronoun()
+   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getRelativeSentence_Pronoun()
    * @model
    * @generated
    */
   String getPronoun();
 
   /**
-   * Sets the value of the '{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getPronoun <em>Pronoun</em>}' attribute.
+   * Sets the value of the '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getPronoun <em>Pronoun</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Pronoun</em>' attribute.
@@ -69,14 +69,14 @@ public interface relativeSentence extends EObject
    * @return the value of the '<em>Modelity</em>' attribute.
    * @see de.fraunhofer.isst.stars.requirementDSL.Modality
    * @see #setModelity(Modality)
-   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getrelativeSentence_Modelity()
+   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getRelativeSentence_Modelity()
    * @model
    * @generated
    */
   Modality getModelity();
 
   /**
-   * Sets the value of the '{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getModelity <em>Modelity</em>}' attribute.
+   * Sets the value of the '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getModelity <em>Modelity</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Modelity</em>' attribute.
@@ -96,14 +96,14 @@ public interface relativeSentence extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Negation</em>' attribute.
    * @see #setNegation(boolean)
-   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getrelativeSentence_Negation()
+   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getRelativeSentence_Negation()
    * @model
    * @generated
    */
   boolean isNegation();
 
   /**
-   * Sets the value of the '{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#isNegation <em>Negation</em>}' attribute.
+   * Sets the value of the '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#isNegation <em>Negation</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Negation</em>' attribute.
@@ -122,14 +122,14 @@ public interface relativeSentence extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Predicate</em>' containment reference.
    * @see #setPredicate(Predicate)
-   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getrelativeSentence_Predicate()
+   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getRelativeSentence_Predicate()
    * @model containment="true"
    * @generated
    */
   Predicate getPredicate();
 
   /**
-   * Sets the value of the '{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getPredicate <em>Predicate</em>}' containment reference.
+   * Sets the value of the '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getPredicate <em>Predicate</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Predicate</em>' containment reference.
@@ -148,7 +148,7 @@ public interface relativeSentence extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Constraints</em>' containment reference list.
-   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getrelativeSentence_Constraints()
+   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getRelativeSentence_Constraints()
    * @model containment="true"
    * @generated
    */
@@ -164,14 +164,14 @@ public interface relativeSentence extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Auxiliar</em>' attribute.
    * @see #setAuxiliar(String)
-   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getrelativeSentence_Auxiliar()
+   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getRelativeSentence_Auxiliar()
    * @model
    * @generated
    */
   String getAuxiliar();
 
   /**
-   * Sets the value of the '{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getAuxiliar <em>Auxiliar</em>}' attribute.
+   * Sets the value of the '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getAuxiliar <em>Auxiliar</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Auxiliar</em>' attribute.
@@ -190,14 +190,14 @@ public interface relativeSentence extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Clause</em>' containment reference.
    * @see #setClause(Clause)
-   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getrelativeSentence_Clause()
+   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getRelativeSentence_Clause()
    * @model containment="true"
    * @generated
    */
   Clause getClause();
 
   /**
-   * Sets the value of the '{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getClause <em>Clause</em>}' containment reference.
+   * Sets the value of the '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getClause <em>Clause</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Clause</em>' containment reference.
@@ -206,4 +206,4 @@ public interface relativeSentence extends EObject
    */
   void setClause(Clause value);
 
-} // relativeSentence
+} // RelativeSentence

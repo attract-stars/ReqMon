@@ -173,18 +173,11 @@ ruleRequirement returns [EObject current=null]
 			}
 		)
 		(
-			(
-				otherlv_6='\n'
-				{
-					newLeafNode(otherlv_6, grammarAccess.getRequirementAccess().getLineFeedKeyword_5_0());
-				}
-			)+
-			    |
-			otherlv_7='EOF'
+			otherlv_6='\n'
 			{
-				newLeafNode(otherlv_7, grammarAccess.getRequirementAccess().getEOFKeyword_5_1());
+				newLeafNode(otherlv_6, grammarAccess.getRequirementAccess().getLineFeedKeyword_5());
 			}
-		)
+		)+
 	)
 ;
 
@@ -913,11 +906,11 @@ ruleExistenceSentence returns [EObject current=null]
 }:
 	(
 		{
-			newCompositeNode(grammarAccess.getExistenceSentenceAccess().getExistencePrefaceParserRuleCall_0());
+			newCompositeNode(grammarAccess.getExistenceSentenceAccess().getExistenceParserRuleCall_0());
 		}
-		this_ExistencePreface_0=ruleExistencePreface
+		this_Existence_0=ruleExistence
 		{
-			$current = $this_ExistencePreface_0.current;
+			$current = $this_Existence_0.current;
 			afterParserOrEnumRuleCall();
 		}
 		(
@@ -948,7 +941,7 @@ ruleExistenceSentence returns [EObject current=null]
 				{
 					newCompositeNode(grammarAccess.getExistenceSentenceAccess().getRelativeClauseRelativeClauseParserRuleCall_3_0());
 				}
-				lv_relativeClause_3_0=rulerelativeClause
+				lv_relativeClause_3_0=ruleRelativeClause
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getExistenceSentenceRule());
@@ -957,7 +950,7 @@ ruleExistenceSentence returns [EObject current=null]
 						$current,
 						"relativeClause",
 						lv_relativeClause_3_0,
-						"de.fraunhofer.isst.stars.RequirementDSL.relativeClause");
+						"de.fraunhofer.isst.stars.RequirementDSL.RelativeClause");
 					afterParserOrEnumRuleCall();
 				}
 			)
@@ -1506,15 +1499,15 @@ ruleSentenceEnding returns [EObject current=null]
 	)
 ;
 
-// Entry rule entryRulerelativeClause
-entryRulerelativeClause returns [EObject current=null]:
+// Entry rule entryRuleRelativeClause
+entryRuleRelativeClause returns [EObject current=null]:
 	{ newCompositeNode(grammarAccess.getRelativeClauseRule()); }
-	iv_rulerelativeClause=rulerelativeClause
-	{ $current=$iv_rulerelativeClause.current; }
+	iv_ruleRelativeClause=ruleRelativeClause
+	{ $current=$iv_ruleRelativeClause.current; }
 	EOF;
 
-// Rule relativeClause
-rulerelativeClause returns [EObject current=null]
+// Rule RelativeClause
+ruleRelativeClause returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -1527,7 +1520,7 @@ rulerelativeClause returns [EObject current=null]
 				{
 					newCompositeNode(grammarAccess.getRelativeClauseAccess().getSentenceRelativeSentenceParserRuleCall_0_0());
 				}
-				lv_sentence_0_0=rulerelativeSentence
+				lv_sentence_0_0=ruleRelativeSentence
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getRelativeClauseRule());
@@ -1536,7 +1529,7 @@ rulerelativeClause returns [EObject current=null]
 						$current,
 						"sentence",
 						lv_sentence_0_0,
-						"de.fraunhofer.isst.stars.RequirementDSL.relativeSentence");
+						"de.fraunhofer.isst.stars.RequirementDSL.RelativeSentence");
 					afterParserOrEnumRuleCall();
 				}
 			)
@@ -1584,15 +1577,15 @@ rulerelativeClause returns [EObject current=null]
 	)
 ;
 
-// Entry rule entryRulerelativeSentence
-entryRulerelativeSentence returns [EObject current=null]:
+// Entry rule entryRuleRelativeSentence
+entryRuleRelativeSentence returns [EObject current=null]:
 	{ newCompositeNode(grammarAccess.getRelativeSentenceRule()); }
-	iv_rulerelativeSentence=rulerelativeSentence
-	{ $current=$iv_rulerelativeSentence.current; }
+	iv_ruleRelativeSentence=ruleRelativeSentence
+	{ $current=$iv_ruleRelativeSentence.current; }
 	EOF;
 
-// Rule relativeSentence
-rulerelativeSentence returns [EObject current=null]
+// Rule RelativeSentence
+ruleRelativeSentence returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -1958,14 +1951,23 @@ ruleActor returns [EObject current=null]
 }:
 	(
 		(
-			{
-				newCompositeNode(grammarAccess.getActorAccess().getPreNominativeParserRuleCall_0());
-			}
-			this_PreNominative_0=rulePreNominative
-			{
-				$current = $this_PreNominative_0.current;
-				afterParserOrEnumRuleCall();
-			}
+			(
+				{
+					newCompositeNode(grammarAccess.getActorAccess().getPreNominativePreNominativeParserRuleCall_0_0());
+				}
+				lv_PreNominative_0_0=rulePreNominative
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getActorRule());
+					}
+					set(
+						$current,
+						"PreNominative",
+						lv_PreNominative_0_0,
+						"de.fraunhofer.isst.stars.RequirementDSL.PreNominative");
+					afterParserOrEnumRuleCall();
+				}
+			)
 		)?
 		(
 			(
@@ -2380,15 +2382,15 @@ rulePredOrObject returns [EObject current=null]
 	)
 ;
 
-// Entry rule entryRuleExistencePreface
-entryRuleExistencePreface returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getExistencePrefaceRule()); }
-	iv_ruleExistencePreface=ruleExistencePreface
-	{ $current=$iv_ruleExistencePreface.current; }
+// Entry rule entryRuleExistence
+entryRuleExistence returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getExistenceRule()); }
+	iv_ruleExistence=ruleExistence
+	{ $current=$iv_ruleExistence.current; }
 	EOF;
 
-// Rule ExistencePreface
-ruleExistencePreface returns [EObject current=null]
+// Rule Existence
+ruleExistence returns [EObject current=null]
 @init {
 	enterRule();
 }
@@ -2399,30 +2401,30 @@ ruleExistencePreface returns [EObject current=null]
 		(
 			{
 				$current = forceCreateModelElement(
-					grammarAccess.getExistencePrefaceAccess().getExistencePrefaceAction_0(),
+					grammarAccess.getExistenceAccess().getExistencePrefaceAction_0(),
 					$current);
 			}
 		)
 		(
 			otherlv_1='there'
 			{
-				newLeafNode(otherlv_1, grammarAccess.getExistencePrefaceAccess().getThereKeyword_1_0());
+				newLeafNode(otherlv_1, grammarAccess.getExistenceAccess().getThereKeyword_1_0());
 			}
 			    |
 			otherlv_2='There'
 			{
-				newLeafNode(otherlv_2, grammarAccess.getExistencePrefaceAccess().getThereKeyword_1_1());
+				newLeafNode(otherlv_2, grammarAccess.getExistenceAccess().getThereKeyword_1_1());
 			}
 		)
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getExistencePrefaceAccess().getModifierModifierEnumRuleCall_2_0());
+					newCompositeNode(grammarAccess.getExistenceAccess().getModifierModifierEnumRuleCall_2_0());
 				}
 				lv_modifier_3_0=ruleModifier
 				{
 					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getExistencePrefaceRule());
+						$current = createModelElementForParent(grammarAccess.getExistenceRule());
 					}
 					set(
 						$current,
@@ -2436,12 +2438,12 @@ ruleExistencePreface returns [EObject current=null]
 		(
 			otherlv_4='exist'
 			{
-				newLeafNode(otherlv_4, grammarAccess.getExistencePrefaceAccess().getExistKeyword_3_0());
+				newLeafNode(otherlv_4, grammarAccess.getExistenceAccess().getExistKeyword_3_0());
 			}
 			    |
 			otherlv_5='exists'
 			{
-				newLeafNode(otherlv_5, grammarAccess.getExistencePrefaceAccess().getExistsKeyword_3_1());
+				newLeafNode(otherlv_5, grammarAccess.getExistenceAccess().getExistsKeyword_3_1());
 			}
 		)
 	)

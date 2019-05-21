@@ -31,6 +31,8 @@ import de.fraunhofer.isst.stars.requirementDSL.Property;
 import de.fraunhofer.isst.stars.requirementDSL.PropertySentence;
 import de.fraunhofer.isst.stars.requirementDSL.RelObjects;
 import de.fraunhofer.isst.stars.requirementDSL.Relation;
+import de.fraunhofer.isst.stars.requirementDSL.RelativeClause;
+import de.fraunhofer.isst.stars.requirementDSL.RelativeSentence;
 import de.fraunhofer.isst.stars.requirementDSL.Requirement;
 import de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage;
 import de.fraunhofer.isst.stars.requirementDSL.RequirementText;
@@ -40,8 +42,6 @@ import de.fraunhofer.isst.stars.requirementDSL.SetConstraint;
 import de.fraunhofer.isst.stars.requirementDSL.SingleValueConstraints;
 import de.fraunhofer.isst.stars.requirementDSL.TimeConstraint;
 import de.fraunhofer.isst.stars.requirementDSL.ValueSet;
-import de.fraunhofer.isst.stars.requirementDSL.relativeClause;
-import de.fraunhofer.isst.stars.requirementDSL.relativeSentence;
 import de.fraunhofer.isst.stars.services.RequirementDSLGrammarAccess;
 import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
@@ -93,13 +93,13 @@ public class RequirementDSLSemanticSequencer extends AbstractDelegatingSemanticS
 				sequence_Constraints(context, (Constraints) semanticObject); 
 				return; 
 			case RequirementDSLPackage.EXISTENCE_PREFACE:
-				if (rule == grammarAccess.getExistencePrefaceRule()) {
-					sequence_ExistencePreface(context, (ExistencePreface) semanticObject); 
+				if (rule == grammarAccess.getExistenceRule()) {
+					sequence_Existence(context, (ExistencePreface) semanticObject); 
 					return; 
 				}
 				else if (rule == grammarAccess.getClauseRule()
 						|| rule == grammarAccess.getExistenceSentenceRule()) {
-					sequence_ExistencePreface_ExistenceSentence(context, (ExistencePreface) semanticObject); 
+					sequence_Existence_ExistenceSentence(context, (ExistencePreface) semanticObject); 
 					return; 
 				}
 				else break;
@@ -131,15 +131,8 @@ public class RequirementDSLSemanticSequencer extends AbstractDelegatingSemanticS
 				sequence_ObjectSet(context, (ObjectSet) semanticObject); 
 				return; 
 			case RequirementDSLPackage.PRE_NOMINATIVE:
-				if (rule == grammarAccess.getActorRule()) {
-					sequence_Actor_PreNominative(context, (PreNominative) semanticObject); 
-					return; 
-				}
-				else if (rule == grammarAccess.getPreNominativeRule()) {
-					sequence_PreNominative(context, (PreNominative) semanticObject); 
-					return; 
-				}
-				else break;
+				sequence_PreNominative(context, (PreNominative) semanticObject); 
+				return; 
 			case RequirementDSLPackage.PRED_OR_OBJECT:
 				sequence_PredOrObject(context, (PredOrObject) semanticObject); 
 				return; 
@@ -167,6 +160,12 @@ public class RequirementDSLSemanticSequencer extends AbstractDelegatingSemanticS
 			case RequirementDSLPackage.RELATION:
 				sequence_Relation(context, (Relation) semanticObject); 
 				return; 
+			case RequirementDSLPackage.RELATIVE_CLAUSE:
+				sequence_RelativeClause(context, (RelativeClause) semanticObject); 
+				return; 
+			case RequirementDSLPackage.RELATIVE_SENTENCE:
+				sequence_RelativeSentence(context, (RelativeSentence) semanticObject); 
+				return; 
 			case RequirementDSLPackage.REQUIREMENT:
 				sequence_Requirement(context, (Requirement) semanticObject); 
 				return; 
@@ -191,12 +190,6 @@ public class RequirementDSLSemanticSequencer extends AbstractDelegatingSemanticS
 			case RequirementDSLPackage.VALUE_SET:
 				sequence_ValueSet(context, (ValueSet) semanticObject); 
 				return; 
-			case RequirementDSLPackage.RELATIVE_CLAUSE:
-				sequence_relativeClause(context, (relativeClause) semanticObject); 
-				return; 
-			case RequirementDSLPackage.RELATIVE_SENTENCE:
-				sequence_relativeSentence(context, (relativeSentence) semanticObject); 
-				return; 
 			}
 		if (errorAcceptor != null)
 			errorAcceptor.accept(diagnosticProvider.createInvalidContextOrTypeDiagnostic(semanticObject, context));
@@ -207,21 +200,9 @@ public class RequirementDSLSemanticSequencer extends AbstractDelegatingSemanticS
 	 *     Actor returns Actor
 	 *
 	 * Constraint:
-	 *     (actor=WORD | actor=STRING)
+	 *     (PreNominative=PreNominative? (actor=WORD | actor=STRING))
 	 */
 	protected void sequence_Actor(ISerializationContext context, Actor semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     Actor returns PreNominative
-	 *
-	 * Constraint:
-	 *     ((determiner=Quantification | article=Articles | article=RefArticles) (actor=WORD | actor=STRING))
-	 */
-	protected void sequence_Actor_PreNominative(ISerializationContext context, PreNominative semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -321,12 +302,12 @@ public class RequirementDSLSemanticSequencer extends AbstractDelegatingSemanticS
 	
 	/**
 	 * Contexts:
-	 *     ExistencePreface returns ExistencePreface
+	 *     Existence returns ExistencePreface
 	 *
 	 * Constraint:
 	 *     modifier=Modifier?
 	 */
-	protected void sequence_ExistencePreface(ISerializationContext context, ExistencePreface semanticObject) {
+	protected void sequence_Existence(ISerializationContext context, ExistencePreface semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -337,9 +318,9 @@ public class RequirementDSLSemanticSequencer extends AbstractDelegatingSemanticS
 	 *     ExistenceSentence returns ExistencePreface
 	 *
 	 * Constraint:
-	 *     (modifier=Modifier? actors=Actors relativeClause=relativeClause)
+	 *     (modifier=Modifier? actors=Actors relativeClause=RelativeClause)
 	 */
-	protected void sequence_ExistencePreface_ExistenceSentence(ISerializationContext context, ExistencePreface semanticObject) {
+	protected void sequence_Existence_ExistenceSentence(ISerializationContext context, ExistencePreface semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	
@@ -647,6 +628,34 @@ public class RequirementDSLSemanticSequencer extends AbstractDelegatingSemanticS
 	
 	/**
 	 * Contexts:
+	 *     RelativeClause returns RelativeClause
+	 *
+	 * Constraint:
+	 *     (sentence=RelativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*)
+	 */
+	protected void sequence_RelativeClause(ISerializationContext context, RelativeClause semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     RelativeSentence returns RelativeSentence
+	 *
+	 * Constraint:
+	 *     (
+	 *         (pronoun=RelativePronounsSubject modelity=Modality negation?=Negation? predicate=Predicate constraints+=Constraints*) | 
+	 *         (pronoun=RelativePronounsSubject (auxiliar=WORD negation?=Negation)? predicate=Predicate constraints+=Constraints*) | 
+	 *         (pronoun=RelativePronounsObject (clause=ModalitySentence | clause=PredicateSentence))
+	 *     )
+	 */
+	protected void sequence_RelativeSentence(ISerializationContext context, RelativeSentence semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     RequirementText returns RequirementText
 	 *
 	 * Constraint:
@@ -762,34 +771,6 @@ public class RequirementDSLSemanticSequencer extends AbstractDelegatingSemanticS
 	 *     (elements+=Value elements+=Value*)
 	 */
 	protected void sequence_ValueSet(ISerializationContext context, ValueSet semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     relativeClause returns relativeClause
-	 *
-	 * Constraint:
-	 *     (sentence=relativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*)
-	 */
-	protected void sequence_relativeClause(ISerializationContext context, relativeClause semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
-	 *     relativeSentence returns relativeSentence
-	 *
-	 * Constraint:
-	 *     (
-	 *         (pronoun=RelativePronounsSubject modelity=Modality negation?=Negation? predicate=Predicate constraints+=Constraints*) | 
-	 *         (pronoun=RelativePronounsSubject (auxiliar=WORD negation?=Negation)? predicate=Predicate constraints+=Constraints*) | 
-	 *         (pronoun=RelativePronounsObject (clause=ModalitySentence | clause=PredicateSentence))
-	 *     )
-	 */
-	protected void sequence_relativeSentence(ISerializationContext context, relativeSentence semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

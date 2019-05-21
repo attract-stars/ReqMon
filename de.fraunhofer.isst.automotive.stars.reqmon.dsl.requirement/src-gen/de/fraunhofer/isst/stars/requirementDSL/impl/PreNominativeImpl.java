@@ -11,6 +11,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,7 +27,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *
  * @generated
  */
-public class PreNominativeImpl extends ActorImpl implements PreNominative
+public class PreNominativeImpl extends MinimalEObjectImpl.Container implements PreNominative
 {
   /**
    * The default value of the '{@link #getDeterminer() <em>Determiner</em>}' attribute.

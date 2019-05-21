@@ -13,8 +13,6 @@ package de.fraunhofer.isst.stars.requirementDSL;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.ExistencePreface#getActors <em>Actors</em>}</li>
- *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.ExistencePreface#getRelativeClause <em>Relative Clause</em>}</li>
  *   <li>{@link de.fraunhofer.isst.stars.requirementDSL.ExistencePreface#getModifier <em>Modifier</em>}</li>
  * </ul>
  *
@@ -22,60 +20,8 @@ package de.fraunhofer.isst.stars.requirementDSL;
  * @model
  * @generated
  */
-public interface ExistencePreface extends ExistenceSentence
+public interface ExistencePreface extends Existence
 {
-  /**
-   * Returns the value of the '<em><b>Actors</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Actors</em>' containment reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Actors</em>' containment reference.
-   * @see #setActors(Actors)
-   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getExistencePreface_Actors()
-   * @model containment="true"
-   * @generated
-   */
-  Actors getActors();
-
-  /**
-   * Sets the value of the '{@link de.fraunhofer.isst.stars.requirementDSL.ExistencePreface#getActors <em>Actors</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Actors</em>' containment reference.
-   * @see #getActors()
-   * @generated
-   */
-  void setActors(Actors value);
-
-  /**
-   * Returns the value of the '<em><b>Relative Clause</b></em>' containment reference.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Relative Clause</em>' containment reference isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Relative Clause</em>' containment reference.
-   * @see #setRelativeClause(relativeClause)
-   * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getExistencePreface_RelativeClause()
-   * @model containment="true"
-   * @generated
-   */
-  relativeClause getRelativeClause();
-
-  /**
-   * Sets the value of the '{@link de.fraunhofer.isst.stars.requirementDSL.ExistencePreface#getRelativeClause <em>Relative Clause</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Relative Clause</em>' containment reference.
-   * @see #getRelativeClause()
-   * @generated
-   */
-  void setRelativeClause(relativeClause value);
-
   /**
    * Returns the value of the '<em><b>Modifier</b></em>' attribute.
    * The literals are from the enumeration {@link de.fraunhofer.isst.stars.requirementDSL.Modifier}.

@@ -667,11 +667,11 @@ public interface RequirementDSLPackage extends EPackage
   int SENTENCE_ENDING_FEATURE_COUNT = 2;
 
   /**
-   * The meta object id for the '{@link de.fraunhofer.isst.stars.requirementDSL.impl.relativeClauseImpl <em>relative Clause</em>}' class.
+   * The meta object id for the '{@link de.fraunhofer.isst.stars.requirementDSL.impl.RelativeClauseImpl <em>Relative Clause</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see de.fraunhofer.isst.stars.requirementDSL.impl.relativeClauseImpl
-   * @see de.fraunhofer.isst.stars.requirementDSL.impl.RequirementDSLPackageImpl#getrelativeClause()
+   * @see de.fraunhofer.isst.stars.requirementDSL.impl.RelativeClauseImpl
+   * @see de.fraunhofer.isst.stars.requirementDSL.impl.RequirementDSLPackageImpl#getRelativeClause()
    * @generated
    */
   int RELATIVE_CLAUSE = 14;
@@ -704,7 +704,7 @@ public interface RequirementDSLPackage extends EPackage
   int RELATIVE_CLAUSE__COND_CLAUSES = 2;
 
   /**
-   * The number of structural features of the '<em>relative Clause</em>' class.
+   * The number of structural features of the '<em>Relative Clause</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -713,11 +713,11 @@ public interface RequirementDSLPackage extends EPackage
   int RELATIVE_CLAUSE_FEATURE_COUNT = 3;
 
   /**
-   * The meta object id for the '{@link de.fraunhofer.isst.stars.requirementDSL.impl.relativeSentenceImpl <em>relative Sentence</em>}' class.
+   * The meta object id for the '{@link de.fraunhofer.isst.stars.requirementDSL.impl.RelativeSentenceImpl <em>Relative Sentence</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see de.fraunhofer.isst.stars.requirementDSL.impl.relativeSentenceImpl
-   * @see de.fraunhofer.isst.stars.requirementDSL.impl.RequirementDSLPackageImpl#getrelativeSentence()
+   * @see de.fraunhofer.isst.stars.requirementDSL.impl.RelativeSentenceImpl
+   * @see de.fraunhofer.isst.stars.requirementDSL.impl.RequirementDSLPackageImpl#getRelativeSentence()
    * @generated
    */
   int RELATIVE_SENTENCE = 15;
@@ -786,7 +786,7 @@ public interface RequirementDSLPackage extends EPackage
   int RELATIVE_SENTENCE__CLAUSE = 6;
 
   /**
-   * The number of structural features of the '<em>relative Sentence</em>' class.
+   * The number of structural features of the '<em>Relative Sentence</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -842,13 +842,22 @@ public interface RequirementDSLPackage extends EPackage
   int ACTOR = 17;
 
   /**
+   * The feature id for the '<em><b>Pre Nominative</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int ACTOR__PRE_NOMINATIVE = 0;
+
+  /**
    * The feature id for the '<em><b>Actor</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int ACTOR__ACTOR = 0;
+  int ACTOR__ACTOR = 1;
 
   /**
    * The number of structural features of the '<em>Actor</em>' class.
@@ -857,7 +866,7 @@ public interface RequirementDSLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int ACTOR_FEATURE_COUNT = 1;
+  int ACTOR_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link de.fraunhofer.isst.stars.requirementDSL.impl.PredsImpl <em>Preds</em>}' class.
@@ -1045,14 +1054,14 @@ public interface RequirementDSLPackage extends EPackage
   int PRED_OR_OBJECT_FEATURE_COUNT = 2;
 
   /**
-   * The meta object id for the '{@link de.fraunhofer.isst.stars.requirementDSL.impl.ExistencePrefaceImpl <em>Existence Preface</em>}' class.
+   * The meta object id for the '{@link de.fraunhofer.isst.stars.requirementDSL.impl.ExistenceImpl <em>Existence</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see de.fraunhofer.isst.stars.requirementDSL.impl.ExistencePrefaceImpl
-   * @see de.fraunhofer.isst.stars.requirementDSL.impl.RequirementDSLPackageImpl#getExistencePreface()
+   * @see de.fraunhofer.isst.stars.requirementDSL.impl.ExistenceImpl
+   * @see de.fraunhofer.isst.stars.requirementDSL.impl.RequirementDSLPackageImpl#getExistence()
    * @generated
    */
-  int EXISTENCE_PREFACE = 23;
+  int EXISTENCE = 23;
 
   /**
    * The feature id for the '<em><b>Actors</b></em>' containment reference.
@@ -1061,7 +1070,7 @@ public interface RequirementDSLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int EXISTENCE_PREFACE__ACTORS = EXISTENCE_SENTENCE_FEATURE_COUNT + 0;
+  int EXISTENCE__ACTORS = EXISTENCE_SENTENCE_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Relative Clause</b></em>' containment reference.
@@ -1070,25 +1079,16 @@ public interface RequirementDSLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int EXISTENCE_PREFACE__RELATIVE_CLAUSE = EXISTENCE_SENTENCE_FEATURE_COUNT + 1;
+  int EXISTENCE__RELATIVE_CLAUSE = EXISTENCE_SENTENCE_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Modifier</b></em>' attribute.
+   * The number of structural features of the '<em>Existence</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int EXISTENCE_PREFACE__MODIFIER = EXISTENCE_SENTENCE_FEATURE_COUNT + 2;
-
-  /**
-   * The number of structural features of the '<em>Existence Preface</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int EXISTENCE_PREFACE_FEATURE_COUNT = EXISTENCE_SENTENCE_FEATURE_COUNT + 3;
+  int EXISTENCE_FEATURE_COUNT = EXISTENCE_SENTENCE_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link de.fraunhofer.isst.stars.requirementDSL.impl.AuxNegImpl <em>Aux Neg</em>}' class.
@@ -1147,22 +1147,13 @@ public interface RequirementDSLPackage extends EPackage
   int PRE_NOMINATIVE = 25;
 
   /**
-   * The feature id for the '<em><b>Actor</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PRE_NOMINATIVE__ACTOR = ACTOR__ACTOR;
-
-  /**
    * The feature id for the '<em><b>Determiner</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int PRE_NOMINATIVE__DETERMINER = ACTOR_FEATURE_COUNT + 0;
+  int PRE_NOMINATIVE__DETERMINER = 0;
 
   /**
    * The feature id for the '<em><b>Article</b></em>' attribute.
@@ -1171,7 +1162,7 @@ public interface RequirementDSLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PRE_NOMINATIVE__ARTICLE = ACTOR_FEATURE_COUNT + 1;
+  int PRE_NOMINATIVE__ARTICLE = 1;
 
   /**
    * The number of structural features of the '<em>Pre Nominative</em>' class.
@@ -1180,7 +1171,7 @@ public interface RequirementDSLPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PRE_NOMINATIVE_FEATURE_COUNT = ACTOR_FEATURE_COUNT + 2;
+  int PRE_NOMINATIVE_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link de.fraunhofer.isst.stars.requirementDSL.impl.RelationImpl <em>Relation</em>}' class.
@@ -1775,6 +1766,52 @@ public interface RequirementDSLPackage extends EPackage
   int FLOAT_VALUE_FEATURE_COUNT = VALUE_FEATURE_COUNT + 1;
 
   /**
+   * The meta object id for the '{@link de.fraunhofer.isst.stars.requirementDSL.impl.ExistencePrefaceImpl <em>Existence Preface</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see de.fraunhofer.isst.stars.requirementDSL.impl.ExistencePrefaceImpl
+   * @see de.fraunhofer.isst.stars.requirementDSL.impl.RequirementDSLPackageImpl#getExistencePreface()
+   * @generated
+   */
+  int EXISTENCE_PREFACE = 42;
+
+  /**
+   * The feature id for the '<em><b>Actors</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EXISTENCE_PREFACE__ACTORS = EXISTENCE__ACTORS;
+
+  /**
+   * The feature id for the '<em><b>Relative Clause</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EXISTENCE_PREFACE__RELATIVE_CLAUSE = EXISTENCE__RELATIVE_CLAUSE;
+
+  /**
+   * The feature id for the '<em><b>Modifier</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EXISTENCE_PREFACE__MODIFIER = EXISTENCE_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Existence Preface</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int EXISTENCE_PREFACE_FEATURE_COUNT = EXISTENCE_FEATURE_COUNT + 1;
+
+  /**
    * The meta object id for the '{@link de.fraunhofer.isst.stars.requirementDSL.Modality <em>Modality</em>}' enum.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1782,7 +1819,7 @@ public interface RequirementDSLPackage extends EPackage
    * @see de.fraunhofer.isst.stars.requirementDSL.impl.RequirementDSLPackageImpl#getModality()
    * @generated
    */
-  int MODALITY = 42;
+  int MODALITY = 43;
 
   /**
    * The meta object id for the '{@link de.fraunhofer.isst.stars.requirementDSL.Modifier <em>Modifier</em>}' enum.
@@ -1792,7 +1829,7 @@ public interface RequirementDSLPackage extends EPackage
    * @see de.fraunhofer.isst.stars.requirementDSL.impl.RequirementDSLPackageImpl#getModifier()
    * @generated
    */
-  int MODIFIER = 43;
+  int MODIFIER = 44;
 
   /**
    * The meta object id for the '{@link de.fraunhofer.isst.stars.requirementDSL.ClauseOrdinator <em>Clause Ordinator</em>}' enum.
@@ -1802,7 +1839,7 @@ public interface RequirementDSLPackage extends EPackage
    * @see de.fraunhofer.isst.stars.requirementDSL.impl.RequirementDSLPackageImpl#getClauseOrdinator()
    * @generated
    */
-  int CLAUSE_ORDINATOR = 44;
+  int CLAUSE_ORDINATOR = 45;
 
 
   /**
@@ -2364,134 +2401,134 @@ public interface RequirementDSLPackage extends EPackage
   EReference getSentenceEnding_Rela();
 
   /**
-   * Returns the meta object for class '{@link de.fraunhofer.isst.stars.requirementDSL.relativeClause <em>relative Clause</em>}'.
+   * Returns the meta object for class '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeClause <em>Relative Clause</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>relative Clause</em>'.
-   * @see de.fraunhofer.isst.stars.requirementDSL.relativeClause
+   * @return the meta object for class '<em>Relative Clause</em>'.
+   * @see de.fraunhofer.isst.stars.requirementDSL.RelativeClause
    * @generated
    */
-  EClass getrelativeClause();
+  EClass getRelativeClause();
 
   /**
-   * Returns the meta object for the containment reference '{@link de.fraunhofer.isst.stars.requirementDSL.relativeClause#getSentence <em>Sentence</em>}'.
+   * Returns the meta object for the containment reference '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeClause#getSentence <em>Sentence</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Sentence</em>'.
-   * @see de.fraunhofer.isst.stars.requirementDSL.relativeClause#getSentence()
-   * @see #getrelativeClause()
+   * @see de.fraunhofer.isst.stars.requirementDSL.RelativeClause#getSentence()
+   * @see #getRelativeClause()
    * @generated
    */
-  EReference getrelativeClause_Sentence();
+  EReference getRelativeClause_Sentence();
 
   /**
-   * Returns the meta object for the attribute list '{@link de.fraunhofer.isst.stars.requirementDSL.relativeClause#getConjunction <em>Conjunction</em>}'.
+   * Returns the meta object for the attribute list '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeClause#getConjunction <em>Conjunction</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute list '<em>Conjunction</em>'.
-   * @see de.fraunhofer.isst.stars.requirementDSL.relativeClause#getConjunction()
-   * @see #getrelativeClause()
+   * @see de.fraunhofer.isst.stars.requirementDSL.RelativeClause#getConjunction()
+   * @see #getRelativeClause()
    * @generated
    */
-  EAttribute getrelativeClause_Conjunction();
+  EAttribute getRelativeClause_Conjunction();
 
   /**
-   * Returns the meta object for the containment reference list '{@link de.fraunhofer.isst.stars.requirementDSL.relativeClause#getCondClauses <em>Cond Clauses</em>}'.
+   * Returns the meta object for the containment reference list '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeClause#getCondClauses <em>Cond Clauses</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Cond Clauses</em>'.
-   * @see de.fraunhofer.isst.stars.requirementDSL.relativeClause#getCondClauses()
-   * @see #getrelativeClause()
+   * @see de.fraunhofer.isst.stars.requirementDSL.RelativeClause#getCondClauses()
+   * @see #getRelativeClause()
    * @generated
    */
-  EReference getrelativeClause_CondClauses();
+  EReference getRelativeClause_CondClauses();
 
   /**
-   * Returns the meta object for class '{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence <em>relative Sentence</em>}'.
+   * Returns the meta object for class '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence <em>Relative Sentence</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>relative Sentence</em>'.
-   * @see de.fraunhofer.isst.stars.requirementDSL.relativeSentence
+   * @return the meta object for class '<em>Relative Sentence</em>'.
+   * @see de.fraunhofer.isst.stars.requirementDSL.RelativeSentence
    * @generated
    */
-  EClass getrelativeSentence();
+  EClass getRelativeSentence();
 
   /**
-   * Returns the meta object for the attribute '{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getPronoun <em>Pronoun</em>}'.
+   * Returns the meta object for the attribute '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getPronoun <em>Pronoun</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Pronoun</em>'.
-   * @see de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getPronoun()
-   * @see #getrelativeSentence()
+   * @see de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getPronoun()
+   * @see #getRelativeSentence()
    * @generated
    */
-  EAttribute getrelativeSentence_Pronoun();
+  EAttribute getRelativeSentence_Pronoun();
 
   /**
-   * Returns the meta object for the attribute '{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getModelity <em>Modelity</em>}'.
+   * Returns the meta object for the attribute '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getModelity <em>Modelity</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Modelity</em>'.
-   * @see de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getModelity()
-   * @see #getrelativeSentence()
+   * @see de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getModelity()
+   * @see #getRelativeSentence()
    * @generated
    */
-  EAttribute getrelativeSentence_Modelity();
+  EAttribute getRelativeSentence_Modelity();
 
   /**
-   * Returns the meta object for the attribute '{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#isNegation <em>Negation</em>}'.
+   * Returns the meta object for the attribute '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#isNegation <em>Negation</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Negation</em>'.
-   * @see de.fraunhofer.isst.stars.requirementDSL.relativeSentence#isNegation()
-   * @see #getrelativeSentence()
+   * @see de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#isNegation()
+   * @see #getRelativeSentence()
    * @generated
    */
-  EAttribute getrelativeSentence_Negation();
+  EAttribute getRelativeSentence_Negation();
 
   /**
-   * Returns the meta object for the containment reference '{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getPredicate <em>Predicate</em>}'.
+   * Returns the meta object for the containment reference '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getPredicate <em>Predicate</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Predicate</em>'.
-   * @see de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getPredicate()
-   * @see #getrelativeSentence()
+   * @see de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getPredicate()
+   * @see #getRelativeSentence()
    * @generated
    */
-  EReference getrelativeSentence_Predicate();
+  EReference getRelativeSentence_Predicate();
 
   /**
-   * Returns the meta object for the containment reference list '{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getConstraints <em>Constraints</em>}'.
+   * Returns the meta object for the containment reference list '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getConstraints <em>Constraints</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Constraints</em>'.
-   * @see de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getConstraints()
-   * @see #getrelativeSentence()
+   * @see de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getConstraints()
+   * @see #getRelativeSentence()
    * @generated
    */
-  EReference getrelativeSentence_Constraints();
+  EReference getRelativeSentence_Constraints();
 
   /**
-   * Returns the meta object for the attribute '{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getAuxiliar <em>Auxiliar</em>}'.
+   * Returns the meta object for the attribute '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getAuxiliar <em>Auxiliar</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Auxiliar</em>'.
-   * @see de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getAuxiliar()
-   * @see #getrelativeSentence()
+   * @see de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getAuxiliar()
+   * @see #getRelativeSentence()
    * @generated
    */
-  EAttribute getrelativeSentence_Auxiliar();
+  EAttribute getRelativeSentence_Auxiliar();
 
   /**
-   * Returns the meta object for the containment reference '{@link de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getClause <em>Clause</em>}'.
+   * Returns the meta object for the containment reference '{@link de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getClause <em>Clause</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Clause</em>'.
-   * @see de.fraunhofer.isst.stars.requirementDSL.relativeSentence#getClause()
-   * @see #getrelativeSentence()
+   * @see de.fraunhofer.isst.stars.requirementDSL.RelativeSentence#getClause()
+   * @see #getRelativeSentence()
    * @generated
    */
-  EReference getrelativeSentence_Clause();
+  EReference getRelativeSentence_Clause();
 
   /**
    * Returns the meta object for class '{@link de.fraunhofer.isst.stars.requirementDSL.Actors <em>Actors</em>}'.
@@ -2534,6 +2571,17 @@ public interface RequirementDSLPackage extends EPackage
    * @generated
    */
   EClass getActor();
+
+  /**
+   * Returns the meta object for the containment reference '{@link de.fraunhofer.isst.stars.requirementDSL.Actor#getPreNominative <em>Pre Nominative</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Pre Nominative</em>'.
+   * @see de.fraunhofer.isst.stars.requirementDSL.Actor#getPreNominative()
+   * @see #getActor()
+   * @generated
+   */
+  EReference getActor_PreNominative();
 
   /**
    * Returns the meta object for the attribute '{@link de.fraunhofer.isst.stars.requirementDSL.Actor#getActor <em>Actor</em>}'.
@@ -2707,47 +2755,36 @@ public interface RequirementDSLPackage extends EPackage
   EReference getPredOrObject_PredObj();
 
   /**
-   * Returns the meta object for class '{@link de.fraunhofer.isst.stars.requirementDSL.ExistencePreface <em>Existence Preface</em>}'.
+   * Returns the meta object for class '{@link de.fraunhofer.isst.stars.requirementDSL.Existence <em>Existence</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Existence Preface</em>'.
-   * @see de.fraunhofer.isst.stars.requirementDSL.ExistencePreface
+   * @return the meta object for class '<em>Existence</em>'.
+   * @see de.fraunhofer.isst.stars.requirementDSL.Existence
    * @generated
    */
-  EClass getExistencePreface();
+  EClass getExistence();
 
   /**
-   * Returns the meta object for the containment reference '{@link de.fraunhofer.isst.stars.requirementDSL.ExistencePreface#getActors <em>Actors</em>}'.
+   * Returns the meta object for the containment reference '{@link de.fraunhofer.isst.stars.requirementDSL.Existence#getActors <em>Actors</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Actors</em>'.
-   * @see de.fraunhofer.isst.stars.requirementDSL.ExistencePreface#getActors()
-   * @see #getExistencePreface()
+   * @see de.fraunhofer.isst.stars.requirementDSL.Existence#getActors()
+   * @see #getExistence()
    * @generated
    */
-  EReference getExistencePreface_Actors();
+  EReference getExistence_Actors();
 
   /**
-   * Returns the meta object for the containment reference '{@link de.fraunhofer.isst.stars.requirementDSL.ExistencePreface#getRelativeClause <em>Relative Clause</em>}'.
+   * Returns the meta object for the containment reference '{@link de.fraunhofer.isst.stars.requirementDSL.Existence#getRelativeClause <em>Relative Clause</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Relative Clause</em>'.
-   * @see de.fraunhofer.isst.stars.requirementDSL.ExistencePreface#getRelativeClause()
-   * @see #getExistencePreface()
+   * @see de.fraunhofer.isst.stars.requirementDSL.Existence#getRelativeClause()
+   * @see #getExistence()
    * @generated
    */
-  EReference getExistencePreface_RelativeClause();
-
-  /**
-   * Returns the meta object for the attribute '{@link de.fraunhofer.isst.stars.requirementDSL.ExistencePreface#getModifier <em>Modifier</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Modifier</em>'.
-   * @see de.fraunhofer.isst.stars.requirementDSL.ExistencePreface#getModifier()
-   * @see #getExistencePreface()
-   * @generated
-   */
-  EAttribute getExistencePreface_Modifier();
+  EReference getExistence_RelativeClause();
 
   /**
    * Returns the meta object for class '{@link de.fraunhofer.isst.stars.requirementDSL.AuxNeg <em>Aux Neg</em>}'.
@@ -3293,6 +3330,27 @@ public interface RequirementDSLPackage extends EPackage
   EAttribute getFloatValue_Value();
 
   /**
+   * Returns the meta object for class '{@link de.fraunhofer.isst.stars.requirementDSL.ExistencePreface <em>Existence Preface</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Existence Preface</em>'.
+   * @see de.fraunhofer.isst.stars.requirementDSL.ExistencePreface
+   * @generated
+   */
+  EClass getExistencePreface();
+
+  /**
+   * Returns the meta object for the attribute '{@link de.fraunhofer.isst.stars.requirementDSL.ExistencePreface#getModifier <em>Modifier</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Modifier</em>'.
+   * @see de.fraunhofer.isst.stars.requirementDSL.ExistencePreface#getModifier()
+   * @see #getExistencePreface()
+   * @generated
+   */
+  EAttribute getExistencePreface_Modifier();
+
+  /**
    * Returns the meta object for enum '{@link de.fraunhofer.isst.stars.requirementDSL.Modality <em>Modality</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -3790,14 +3848,14 @@ public interface RequirementDSLPackage extends EPackage
     EReference SENTENCE_ENDING__RELA = eINSTANCE.getSentenceEnding_Rela();
 
     /**
-     * The meta object literal for the '{@link de.fraunhofer.isst.stars.requirementDSL.impl.relativeClauseImpl <em>relative Clause</em>}' class.
+     * The meta object literal for the '{@link de.fraunhofer.isst.stars.requirementDSL.impl.RelativeClauseImpl <em>Relative Clause</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see de.fraunhofer.isst.stars.requirementDSL.impl.relativeClauseImpl
-     * @see de.fraunhofer.isst.stars.requirementDSL.impl.RequirementDSLPackageImpl#getrelativeClause()
+     * @see de.fraunhofer.isst.stars.requirementDSL.impl.RelativeClauseImpl
+     * @see de.fraunhofer.isst.stars.requirementDSL.impl.RequirementDSLPackageImpl#getRelativeClause()
      * @generated
      */
-    EClass RELATIVE_CLAUSE = eINSTANCE.getrelativeClause();
+    EClass RELATIVE_CLAUSE = eINSTANCE.getRelativeClause();
 
     /**
      * The meta object literal for the '<em><b>Sentence</b></em>' containment reference feature.
@@ -3805,7 +3863,7 @@ public interface RequirementDSLPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RELATIVE_CLAUSE__SENTENCE = eINSTANCE.getrelativeClause_Sentence();
+    EReference RELATIVE_CLAUSE__SENTENCE = eINSTANCE.getRelativeClause_Sentence();
 
     /**
      * The meta object literal for the '<em><b>Conjunction</b></em>' attribute list feature.
@@ -3813,7 +3871,7 @@ public interface RequirementDSLPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute RELATIVE_CLAUSE__CONJUNCTION = eINSTANCE.getrelativeClause_Conjunction();
+    EAttribute RELATIVE_CLAUSE__CONJUNCTION = eINSTANCE.getRelativeClause_Conjunction();
 
     /**
      * The meta object literal for the '<em><b>Cond Clauses</b></em>' containment reference list feature.
@@ -3821,17 +3879,17 @@ public interface RequirementDSLPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RELATIVE_CLAUSE__COND_CLAUSES = eINSTANCE.getrelativeClause_CondClauses();
+    EReference RELATIVE_CLAUSE__COND_CLAUSES = eINSTANCE.getRelativeClause_CondClauses();
 
     /**
-     * The meta object literal for the '{@link de.fraunhofer.isst.stars.requirementDSL.impl.relativeSentenceImpl <em>relative Sentence</em>}' class.
+     * The meta object literal for the '{@link de.fraunhofer.isst.stars.requirementDSL.impl.RelativeSentenceImpl <em>Relative Sentence</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see de.fraunhofer.isst.stars.requirementDSL.impl.relativeSentenceImpl
-     * @see de.fraunhofer.isst.stars.requirementDSL.impl.RequirementDSLPackageImpl#getrelativeSentence()
+     * @see de.fraunhofer.isst.stars.requirementDSL.impl.RelativeSentenceImpl
+     * @see de.fraunhofer.isst.stars.requirementDSL.impl.RequirementDSLPackageImpl#getRelativeSentence()
      * @generated
      */
-    EClass RELATIVE_SENTENCE = eINSTANCE.getrelativeSentence();
+    EClass RELATIVE_SENTENCE = eINSTANCE.getRelativeSentence();
 
     /**
      * The meta object literal for the '<em><b>Pronoun</b></em>' attribute feature.
@@ -3839,7 +3897,7 @@ public interface RequirementDSLPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute RELATIVE_SENTENCE__PRONOUN = eINSTANCE.getrelativeSentence_Pronoun();
+    EAttribute RELATIVE_SENTENCE__PRONOUN = eINSTANCE.getRelativeSentence_Pronoun();
 
     /**
      * The meta object literal for the '<em><b>Modelity</b></em>' attribute feature.
@@ -3847,7 +3905,7 @@ public interface RequirementDSLPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute RELATIVE_SENTENCE__MODELITY = eINSTANCE.getrelativeSentence_Modelity();
+    EAttribute RELATIVE_SENTENCE__MODELITY = eINSTANCE.getRelativeSentence_Modelity();
 
     /**
      * The meta object literal for the '<em><b>Negation</b></em>' attribute feature.
@@ -3855,7 +3913,7 @@ public interface RequirementDSLPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute RELATIVE_SENTENCE__NEGATION = eINSTANCE.getrelativeSentence_Negation();
+    EAttribute RELATIVE_SENTENCE__NEGATION = eINSTANCE.getRelativeSentence_Negation();
 
     /**
      * The meta object literal for the '<em><b>Predicate</b></em>' containment reference feature.
@@ -3863,7 +3921,7 @@ public interface RequirementDSLPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RELATIVE_SENTENCE__PREDICATE = eINSTANCE.getrelativeSentence_Predicate();
+    EReference RELATIVE_SENTENCE__PREDICATE = eINSTANCE.getRelativeSentence_Predicate();
 
     /**
      * The meta object literal for the '<em><b>Constraints</b></em>' containment reference list feature.
@@ -3871,7 +3929,7 @@ public interface RequirementDSLPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RELATIVE_SENTENCE__CONSTRAINTS = eINSTANCE.getrelativeSentence_Constraints();
+    EReference RELATIVE_SENTENCE__CONSTRAINTS = eINSTANCE.getRelativeSentence_Constraints();
 
     /**
      * The meta object literal for the '<em><b>Auxiliar</b></em>' attribute feature.
@@ -3879,7 +3937,7 @@ public interface RequirementDSLPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute RELATIVE_SENTENCE__AUXILIAR = eINSTANCE.getrelativeSentence_Auxiliar();
+    EAttribute RELATIVE_SENTENCE__AUXILIAR = eINSTANCE.getRelativeSentence_Auxiliar();
 
     /**
      * The meta object literal for the '<em><b>Clause</b></em>' containment reference feature.
@@ -3887,7 +3945,7 @@ public interface RequirementDSLPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference RELATIVE_SENTENCE__CLAUSE = eINSTANCE.getrelativeSentence_Clause();
+    EReference RELATIVE_SENTENCE__CLAUSE = eINSTANCE.getRelativeSentence_Clause();
 
     /**
      * The meta object literal for the '{@link de.fraunhofer.isst.stars.requirementDSL.impl.ActorsImpl <em>Actors</em>}' class.
@@ -3924,6 +3982,14 @@ public interface RequirementDSLPackage extends EPackage
      * @generated
      */
     EClass ACTOR = eINSTANCE.getActor();
+
+    /**
+     * The meta object literal for the '<em><b>Pre Nominative</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference ACTOR__PRE_NOMINATIVE = eINSTANCE.getActor_PreNominative();
 
     /**
      * The meta object literal for the '<em><b>Actor</b></em>' attribute feature.
@@ -4064,14 +4130,14 @@ public interface RequirementDSLPackage extends EPackage
     EReference PRED_OR_OBJECT__PRED_OBJ = eINSTANCE.getPredOrObject_PredObj();
 
     /**
-     * The meta object literal for the '{@link de.fraunhofer.isst.stars.requirementDSL.impl.ExistencePrefaceImpl <em>Existence Preface</em>}' class.
+     * The meta object literal for the '{@link de.fraunhofer.isst.stars.requirementDSL.impl.ExistenceImpl <em>Existence</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see de.fraunhofer.isst.stars.requirementDSL.impl.ExistencePrefaceImpl
-     * @see de.fraunhofer.isst.stars.requirementDSL.impl.RequirementDSLPackageImpl#getExistencePreface()
+     * @see de.fraunhofer.isst.stars.requirementDSL.impl.ExistenceImpl
+     * @see de.fraunhofer.isst.stars.requirementDSL.impl.RequirementDSLPackageImpl#getExistence()
      * @generated
      */
-    EClass EXISTENCE_PREFACE = eINSTANCE.getExistencePreface();
+    EClass EXISTENCE = eINSTANCE.getExistence();
 
     /**
      * The meta object literal for the '<em><b>Actors</b></em>' containment reference feature.
@@ -4079,7 +4145,7 @@ public interface RequirementDSLPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference EXISTENCE_PREFACE__ACTORS = eINSTANCE.getExistencePreface_Actors();
+    EReference EXISTENCE__ACTORS = eINSTANCE.getExistence_Actors();
 
     /**
      * The meta object literal for the '<em><b>Relative Clause</b></em>' containment reference feature.
@@ -4087,15 +4153,7 @@ public interface RequirementDSLPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference EXISTENCE_PREFACE__RELATIVE_CLAUSE = eINSTANCE.getExistencePreface_RelativeClause();
-
-    /**
-     * The meta object literal for the '<em><b>Modifier</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute EXISTENCE_PREFACE__MODIFIER = eINSTANCE.getExistencePreface_Modifier();
+    EReference EXISTENCE__RELATIVE_CLAUSE = eINSTANCE.getExistence_RelativeClause();
 
     /**
      * The meta object literal for the '{@link de.fraunhofer.isst.stars.requirementDSL.impl.AuxNegImpl <em>Aux Neg</em>}' class.
@@ -4540,6 +4598,24 @@ public interface RequirementDSLPackage extends EPackage
      * @generated
      */
     EAttribute FLOAT_VALUE__VALUE = eINSTANCE.getFloatValue_Value();
+
+    /**
+     * The meta object literal for the '{@link de.fraunhofer.isst.stars.requirementDSL.impl.ExistencePrefaceImpl <em>Existence Preface</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see de.fraunhofer.isst.stars.requirementDSL.impl.ExistencePrefaceImpl
+     * @see de.fraunhofer.isst.stars.requirementDSL.impl.RequirementDSLPackageImpl#getExistencePreface()
+     * @generated
+     */
+    EClass EXISTENCE_PREFACE = eINSTANCE.getExistencePreface();
+
+    /**
+     * The meta object literal for the '<em><b>Modifier</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute EXISTENCE_PREFACE__MODIFIER = eINSTANCE.getExistencePreface_Modifier();
 
     /**
      * The meta object literal for the '{@link de.fraunhofer.isst.stars.requirementDSL.Modality <em>Modality</em>}' enum.

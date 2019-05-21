@@ -486,14 +486,14 @@ public class RequirementDSLProposalProvider extends AbstractRequirementDSLPropos
   }
   
   @Override
-  public void complete_relativeClause(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    super.complete_relativeClause(model, ruleCall, context, acceptor);
+  public void complete_RelativeClause(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_RelativeClause(model, ruleCall, context, acceptor);
     this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
   }
   
   @Override
-  public void complete_relativeSentence(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    super.complete_relativeSentence(model, ruleCall, context, acceptor);
+  public void complete_RelativeSentence(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_RelativeSentence(model, ruleCall, context, acceptor);
     this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
   }
   
@@ -536,12 +536,6 @@ public class RequirementDSLProposalProvider extends AbstractRequirementDSLPropos
   @Override
   public void complete_PredOrObject(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     super.complete_PredOrObject(model, ruleCall, context, acceptor);
-    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
-  }
-  
-  @Override
-  public void complete_ExistencePreface(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    super.complete_ExistencePreface(model, ruleCall, context, acceptor);
     this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
   }
   

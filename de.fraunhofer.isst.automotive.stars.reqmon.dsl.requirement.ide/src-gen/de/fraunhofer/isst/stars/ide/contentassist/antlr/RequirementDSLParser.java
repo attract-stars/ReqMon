@@ -32,7 +32,6 @@ public class RequirementDSLParser extends AbstractContentAssistParser {
 		
 		private static void init(ImmutableMap.Builder<AbstractElement, String> builder, RequirementDSLGrammarAccess grammarAccess) {
 			builder.put(grammarAccess.getRequirementAccess().getAlternatives_4(), "rule__Requirement__Alternatives_4");
-			builder.put(grammarAccess.getRequirementAccess().getAlternatives_5(), "rule__Requirement__Alternatives_5");
 			builder.put(grammarAccess.getClauseAccess().getAlternatives(), "rule__Clause__Alternatives");
 			builder.put(grammarAccess.getPredicateSentenceAccess().getAlternatives(), "rule__PredicateSentence__Alternatives");
 			builder.put(grammarAccess.getPropertySentenceAccess().getAlternatives(), "rule__PropertySentence__Alternatives");
@@ -47,8 +46,8 @@ public class RequirementDSLParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getPredicateObjectAccess().getAlternatives_1(), "rule__PredicateObject__Alternatives_1");
 			builder.put(grammarAccess.getObjectAccess().getAlternatives_1(), "rule__Object__Alternatives_1");
 			builder.put(grammarAccess.getPredOrObjectAccess().getAlternatives(), "rule__PredOrObject__Alternatives");
-			builder.put(grammarAccess.getExistencePrefaceAccess().getAlternatives_1(), "rule__ExistencePreface__Alternatives_1");
-			builder.put(grammarAccess.getExistencePrefaceAccess().getAlternatives_3(), "rule__ExistencePreface__Alternatives_3");
+			builder.put(grammarAccess.getExistenceAccess().getAlternatives_1(), "rule__Existence__Alternatives_1");
+			builder.put(grammarAccess.getExistenceAccess().getAlternatives_3(), "rule__Existence__Alternatives_3");
 			builder.put(grammarAccess.getAuxNegAccess().getAlternatives(), "rule__AuxNeg__Alternatives");
 			builder.put(grammarAccess.getPreNominativeAccess().getAlternatives(), "rule__PreNominative__Alternatives");
 			builder.put(grammarAccess.getAdverbialAccess().getAlternatives(), "rule__Adverbial__Alternatives");
@@ -113,7 +112,7 @@ public class RequirementDSLParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getPredicateAccess().getGroup_2(), "rule__Predicate__Group_2__0");
 			builder.put(grammarAccess.getPredicateObjectAccess().getGroup(), "rule__PredicateObject__Group__0");
 			builder.put(grammarAccess.getObjectAccess().getGroup(), "rule__Object__Group__0");
-			builder.put(grammarAccess.getExistencePrefaceAccess().getGroup(), "rule__ExistencePreface__Group__0");
+			builder.put(grammarAccess.getExistenceAccess().getGroup(), "rule__Existence__Group__0");
 			builder.put(grammarAccess.getAuxNegAccess().getGroup_0(), "rule__AuxNeg__Group_0__0");
 			builder.put(grammarAccess.getRelationAccess().getGroup(), "rule__Relation__Group__0");
 			builder.put(grammarAccess.getRelObjectsAccess().getGroup(), "rule__RelObjects__Group__0");
@@ -206,6 +205,7 @@ public class RequirementDSLParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getActorsAccess().getActorsAssignment_0(), "rule__Actors__ActorsAssignment_0");
 			builder.put(grammarAccess.getActorsAccess().getConjunctionAssignment_1_0(), "rule__Actors__ConjunctionAssignment_1_0");
 			builder.put(grammarAccess.getActorsAccess().getActorsAssignment_1_1(), "rule__Actors__ActorsAssignment_1_1");
+			builder.put(grammarAccess.getActorAccess().getPreNominativeAssignment_0(), "rule__Actor__PreNominativeAssignment_0");
 			builder.put(grammarAccess.getActorAccess().getActorAssignment_1_0(), "rule__Actor__ActorAssignment_1_0");
 			builder.put(grammarAccess.getActorAccess().getActorAssignment_1_1(), "rule__Actor__ActorAssignment_1_1");
 			builder.put(grammarAccess.getPredsAccess().getPredicateAssignment_0(), "rule__Preds__PredicateAssignment_0");
@@ -222,7 +222,7 @@ public class RequirementDSLParser extends AbstractContentAssistParser {
 			builder.put(grammarAccess.getObjectAccess().getObjectAssignment_1_1(), "rule__Object__ObjectAssignment_1_1");
 			builder.put(grammarAccess.getPredOrObjectAccess().getPredicateAssignment_0(), "rule__PredOrObject__PredicateAssignment_0");
 			builder.put(grammarAccess.getPredOrObjectAccess().getPredObjAssignment_1(), "rule__PredOrObject__PredObjAssignment_1");
-			builder.put(grammarAccess.getExistencePrefaceAccess().getModifierAssignment_2(), "rule__ExistencePreface__ModifierAssignment_2");
+			builder.put(grammarAccess.getExistenceAccess().getModifierAssignment_2(), "rule__Existence__ModifierAssignment_2");
 			builder.put(grammarAccess.getAuxNegAccess().getAuxiliarVerbAssignment_0_0(), "rule__AuxNeg__AuxiliarVerbAssignment_0_0");
 			builder.put(grammarAccess.getAuxNegAccess().getNegationAssignment_0_1(), "rule__AuxNeg__NegationAssignment_0_1");
 			builder.put(grammarAccess.getAuxNegAccess().getAuxiliarVerbNegAssignment_1(), "rule__AuxNeg__AuxiliarVerbNegAssignment_1");

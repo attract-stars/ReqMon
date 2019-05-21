@@ -503,13 +503,13 @@ class RequirementDSLProposalProvider extends AbstractRequirementDSLProposalProvi
 		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
 	}
 	
-	override void complete_relativeClause(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-		super.complete_relativeClause(model, ruleCall, context, acceptor)
+	override void complete_RelativeClause(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_RelativeClause(model, ruleCall, context, acceptor)
 		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
 	}
 	
-	override void complete_relativeSentence(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-		super.complete_relativeSentence(model, ruleCall, context, acceptor)
+	override void complete_RelativeSentence(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_RelativeSentence(model, ruleCall, context, acceptor)
 		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
 	}
 	
@@ -547,12 +547,7 @@ class RequirementDSLProposalProvider extends AbstractRequirementDSLProposalProvi
 		super.complete_PredOrObject(model, ruleCall, context, acceptor)
 		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
 	}
-	
-	override void complete_ExistencePreface(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-		super.complete_ExistencePreface(model, ruleCall, context, acceptor)
-		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
-	}
-	
+		
 	override void complete_AuxNeg(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
 		super.complete_AuxNeg(model, ruleCall, context, acceptor)
 		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)

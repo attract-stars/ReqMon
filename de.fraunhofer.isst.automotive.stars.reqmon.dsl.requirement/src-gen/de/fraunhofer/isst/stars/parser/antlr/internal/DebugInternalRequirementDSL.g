@@ -21,11 +21,7 @@ ruleRequirement:
 		    |
 		';'
 	)
-	(
-		'\n'+
-		    |
-		'EOF'
-	)
+	'\n'+
 ;
 
 // Rule RequirementText
@@ -117,10 +113,10 @@ rulePredicateSentence:
 
 // Rule ExistenceSentence
 ruleExistenceSentence:
-	ruleExistencePreface
+	ruleExistence
 	ruleActors
 	','
-	rulerelativeClause
+	ruleRelativeClause
 	','
 ;
 
@@ -188,17 +184,17 @@ ruleSentenceEnding:
 	)
 ;
 
-// Rule relativeClause
-rulerelativeClause:
-	rulerelativeSentence
+// Rule RelativeClause
+ruleRelativeClause:
+	ruleRelativeSentence
 	(
 		ruleConjunction
 		ruleConditionalClause
 	)*
 ;
 
-// Rule relativeSentence
-rulerelativeSentence:
+// Rule RelativeSentence
+ruleRelativeSentence:
 	(
 		ruleRelativePronounsSubject
 		ruleModality
@@ -237,7 +233,8 @@ ruleActors:
 
 // Rule Actor
 ruleActor:
-	rulePreNominative?
+	rulePreNominative
+	?
 	(
 		ruleWORD
 		    |
@@ -300,8 +297,8 @@ rulePredOrObject:
 	)
 ;
 
-// Rule ExistencePreface
-ruleExistencePreface:
+// Rule Existence
+ruleExistence:
 	(
 		'there'
 		    |
