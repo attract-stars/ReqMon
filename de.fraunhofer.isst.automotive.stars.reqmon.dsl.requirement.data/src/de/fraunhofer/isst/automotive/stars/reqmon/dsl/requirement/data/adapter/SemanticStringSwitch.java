@@ -5,6 +5,7 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.adapter;
 
 import java.util.StringJoiner;
 
+import de.fraunhofer.isst.stars.requirementDSL.AuxNeg;
 import de.fraunhofer.isst.stars.requirementDSL.ConstraintOrdinators;
 import de.fraunhofer.isst.stars.requirementDSL.FloatValue;
 import de.fraunhofer.isst.stars.requirementDSL.IntValue;
@@ -137,4 +138,9 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 		return objTxt.toString();
 	}
 	
+	@Override
+	public String caseAuxNeg(AuxNeg object) {
+		// TODO Auto-generated method stub
+		return super.caseAuxNeg(object);
+	}
 }

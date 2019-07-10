@@ -373,7 +373,7 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cEndingSentenceEndingParserRuleCall_1_3_0 = (RuleCall)cEndingAssignment_1_3.eContents().get(0);
 		
 		//PredicateSentence:
-		//	begin=SentenceBegin? actors=Actors auxNeg+=AuxNeg auxiliarVerb+=AuxiliaryVerb? preds=Preds? ending=SentenceEnding? |
+		//	begin=SentenceBegin? actors=Actors auxNeg=AuxNeg auxiliarVerb=AuxiliaryVerb? preds=Preds? ending=SentenceEnding? |
 		//	begin=SentenceBegin? actors=Actors preds=Preds ending=SentenceEnding?
 		//	//actors=Actors  (auxiliarVerb+=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
 		//	//actors=Actors  predicate=Predicate constraints+=Constraints* |	
@@ -382,11 +382,11 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//begin=SentenceBegin? actors=Actors auxNeg+=AuxNeg auxiliarVerb+=AuxiliaryVerb? preds=Preds? ending=SentenceEnding? |
+		//begin=SentenceBegin? actors=Actors auxNeg=AuxNeg auxiliarVerb=AuxiliaryVerb? preds=Preds? ending=SentenceEnding? |
 		//begin=SentenceBegin? actors=Actors preds=Preds ending=SentenceEnding?
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
-		//begin=SentenceBegin? actors=Actors auxNeg+=AuxNeg auxiliarVerb+=AuxiliaryVerb? preds=Preds? ending=SentenceEnding?
+		//begin=SentenceBegin? actors=Actors auxNeg=AuxNeg auxiliarVerb=AuxiliaryVerb? preds=Preds? ending=SentenceEnding?
 		public Group getGroup_0() { return cGroup_0; }
 		
 		//begin=SentenceBegin?
@@ -401,13 +401,13 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//Actors
 		public RuleCall getActorsActorsParserRuleCall_0_1_0() { return cActorsActorsParserRuleCall_0_1_0; }
 		
-		//auxNeg+=AuxNeg
+		//auxNeg=AuxNeg
 		public Assignment getAuxNegAssignment_0_2() { return cAuxNegAssignment_0_2; }
 		
 		//AuxNeg
 		public RuleCall getAuxNegAuxNegParserRuleCall_0_2_0() { return cAuxNegAuxNegParserRuleCall_0_2_0; }
 		
-		//auxiliarVerb+=AuxiliaryVerb?
+		//auxiliarVerb=AuxiliaryVerb?
 		public Assignment getAuxiliarVerbAssignment_0_3() { return cAuxiliarVerbAssignment_0_3; }
 		
 		//AuxiliaryVerb
@@ -540,17 +540,20 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		@Override public ParserRule getRule() { return rule; }
 		
 		////TODO HIER SOLLTE MAN DOCH (ACTOR+PROPERTY)* haben!?
+		////TODO mach hier auch Preds sinn?
 		//actors=Actors property=Property rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb?
 		//predObj=PredOrObject ending=SentenceEnding? | actors=Actors property=Property rela=Relation? auxNeg=AuxNeg
 		//(predObj=PredOrObject | constraints=Constraints) ending=SentenceEnding?
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		////TODO HIER SOLLTE MAN DOCH (ACTOR+PROPERTY)* haben!?
+		////TODO mach hier auch Preds sinn?
 		//actors=Actors property=Property rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb?
 		//predObj=PredOrObject ending=SentenceEnding?
 		public Group getGroup_0() { return cGroup_0; }
 		
 		////TODO HIER SOLLTE MAN DOCH (ACTOR+PROPERTY)* haben!?
+		////TODO mach hier auch Preds sinn?
 		//actors=Actors
 		public Assignment getActorsAssignment_0_0() { return cActorsAssignment_0_0; }
 		
@@ -1035,9 +1038,11 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 		//	predicate=Predicate | predObj=PredicateObject;
 		@Override public ParserRule getRule() { return rule; }
 		
+		////TODO WARUM KANN DAS NICHT HIER EINFACH PREDICATE SEIN und erhalt PREDOBJ als eigenes Element?
 		//predicate=Predicate | predObj=PredicateObject
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
+		////TODO WARUM KANN DAS NICHT HIER EINFACH PREDICATE SEIN und erhalt PREDOBJ als eigenes Element?
 		//predicate=Predicate
 		public Assignment getPredicateAssignment_0() { return cPredicateAssignment_0; }
 		
@@ -3314,7 +3319,7 @@ public class RequirementDSLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//PredicateSentence:
-	//	begin=SentenceBegin? actors=Actors auxNeg+=AuxNeg auxiliarVerb+=AuxiliaryVerb? preds=Preds? ending=SentenceEnding? |
+	//	begin=SentenceBegin? actors=Actors auxNeg=AuxNeg auxiliarVerb=AuxiliaryVerb? preds=Preds? ending=SentenceEnding? |
 	//	begin=SentenceBegin? actors=Actors preds=Preds ending=SentenceEnding?
 	//	//actors=Actors  (auxiliarVerb+=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
 	//	//actors=Actors  predicate=Predicate constraints+=Constraints* |	

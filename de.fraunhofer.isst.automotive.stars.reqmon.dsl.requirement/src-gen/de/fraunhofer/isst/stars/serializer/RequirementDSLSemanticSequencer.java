@@ -506,8 +506,8 @@ public class RequirementDSLSemanticSequencer extends AbstractDelegatingSemanticS
 	 *         (
 	 *             begin=SentenceBegin? 
 	 *             actors=Actors 
-	 *             auxNeg+=AuxNeg 
-	 *             auxiliarVerb+=AuxiliaryVerb? 
+	 *             auxNeg=AuxNeg 
+	 *             auxiliarVerb=AuxiliaryVerb? 
 	 *             preds=Preds? 
 	 *             ending=SentenceEnding?
 	 *         ) | 

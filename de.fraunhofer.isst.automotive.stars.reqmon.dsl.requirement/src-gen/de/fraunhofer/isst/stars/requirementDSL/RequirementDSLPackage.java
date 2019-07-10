@@ -401,7 +401,7 @@ public interface RequirementDSLPackage extends EPackage
   int PREDICATE_SENTENCE__ACTORS = CLAUSE_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Aux Neg</b></em>' containment reference list.
+   * The feature id for the '<em><b>Aux Neg</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -410,7 +410,7 @@ public interface RequirementDSLPackage extends EPackage
   int PREDICATE_SENTENCE__AUX_NEG = CLAUSE_FEATURE_COUNT + 2;
 
   /**
-   * The feature id for the '<em><b>Auxiliar Verb</b></em>' attribute list.
+   * The feature id for the '<em><b>Auxiliar Verb</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -2153,10 +2153,10 @@ public interface RequirementDSLPackage extends EPackage
   EReference getPredicateSentence_Actors();
 
   /**
-   * Returns the meta object for the containment reference list '{@link de.fraunhofer.isst.stars.requirementDSL.PredicateSentence#getAuxNeg <em>Aux Neg</em>}'.
+   * Returns the meta object for the containment reference '{@link de.fraunhofer.isst.stars.requirementDSL.PredicateSentence#getAuxNeg <em>Aux Neg</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Aux Neg</em>'.
+   * @return the meta object for the containment reference '<em>Aux Neg</em>'.
    * @see de.fraunhofer.isst.stars.requirementDSL.PredicateSentence#getAuxNeg()
    * @see #getPredicateSentence()
    * @generated
@@ -2164,10 +2164,10 @@ public interface RequirementDSLPackage extends EPackage
   EReference getPredicateSentence_AuxNeg();
 
   /**
-   * Returns the meta object for the attribute list '{@link de.fraunhofer.isst.stars.requirementDSL.PredicateSentence#getAuxiliarVerb <em>Auxiliar Verb</em>}'.
+   * Returns the meta object for the attribute '{@link de.fraunhofer.isst.stars.requirementDSL.PredicateSentence#getAuxiliarVerb <em>Auxiliar Verb</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the attribute list '<em>Auxiliar Verb</em>'.
+   * @return the meta object for the attribute '<em>Auxiliar Verb</em>'.
    * @see de.fraunhofer.isst.stars.requirementDSL.PredicateSentence#getAuxiliarVerb()
    * @see #getPredicateSentence()
    * @generated
@@ -3654,7 +3654,7 @@ public interface RequirementDSLPackage extends EPackage
     EReference PREDICATE_SENTENCE__ACTORS = eINSTANCE.getPredicateSentence_Actors();
 
     /**
-     * The meta object literal for the '<em><b>Aux Neg</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Aux Neg</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -3662,7 +3662,7 @@ public interface RequirementDSLPackage extends EPackage
     EReference PREDICATE_SENTENCE__AUX_NEG = eINSTANCE.getPredicateSentence_AuxNeg();
 
     /**
-     * The meta object literal for the '<em><b>Auxiliar Verb</b></em>' attribute list feature.
+     * The meta object literal for the '<em><b>Auxiliar Verb</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated

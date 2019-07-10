@@ -3,7 +3,6 @@
  */
 package de.fraunhofer.isst.stars.requirementDSL;
 
-import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -81,36 +80,56 @@ public interface PredicateSentence extends Clause
   void setActors(Actors value);
 
   /**
-   * Returns the value of the '<em><b>Aux Neg</b></em>' containment reference list.
-   * The list contents are of type {@link de.fraunhofer.isst.stars.requirementDSL.AuxNeg}.
+   * Returns the value of the '<em><b>Aux Neg</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Aux Neg</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Aux Neg</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Aux Neg</em>' containment reference list.
+   * @return the value of the '<em>Aux Neg</em>' containment reference.
+   * @see #setAuxNeg(AuxNeg)
    * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getPredicateSentence_AuxNeg()
    * @model containment="true"
    * @generated
    */
-  EList<AuxNeg> getAuxNeg();
+  AuxNeg getAuxNeg();
 
   /**
-   * Returns the value of the '<em><b>Auxiliar Verb</b></em>' attribute list.
-   * The list contents are of type {@link java.lang.String}.
+   * Sets the value of the '{@link de.fraunhofer.isst.stars.requirementDSL.PredicateSentence#getAuxNeg <em>Aux Neg</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Aux Neg</em>' containment reference.
+   * @see #getAuxNeg()
+   * @generated
+   */
+  void setAuxNeg(AuxNeg value);
+
+  /**
+   * Returns the value of the '<em><b>Auxiliar Verb</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Auxiliar Verb</em>' attribute list isn't clear,
+   * If the meaning of the '<em>Auxiliar Verb</em>' attribute isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Auxiliar Verb</em>' attribute list.
+   * @return the value of the '<em>Auxiliar Verb</em>' attribute.
+   * @see #setAuxiliarVerb(String)
    * @see de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage#getPredicateSentence_AuxiliarVerb()
-   * @model unique="false"
+   * @model
    * @generated
    */
-  EList<String> getAuxiliarVerb();
+  String getAuxiliarVerb();
+
+  /**
+   * Sets the value of the '{@link de.fraunhofer.isst.stars.requirementDSL.PredicateSentence#getAuxiliarVerb <em>Auxiliar Verb</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Auxiliar Verb</em>' attribute.
+   * @see #getAuxiliarVerb()
+   * @generated
+   */
+  void setAuxiliarVerb(String value);
 
   /**
    * Returns the value of the '<em><b>Preds</b></em>' containment reference.

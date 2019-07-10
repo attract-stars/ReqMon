@@ -51,7 +51,7 @@ ModalitySentence :
 ;
 
 PredicateSentence :
-	begin=SentenceBegin? actors=Actors  auxNeg+=AuxNeg auxiliarVerb+=AuxiliaryVerb? preds=Preds?  ending=SentenceEnding? |
+	begin=SentenceBegin? actors=Actors  auxNeg=AuxNeg auxiliarVerb=AuxiliaryVerb? preds=Preds?  ending=SentenceEnding? |
 	begin=SentenceBegin? actors=Actors  preds=Preds  ending=SentenceEnding? 
 	
 	//actors=Actors  (auxiliarVerb+=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
@@ -66,6 +66,7 @@ ExistenceSentence :
 
 PropertySentence:
 	//TODO HIER SOLLTE MAN DOCH (ACTOR+PROPERTY)* haben!?
+	//TODO mach hier auch Preds sinn?
 	actors=Actors property=Property rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predObj=PredOrObject  ending=SentenceEnding? |
 	actors=Actors property=Property rela=Relation? auxNeg=AuxNeg (predObj=PredOrObject | constraints=Constraints) ending=SentenceEnding?
 	
@@ -116,6 +117,7 @@ Actor:
 ;
 
 Preds:
+	//TODO WARUM KANN DAS NICHT HIER EINFACH PREDICATE SEIN und erhalt PREDOBJ als eigenes Element?
 	predicate=Predicate | predObj=PredicateObject
 ;
 

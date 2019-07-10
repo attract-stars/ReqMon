@@ -2044,7 +2044,7 @@ public class InternalRequirementDSLParser extends AbstractInternalAntlrParser {
                     						if (current==null) {
                     							current = createModelElementForParent(grammarAccess.getPredicateSentenceRule());
                     						}
-                    						add(
+                    						set(
                     							current,
                     							"auxNeg",
                     							lv_auxNeg_2_0,
@@ -2083,7 +2083,7 @@ public class InternalRequirementDSLParser extends AbstractInternalAntlrParser {
                             						if (current==null) {
                             							current = createModelElementForParent(grammarAccess.getPredicateSentenceRule());
                             						}
-                            						add(
+                            						set(
                             							current,
                             							"auxiliarVerb",
                             							lv_auxiliarVerb_3_0,

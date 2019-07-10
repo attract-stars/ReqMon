@@ -11,21 +11,13 @@ import de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage;
 import de.fraunhofer.isst.stars.requirementDSL.SentenceBegin;
 import de.fraunhofer.isst.stars.requirementDSL.SentenceEnding;
 
-import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
-import org.eclipse.emf.ecore.util.EDataTypeEList;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -68,24 +60,34 @@ public class PredicateSentenceImpl extends ClauseImpl implements PredicateSenten
   protected Actors actors;
 
   /**
-   * The cached value of the '{@link #getAuxNeg() <em>Aux Neg</em>}' containment reference list.
+   * The cached value of the '{@link #getAuxNeg() <em>Aux Neg</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getAuxNeg()
    * @generated
    * @ordered
    */
-  protected EList<AuxNeg> auxNeg;
+  protected AuxNeg auxNeg;
 
   /**
-   * The cached value of the '{@link #getAuxiliarVerb() <em>Auxiliar Verb</em>}' attribute list.
+   * The default value of the '{@link #getAuxiliarVerb() <em>Auxiliar Verb</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getAuxiliarVerb()
    * @generated
    * @ordered
    */
-  protected EList<String> auxiliarVerb;
+  protected static final String AUXILIAR_VERB_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getAuxiliarVerb() <em>Auxiliar Verb</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getAuxiliarVerb()
+   * @generated
+   * @ordered
+   */
+  protected String auxiliarVerb = AUXILIAR_VERB_EDEFAULT;
 
   /**
    * The cached value of the '{@link #getPreds() <em>Preds</em>}' containment reference.
@@ -229,12 +231,8 @@ public class PredicateSentenceImpl extends ClauseImpl implements PredicateSenten
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<AuxNeg> getAuxNeg()
+  public AuxNeg getAuxNeg()
   {
-    if (auxNeg == null)
-    {
-      auxNeg = new EObjectContainmentEList<AuxNeg>(AuxNeg.class, this, RequirementDSLPackage.PREDICATE_SENTENCE__AUX_NEG);
-    }
     return auxNeg;
   }
 
@@ -243,13 +241,60 @@ public class PredicateSentenceImpl extends ClauseImpl implements PredicateSenten
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<String> getAuxiliarVerb()
+  public NotificationChain basicSetAuxNeg(AuxNeg newAuxNeg, NotificationChain msgs)
   {
-    if (auxiliarVerb == null)
+    AuxNeg oldAuxNeg = auxNeg;
+    auxNeg = newAuxNeg;
+    if (eNotificationRequired())
     {
-      auxiliarVerb = new EDataTypeEList<String>(String.class, this, RequirementDSLPackage.PREDICATE_SENTENCE__AUXILIAR_VERB);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, RequirementDSLPackage.PREDICATE_SENTENCE__AUX_NEG, oldAuxNeg, newAuxNeg);
+      if (msgs == null) msgs = notification; else msgs.add(notification);
     }
+    return msgs;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setAuxNeg(AuxNeg newAuxNeg)
+  {
+    if (newAuxNeg != auxNeg)
+    {
+      NotificationChain msgs = null;
+      if (auxNeg != null)
+        msgs = ((InternalEObject)auxNeg).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - RequirementDSLPackage.PREDICATE_SENTENCE__AUX_NEG, null, msgs);
+      if (newAuxNeg != null)
+        msgs = ((InternalEObject)newAuxNeg).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - RequirementDSLPackage.PREDICATE_SENTENCE__AUX_NEG, null, msgs);
+      msgs = basicSetAuxNeg(newAuxNeg, msgs);
+      if (msgs != null) msgs.dispatch();
+    }
+    else if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, RequirementDSLPackage.PREDICATE_SENTENCE__AUX_NEG, newAuxNeg, newAuxNeg));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getAuxiliarVerb()
+  {
     return auxiliarVerb;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setAuxiliarVerb(String newAuxiliarVerb)
+  {
+    String oldAuxiliarVerb = auxiliarVerb;
+    auxiliarVerb = newAuxiliarVerb;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, RequirementDSLPackage.PREDICATE_SENTENCE__AUXILIAR_VERB, oldAuxiliarVerb, auxiliarVerb));
   }
 
   /**
@@ -363,7 +408,7 @@ public class PredicateSentenceImpl extends ClauseImpl implements PredicateSenten
       case RequirementDSLPackage.PREDICATE_SENTENCE__ACTORS:
         return basicSetActors(null, msgs);
       case RequirementDSLPackage.PREDICATE_SENTENCE__AUX_NEG:
-        return ((InternalEList<?>)getAuxNeg()).basicRemove(otherEnd, msgs);
+        return basicSetAuxNeg(null, msgs);
       case RequirementDSLPackage.PREDICATE_SENTENCE__PREDS:
         return basicSetPreds(null, msgs);
       case RequirementDSLPackage.PREDICATE_SENTENCE__ENDING:
@@ -403,7 +448,6 @@ public class PredicateSentenceImpl extends ClauseImpl implements PredicateSenten
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
@@ -416,12 +460,10 @@ public class PredicateSentenceImpl extends ClauseImpl implements PredicateSenten
         setActors((Actors)newValue);
         return;
       case RequirementDSLPackage.PREDICATE_SENTENCE__AUX_NEG:
-        getAuxNeg().clear();
-        getAuxNeg().addAll((Collection<? extends AuxNeg>)newValue);
+        setAuxNeg((AuxNeg)newValue);
         return;
       case RequirementDSLPackage.PREDICATE_SENTENCE__AUXILIAR_VERB:
-        getAuxiliarVerb().clear();
-        getAuxiliarVerb().addAll((Collection<? extends String>)newValue);
+        setAuxiliarVerb((String)newValue);
         return;
       case RequirementDSLPackage.PREDICATE_SENTENCE__PREDS:
         setPreds((Preds)newValue);
@@ -450,10 +492,10 @@ public class PredicateSentenceImpl extends ClauseImpl implements PredicateSenten
         setActors((Actors)null);
         return;
       case RequirementDSLPackage.PREDICATE_SENTENCE__AUX_NEG:
-        getAuxNeg().clear();
+        setAuxNeg((AuxNeg)null);
         return;
       case RequirementDSLPackage.PREDICATE_SENTENCE__AUXILIAR_VERB:
-        getAuxiliarVerb().clear();
+        setAuxiliarVerb(AUXILIAR_VERB_EDEFAULT);
         return;
       case RequirementDSLPackage.PREDICATE_SENTENCE__PREDS:
         setPreds((Preds)null);
@@ -480,9 +522,9 @@ public class PredicateSentenceImpl extends ClauseImpl implements PredicateSenten
       case RequirementDSLPackage.PREDICATE_SENTENCE__ACTORS:
         return actors != null;
       case RequirementDSLPackage.PREDICATE_SENTENCE__AUX_NEG:
-        return auxNeg != null && !auxNeg.isEmpty();
+        return auxNeg != null;
       case RequirementDSLPackage.PREDICATE_SENTENCE__AUXILIAR_VERB:
-        return auxiliarVerb != null && !auxiliarVerb.isEmpty();
+        return AUXILIAR_VERB_EDEFAULT == null ? auxiliarVerb != null : !AUXILIAR_VERB_EDEFAULT.equals(auxiliarVerb);
       case RequirementDSLPackage.PREDICATE_SENTENCE__PREDS:
         return preds != null;
       case RequirementDSLPackage.PREDICATE_SENTENCE__ENDING:

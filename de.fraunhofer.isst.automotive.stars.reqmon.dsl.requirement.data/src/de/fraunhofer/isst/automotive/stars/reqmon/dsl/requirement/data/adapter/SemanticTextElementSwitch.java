@@ -138,11 +138,14 @@ public class SemanticTextElementSwitch extends RequirementDSLSwitch<SemanticText
 		if (object.getConstraint()!=null && object.getConstraint() instanceof UnitConstraints) {
 			StringJoiner objTxt = new StringJoiner(" ");
 			//Backtracking in order to get the OBJECT!
-			if(object.eContainer()!=null && object.eContainer() instanceof RelativeSentence) {
-				objTxt.add(backtrackRelativeActors((RelativeSentence) object.eContainer()));
+			if(object.eContainer()!=null && object.eContainer().eContainer() instanceof  PropertySentence) {
+				objTxt.add(getActorsPropertyText((PropertySentence) object.eContainer().eContainer() ));
 			}
-			if(object.eContainer()!=null && object.eContainer() instanceof  SentenceEnding) {
-				objTxt.add(getObjectFromSentence( (SentenceEnding) object.eContainer()));
+			if(object.eContainer()!=null && object.eContainer().eContainer() instanceof RelativeSentence) {
+				objTxt.add(backtrackRelativeActors((RelativeSentence) object.eContainer().eContainer()));
+			}
+			if(object.eContainer()!=null && object.eContainer().eContainer() instanceof  SentenceEnding) {
+				objTxt.add(getObjectFromSentence((SentenceEnding) object.eContainer().eContainer()));
 			}
 			objTxt.add(semanticStringSwitch.caseConstraintOrdinators(object.getOrdinator()));
 			//Added ordinators here - goon with numbered value
@@ -175,15 +178,35 @@ public class SemanticTextElementSwitch extends RequirementDSLSwitch<SemanticText
 		}
 		return objTxt.toString();
 	}
+	
+	private String getActorsPropertyText(PropertySentence sentence) {
+		StringJoiner objTxt = new StringJoiner(" ","<",">");
+		if(sentence!=null && sentence instanceof  PropertySentence) {
+			objTxt.add(getActorsText(sentence.getActors()));
+			if(sentence.getProperty()!=null && !sentence.getProperty().getProperty().isEmpty()) {
+				objTxt.add(getPropertiesText(sentence.getProperty()));
+			}
+		}
+		return objTxt.toString();
+	}
+
+	private CharSequence getPropertiesText(Property property) {
+		StringJoiner objTxt= new StringJoiner(" ");
+		if(property!=null && property instanceof  Property) {
+			for(String str: property.getProperty()) {
+				objTxt.add(str);
+			}
+		}
+		return objTxt.toString();
+	}
 
 	private String getObjectFromSentence(SentenceEnding object) {
-
 		StringJoiner objTxt = new StringJoiner(" ");
-		SentenceEnding ending = (SentenceEnding) object.eContainer();
+		SentenceEnding ending = object;
 		if(ending!=null && ending.eContainer()!=null) {
 			if ( ending.eContainer() instanceof ModalitySentence) {
 				ModalitySentence sentence = (ModalitySentence) object.eContainer();
-				objTxt.add(getActorsText(sentence.getActors()));
+				objTxt.add(getModalityActorsText(sentence.getActors()));
 			}
 			if ( ending.eContainer() instanceof PredicateSentence) {
 				PredicateSentence sentence = (PredicateSentence) object.eContainer();
@@ -191,20 +214,33 @@ public class SemanticTextElementSwitch extends RequirementDSLSwitch<SemanticText
 			}
 			if ( ending.eContainer() instanceof PropertySentence) {
 				PropertySentence sentence = (PropertySentence) object.eContainer();
-				objTxt.add(getActorsText(sentence.getActors()));
+				objTxt.add(getActorsPropertyText(sentence));
 			}
 		}
-		return "";
+		return objTxt.toString();
 	}
 
 	private String getActorsText( Actors actors) {
-		StringJoiner objTxt = new StringJoiner(" ");
+		StringJoiner actorsStr=new StringJoiner(" ");
+		if(actors.getActors().size()>1) {
+//		just allow for multiple actors as set
+		actorsStr= new StringJoiner(";","[","]");
+		}
+		for (Actor act : actors.getActors()) {
+			actorsStr.add(act.getActor());
+		}
+//		objTxt.add(actorsStr.toString());
+		return actorsStr.toString();
+	}
+	
+	private String getModalityActorsText( Actors actors) {
+//		StringJoiner objTxt = new StringJoiner(" ");
 		StringJoiner actorsStr= new StringJoiner(";","<",">");
 		for (Actor act : actors.getActors()) {
 			actorsStr.add(act.getActor());
 		}
-		objTxt.add(actorsStr.toString());
-		return objTxt.toString();
+//		objTxt.add(actorsStr.toString());
+		return actorsStr.toString();
 	}
 
 	@Override
@@ -351,17 +387,36 @@ public class SemanticTextElementSwitch extends RequirementDSLSwitch<SemanticText
 								objTxt.add(sentence.getModality().toString());
 							}
 							if(sentence.getAuxiliarVerb()!=null) {
-								objTxt.add(sentence.getAuxiliarVerb());
+								objTxt.add(sentence.getAuxiliarVerb().toString());
 							}
 						} else {
 							AuxNeg aux = sentence.getAuxNeg();
 							if(aux.getAuxiliarVerb()!=null) {
-								objTxt.add(aux.getAuxiliarVerb());
+								objTxt.add(aux.getAuxiliarVerb().toString());
 							} else {
 								//change negative to positive
 								//'doesn´t' | 'don´t' | 'isn´t' | 'aren´t'
 								objTxt.add(eleminateAulixierNegation(aux.getAuxiliarVerbNeg()));
 							}
+						}
+						return objTxt.toString();
+					}
+				}
+				if(container instanceof Preds) {
+					if(container.eContainer()!=null && container.eContainer()instanceof PredicateSentence) {
+						PredicateSentence sentence =(PredicateSentence) container.eContainer();
+						if(sentence.getAuxNeg()!=null) {
+							AuxNeg aux = sentence.getAuxNeg();
+							if(aux.getAuxiliarVerb()!=null) {
+								objTxt.add(aux.getAuxiliarVerb().toString());
+							} else {
+								//change negative to positive
+								//'doesn´t' | 'don´t' | 'isn´t' | 'aren´t'
+								objTxt.add(eleminateAulixierNegation(aux.getAuxiliarVerbNeg()));
+							}
+						}
+						if(sentence.getAuxiliarVerb()!=null && !sentence.getAuxiliarVerb().isEmpty()) {
+							objTxt.add(sentence.getAuxiliarVerb().toString());
 						}
 						return objTxt.toString();
 					}
@@ -395,15 +450,29 @@ public class SemanticTextElementSwitch extends RequirementDSLSwitch<SemanticText
 					objTxt.add(backtrackRelativeActors((RelativeSentence) container));
 				}
 				if(container instanceof ModalitySentence) {
-					objTxt.add(getActorsText(((ModalitySentence) container).getActors()));
+					objTxt.add(getModalityActorsText(((ModalitySentence) container).getActors()));
 				}
 				if(container instanceof PredOrObject) {
 					if(container.eContainer()!=null && container.eContainer()instanceof PropertySentence) {
 						PropertySentence sentence =(PropertySentence) container.eContainer();
-						objTxt.add(getActorsText(sentence.getActors()));
+						objTxt.add(getActorsPropertyText(sentence));
+					}
+				}
+				if(container instanceof Preds) {
+					if(container.eContainer()!=null && container.eContainer()instanceof PredicateSentence) {
+						PredicateSentence sentence =(PredicateSentence) container.eContainer();
+						objTxt.add(getActorsPredicateSentenceText(sentence));
 					}
 				}
 			}
+		}
+		return objTxt.toString();
+	}
+
+	private String getActorsPredicateSentenceText(PredicateSentence sentence) {
+		StringJoiner objTxt = new StringJoiner(" ","<",">");
+		if(sentence!=null && sentence instanceof  PredicateSentence) {
+			objTxt.add(getActorsText(sentence.getActors()));
 		}
 		return objTxt.toString();
 	}
