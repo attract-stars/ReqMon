@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="sysDef" nsURI="http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/mapping/SysDef"
+    nsPrefix="sysDef">
+  <eClassifiers xsi:type="ecore:EClass" name="Model">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodes" upperBound="-1"
+        eType="#//Node" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Node">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="com" eType="#//Comment"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="version" eType="#//Version"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="systemNode" eType="#//SystemNode"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeBegin">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodenName" eType="#//NodeName"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="info" upperBound="-1" eType="#//NodeInfo"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeEnd"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeInfo">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="info" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeText">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="node" upperBound="-1" eType="#//Node"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="val" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeName" eSuperTypes="#//NodeEnd">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nodename" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SystemNode">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="info" upperBound="-1" eType="#//NodeInfo"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="namenode" eType="#//NameNode"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="versionNode" eType="#//VersionNode"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="descriptionNode" eType="#//DescriptionNode"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="messageNode" eType="#//MessageNode"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NameNode">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="VersionNode">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DescriptionNode">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MessageNode">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nameNode" eType="#//NameNode"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="alloc" eType="#//AllocationNode"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="datas" eType="#//DataNode"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AllocationNode">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bit" eType="#//BitNode"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="loc" eType="#//LocationNode"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BitNode">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LocationNode">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DataNode">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="signal" upperBound="-1"
+        eType="#//SignalRefNode" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SignalRefNode">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//RefNode"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RefNode">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Comment">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="com" unique="false" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="info" upperBound="-1" eType="#//NodeInfo"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Version">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="info" upperBound="-1" eType="#//NodeInfo"
+        containment="true"/>
+  </eClassifiers>
+</ecore:EPackage>

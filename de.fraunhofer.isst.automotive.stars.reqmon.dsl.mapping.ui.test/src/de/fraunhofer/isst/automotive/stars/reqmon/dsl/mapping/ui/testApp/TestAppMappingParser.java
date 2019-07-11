@@ -10,8 +10,8 @@ import org.eclipse.xtext.parser.ParseException;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-
-import de.fraunhofer.isst.stars.RequirementDSLStandaloneSetup;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.MappingStandaloneSetup;
+//import de.fraunhofer.isst.stars.RequirementDSLStandaloneSetup;
 
 public class TestAppMappingParser {
 	
@@ -23,7 +23,8 @@ public class TestAppMappingParser {
 	}
 	
 	private void setupAppParser() {
-		Injector injector = new RequirementDSLStandaloneSetup().createInjectorAndDoEMFRegistration();
+		//Injector injector = new RequirementDSLStandaloneSetup().createInjectorAndDoEMFRegistration();
+		Injector injector = new MappingStandaloneSetup().createInjectorAndDoEMFRegistration();
 		injector.injectMembers(this);
 	}
 	

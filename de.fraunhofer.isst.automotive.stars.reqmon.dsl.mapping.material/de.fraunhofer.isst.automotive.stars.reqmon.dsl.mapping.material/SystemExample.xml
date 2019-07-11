@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system>
+	<component>
+		<name>comp1</name>
+		<signal>
+			<min_value>0.0</min_value>
+			<preferred_value>50.0</preferred_value>
+			<max_value>100.0</max_value>
+		</signal>
+	</component>
+	<component>
+		<name>comp2</name>
+		<signal>
+			<min_value>-30.67</min_value>
+			<preferred_value>22.23</preferred_value>
+			<max_value>1545.787</max_value>
+		</signal>
+	</component>
+	<component>
+		<name>comp3</name>
+		<signal>
+			<min_value>45.7</min_value>
+			<preferred_value>50.0</preferred_value>
+			<max_value>87.5</max_value>
+		</signal>
+	</component>
+	<component>
+		<name>comp4</name>
+		<signal>
+			<min_value>0.67</min_value>
+			<preferred_value>0.9</preferred_value>
+			<max_value>1.0</max_value>
+		</signal>
+	</component>
+	<component>
+		<name>comp5</name>
+		<signal>
+			<min_value>6.66</min_value>
+			<preferred_value>7.77</preferred_value>
+			<max_value>8.88</max_value>
+		</signal>
+	</component>
+</system>

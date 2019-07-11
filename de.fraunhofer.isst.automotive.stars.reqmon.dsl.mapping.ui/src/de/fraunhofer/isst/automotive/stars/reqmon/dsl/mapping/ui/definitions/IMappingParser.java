@@ -1,8 +1,11 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions;
 
+import org.eclipse.emf.common.util.URI;
+
+import com.google.inject.Injector;
+
 /**
- * An implementation of this interface should be able to parse the input Strings of the mapping text field 
- * to validate if the input is correct.
+ * An implementation of this interface should provide a dsl injector written with xtext for the mapping parsing.
  * 
  * @author sgraf
  *
@@ -10,9 +13,10 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions;
 public interface IMappingParser {
 	
 	/**
-	 * Parses and validates the input String of the mapping text field.
-	 * @param text the input String of the mapping text field
+	 * Returns the xtext mapping language injector. The system model URI is needed to complete the mapping language creation.
+	 * @param systemModelUri the system model URI
+	 * @return the xtext mapping language injector
 	 */
-	public void parserInput(String text); // TODO: Add a boolean return type ?
+	public Injector getDslInjector(URI systemModelUri);
 
 }
