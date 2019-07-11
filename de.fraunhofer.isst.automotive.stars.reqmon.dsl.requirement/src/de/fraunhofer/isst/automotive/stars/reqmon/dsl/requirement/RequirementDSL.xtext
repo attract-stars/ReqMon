@@ -5,7 +5,7 @@ import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 generate requirementDSL "http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/requirement/RequirementDSL" 
 
 /* =========== Model =========== */
-
+//TODO WIR BRAUCHEN EIN BESSERES OBJECT IN DER SPRACHE FÜR OBJECT + PROPERTY denn eig ist das eine Einheit
 Model:
 	requirements+=Requirement*
 ;
@@ -66,7 +66,8 @@ ExistenceSentence :
 
 PropertySentence:
 	//TODO HIER SOLLTE MAN DOCH (ACTOR+PROPERTY)* haben!?
-	//TODO mach hier auch Preds sinn?
+	//TODO mach hier auch Preds sinn?+
+	//TODO Warum haben wir hier constraints im ODER und nohcmal im SentenceEnding - Reicht hier nicht auch PredOrObject?
 	actors=Actors property=Property rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predObj=PredOrObject  ending=SentenceEnding? |
 	actors=Actors property=Property rela=Relation? auxNeg=AuxNeg (predObj=PredOrObject | constraints=Constraints) ending=SentenceEnding?
 	
@@ -94,10 +95,12 @@ SentenceEnding:
 
 
 RelativeClause:
+	//TODO WARUM WIRD HIER DER CONTITIONAL CLAUSE RAUFGERUFEN UND NICHT IN EXISTING CLAUSE
 //  pronoun=RelativePronouns actors=Actors? modelity=Modality? negation?=Negation? predicate=Predicate constraints+=Constraints*
 	sentence=RelativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*	
 ;
 RelativeSentence :
+	//TODO Here the auxiliar is any word and not one predefine by AUXILIARVERB
 	pronoun=RelativePronounsSubject modelity=Modality negation?=Negation? predicate=Predicate  constraints+=Constraints*  |
 	pronoun=RelativePronounsSubject (auxiliar=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
 	pronoun=RelativePronounsObject  (clause=ModalitySentence | clause=PredicateSentence)
