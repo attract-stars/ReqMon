@@ -17,17 +17,20 @@ import org.eclipse.ui.part.EditorPart;
  */
 public class LanguageMappingEditor extends EditorPart {
 	
+	private boolean dirty = false;
 	private String editorName;
 	private MappingPage mapping;
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		// TODO Auto-generated method stub
+		mapping.save();
 	}
 
 	@Override
 	public void doSaveAs() {
 		// TODO Auto-generated method stub
+		//doSave(null);
+		mapping.saveAs();
 	}
 
 	/**
@@ -40,9 +43,23 @@ public class LanguageMappingEditor extends EditorPart {
 		editorName = input.getName();
 		System.out.println(editorName);
 		setPartName(editorName);
+		
 	}
 
+	@Override
+	public boolean isDirty() {
+		return dirty;
+	}
 	
+	public void setDirty(boolean dirty) {
+		this.dirty = dirty;
+		firePropertyChange(PROP_DIRTY);
+	}
+	
+	/*public void setMappingEditorName(String name) {
+		setPartName(name);
+	}*/
+
 	@Override
 	public boolean isSaveAsAllowed() {
 		return false;
@@ -59,7 +76,7 @@ public class LanguageMappingEditor extends EditorPart {
 		FormLayout layout = new FormLayout();
 		composite.setLayout(layout);
 		
-		mapping = new MappingPage(composite, display, shell, this);
+		mapping = new MappingPage(composite, display, shell, this); //editorName);
 		mapping.createMappingPage();
 	}
 
@@ -67,12 +84,6 @@ public class LanguageMappingEditor extends EditorPart {
 	public void setFocus() {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public boolean isDirty() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }
