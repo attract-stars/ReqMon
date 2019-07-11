@@ -266,17 +266,11 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 	@Override
 	public String caseActors(Actors object) {
 		if (object != null && !object.getActors().isEmpty()) {
-			if (object.getActors().size() == 1) {
-				return "<" + object.getActors().get(0).getActor() + ">";
-			} else {
-				// just allow for multiple actors as set
-				StringJoiner actorsStr = new StringJoiner(";", "<", ">");
+				StringJoiner actorsStr = new StringJoiner(" ");
 				for (Actor act : object.getActors()) {
 					actorsStr.add(act.getActor());
 				}
-//			objTxt.add(actorsStr.toString());
 				return actorsStr.toString();
-			}
 		}
 		return super.caseActors(object);
 	}
@@ -310,7 +304,7 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 			objTxt.add(object.getRelComp());
 		}
 		if (object.getRelElements() != null) {
-			objTxt.add(caseRelObjects(object.getRelElements()));
+			objTxt.add("<"+caseRelObjects(object.getRelElements())+">");
 		}
 		return objTxt.toString();
 	}
@@ -319,7 +313,8 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 	public String caseRelObjects(RelObjects object) {
 		if (object == null)
 			return "";
-		StringJoiner objTxt = new StringJoiner(";", "<", ">");
+		//StringJoiner objTxt = new StringJoiner(";", "<", ">");
+		StringJoiner objTxt = new StringJoiner(" ");
 		// iterate over objects and add corresponding property
 		// get the object for iteration over all objects
 		if (object.getObject() != null && !object.getObject().isEmpty()) {
@@ -345,6 +340,7 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 						;
 					}
 				}
+				objTxt.add(objProps.toString());
 			}
 		}
 		return objTxt.toString();
@@ -393,7 +389,7 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 	@Override
 	public String caseConstraints(Constraints object) {
 		//Time Constraint has not be manually mapped
-			return caseConstraint(object.getConstraint());	
+		return caseConstraint(object.getConstraint());	
 	}
 	
 	@Override
