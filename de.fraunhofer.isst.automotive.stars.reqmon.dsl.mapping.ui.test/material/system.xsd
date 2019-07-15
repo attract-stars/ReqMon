@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<!--  targetNamespace="http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/mapping/system"
+xmlns="http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/mapping/system"
+elementFormDefault="qualified"> -->
+
+
+<!-- definition of simple elements -->
+<xs:element name="name" type="xs:string"/>
+<xs:element name="version" type="xs:string"/>
+<xs:element name="description" type="xs:string"/>
+<xs:element name="ref" type="xs:integer"/>
+<xs:element name="bit_size" type="xs:integer"/>
+<xs:element name="location" type="xs:string"/>
+<xs:element name="datatype" type="xs:string"/>
+<xs:element name="min_value" type="xs:decimal"/>
+<xs:element name="max_value" type="xs:decimal"/>
+<xs:element name="preferred_value" type="xs:decimal"/>
+<xs:element name="step_size" type="xs:decimal"/>
+<xs:element name="inheritance_from" type="xs:string"/>
+
+<xs:element name="type">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="class|signal|integer|float|short|double|byte|string|char|time|date|boolean|newType"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:element>
+
+<!-- definition of attributes -->
+<xs:attribute name="id" type="xs:integer"/>
+
+<!-- definition of complex elements -->
+<xs:element name="allocation">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="bit_size"/>
+			<xs:element ref="location"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="signal_object">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="ref"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="data_objects">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="signal_object"  maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="message">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="name"/>
+			<xs:element ref="allocation"/>
+			<xs:element ref="data_objects"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="signal">
+	<xs:complexType>
+		<xs:all>
+			<xs:element ref="name"/>
+			<xs:element ref="description" minOccurs="0"/>
+			<xs:element ref="datatype"/>
+			<xs:element ref="allocation"/>
+			<xs:element ref="min_value"/>
+			<xs:element ref="max_value"/>
+			<xs:element ref="preferred_value" minOccurs="0"/>
+			<xs:element ref="step_size" minOccurs="0"/>
+		</xs:all>
+		<xs:attribute ref="id"/>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="list">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="type" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="set">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="type" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="newType">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="name"/>
+			<xs:element ref="description" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="attrType">
+	<xs:complexType>
+		<xs:choice>
+			<xs:element ref="type"/>
+			<xs:element ref="list"/>
+			<xs:element ref="set"/>
+			<xs:element ref="newType"/>
+		</xs:choice>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="attribute">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="name"/>
+			<xs:element ref="description" minOccurs="0"/>
+			<xs:element ref="attrType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="class">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="name"/>
+			<xs:element ref="description" minOccurs="0"/>
+			<xs:element ref="inheritance_from" minOccurs="0"/>
+			<xs:element ref="attribute" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="data_structure">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="name"/>
+			<xs:element ref="description" minOccurs="0"/>
+			<xs:element ref="allocation"/>
+			<xs:element ref="class" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute ref="id"/>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="system">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element ref="name"/>
+			<xs:element ref="version" minOccurs="0"/>
+			<xs:element ref="description" minOccurs="0"/>
+			<xs:element ref="message"/>
+			<xs:element ref="signal" maxOccurs="unbounded"/>
+			<xs:element ref="data_structure"/>
+		</xs:sequence>
+		<xs:attribute ref="id"/>
+	</xs:complexType>
+</xs:element>
+
+
+</xs:schema>
