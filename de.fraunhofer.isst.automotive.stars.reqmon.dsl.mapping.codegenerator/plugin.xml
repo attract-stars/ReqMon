@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.generator">
+      <client
+            class="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.FirstGenerator"
+            label="Generate (first)"
+            lang="first"
+            name="FirstGenerator">
+      </client>
+   </extension>
+
+</plugin>
