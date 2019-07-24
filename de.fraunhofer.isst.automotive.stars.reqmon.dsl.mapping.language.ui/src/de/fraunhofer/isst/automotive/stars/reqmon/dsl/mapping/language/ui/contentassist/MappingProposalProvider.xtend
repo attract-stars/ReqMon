@@ -3,10 +3,67 @@
  */
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.ui.contentassist
 
+import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor
+import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
+import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor.Delegate
+import org.eclipse.jface.text.contentassist.ICompletionProposal
+import org.eclipse.xtext.ui.editor.contentassist.ConfigurableCompletionProposal
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.RuleCall
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.Model
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.Mapping
+//import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.MessageNode
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
  * on how to customize the content assistant.
  */
 class MappingProposalProvider extends AbstractMappingProposalProvider {
+	
+	/*override complete_Definition(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_Definition(model, ruleCall, context, acceptor)
+		for (Mapping map : (model as Model).mappings) {
+			println(map.definition + ", " + map.rule + ", " + map.test)
+			if (map.definition !== null) {
+				println("Definition")
+				if (map.definition.def == "object") {
+					println("Object: " + map.definition.eCrossReferences)
+				}
+				else if (map.definition.def == "message") {
+					println("Message: " + map.definition.eCrossReferences)
+					for(EObject mess : map.definition.eCrossReferences) {
+						println("Message: " + (mess as MessageNode).alloc)
+					}
+				}
+			}
+		}
+	}*/
+	
+
+	
+	static class StringProposalDelegate extends Delegate {
+ 
+        ContentAssistContext ctx
+ 
+        new(ICompletionProposalAcceptor delegate, ContentAssistContext ctx) {
+            super(delegate)
+            this.ctx = ctx
+        }
+ 
+        override accept(ICompletionProposal proposal) {
+            if (proposal instanceof ConfigurableCompletionProposal) {
+                val endPos = proposal.replacementOffset + proposal.replacementLength 
+                if (ctx.document !== null && ctx.document.length > endPos) {
+                    // We are not at the end of the file
+                    //if ("\"" === ctx.document.get(endPos, 1)) {
+                        proposal.replacementLength = proposal.replacementLength-1
+                        proposal.replacementString = proposal.replacementString.substring(1,proposal.replacementString.length-1)
+                    //}
+                }
+            }
+            super.accept(proposal)
+        }
+ 
+    }
+	
 }

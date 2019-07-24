@@ -10,73 +10,161 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//Model/nodes"/>
     </genClasses>
     <genClasses ecoreClass="SysDef.ecore#//Node">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//Node/com"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//Node/version"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//Node/systemNode"/>
     </genClasses>
-    <genClasses ecoreClass="SysDef.ecore#//NodeBegin">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//NodeBegin/nodenName"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//NodeBegin/info"/>
+    <genClasses ecoreClass="SysDef.ecore#//Version">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//Version/version"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//Version/info"/>
     </genClasses>
-    <genClasses ecoreClass="SysDef.ecore#//NodeEnd"/>
     <genClasses ecoreClass="SysDef.ecore#//NodeInfo">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//NodeInfo/info"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//NodeInfo/text"/>
     </genClasses>
-    <genClasses ecoreClass="SysDef.ecore#//NodeText">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//NodeText/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//NodeText/node"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//NodeText/val"/>
-    </genClasses>
-    <genClasses ecoreClass="SysDef.ecore#//NodeName">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//NodeName/nodename"/>
-    </genClasses>
     <genClasses ecoreClass="SysDef.ecore#//SystemNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//SystemNode/node"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//SystemNode/info"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//SystemNode/namenode"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//SystemNode/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//SystemNode/namenode"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//SystemNode/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//SystemNode/versionNode"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//SystemNode/descriptionNode"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//SystemNode/messageNode"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//SystemNode/signalNode"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//SystemNode/datastruct"/>
     </genClasses>
-    <genClasses ecoreClass="SysDef.ecore#//NameNode">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//NameNode/name"/>
+    <genClasses ecoreClass="SysDef.ecore#//IDAtrr">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//IDAtrr/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//IDAtrr/int"/>
     </genClasses>
     <genClasses ecoreClass="SysDef.ecore#//VersionNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//VersionNode/node"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//VersionNode/name"/>
     </genClasses>
     <genClasses ecoreClass="SysDef.ecore#//DescriptionNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//DescriptionNode/node"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//DescriptionNode/name"/>
     </genClasses>
     <genClasses ecoreClass="SysDef.ecore#//MessageNode">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//MessageNode/nameNode"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//MessageNode/node"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//MessageNode/nameNode"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//MessageNode/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//MessageNode/alloc"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//MessageNode/datas"/>
     </genClasses>
     <genClasses ecoreClass="SysDef.ecore#//AllocationNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//AllocationNode/node"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//AllocationNode/bit"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//AllocationNode/loc"/>
     </genClasses>
     <genClasses ecoreClass="SysDef.ecore#//BitNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//BitNode/node"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//BitNode/name"/>
     </genClasses>
     <genClasses ecoreClass="SysDef.ecore#//LocationNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//LocationNode/node"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//LocationNode/name"/>
     </genClasses>
     <genClasses ecoreClass="SysDef.ecore#//DataNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//DataNode/node"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//DataNode/signal"/>
     </genClasses>
     <genClasses ecoreClass="SysDef.ecore#//SignalRefNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//SignalRefNode/node"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//SignalRefNode/ref"/>
     </genClasses>
     <genClasses ecoreClass="SysDef.ecore#//RefNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//RefNode/node"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//RefNode/name"/>
     </genClasses>
-    <genClasses ecoreClass="SysDef.ecore#//Comment">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//Comment/com"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//Comment/info"/>
+    <genClasses ecoreClass="SysDef.ecore#//SignalNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//SignalNode/node"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//SignalNode/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//SignalNode/nameNode"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//SignalNode/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//SignalNode/descriptionNode"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//SignalNode/datatype"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//SignalNode/alloc"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//SignalNode/minval"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//SignalNode/maxval"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//SignalNode/prefval"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//SignalNode/step"/>
     </genClasses>
-    <genClasses ecoreClass="SysDef.ecore#//Version">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//Version/info"/>
+    <genClasses ecoreClass="SysDef.ecore#//DataTypeNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//DataTypeNode/node"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//DataTypeNode/name"/>
+    </genClasses>
+    <genClasses ecoreClass="SysDef.ecore#//MinValueNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//MinValueNode/node"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//MinValueNode/name"/>
+    </genClasses>
+    <genClasses ecoreClass="SysDef.ecore#//MaxValueNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//MaxValueNode/node"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//MaxValueNode/name"/>
+    </genClasses>
+    <genClasses ecoreClass="SysDef.ecore#//PrefValueNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//PrefValueNode/node"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//PrefValueNode/name"/>
+    </genClasses>
+    <genClasses ecoreClass="SysDef.ecore#//StepSizeNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//StepSizeNode/node"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//StepSizeNode/name"/>
+    </genClasses>
+    <genClasses ecoreClass="SysDef.ecore#//DataStructureNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//DataStructureNode/node"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//DataStructureNode/id"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//DataStructureNode/nameNode"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//DataStructureNode/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//DataStructureNode/description"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//DataStructureNode/alloc"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//DataStructureNode/class"/>
+    </genClasses>
+    <genClasses ecoreClass="SysDef.ecore#//ClassNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//ClassNode/node"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//ClassNode/nameNode"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//ClassNode/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//ClassNode/description"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//ClassNode/inheritance"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//ClassNode/attribute"/>
+    </genClasses>
+    <genClasses ecoreClass="SysDef.ecore#//InheritanceNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//InheritanceNode/node"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SysDef.ecore#//InheritanceNode/class"/>
+    </genClasses>
+    <genClasses ecoreClass="SysDef.ecore#//AttributeNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//AttributeNode/node"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//AttributeNode/nameNode"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//AttributeNode/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//AttributeNode/description"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//AttributeNode/attrtype"/>
+    </genClasses>
+    <genClasses ecoreClass="SysDef.ecore#//AttrTypeNode">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//AttrTypeNode/node"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//AttrTypeNode/type"/>
+    </genClasses>
+    <genClasses ecoreClass="SysDef.ecore#//Types">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//Types/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//Types/list"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//Types/set"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//Types/newtype"/>
+    </genClasses>
+    <genClasses ecoreClass="SysDef.ecore#//Type">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//Type/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//Type/name"/>
+    </genClasses>
+    <genClasses ecoreClass="SysDef.ecore#//List">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//List/list"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//List/type"/>
+    </genClasses>
+    <genClasses ecoreClass="SysDef.ecore#//Set">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//Set/set"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//Set/type"/>
+    </genClasses>
+    <genClasses ecoreClass="SysDef.ecore#//newType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//newType/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//newType/nameNode"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//newType/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference SysDef.ecore#//newType/description"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

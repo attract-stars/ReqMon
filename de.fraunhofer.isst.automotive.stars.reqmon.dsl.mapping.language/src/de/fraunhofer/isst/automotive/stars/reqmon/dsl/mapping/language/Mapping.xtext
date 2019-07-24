@@ -8,53 +8,176 @@ generate mapping "http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/mapp
 
 
 Model:
-	(imports+=Import | use+=Usages)*;
+	 mappings+=Mapping* 
+	// greetings+=Greeting*
+  	// farewells+=Farewell*
+;
+
+Farewell:
+	'Bye' greeting=[Greeting]
+;
+
+Greeting:
+	'Hello' name=ID honest?='!'?
+;
+
 	
-Usages:
-	//'use' name=[sys::NodeText]
-	'system' name=[system::SystemNode] |
-	'message' name=[system::MessageNode] |
-	'alloc' name=[system::AllocationNode] |
-	'sigRef' name=[system::SignalRefNode]  |
-	'loc' name=[system::LocationNode] |
-	'bit' name=[system::BitNode] |
-	'test' test=[system::BitNode]
-;
-
-
-Import:
-	'import' importURI=STRING
-;
-
-
-/* 
-Model:
-	mappings+=Mapping*
-;
-
 Mapping:
-	(def+=Definition | rule+=Rule)
-	//def=Definition 
-	
+	definition=Definition 
+	| rule=Rule
+	| test=Test 
 ;
 
 Definition:
-	//object=ID ':=' systemObject=ID ';' |
-	//systemObject=ID ';'
-	 //| 
-	'sytem' system=[system::SystemNode] |
-	'message' message=[system::MessageNode]
+	id=SystemID ':=' system=[system::SystemNode | STRING]?
+	| id=MessageID ':=' mess=[system::MessageNode | STRING]?
+	| id=SignalID ':=' signal=[system::SignalNode | STRING]?
+	| id=StructureID ':=' struc=[system::DataStructureNode | STRING]?
+	| id=ObjectID ':=' clas=[system::ClassNode | STRING]? 
+	| id=AttributeID ':=' attr=[system::AttributeNode | STRING]? 
+	| unit=Unit
 ;
 
-	
+SystemID:
+	def='system' name=ID
+;
+
+MessageID:
+	def='message' name=ID
+;
+
+SignalID:
+	def='signal' name=ID
+;
+
+StructureID:
+	def='structure' name=ID
+;
+
+ObjectID:
+	def='object' name=ID
+;
+
+AttributeID:
+	def='attribute' name=ID
+;
+
+Test:
+	'test' test=[system::BitNode | STRING]
+;
+
 Rule:
-	//((quant=Quantification | existance=Existance) objects=Objects 
-	//	(negation+=Negation? ('element_of' | 'in') (set+=ValueSet | set+=ObjectSet | intervall+=Intervall)? op+=Operators?)* 
-	//	relativ=Relative
-	//)?
-	relations+=Relation ';' // |
-	//function+=Functions+ 
-;*/
+	relation=Relation
+	| function=Function
+	| reference=Reference
+;
+
+Reference:
+	"fun" name=ID ':' ('ref_rel' ref+=[Relation] | 'ref_fun' ref+=[Function]) (op+=Operators ('ref_rel' ref+=[Relation] | 'ref_fun' ref+=[Function]))+
+	| "fun" name=ID ':' ('ref_rel' ref+=[Relation] | 'ref_fun' ref+=[Function]) (op+=Operators attrOfDef+=AttributeOfDefined)+
+	| "fun" name=ID ':' attrOfDef+=AttributeOfDefined (op+=Operators ('ref_rel' ref+=[Relation] | 'ref_fun' ref+=[Function]))+
+;
+
+Relation:
+	"rel" name=ID ':' attrOfDef+=AttributeOfDefined (comp=Comparators (value=Value | attrOfDef+=AttributeOfDefined))?
+;
+
+
+Function:
+	"fun" name=ID ':' attrOfDef+=AttributeOfDefined (op=Operators (value=Value | attrOfDef+=AttributeOfDefined))?
+;
+
+
+
+
+AttributeOfDefined:
+	system=[SystemID] getAttr+=GetSystemAttribute
+	| message=[MessageID] getAttr+=GetMessageAttribute
+	| signal=[SignalID] getAttr+=GetSignalAttribute
+	| structure=[StructureID] getAttr+=GetStructureAttribute
+	| object=[ObjectID] getAttr+=GetClassAttribute
+	| attribute=[AttributeID] getAttr+=GetAttributeAttribute
+;
+
+GetSystemAttribute:
+	attr='.systemName_' systemName=[system::SystemNode | STRING]
+	| attr='.systemVersion_' version=[system::VersionNode | STRING]
+	| attr='.systemDescription_' description=[system::DescriptionNode | STRING]
+	| attr='.systemMessage_' message=[system::MessageNode | STRING]
+	| attr='.systemSignal_' signal=[system::SignalNode | STRING]
+	| attr='.systemDatastructure_' datastruc=[system::DataStructureNode | STRING]
+	| attr='.this_system'
+;
+
+GetMessageAttribute:
+	attr='.messageName_' messageName=[system::MessageNode | STRING]
+	| attr='.messageLocation_' location=[system::LocationNode | STRING]
+	| attr='.messageBitsize_' bit=[system::BitNode | STRING]
+	| attr='.messagesignal_' signalRef=[system::SignalRefNode | STRING]
+	| attr='.this_message'
+;
+
+GetSignalAttribute:
+	attr='.signalName_' signalName=[system::SignalNode | STRING]
+	| attr='.signalID_' id=[system::IDAtrr | STRING]
+	| attr='.signalDescription_' description=[system::DescriptionNode | STRING]
+	| attr='.signalDatatype_' datatype=[system::DataTypeNode | STRING]
+	| attr='.signalLocation_' location=[system::LocationNode | STRING]
+	| attr='.signalBitsize_' bit=[system::BitNode | STRING]
+	| attr='.signalMinvalue_' minvalue=[system::MinValueNode | STRING]
+	| attr='.signalMaxvalue_' maxvalue=[system::MaxValueNode | STRING]
+	| attr='.signalPrefvalue_' prefvalue=[system::PrefValueNode | STRING]
+	| attr='.signalStepsize_' stepsize=[system::StepSizeNode | STRING]
+	| attr='.this_signal'
+;
+
+GetStructureAttribute:
+	attr='.structureName_' structureName=[system::DataStructureNode | STRING]
+	//| attr='.structureID_' id=[system::IDAtrr | STRING]
+	| attr='.structureDescription_' description=[system::DescriptionNode | STRING]
+	| attr='.structureLocation_' location=[system::LocationNode | STRING]
+	| attr='.structureBitsize_' bit=[system::BitNode | STRING]
+	| attr='.structureClass_' clas=[system::ClassNode | STRING]
+	| attr='.this_structure'
+;
+
+GetClassAttribute:
+	attr='.className_' className=[system::ClassNode | STRING]
+	| attr='.classDescription_' description=[system::DescriptionNode | STRING]
+	//| attr='.classInheritance_from_' inherit=[system::InheritanceNode | STRING]
+	| attr='.classAttribute_' attribute=[system::AttributeNode | STRING] 
+	| attr='.this_object'
+;
+
+GetAttributeAttribute:
+	attr='.attributeName_' className=[system::AttributeNode | STRING]
+	| attr='.attributeDescription_' description=[system::DescriptionNode | STRING]
+	//| attr='.attrtype_' attrtype=[system::AttrTypeNode | STRING]
+	| attr='.attributeType_' type=[system::Type | STRING]
+	| attr='.this_attribute'
+;
+
+Value:
+	IntValue| FloatValue
+;
+
+IntValue:
+	value=INT unit=[Unit]? 
+;
+
+FloatValue:
+	value=FLOAT unit=[Unit]? 
+;
+
+Unit:
+	def='unit' name=ID ':=' unit=GetUnit
+;
+
+GetUnit:
+	signal=[SignalID] get+='.signalDatatype_' datatype=[system::DataTypeNode | STRING]
+	| system=[SystemID] get+='.systemSignal_' signal=[system::SignalNode | STRING] 
+		get+='.signalDatatype_' datatype=[system::DataTypeNode | STRING]
+;
 	
 /*Relations:
 	relation+=Relation (conj+=Conjunction relation+=Relation)*
@@ -113,17 +236,7 @@ ObjectSet:
 	  '{' (elements+=Object) (';'elements+=Object)*'}'
 ;*/
 
-/*Value:
-	IntValue| FloatValue
-;
 
-IntValue:
-	value=INT unit=Unit? 
-;
-
-FloatValue:
-	value=FLOAT  unit=Unit? 
-;*/
 
 
 /*WORD returns ecore::EString: 
@@ -131,10 +244,11 @@ FloatValue:
 ;*/
 
  
-/*FLOAT returns ecore::EFloat:
+FLOAT returns ecore::EFloat:
 	INT'.'INT
 ;
-	
+
+/* 	
 Unit:
 	 LengthUnits | PresureUnits | HeatUnits | MassUnits | VelcoityUnits | Cuvature | TimeUnits
 ;*/
@@ -142,9 +256,9 @@ Unit:
 
 
 /* =========== BASIC SYNTAX =========== */
-/* 
+
 Operators:
-	Operator | Comparators | Conclusion | Equivalence |Unknown
+	Operator | Relative | Conclusion | Equivalence |Unknown | Negation | Quantification | Existance | Conjunction
 ;
 
 
@@ -166,9 +280,30 @@ Equivalence:
 
 Relative:
  // for which
-	':'
+	':' 
+// in relation to
+	| '~'
 ;
-	*/
+
+Negation:
+	'!'
+;
+
+Quantification:
+	'V'
+;
+
+Existance:
+	'E'
+;
+
+Conjunction:
+	/** and */
+	'&' |
+	
+	/** or */
+	'|'
+;
 	
 Comparators:
 	/** -> SizeAdverbial (higher, more, larger), ComparisonAdverbial (faster, better),
@@ -204,55 +339,7 @@ Comparators:
 	// | '<<' | '<<<' | '>>' | '>>>'
 ;
 
-Negation:
-	'!'
-;
-
-Quantification:
-	'V'
-;
-
-Existance:
-	'E'
-;
-
-Conjunction:
-	/** and */
-	'&' |
-	
-	/** or */
-	'|'
-;
 
 
 
-/* =========== BASIC UNITS =========== */
 
-Cuvature:
-	'rad/m' | '°' | 'rad' | '°/m'	
-;
-
-VelcoityUnits:
-	'm/s' | 'knots'  |'km/h' | 'm/min'
-	;
-
-MassUnits:
-	'kg'| 'g' | 'mg' | 't'
-;
-
-HeatUnits:
-	'C' | 'F'
-;
-
-PresureUnits:
-	'bar' | 'Pa' | 'hPa'
-;
-
-
-LengthUnits:
-	'm' | 'f' | 'km' | 'cm' | 'mm' |'nm'
-;
-
-TimeUnits:
-	 'ns' | 'ms' | 's' | 'min' | 'h' | 'd' | 'mon' | 'y' 
-;

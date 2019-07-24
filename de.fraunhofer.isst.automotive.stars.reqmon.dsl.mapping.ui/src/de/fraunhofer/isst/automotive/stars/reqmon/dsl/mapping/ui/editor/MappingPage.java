@@ -10,6 +10,8 @@ import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.source.LineNumberRulerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -692,6 +694,7 @@ public class MappingPage {
 		
 		// create an embedded xtextEditor for the mapping 
 		Composite embeddedEditorComposite = new Composite(group, SWT.BORDER);
+		
 		embeddedEditorComposite.setLayout(new GridLayout());
 		GridData gridDataText = new GridData(SWT.FILL, SWT.FILL, true, true);
 		embeddedEditorComposite.setLayoutData(gridDataText);
@@ -737,18 +740,18 @@ public class MappingPage {
 		gridData_1.horizontalAlignment = SWT.FILL;
 
 		GridData gridData_2 = new GridData();
-		gridData_2.minimumHeight = 75;
+		gridData_2.minimumHeight = 150; //75;
 		gridData_2.minimumWidth = 200;
-		gridData_2.heightHint = 75;
+		gridData_2.heightHint = 150; //75;
 		gridData_2.widthHint = 250;
 		
 		GridData gridData_3 = new GridData();
 		gridData_3.horizontalAlignment = SWT.FILL;
 		
 		GridData gridData_4 = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gridData_4.minimumHeight = 75;
+		gridData_4.minimumHeight = 150; //75;
 		gridData_4.minimumWidth = 350;
-		gridData_4.heightHint = 75;
+		gridData_4.heightHint = 150; //75;
 		gridData_4.widthHint = 400;
 
 		number.setLayoutData(gridData_1);
