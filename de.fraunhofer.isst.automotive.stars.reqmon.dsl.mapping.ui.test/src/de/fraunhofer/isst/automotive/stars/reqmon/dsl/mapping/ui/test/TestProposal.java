@@ -26,7 +26,7 @@ public class TestProposal implements IProposal {
 	
 	@Override
 	public void getProposal(Text text) {
-		char[] autoActivationCharacters = new char[] { ' ' };
+		char[] autoActivationCharacters = new char[] { '+' };
 		KeyStroke keyStroke;
 		try {
 			keyStroke = KeyStroke.getInstance("Ctrl+Space");

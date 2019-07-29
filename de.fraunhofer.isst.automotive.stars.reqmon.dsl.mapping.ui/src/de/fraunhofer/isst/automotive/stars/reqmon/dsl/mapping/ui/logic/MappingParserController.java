@@ -1,17 +1,20 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic;
 
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ISafeRunnable;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
-import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.common.util.URI;
+
+import com.google.inject.Injector;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMappingParser;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.MappingPage;
 
 
 /**
@@ -31,6 +34,8 @@ public class MappingParserController {
 	private boolean isPars;
 	private boolean isRegistry;
 	private IMappingParser parser;
+	private Injector dslInjector;
+	
 	
 	/**
 	 * This constructor checks if a registry exists and if MappingParsers are registered.
@@ -99,31 +104,82 @@ public class MappingParserController {
 		}
 	}
 	
+	
 	/**
-	 * Parses the input String, if a suitable MappinParser exists.
-	 * @param input the input String.
+	 * Returns the mapping language injector.
+	 * @return the mapping language injector
 	 */
-	public void parserInput(String input) {
+	public Injector getDslInjector() {
+		return this.dslInjector;
+	}
+	
+	/**
+	 * Creates the mapping language injector and gives it back with the setDslInjector method of the MappingPage.
+	 * @param mp the MappingPage
+	 * @param systemModelUri the URI of the selected system model
+	 */
+	public void createDslInjectorAndUpdateList(MappingPage mp, URI systemModelUri) {
 		if (!isPars) {
 			return;
 		}
-		Job job = new Job("Parse input") { 
-			protected IStatus run(IProgressMonitor monitor) {
-				try {
-					parser.parserInput(input);
-				} 
-				catch (Exception ex) {
-					System.out.println("Exception in parser client:");
-					ex.printStackTrace();
+		
+		// subMonitor.split for avoiding the case that the job is still running after closing of the application
+		Job job = Job.create("Create Parser", monitor -> {
+			SubMonitor subMonitor = SubMonitor.convert(monitor, 10);
+			
+			try {
+				Injector dslInjector = parser.getDslInjector(systemModelUri);
+				mp.setDslInjector(dslInjector);
+				System.out.println("DslInjector: " + dslInjector.getClass().getName());
+				subMonitor.split(7);
+				
+				if (mp.isReqElements()) {
+					
+					// asynchrony list update
+					mp.getDisplay().asyncExec(new Runnable() {
+						
+						@Override
+						public void run() {
+							System.out.println("Update List");
+							mp.updateList();
+						}
+						
+					});
 				}
-				return Status.OK_STATUS;
+				
+			} catch (Exception ex) {
+				System.out.println("Exception in parser client:");
+				ex.printStackTrace();
+			} finally {
+				subMonitor.split(9);
 			}
-		};
+			
+		});
 		
 		job.setPriority(Job.SHORT);
 		job.schedule();
 	}
 	
+	
+		/*Job job = new Job("Parse input") { 
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					mpc.setDsl(parser.getDslInjector(systemModelUri));
+					if (mpc.dslInjector == null) {
+						mpc.isInjectorCreationFailed = true;
+					}
+				} 
+				catch (Exception ex) {
+					System.out.println("Exception in parser client:");
+					ex.printStackTrace();
+					mpc.isInjectorCreationFailed = true;
+				}
+				return Status.OK_STATUS;
+			}
+		};*/
+		
+		
+
 	/**
 	 * Checks if the MappingParser is executable.
 	 * @param o an object of the type IMappingParser
@@ -145,6 +201,8 @@ public class MappingParserController {
 		SafeRunner.run(runnable);
 		
 	}
+
+	
 	
 	
 }

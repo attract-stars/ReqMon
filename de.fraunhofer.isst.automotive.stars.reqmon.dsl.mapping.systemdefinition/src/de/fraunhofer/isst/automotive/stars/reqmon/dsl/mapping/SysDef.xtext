@@ -1,0 +1,100 @@
+grammar de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.SysDef with org.eclipse.xtext.common.Terminals
+
+generate sysDef "http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/mapping/SysDef"
+
+Model:
+	nodes+=Node*
+;
+	
+Node:
+	//begin=NodeBegin info=NodeText? end=NodeEnd |
+	com=Comment | version=Version | systemNode=SystemNode
+	
+;
+
+
+NodeBegin:
+	'<' nodenName=NodeName info+=NodeInfo* '>' 
+;
+
+NodeEnd:
+	'</' NodeName '>'
+;
+
+NodeInfo:
+	info+=ID (':' info+=ID)* '=' text=STRING
+;
+
+NodeText:
+	name=ID node+=Node* | node+=Node+ | val=Value
+;
+
+
+NodeName:
+	nodename=KeyName | nodename=Parameter | nodename=ID | nodename=Value
+;
+
+SystemNode:
+	'<system' info+=NodeInfo* '>' namenode=NameNode? versionNode=VersionNode? 
+	descriptionNode=DescriptionNode? messageNode=MessageNode '</system>' 
+;
+
+NameNode:
+	'<name>' name=ID '</name>'
+;
+
+VersionNode:
+	'<version>' name=ID '</version>'
+;
+
+DescriptionNode:
+	'<description>' name=ID '</description>'
+;
+
+MessageNode:
+	'<message>' nameNode=NameNode alloc=AllocationNode datas=DataNode '</message>'
+;
+
+AllocationNode:
+	'<allocation>' bit=BitNode loc=LocationNode '</allocation>'
+;
+
+BitNode:
+	'<bit_size>' name=ID '</bit_size>'
+;
+
+LocationNode:
+	'<location>' name=ID '</location>'
+;
+
+DataNode:
+	'<data_objects>' signal+=SignalRefNode+ '</data_objects>'
+;
+
+SignalRefNode:
+	'<signal_object>' ref=RefNode '</signal_object>'
+;
+
+RefNode:
+	'<ref>' name=ID '</ref>'
+;
+
+Comment:
+	'<!--' (com+=ID+ | info+=NodeInfo+) '-->'
+;
+
+Version:
+	'<?xml' info+=NodeInfo+ '?>'
+;
+
+KeyName:
+	'system' | 'message' 
+;
+
+Parameter:
+	'name'
+;
+
+Value:
+	INT | INT '.' INT
+;
