@@ -9,94 +9,68 @@ generate mapping "http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/mapp
 
 Model:
 	 mappings+=Mapping* 
-	// greetings+=Greeting*
-  	// farewells+=Farewell*
 ;
-
-Farewell:
-	'Bye' greeting=[Greeting]
-;
-
-Greeting:
-	'Hello' name=ID honest?='!'?
-;
-
 	
 Mapping:
 	definition=Definition 
 	| rule=Rule
-	| test=Test 
 ;
 
 Definition:
-	id=SystemID ':=' system=[system::SystemNode | STRING]?
-	| id=MessageID ':=' mess=[system::MessageNode | STRING]?
-	| id=SignalID ':=' signal=[system::SignalNode | STRING]?
-	| id=StructureID ':=' struc=[system::DataStructureNode | STRING]?
-	| id=ObjectID ':=' clas=[system::ClassNode | STRING]? 
-	| id=AttributeID ':=' attr=[system::AttributeNode | STRING]? 
+	//def = SystemID 
+	  def = MessageID
+	| def = SignalID
+	//| def = StructureID
+	| def = ClassID
+	| def = AttributeID
 	| unit=Unit
 ;
 
 SystemID:
-	def='system' name=ID
+	def='system' system=[system::SystemNode | STRING]?
 ;
 
 MessageID:
-	def='message' name=ID
+	def='message' mess=[system::MessageNode | STRING]?
 ;
 
 SignalID:
-	def='signal' name=ID
+	def='signal' signal=[system::SignalNode | STRING]?
 ;
 
 StructureID:
-	def='structure' name=ID
+	def='structure' struc=[system::DataStructureNode | STRING]?
 ;
 
-ObjectID:
-	def='object' name=ID
+ClassID:
+	def='class' clas=[system::ClassNode | STRING]? 
 ;
 
 AttributeID:
-	def='attribute' name=ID
+	def='attribute' attr=[system::AttributeNode | STRING]? 
 ;
 
-Test:
-	'test' test=[system::BitNode | STRING]
-;
 
 Rule:
-	relation=Relation
-	| function=Function
-	| reference=Reference
-;
-
-Reference:
-	"fun" name=ID ':' ('ref_rel' ref+=[Relation] | 'ref_fun' ref+=[Function]) (op+=Operators ('ref_rel' ref+=[Relation] | 'ref_fun' ref+=[Function]))+
-	| "fun" name=ID ':' ('ref_rel' ref+=[Relation] | 'ref_fun' ref+=[Function]) (op+=Operators attrOfDef+=AttributeOfDefined)+
-	| "fun" name=ID ':' attrOfDef+=AttributeOfDefined (op+=Operators ('ref_rel' ref+=[Relation] | 'ref_fun' ref+=[Function]))+
-;
-
-Relation:
-	"rel" name=ID ':' attrOfDef+=AttributeOfDefined (comp=Comparators (value=Value | attrOfDef+=AttributeOfDefined))?
+	 elem+=Element (op+=Operators elem+=Element)+
 ;
 
 
-Function:
-	"fun" name=ID ':' attrOfDef+=AttributeOfDefined (op=Operators (value=Value | attrOfDef+=AttributeOfDefined))?
+Element:
+	attrOfDef+=AttributeOfDefined
+	| value=Value
+	| def=Definition
 ;
-
 
 
 
 AttributeOfDefined:
-	system=[SystemID] getAttr+=GetSystemAttribute
-	| message=[MessageID] getAttr+=GetMessageAttribute
-	| signal=[SignalID] getAttr+=GetSignalAttribute
-	| structure=[StructureID] getAttr+=GetStructureAttribute
-	| object=[ObjectID] getAttr+=GetClassAttribute
-	| attribute=[AttributeID] getAttr+=GetAttributeAttribute
+	  system=SystemID getAttr+=GetSystemAttribute
+	| message=MessageID getAttr+=GetMessageAttribute
+	| signal=SignalID getAttr+=GetSignalAttribute
+	| structure=StructureID getAttr+=GetStructureAttribute
+	| object=ClassID getAttr+=GetClassAttribute
+	| attribute=AttributeID getAttr+=GetAttributeAttribute
 ;
 
 GetSystemAttribute:
@@ -146,7 +120,7 @@ GetClassAttribute:
 	| attr='.classDescription_' description=[system::DescriptionNode | STRING]
 	//| attr='.classInheritance_from_' inherit=[system::InheritanceNode | STRING]
 	| attr='.classAttribute_' attribute=[system::AttributeNode | STRING] 
-	| attr='.this_object'
+	| attr='.this_class'
 ;
 
 GetAttributeAttribute:
@@ -174,9 +148,9 @@ Unit:
 ;
 
 GetUnit:
-	signal=[SignalID] get+='.signalDatatype_' datatype=[system::DataTypeNode | STRING]
-	| system=[SystemID] get+='.systemSignal_' signal=[system::SignalNode | STRING] 
-		get+='.signalDatatype_' datatype=[system::DataTypeNode | STRING]
+	signal=SignalID get+='.signalDatatype_' datatype=[system::DataTypeNode | STRING]
+	//| system=SystemID get+='.systemSignal_' signaltype=[system::SignalNode | STRING] 
+		//get+='.signalDatatype_' datatype=[system::DataTypeNode | STRING]
 ;
 	
 /*Relations:
@@ -248,22 +222,26 @@ FLOAT returns ecore::EFloat:
 	INT'.'INT
 ;
 
-/* 	
-Unit:
-	 LengthUnits | PresureUnits | HeatUnits | MassUnits | VelcoityUnits | Cuvature | TimeUnits
-;*/
-
 
 
 /* =========== BASIC SYNTAX =========== */
 
 Operators:
-	Operator | Relative | Conclusion | Equivalence |Unknown | Negation | Quantification | Existance | Conjunction
+	  Comparators 
+	| Calculation 
+	| Relative 
+	| Conclusion 
+	| Equivalence 
+	//| Unknown 
+	| Negation 
+	//| Quantification 
+	//| Existance 
+	| Junctor
 ;
 
 
-Operator:
-	'+' | '-' | '*' | '/' | '^'
+Calculation:
+	'+' | '-' | '*' | '/' | '^' 
 ;
 
 Unknown:
@@ -297,7 +275,7 @@ Existance:
 	'E'
 ;
 
-Conjunction:
+Junctor:
 	/** and */
 	'&' |
 	

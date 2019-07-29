@@ -6,99 +6,69 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappings" upperBound="-1"
         eType="#//Mapping" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Farewell">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="greeting" eType="#//Greeting"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Greeting">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="honest" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Mapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="definition" eType="#//Definition"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rule" eType="#//Rule" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="test" eType="#//Test" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Definition">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="id" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="def" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="system" eType="ecore:EClass platform:/resource/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition/model/generated/SysDef.ecore#//SystemNode"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="mess" eType="ecore:EClass platform:/resource/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition/model/generated/SysDef.ecore#//MessageNode"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="signal" eType="ecore:EClass platform:/resource/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition/model/generated/SysDef.ecore#//SignalNode"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="struc" eType="ecore:EClass platform:/resource/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition/model/generated/SysDef.ecore#//DataStructureNode"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="clas" eType="ecore:EClass platform:/resource/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition/model/generated/SysDef.ecore#//ClassNode"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="attr" eType="ecore:EClass platform:/resource/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition/model/generated/SysDef.ecore#//AttributeNode"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="unit" eType="#//Unit" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SystemID">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="def" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="system" eType="ecore:EClass platform:/resource/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition/model/generated/SysDef.ecore#//SystemNode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MessageID">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="def" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mess" eType="ecore:EClass platform:/resource/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition/model/generated/SysDef.ecore#//MessageNode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SignalID">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="def" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="signal" eType="ecore:EClass platform:/resource/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition/model/generated/SysDef.ecore#//SignalNode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="StructureID">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="def" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="struc" eType="ecore:EClass platform:/resource/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition/model/generated/SysDef.ecore#//DataStructureNode"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ObjectID">
+  <eClassifiers xsi:type="ecore:EClass" name="ClassID">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="def" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="clas" eType="ecore:EClass platform:/resource/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition/model/generated/SysDef.ecore#//ClassNode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AttributeID">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="def" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Test">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="test" eType="ecore:EClass platform:/resource/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition/model/generated/SysDef.ecore#//BitNode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attr" eType="ecore:EClass platform:/resource/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition/model/generated/SysDef.ecore#//AttributeNode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Rule">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="relation" eType="#//Relation"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elem" upperBound="-1" eType="#//Element"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="function" eType="#//Function"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="reference" eType="#//Reference"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Reference">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" unique="false" upperBound="-1"
-        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="op" unique="false" upperBound="-1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="attrOfDef" upperBound="-1"
-        eType="#//AttributeOfDefined" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Relation">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Element">
     <eStructuralFeatures xsi:type="ecore:EReference" name="attrOfDef" upperBound="-1"
         eType="#//AttributeOfDefined" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="comp" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//Value"
         containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Function">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="attrOfDef" upperBound="-1"
-        eType="#//AttributeOfDefined" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="op" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#//Value"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="def" eType="#//Definition"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AttributeOfDefined">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="system" eType="#//SystemID"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="system" eType="#//SystemID"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="getAttr" upperBound="-1"
         eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="message" eType="#//MessageID"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="signal" eType="#//SignalID"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="structure" eType="#//StructureID"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="object" eType="#//ObjectID"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="attribute" eType="#//AttributeID"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="message" eType="#//MessageID"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="signal" eType="#//SignalID"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="structure" eType="#//StructureID"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="object" eType="#//ClassID"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attribute" eType="#//AttributeID"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GetSystemAttribute">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="attr" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -165,10 +135,10 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GetUnit">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="signal" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="signal" eType="#//SignalID"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="get" unique="false" upperBound="-1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="datatype" eType="ecore:EClass platform:/resource/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition/model/generated/SysDef.ecore#//DataTypeNode"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="system" eType="#//SystemID"/>
   </eClassifiers>
 </ecore:EPackage>
