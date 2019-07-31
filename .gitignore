@@ -5,6 +5,7 @@ bin/
 # Exclude gen files
 xtend-gen
 src-gen
+*.xml_gen
 
 # Exclude Eclipse launch configurations
 *.launch
