@@ -4,6 +4,15 @@
 package de.fraunhofer.isst.stars.ui.contentassist;
 
 import de.fraunhofer.isst.stars.ui.contentassist.AbstractRequirementDSLProposalProvider;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.eclipse.xtext.Assignment;
+import org.eclipse.xtext.GrammarUtil;
+import org.eclipse.xtext.RuleCall;
+import org.eclipse.xtext.ui.editor.contentassist.ConfigurableCompletionProposal;
+import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
+import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
+import org.eclipse.xtext.util.Strings;
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
@@ -11,4 +20,734 @@ import de.fraunhofer.isst.stars.ui.contentassist.AbstractRequirementDSLProposalP
  */
 @SuppressWarnings("all")
 public class RequirementDSLProposalProvider extends AbstractRequirementDSLProposalProvider {
+  @Override
+  public void completeModel_Requirements(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.completeModel_Requirements(model, assignment, context, acceptor);
+    final String featureType = "Requirement";
+    final String type_1 = "ReqID";
+    final String type_2 = "RequirementText";
+    final String allTypes_1 = ((type_1 + " : ") + featureType);
+    final String allTypes_2 = ((type_2 + " : ") + featureType);
+    this.helpComplete("Req:", "", context, acceptor, 0, 0, Boolean.valueOf(false));
+    this.helpComplete("Req.", "", context, acceptor, 0, 0, Boolean.valueOf(false));
+    this.helpComplete("Req ReqID", allTypes_1, context, acceptor, 4, 0, Boolean.valueOf(true));
+    this.helpComplete("Req ReqID:", allTypes_1, context, acceptor, 4, 1, Boolean.valueOf(true));
+    this.helpComplete("Req ReqID.", allTypes_1, context, acceptor, 4, 1, Boolean.valueOf(true));
+    this.helpComplete("ReqID:", allTypes_1, context, acceptor, 0, 1, Boolean.valueOf(true));
+    this.helpComplete("ReqID.", allTypes_1, context, acceptor, 0, 1, Boolean.valueOf(true));
+    this.helpComplete(": RequirementText", allTypes_2, context, acceptor, 2, 0, Boolean.valueOf(true));
+    this.helpComplete(". RequirementText", allTypes_2, context, acceptor, 2, 0, Boolean.valueOf(true));
+    this.helpComplete("ReqID:", ("ReqID: RequirementText : " + featureType), context, acceptor, 0, 1, Boolean.valueOf(true));
+    this.helpComplete("ReqID.", ("ReqID. RequirementText : " + featureType), context, acceptor, 0, 1, Boolean.valueOf(true));
+    this.helpComplete("Req: RequirementText", allTypes_2, context, acceptor, 5, 0, Boolean.valueOf(true));
+    this.helpComplete("Req. RequirementText", allTypes_2, context, acceptor, 5, 0, Boolean.valueOf(true));
+    this.helpComplete("Req ReqID:", ("Req ReqID: RequirementText : " + featureType), context, acceptor, 4, 1, Boolean.valueOf(true));
+    this.helpComplete("Req ReqID.", ("Req ReqID. RequirementText : " + featureType), context, acceptor, 4, 1, Boolean.valueOf(true));
+    this.helpComplete(": RequirementText.", allTypes_2, context, acceptor, 2, 1, Boolean.valueOf(true));
+    this.helpComplete(". RequirementText.", allTypes_2, context, acceptor, 2, 1, Boolean.valueOf(true));
+    this.helpComplete("ReqID:", ("ReqID: RequirementText. : " + featureType), context, acceptor, 0, 1, Boolean.valueOf(true));
+    this.helpComplete("ReqID.", ("ReqID. RequirementText. : " + featureType), context, acceptor, 0, 1, Boolean.valueOf(true));
+    this.helpComplete("Req: RequirementText.", allTypes_2, context, acceptor, 5, 1, Boolean.valueOf(true));
+    this.helpComplete("Req. RequirementText.", allTypes_2, context, acceptor, 5, 1, Boolean.valueOf(true));
+    this.helpComplete("Req ReqID:", ("Req ReqID: RequirementText. : " + featureType), context, acceptor, 4, 1, Boolean.valueOf(true));
+    this.helpComplete("Req ReqID.", ("Req ReqID. RequirementText. : " + featureType), context, acceptor, 4, 1, Boolean.valueOf(true));
+    this.helpComplete(": RequirementText;", allTypes_2, context, acceptor, 2, 1, Boolean.valueOf(true));
+    this.helpComplete(". RequirementText;", allTypes_2, context, acceptor, 2, 1, Boolean.valueOf(true));
+    this.helpComplete("ReqID:", ("ReqID: RequirementText; : " + featureType), context, acceptor, 0, 1, Boolean.valueOf(true));
+    this.helpComplete("ReqID.", ("ReqID. RequirementText; : " + featureType), context, acceptor, 0, 1, Boolean.valueOf(true));
+    this.helpComplete("Req: RequirementText;", allTypes_2, context, acceptor, 5, 1, Boolean.valueOf(true));
+    this.helpComplete("Req. RequirementText;", allTypes_2, context, acceptor, 5, 1, Boolean.valueOf(true));
+    this.helpComplete("Req ReqID:", ("Req ReqID: RequirementText; : " + featureType), context, acceptor, 4, 1, Boolean.valueOf(true));
+    this.helpComplete("Req ReqID.", ("Req ReqID. RequirementText; : " + featureType), context, acceptor, 4, 1, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void completeRequirement_Text(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.completeRequirement_Text(model, assignment, context, acceptor);
+    final String featureType = "RequirementText";
+    final String type_1 = "ConditionalClause";
+    final String allTypes_1 = ((type_1 + " : ") + featureType);
+    this.helpComplete("ConditionalClause, then", allTypes_1, context, acceptor, 0, 6, Boolean.valueOf(true));
+    this.helpComplete("ConditionalClause then", allTypes_1, context, acceptor, 0, 5, Boolean.valueOf(true));
+    this.helpComplete("ConditionalClause", ("ConditionalClause MainClause : " + featureType), context, acceptor, 0, 0, Boolean.valueOf(true));
+    this.helpComplete("ConditionalClause, then", ("ConditionalClause, then MainClause : " + featureType), context, acceptor, 0, 6, Boolean.valueOf(true));
+    this.helpComplete("ConditionalClause then", ("ConditionalClause then MainClause : " + featureType), context, acceptor, 0, 5, Boolean.valueOf(true));
+    this.helpComplete("MainClause,", ("MainClause, ConditionalClause : " + featureType), context, acceptor, 0, 1, Boolean.valueOf(true));
+    this.helpComplete("ConditionalClause", ("ConditionalClause MainClause ConditionalClause : " + featureType), context, acceptor, 0, 0, Boolean.valueOf(true));
+    this.helpComplete("ConditionalClause, then", ("ConditionalClause, then MainClause ConditionalClause : " + featureType), context, acceptor, 0, 6, Boolean.valueOf(true));
+    this.helpComplete("ConditionalClause then", ("ConditionalClause then MainClause ConditionalClause : " + featureType), context, acceptor, 0, 5, Boolean.valueOf(true));
+    this.helpComplete("MainClause", ("MainClause, ConditionalClause : " + featureType), context, acceptor, 0, 0, Boolean.valueOf(true));
+    this.helpComplete("ConditionalClause", ("ConditionalClause MainClause, ConditionalClause : " + featureType), context, acceptor, 0, 0, Boolean.valueOf(true));
+    this.helpComplete("ConditionalClause, then", ("ConditionalClause, then MainClause, ConditionalClause : " + featureType), context, acceptor, 0, 6, Boolean.valueOf(true));
+    this.helpComplete("ConditionalClause then", ("ConditionalClause then MainClause, ConditionalClause : " + featureType), context, acceptor, 0, 5, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void completeRequirementText_CondClauses(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.completeRequirementText_CondClauses(model, assignment, context, acceptor);
+    final String featureType = "ConditionalClause";
+    final String type_1 = "ClauseOrdinator";
+    final String type_2 = "Clauses";
+    final String allTypes_1 = ((type_1 + " : ") + featureType);
+    final String allTypes_2 = ((((type_1 + " ") + type_2) + " : ") + featureType);
+    this.helpComplete("ClauseOrdinator", allTypes_1, context, acceptor, 0, 0, Boolean.valueOf(true));
+    this.helpComplete("ClauseOrdinator", ("ClauseOrdinator Clauses : " + featureType), context, acceptor, 0, 0, Boolean.valueOf(true));
+    this.helpComplete("if Clauses", allTypes_2, context, acceptor, 3, 0, Boolean.valueOf(true));
+    this.helpComplete("after Clauses", allTypes_2, context, acceptor, 6, 0, Boolean.valueOf(true));
+    this.helpComplete("once Clauses", allTypes_2, context, acceptor, 5, 0, Boolean.valueOf(true));
+    this.helpComplete("when Clauses", allTypes_2, context, acceptor, 5, 0, Boolean.valueOf(true));
+    this.helpComplete("whenever Clauses", allTypes_2, context, acceptor, 9, 0, Boolean.valueOf(true));
+    this.helpComplete("before Clauses", allTypes_2, context, acceptor, 7, 0, Boolean.valueOf(true));
+    this.helpComplete("until Clauses", allTypes_2, context, acceptor, 6, 0, Boolean.valueOf(true));
+    this.helpComplete("If Clauses", allTypes_2, context, acceptor, 3, 0, Boolean.valueOf(true));
+    this.helpComplete("After Clauses", allTypes_2, context, acceptor, 6, 0, Boolean.valueOf(true));
+    this.helpComplete("Once Clauses", allTypes_2, context, acceptor, 5, 0, Boolean.valueOf(true));
+    this.helpComplete("When Clauses", allTypes_2, context, acceptor, 5, 0, Boolean.valueOf(true));
+    this.helpComplete("Whenever Clauses", allTypes_2, context, acceptor, 9, 0, Boolean.valueOf(true));
+    this.helpComplete("Before Clauses", allTypes_2, context, acceptor, 7, 0, Boolean.valueOf(true));
+    this.helpComplete("Until Clauses", allTypes_2, context, acceptor, 6, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void completeConditionalClause_Clauses(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.completeConditionalClause_Clauses(model, assignment, context, acceptor);
+    final String featureType = "Clauses";
+    final String type_1 = "Clause";
+    final String type_2 = "Conjunction";
+    final String allTypes_1 = ((((type_1 + " ") + type_2) + " : ") + featureType);
+    this.helpComplete("Clause and", allTypes_1, context, acceptor, 0, 4, Boolean.valueOf(true));
+    this.helpComplete("Clause or", allTypes_1, context, acceptor, 0, 3, Boolean.valueOf(true));
+    this.helpComplete("Clause and", ("Clause and Clause : " + featureType), context, acceptor, 0, 4, Boolean.valueOf(true));
+    this.helpComplete("Clause or", ("Clause or Clause : " + featureType), context, acceptor, 0, 3, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void completeConditionalClause_Ordinator(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.completeConditionalClause_Ordinator(model, assignment, context, acceptor);
+    this.helpComplete("ClauseOrdinator", "ClauseOrdinator", context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void completeRequirement_ReqID(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.completeRequirement_ReqID(model, assignment, context, acceptor);
+    this.helpComplete("ReqID", "Examples: \'a\', \'A\', \'a_\', \'a_a\', \'a_1\', \'ab-c\', \'ab-1\', \'1\', \'1234\', \'a1\'", context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void completeRequirementText_Mainclauses(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.completeRequirementText_Mainclauses(model, assignment, context, acceptor);
+    final String featureType = "MainClause";
+    final String type_1 = "Modifier";
+    final String type_2 = "Clauses";
+    final String allTypes_1 = ((type_1 + " : ") + featureType);
+    final String allTypes_2 = ((type_2 + " : ") + featureType);
+    final String allTypes_3 = ((((type_1 + " ") + type_2) + " : ") + featureType);
+    this.helpComplete("Modifier", allTypes_1, context, acceptor, 0, 0, Boolean.valueOf(true));
+    this.helpComplete("Clauses", allTypes_2, context, acceptor, 0, 0, Boolean.valueOf(true));
+    this.helpComplete("Modifier", ("Modifier Clauses : " + featureType), context, acceptor, 0, 0, Boolean.valueOf(true));
+    this.helpComplete("Globally Clauses", allTypes_3, context, acceptor, 9, 0, Boolean.valueOf(true));
+    this.helpComplete("globally Clauses", allTypes_3, context, acceptor, 9, 0, Boolean.valueOf(true));
+    this.helpComplete("Always Clauses", allTypes_3, context, acceptor, 7, 0, Boolean.valueOf(true));
+    this.helpComplete("always Clauses", allTypes_3, context, acceptor, 7, 0, Boolean.valueOf(true));
+    this.helpComplete("Sometimes Clauses", allTypes_3, context, acceptor, 10, 0, Boolean.valueOf(true));
+    this.helpComplete("sometimes Clauses", allTypes_3, context, acceptor, 10, 0, Boolean.valueOf(true));
+    this.helpComplete("Eventually Clauses", allTypes_3, context, acceptor, 11, 0, Boolean.valueOf(true));
+    this.helpComplete("eventually Clauses", allTypes_3, context, acceptor, 11, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void completeMainClause_Modifier(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.completeMainClause_Modifier(model, assignment, context, acceptor);
+    this.helpComplete("Modifier", "Modifier", context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void completeMainClause_Clauses(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.completeMainClause_Clauses(model, assignment, context, acceptor);
+    final String featureType = "Clauses";
+    final String type_1 = "Clause";
+    final String type_2 = "Conjunction";
+    final String allTypes_1 = ((((type_1 + " ") + type_2) + " : ") + featureType);
+    this.helpComplete("Clause and", allTypes_1, context, acceptor, 0, 4, Boolean.valueOf(true));
+    this.helpComplete("Clause or", allTypes_1, context, acceptor, 0, 3, Boolean.valueOf(true));
+    this.helpComplete("Clause and", ("Clause and Clause : " + featureType), context, acceptor, 0, 4, Boolean.valueOf(true));
+    this.helpComplete("Clause or", ("Clause or Clause : " + featureType), context, acceptor, 0, 3, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void completeClauses_Clauses(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.completeMainClause_Clauses(model, assignment, context, acceptor);
+    final String featureType = "Clauses";
+    final String type_1 = "Clause";
+    final String type_2 = "Conjunction";
+    final String allTypes_1 = ((((type_1 + " ") + type_2) + " : ") + featureType);
+    this.helpComplete("Clause and", allTypes_1, context, acceptor, 0, 4, Boolean.valueOf(true));
+    this.helpComplete("Clause or", allTypes_1, context, acceptor, 0, 3, Boolean.valueOf(true));
+    this.helpComplete("Clause and", ("Clause and Clause : " + featureType), context, acceptor, 0, 4, Boolean.valueOf(true));
+    this.helpComplete("Clause or", ("Clause or Clause : " + featureType), context, acceptor, 0, 3, Boolean.valueOf(true));
+  }
+  
+  /**
+   * override void completeClauses_Conjunction(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeModalitySentence_Begin(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeModalitySentence_Actors(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeModalitySentence_Modelity(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeModalitySentence_Negation(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeModalitySentence_AuxiliarVerb(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeModalitySentence_Predicate(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeModalitySentence_Ending(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePredicateSentence_Begin(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePredicateSentence_Actors(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePredicateSentence_AuxNeg(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePredicateSentence_AuxiliarVerb(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePredicateSentence_Preds(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePredicateSentence_Ending(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeExistenceSentence_Actors(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeExistenceSentence_RelativeClause(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePropertySentence_Actors(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePropertySentence_Property(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePropertySentence_Rela(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePropertySentence_Modality(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePropertySentence_Negation(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePropertySentence_AuxiliarVerb(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePropertySentence_PredObj(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePropertySentence_Ending(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePropertySentence_AuxNeg(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePropertySentence_Constraints(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeProperty_Property(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeSentenceBegin_Rela(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeSentenceEnding_Const(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeSentenceEnding_Rela(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeRelativeClause_Sentence(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeRelativeClause_Conjunction(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeRelativeClause_CondClauses(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeRelativeSentence_Pronoun(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeRelativeSentence_Modelity(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeRelativeSentence_Negation(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeRelativeSentence_Predicate(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeRelativeSentence_Constraints(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeRelativeSentence_Auxiliar(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeRelativeSentence_Clause(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeActors_Actors(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeActors_Conjunction(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   */
+  @Override
+  public void completeActor_Actor(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.completeActor_Actor(model, assignment, context, acceptor);
+    final String featureType = "Actor";
+    final String type_1 = "Articles|RefArticles|Quantification";
+    final String type_2 = "WORD";
+    final String type_3 = "Articles";
+    final String type_4 = "RefArticles";
+    final String type_5 = "Quantification";
+    final String allTypes_1 = ((type_1 + " : ") + featureType);
+    final String allTypes_2 = ((type_2 + " : ") + featureType);
+    final String allTypes_3 = ((((type_1 + " ") + type_2) + " : ") + featureType);
+    final String allTypes_4 = ((((type_3 + " ") + type_2) + " : ") + featureType);
+    final String allTypes_5 = ((((type_4 + " ") + type_2) + " : ") + featureType);
+    final String allTypes_6 = ((((type_5 + " ") + type_2) + " : ") + featureType);
+    this.helpComplete("PreNominative", allTypes_1, context, acceptor, 0, 0, Boolean.valueOf(true));
+    this.helpComplete("WORD", allTypes_2, context, acceptor, 0, 0, Boolean.valueOf(true));
+    this.helpComplete("PreNominative", allTypes_3, context, acceptor, 0, 0, Boolean.valueOf(true));
+    this.helpComplete("The WORD", allTypes_4, context, acceptor, 4, 0, Boolean.valueOf(true));
+    this.helpComplete("the WORD", allTypes_4, context, acceptor, 4, 0, Boolean.valueOf(true));
+    this.helpComplete("A WORD", allTypes_4, context, acceptor, 2, 0, Boolean.valueOf(true));
+    this.helpComplete("a WORD", allTypes_4, context, acceptor, 2, 0, Boolean.valueOf(true));
+    this.helpComplete("An WORD", allTypes_4, context, acceptor, 3, 0, Boolean.valueOf(true));
+    this.helpComplete("an WORD", allTypes_4, context, acceptor, 3, 0, Boolean.valueOf(true));
+    this.helpComplete("That WORD", allTypes_5, context, acceptor, 5, 0, Boolean.valueOf(true));
+    this.helpComplete("that WORD", allTypes_5, context, acceptor, 5, 0, Boolean.valueOf(true));
+    this.helpComplete("This WORD", allTypes_5, context, acceptor, 5, 0, Boolean.valueOf(true));
+    this.helpComplete("this WORD", allTypes_5, context, acceptor, 5, 0, Boolean.valueOf(true));
+    this.helpComplete("All WORD", allTypes_6, context, acceptor, 4, 0, Boolean.valueOf(true));
+    this.helpComplete("all WORD", allTypes_6, context, acceptor, 4, 0, Boolean.valueOf(true));
+    this.helpComplete("Every WORD", allTypes_6, context, acceptor, 6, 0, Boolean.valueOf(true));
+    this.helpComplete("every WORD", allTypes_6, context, acceptor, 6, 0, Boolean.valueOf(true));
+    this.helpComplete("Each WORD", allTypes_6, context, acceptor, 5, 0, Boolean.valueOf(true));
+    this.helpComplete("each WORD", allTypes_6, context, acceptor, 5, 0, Boolean.valueOf(true));
+    this.helpComplete("Whole WORD", allTypes_6, context, acceptor, 6, 0, Boolean.valueOf(true));
+    this.helpComplete("whole WORD", allTypes_6, context, acceptor, 6, 0, Boolean.valueOf(true));
+    this.helpComplete("Any WORD", allTypes_6, context, acceptor, 4, 0, Boolean.valueOf(true));
+    this.helpComplete("any WORD", allTypes_6, context, acceptor, 4, 0, Boolean.valueOf(true));
+    this.helpComplete("Several WORD", allTypes_6, context, acceptor, 8, 0, Boolean.valueOf(true));
+    this.helpComplete("several WORD", allTypes_6, context, acceptor, 8, 0, Boolean.valueOf(true));
+    this.helpComplete("Either WORD", allTypes_6, context, acceptor, 7, 0, Boolean.valueOf(true));
+    this.helpComplete("either WORD", allTypes_6, context, acceptor, 7, 0, Boolean.valueOf(true));
+  }
+  
+  /**
+   * override void completePreds_Predicate(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePreds_PredObj(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePredicate_Predicates(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePredicate_Object(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePredicateObject_Article(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePredicateObject_Object(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeObject_Article(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeObject_Object(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePredOrObject_Predicate(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePredOrObject_PredObj(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeExistencePreface_Modifier(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeAuxNeg_AuxiliarVerb(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeAuxNeg_Negation(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeAuxNeg_AuxiliarVerbNeg(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePreNominative_Determiner(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completePreNominative_Article(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeRelation_RelposAdv(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeRelation_RelDel(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeRelation_RelComp(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeRelation_RelElements(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeRelObjects_Actor(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeRelObjects_Property(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeRelObjects_RelConj(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeConstraints_TimeConstraint(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeConstraints_Constraint(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeConstraint_Ordinator(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeConstraint_Constraint(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeConstraintOrdinators_Stuffing(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeConstraintOrdinators_Adverbial(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeConstraintOrdinators_Comperator(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeSetConstraint_Set(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeTimeConstraint_Ordinator(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeTimeConstraint_Time(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeTimeConstraint_Unit(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeObjectConstraint_Object(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeIntervallConstraints_Lower(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeIntervallConstraints_Higher(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeSingleValueConstraints_Value(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeValueSet_Elements(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeObjectSet_Elements(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeIntValue_Value(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeIntValue_Unit(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeFloatValue_Value(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   * override void completeFloatValue_Unit(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+   * }
+   */
+  @Override
+  public void complete_Requirement(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_Requirement(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_RequirementText(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_RequirementText(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_MainClause(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_MainClause(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_ConditionalClause(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_ConditionalClause(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_Clauses(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_Clauses(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_Clause(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_Clause(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_ModalitySentence(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_ModalitySentence(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_PredicateSentence(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_PredicateSentence(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_ExistenceSentence(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_ExistenceSentence(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_PropertySentence(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_PropertySentence(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_Property(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_Property(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_SentenceBegin(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_SentenceBegin(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_SentenceEnding(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_SentenceEnding(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_relativeClause(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_relativeClause(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_relativeSentence(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_relativeSentence(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_Actors(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_Actors(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_Actor(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_Actor(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_Preds(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_Preds(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_Predicate(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_Predicate(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_PredicateObject(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_PredicateObject(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_Object(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_Object(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_PredOrObject(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_PredOrObject(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_ExistencePreface(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_ExistencePreface(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_AuxNeg(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_AuxNeg(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_PreNominative(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_PreNominative(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_Adverbial(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_Adverbial(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_Relation(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_Relation(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_RelObjects(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_RelObjects(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_Constraints(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_Constraints(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_Constraint(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_Constraint(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_ConstraintOrdinators(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_ConstraintOrdinators(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_SetConstraint(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_SetConstraint(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_TimeConstraint(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_TimeConstraint(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_ObjectConstraint(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_ObjectConstraint(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_UnitConstraints(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_UnitConstraints(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_IntervallConstraints(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_IntervallConstraints(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_SingleValueConstraints(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_SingleValueConstraints(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_ValueSet(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_ValueSet(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_ObjectSet(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_ObjectSet(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_Value(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_Value(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_IntValue(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_IntValue(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_FloatValue(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_FloatValue(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  @Override
+  public void complete_ReqID(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    super.complete_ReqID(model, ruleCall, context, acceptor);
+    this.helpRuleComplete(ruleCall, context, acceptor, 0, 0, Boolean.valueOf(true));
+  }
+  
+  public void helpComplete(final String proposalText, final String additionalText, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor, final int start, final int end, final Boolean box) {
+    String _xifexpression = null;
+    boolean _equals = additionalText.equals("");
+    if (_equals) {
+      _xifexpression = proposalText;
+    } else {
+      _xifexpression = ((proposalText + " - ") + additionalText);
+    }
+    final String displayText = _xifexpression;
+    final ICompletionProposal proposal = this.createCompletionProposal(proposalText, displayText, null, context);
+    if ((box).booleanValue()) {
+      if ((proposal instanceof ConfigurableCompletionProposal)) {
+        final ConfigurableCompletionProposal configurable = ((ConfigurableCompletionProposal)proposal);
+        int _replacementOffset = configurable.getReplacementOffset();
+        int _plus = (_replacementOffset + start);
+        configurable.setSelectionStart(_plus);
+        int _length = proposalText.length();
+        int _minus = (_length - (start + end));
+        configurable.setSelectionLength(_minus);
+        configurable.setAutoInsertable(false);
+        configurable.setSimpleLinkedMode(context.getViewer(), '\t', ' ');
+      }
+    }
+    acceptor.accept(proposal);
+  }
+  
+  public void helpRuleComplete(final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor, final int start, final int end, final Boolean box) {
+    final Assignment ass = GrammarUtil.containingAssignment(ruleCall);
+    final Boolean notemptyFeature = Boolean.valueOf(((ass != null) && (ass.getFeature() != null)));
+    String _xifexpression = null;
+    if (((notemptyFeature).booleanValue() && ass.getFeature().equals(ass.getFeature().toLowerCase()))) {
+      _xifexpression = Strings.toFirstUpper(ass.getFeature());
+    } else {
+      String _xifexpression_1 = null;
+      if ((notemptyFeature).booleanValue()) {
+        _xifexpression_1 = ass.getFeature();
+      } else {
+        _xifexpression_1 = "";
+      }
+      _xifexpression = _xifexpression_1;
+    }
+    final String feature = _xifexpression;
+    final Boolean notemptyRule = Boolean.valueOf((((ruleCall != null) && (ruleCall.getRule() != null)) && (ruleCall.getRule().getName() != null)));
+    String _xifexpression_2 = null;
+    if ((feature.equals("") && (notemptyRule).booleanValue())) {
+      _xifexpression_2 = Strings.toFirstUpper(ruleCall.getRule().getName().toLowerCase());
+    } else {
+      _xifexpression_2 = feature;
+    }
+    final String proposalText = _xifexpression_2;
+    String _xifexpression_3 = null;
+    if (((!feature.equals("")) && (notemptyRule).booleanValue())) {
+      String _name = ruleCall.getRule().getName();
+      _xifexpression_3 = ((proposalText + " - ") + _name);
+    } else {
+      _xifexpression_3 = "";
+    }
+    final String displayText = _xifexpression_3;
+    String _xifexpression_4 = null;
+    if ((notemptyRule).booleanValue()) {
+      _xifexpression_4 = this.getValueConverter().toString(proposalText, ruleCall.getRule().getName());
+    } else {
+      _xifexpression_4 = "";
+    }
+    final String prop = _xifexpression_4;
+    boolean _equals = displayText.equals("");
+    boolean _not = (!_equals);
+    if (_not) {
+      final ICompletionProposal proposal = this.createCompletionProposal(prop, displayText, null, context);
+      if ((box).booleanValue()) {
+        if ((proposal instanceof ConfigurableCompletionProposal)) {
+          final ConfigurableCompletionProposal configurable = ((ConfigurableCompletionProposal)proposal);
+          int _replacementOffset = configurable.getReplacementOffset();
+          int _plus = (_replacementOffset + start);
+          configurable.setSelectionStart(_plus);
+          int _length = proposalText.length();
+          int _minus = (_length - (start + end));
+          configurable.setSelectionLength(_minus);
+          configurable.setAutoInsertable(false);
+          configurable.setSimpleLinkedMode(context.getViewer(), '\t', ' ');
+        }
+      }
+      acceptor.accept(proposal);
+    }
+  }
 }
