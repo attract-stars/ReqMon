@@ -1,0 +1,258 @@
+grammar de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.Mapping with org.eclipse.xtext.common.Terminals
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+import "http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/mapping/SysDef" as system
+
+
+generate mapping "http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/mapping/language/Mapping"
+
+
+Model:
+	(imports+=Import | use+=Usages)*;
+	
+Usages:
+	//'use' name=[sys::NodeText]
+	'system' name=[system::SystemNode] |
+	'message' name=[system::MessageNode] |
+	'alloc' name=[system::AllocationNode] |
+	'sigRef' name=[system::SignalRefNode]  |
+	'loc' name=[system::LocationNode] |
+	'bit' name=[system::BitNode] |
+	'test' test=[system::BitNode]
+;
+
+
+Import:
+	'import' importURI=STRING
+;
+
+
+/* 
+Model:
+	mappings+=Mapping*
+;
+
+Mapping:
+	(def+=Definition | rule+=Rule)
+	//def=Definition 
+	
+;
+
+Definition:
+	//object=ID ':=' systemObject=ID ';' |
+	//systemObject=ID ';'
+	 //| 
+	'sytem' system=[system::SystemNode] |
+	'message' message=[system::MessageNode]
+;
+
+	
+Rule:
+	//((quant=Quantification | existance=Existance) objects=Objects 
+	//	(negation+=Negation? ('element_of' | 'in') (set+=ValueSet | set+=ObjectSet | intervall+=Intervall)? op+=Operators?)* 
+	//	relativ=Relative
+	//)?
+	relations+=Relation ';' // |
+	//function+=Functions+ 
+;*/
+	
+/*Relations:
+	relation+=Relation (conj+=Conjunction relation+=Relation)*
+;*/
+
+/* 
+Relation:
+	fstObject=ObjectOrValue negation=Negation? comp=Comparators secObject=ObjectOrValue 
+;*/
+/*
+Functions:
+	function+=Function (conj+=Conjunction function+=Function)*
+;
+
+Function:
+	op+=Operators? function+=SimpleFunction (op+=Operators function+=Function)* |
+	'(' op+=Operators? function+=SimpleFunction (op+=Operators function+=Function)* ')' 
+;
+
+
+SimpleFunction:
+	op=Operators fstObject=ObjectOrValue |
+	'(' op=Operators fstObject=ObjectOrValue ')' |
+	fstObject=ObjectOrValue op=Operators secObject=ObjectOrValue |
+	'(' fstObject=ObjectOrValue op=Operators secObject=ObjectOrValue ')'
+;
+*/
+
+/*ObjectOrValue:
+	(object=Object | value=Value)
+;*/
+
+/*Objects:
+	object+=Object (conj+=Conjunction object+= Object)*
+;*/
+
+
+
+/*Object:
+	(object=ID | object=STRING) 
+;*/
+
+/* =========== VALUES =========== */
+
+/*
+Intervall:
+	'[' lower=Value','higher=Value ']'
+;
+
+
+ValueSet:
+	 '{' (elements+=Value) (';'elements+=Value)*'}'
+;
+
+ObjectSet:
+	  '{' (elements+=Object) (';'elements+=Object)*'}'
+;*/
+
+/*Value:
+	IntValue| FloatValue
+;
+
+IntValue:
+	value=INT unit=Unit? 
+;
+
+FloatValue:
+	value=FLOAT  unit=Unit? 
+;*/
+
+
+/*WORD returns ecore::EString: 
+	ID('-'ID)*
+;*/
+
+ 
+/*FLOAT returns ecore::EFloat:
+	INT'.'INT
+;
+	
+Unit:
+	 LengthUnits | PresureUnits | HeatUnits | MassUnits | VelcoityUnits | Cuvature | TimeUnits
+;*/
+
+
+
+/* =========== BASIC SYNTAX =========== */
+/* 
+Operators:
+	Operator | Comparators | Conclusion | Equivalence |Unknown
+;
+
+
+Operator:
+	'+' | '-' | '*' | '/' | '^'
+;
+
+Unknown:
+	'?'
+;
+
+Conclusion:
+	'=>' | '==>' | '<==' | '~>' | '<~'
+;
+
+Equivalence:
+	'<=>' | '<==>'
+;
+
+Relative:
+ // for which
+	':'
+;
+	*/
+	
+Comparators:
+	/** -> SizeAdverbial (higher, more, larger), ComparisonAdverbial (faster, better),
+	 *        PositionAdverbial (above, on, in_front_of) */
+	'>' |
+	
+	/** -> SizeAdverbial (less, smaller), ComparisonAdverbial (slower),
+	 *        PositionAdverbial (below, behind, under) */ 
+	'<' |
+	 
+	/** -> ComparisonAdverbial (equal) */
+	'=' | 
+	
+	/** ->  SizeAdverbial (as_long_as) */
+	'==' | 
+	
+	/** greater or equal  */
+	'>=' |
+	
+	/** smaller or equal */ 
+	'<=' | 
+	
+	/** -> PositionAdverbial (out) */
+	'<>' | 
+	
+	/** -> PositionAdverbial (between, in, within) */
+	'><' | 
+	
+	/** -> PositionAdverbial (next) */
+	'>=<'
+	
+	/** ('<<' a lot smaller, '>>' a lot bigger, '<<<' much smaller, '>>>' much bigger) */ 
+	// | '<<' | '<<<' | '>>' | '>>>'
+;
+
+Negation:
+	'!'
+;
+
+Quantification:
+	'V'
+;
+
+Existance:
+	'E'
+;
+
+Conjunction:
+	/** and */
+	'&' |
+	
+	/** or */
+	'|'
+;
+
+
+
+/* =========== BASIC UNITS =========== */
+
+Cuvature:
+	'rad/m' | '°' | 'rad' | '°/m'	
+;
+
+VelcoityUnits:
+	'm/s' | 'knots'  |'km/h' | 'm/min'
+	;
+
+MassUnits:
+	'kg'| 'g' | 'mg' | 't'
+;
+
+HeatUnits:
+	'C' | 'F'
+;
+
+PresureUnits:
+	'bar' | 'Pa' | 'hPa'
+;
+
+
+LengthUnits:
+	'm' | 'f' | 'km' | 'cm' | 'mm' |'nm'
+;
+
+TimeUnits:
+	 'ns' | 'ms' | 's' | 'min' | 'h' | 'd' | 'mon' | 'y' 
+;

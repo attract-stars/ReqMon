@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<xs:schema xmln:xs="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.XMLSchema"
+targetNamespace="de.fraunhofer.isst.automotive.stars.reqmon.dsl"
+xmlns="de.fraunhofer.isst.automotive.stars.reqmon.dsl"
+elementFormDefault="qualified">
+</xs:schema>
