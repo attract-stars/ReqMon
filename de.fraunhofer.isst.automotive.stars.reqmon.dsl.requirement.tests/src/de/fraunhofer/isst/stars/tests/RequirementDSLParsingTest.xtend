@@ -24,54 +24,43 @@ class RequirementDSLParsingTest {
 		 * Test of the given requirement examples
 		 */ 
 		testSequence('''
-			Req1: The system must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is behind the ego vehicle and the vehicle´s relative velocity is more than 5 m/s.
-			Req2: The system must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is in front to the ego vehicle and the vehicle´s relative velocity is less than 5 m/s.
-			Req3a: The system must not perform a lane change to any lane if a vehicle is on the ego lane and the vehicle is in_front_of the ego-vehicle and the vehicle´s distance in relation to the ego-vehicle is less than 1m.
-			Req3b: The system must not perform a lane change to any lane if a vehicle is on the ego-lane and the vehicle is in_front_of the ego-vehicle and the vehicle´s distance is less than 1 m in relation to the ego-vehicle.
-			Req4: The system must not perform a lane change to any lane if a vehicle is on the ego lane and the vehicle is behind the ego vehicle  and the vehicle´s relative velocity is larger than 10 m/s.
-			Req5: The system must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is next to the ego vehicle and the vehicle´s relative velocity is less than 2m/s.
-			Req5: The system must not perform a lane change to any lane if the lane´s markings are solid.
-			Req6: The system must not perform a lane change to any lane if the lane´s markings is unknown.
-			Req7: The system must not perform a lane change to any lane if the lane is unknown.
-			Req8: The system must not perform a lane change to any lane if the lane is not existing.
-			Req9: The system must not perform a lane change to any lane if the  lane is a restricted lane.
-			Req10: The system must not perform a lane change to any lane if the lane is a emergency lane.
-			Req12: The system must not perform a lane change to any lane if the lane is next to a highway on-ramp.
-			Req13: The system must not perform a lane change to any lane if the lane´s curvature is higher than 25 rad/m.
-			Req14: The system must not perform a lane change to any lane if ego-vehicle´s velocity is less than 10 m/s.
-			Req15: The system must not perform a lane change to any lane if domain is not handled.
-			Req16: The system must not perform a lane change to any lane if the driver overturns the system with more than 10 nm.
-			Req17a: The system must not perform a lane change to any lane if the ego-vehicle´s lateral-offset in relation to the ego-lane´s center is more than 0.4 m. 
-			Req17b: The system must not perform a lane change to any lane if the ego-vehicle´s lateral-offset in relation to the ego-lane´s center is more than 0.4 m and a lane-change is not in progress.
+			Req 1: The system must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is behind the ego vehicle and the vehicle´s relative velocity is more than 5 m/s.
+			Req 2: The system must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is in front to the ego vehicle and the vehicle´s relative velocity is less than 5 m/s.
+			Req Req3a: The system must not perform a lane change to any lane if a vehicle is on the ego lane and the vehicle is in_front_of the ego-vehicle and the vehicle´s distance in relation to the ego-vehicle is less than 1m.
+			Req Req3b: The system must not perform a lane change to any lane if a vehicle is on the ego-lane and the vehicle is in_front_of the ego-vehicle and the vehicle´s distance is less than 1 m in relation to the ego-vehicle.
+			Req 4: The system must not perform a lane change to any lane if a vehicle is on the ego lane and the vehicle is behind the ego vehicle  and the vehicle´s relative velocity is larger than 10 m/s.
+			Req 5: The system must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is next to the ego vehicle and the vehicle´s relative velocity is less than 2m/s.
+			Req 5: The system must not perform a lane change to any lane if the lane´s markings are solid.
+			Req 6: The system must not perform a lane change to any lane if the lane´s markings is unknown.
+			Req 7: The system must not perform a lane change to any lane if the lane is unknown.
+			Req 8: The system must not perform a lane change to any lane if the lane is not existing.
+			Req 9: The system must not perform a lane change to any lane if the  lane is a restricted lane.
+			Req 10: The system must not perform a lane change to any lane if the lane is a emergency lane.
+			Req 12: The system must not perform a lane change to any lane if the lane is next to a highway on-ramp.
+			Req 13: The system must not perform a lane change to any lane if the lane´s curvature is higher than 25 rad/m.
+			Req 14: The system must not perform a lane change to any lane if ego-vehicle´s velocity is less than 10 m/s.
+			Req 15: The system must not perform a lane change to any lane if domain is not handled.
+			Req 16: The system must not perform a lane change to any lane if the driver overturns the system with more than 10 nm.
+			Req Req17a: The system must not perform a lane change to any lane if the ego-vehicle´s lateral-offset in relation to the ego-lane´s center is more than 0.4 m. 
+			Req Req17b: The system must not perform a lane change to any lane if the ego-vehicle´s lateral-offset in relation to the ego-lane´s center is more than 0.4 m and a lane-change is not in progress.
 		''')
 		
 		/*
 		 * Test of the Requirement rule 
 		 * 
-		 * : RequirementText.
-		 * : RequirementText;
-		 * 'Req': RequirementText./;
-		 * ReqID: RequirementText./;
-		 * 'Req' ReqID: RequirementText./;
+		 * 'Req': RequirementText;
+		 * 'Req' ReqID: RequirementText;
 		 */ 
 		testSequence('''
-			: x x.
-			: x x;
 			Req: x x.
 			Req: x x;
-			x: x x.
-			x: x x;
-			3: x x.
-			3: x x;
 			Req x4: x x.
 			Req x4: x x;
 			
-			: The test must be successful.
-			: The test must be successful;
+			Req : The test must be successful.
+			Req : The test must be successful;
 			Req: The test must be successful.
 			Req: The test must be successful;
-			id123: The test must be successful.
-			id123: The test must be successful;
 			Req id123: The test must be successful.
 			Req id123: The test must be successful;
 			
@@ -80,851 +69,851 @@ class RequirementDSLParsingTest {
 		/*
 		 * Test of the RequirementText rule
 		 * 
-		 * 1: ConditionalClause then MainClause
-		 * 2: ConditionalClause, then MainClause
-		 * 3: ConditionalClause then MainClause ConditionalClause
-		 * 4: ConditionalClause, then MainClause ConditionalClause
-		 * 5: ConditionalClause, then MainClause, ConditionalClause
-		 * 6: MainClause ConditionalClause
-		 * 7: MainClause ConditionalClause
+		 * Req 1: ConditionalClause then MainClause
+		 * Req 2: ConditionalClause, then MainClause
+		 * Req 3: ConditionalClause then MainClause ConditionalClause
+		 * Req 4: ConditionalClause, then MainClause ConditionalClause
+		 * Req 5: ConditionalClause, then MainClause, ConditionalClause
+		 * Req 6: MainClause ConditionalClause
+		 * Req 7: MainClause ConditionalClause
 		 */ 
 		testSequence('''
-			1: When x x then x x.
-			2: When x x, then x x.
-			3: When x x then x x if x x.
-			4: When x x, then x x if x x.
-			5: When x x, then x x, if x x.
-			6: x x if x x.
-			7: x x, if x x.
+			Req 1: When x x then x x.
+			Req 2: When x x, then x x.
+			Req 3: When x x then x x if x x.
+			Req 4: When x x, then x x if x x.
+			Req 5: When x x, then x x, if x x.
+			Req 6: x x if x x.
+			Req 7: x x, if x x.
 			
-			: When the precondition is correct then the test must be successful.
-			: When the precondition is correct, then the test must be successful.
-			: When the precondition is correct then the test must be successful if the postcondition is true.
-			: When the precondition is correct, then the test must be successful if the postcondition is true.
-			: When the precondition is correct, then the test must be successful, if the postcondition is true.
-			: The test must be successful if the postcondition is true.
-			: The test must be successful, if the postcondition is true.
+			Req: When the precondition is correct then the test must be successful.
+			Req: When the precondition is correct, then the test must be successful.
+			Req: When the precondition is correct then the test must be successful if the postcondition is true.
+			Req: When the precondition is correct, then the test must be successful if the postcondition is true.
+			Req: When the precondition is correct, then the test must be successful, if the postcondition is true.
+			Req: The test must be successful if the postcondition is true.
+			Req: The test must be successful, if the postcondition is true.
 			
 		''')
 		
 		/*
 		 * Test of the ConditionalClause rule
 		 * 
-		 * 1: ClauseOrdinator Clauses MainClause
-		 * 2: MainClause ClauseOrdinator Clauses
+		 * Req 1: ClauseOrdinator Clauses MainClause
+		 * Req 2: MainClause ClauseOrdinator Clauses
 		 */ 
 		testSequence('''
-			1: If x x then x x.
-			1: After x x then x x.
-			1: Once x x then x x.
-			1: When x x then x x.
-			1: Whenever x x then x x.
-			1: While x x then x x.
-			1: Before x x then x x.
-			1: Until x x then x x.
-			2: x x if x x.
-			2: x x after x x.
-			2: x x once x x.
-			2: x x when x x.
-			2: x x whenever x x.
-			2: x x while x x.
-			2: x x before x x.
-			2: x x until x x.
+			Req 1: If x x then x x.
+			Req 1: After x x then x x.
+			Req 1: Once x x then x x.
+			Req 1: When x x then x x.
+			Req 1: Whenever x x then x x.
+			Req 1: While x x then x x.
+			Req 1: Before x x then x x.
+			Req 1: Until x x then x x.
+			Req 2: x x if x x.
+			Req 2: x x after x x.
+			Req 2: x x once x x.
+			Req 2: x x when x x.
+			Req 2: x x whenever x x.
+			Req 2: x x while x x.
+			Req 2: x x before x x.
+			Req 2: x x until x x.
 			
-			: The test must be successful If the precondition is correct.
-			: The test must be successful if the precondition is correct.
-			: The test must be successful After the precondition is correct.
-			: The test must be successful after the precondition is correct.
-			: The test must be sucessful Once the precondition has been correct.
-			: The test must be sucessful once the precondition has been correct.
-			: The test must be successful When the precondition is correct.
-			: The test must be successful when the precondition is correct.
-			: The test must be sucessful Whenever the precondition has been correct.
-			: The test must be sucessful whenever the precondition has been correct.
-			: The test must be sucessful While the system is build.
-			: The test must be sucessful while the system is build.
-			: The test must be sucessful Before the system is ready.
-			: The test must be sucessful before the system is ready.
-			: The test must be sucessful Until the system is changed.
-			: The test must be sucessful until the system is changed.
+			Req: The test must be successful If the precondition is correct.
+			Req: The test must be successful if the precondition is correct.
+			Req: The test must be successful After the precondition is correct.
+			Req: The test must be successful after the precondition is correct.
+			Req: The test must be sucessful Once the precondition has been correct.
+			Req: The test must be sucessful once the precondition has been correct.
+			Req: The test must be successful When the precondition is correct.
+			Req: The test must be successful when the precondition is correct.
+			Req: The test must be sucessful Whenever the precondition has been correct.
+			Req: The test must be sucessful whenever the precondition has been correct.
+			Req: The test must be sucessful While the system is build.
+			Req: The test must be sucessful while the system is build.
+			Req: The test must be sucessful Before the system is ready.
+			Req: The test must be sucessful before the system is ready.
+			Req: The test must be sucessful Until the system is changed.
+			Req: The test must be sucessful until the system is changed.
 			
 		''')
 		
 		/*
 		 * Test of the MainClause rule
 		 * 
-		 * 1: Modifier Clauses
-		 * 2: ConditionalClause Modifier Clauses
+		 * Req 1: Modifier Clauses
+		 * Req 2: ConditionalClause Modifier Clauses
 		 */
 		testSequence('''
-			1: Globally x x.
-			1: Always x x.
-			1: Sometimes x x.
-			1: Eventually x x.
-			2: If x x then globally x x.
-			2: If x x then always x x.
-			2: If x x then sometimes x x.
-			2: If x x then eventually x x.
+			Req 1: Globally x x.
+			Req 1: Always x x.
+			Req 1: Sometimes x x.
+			Req 1: Eventually x x.
+			Req 2: If x x then globally x x.
+			Req 2: If x x then always x x.
+			Req 2: If x x then sometimes x x.
+			Req 2: If x x then eventually x x.
 			
-			: The test must be successful.
-			: the test must be successful.
-			: Globally the test must be successful.
-			: globally the test must be successful.
-			: Always the test must be successful.
-			: always the test must be successful.
-			: Sometimes the test must be successful.
-			: sometimes the test must be successful.
-			: Eventually the test must be successful.
-			: eventually the test must be successful.
+			Req: The test must be successful.
+			Req: the test must be successful.
+			Req: Globally the test must be successful.
+			Req: globally the test must be successful.
+			Req: Always the test must be successful.
+			Req: always the test must be successful.
+			Req: Sometimes the test must be successful.
+			Req: sometimes the test must be successful.
+			Req: Eventually the test must be successful.
+			Req: eventually the test must be successful.
 			
 		''')
 		
 		/*
 		 * Test of the Clauses rule
 		 * 
-		 * 1: MainClause Conjunction MainClause
-		 * 2: ConditionalClause Conjunction ConditionalClause MainClause
-		 * 3: MainClause ConditionalClause Conjunction ConditionalClause
-		 * 4: ConditionalClause Conjunction ConditionalClause MainClause Conjunction MainClause ConditionalClause Conjunction ConditionalClause
+		 * Req 1: MainClause Conjunction MainClause
+		 * Req 2: ConditionalClause Conjunction ConditionalClause MainClause
+		 * Req 3: MainClause ConditionalClause Conjunction ConditionalClause
+		 * Req 4: ConditionalClause Conjunction ConditionalClause MainClause Conjunction MainClause ConditionalClause Conjunction ConditionalClause
 		 */ 
 		testSequence('''
-			1: x x and x x.
-			1: x x or x x.
-			2: if x x and x x then x x.
-			2: if x x or x x then x x.
-			3: x x if x x and x x.
-			3: x x if x x or x x.
-			4: if x x and x x then x x and x x if x x and x x.
-			4: if x x or x x then x x or x x if x x or x x.
+			Req 1: x x and x x.
+			Req 1: x x or x x.
+			Req 2: if x x and x x then x x.
+			Req 2: if x x or x x then x x.
+			Req 3: x x if x x and x x.
+			Req 3: x x if x x or x x.
+			Req 4: if x x and x x then x x and x x if x x and x x.
+			Req 4: if x x or x x then x x or x x if x x or x x.
 			
-			: The test must be successful if the precondition is correct and the system is important.
-			: The test must be successful if the precondition is correct or the system is complex.
-			: The test must be successful if the precondition is correct and the system is important or the system is complex.
-			: The test must be successful and the precondition must be correct and the system should be important.
-			: The test must be successful and the precondition must be correct or it should be nice.
-			: The test must be successful and the precondition must be correct and the system should be important or it should be nice.
+			Req: The test must be successful if the precondition is correct and the system is important.
+			Req: The test must be successful if the precondition is correct or the system is complex.
+			Req: The test must be successful if the precondition is correct and the system is important or the system is complex.
+			Req: The test must be successful and the precondition must be correct and the system should be important.
+			Req: The test must be successful and the precondition must be correct or it should be nice.
+			Req: The test must be successful and the precondition must be correct and the system should be important or it should be nice.
 			
 		''')
 		
 		/*
 		 * Test of the ModalitySentence rule
 		 * 
-		 * 1: Actors Modality Predicate
-		 * 2: Actors Modality Negation Predicate
-		 * 3: SentenceBegin Actors Modality Predicate
-		 * 4: SentenceBegin Actors Modality Negation Predicate
-		 * 5: Actors Modality AuxiliaryVerb Predicate
-		 * 6: Actors Modality Negation AuxiliaryVerb Predicate
-		 * 7: SentenceBegin Actors Modality AuxiliaryVerb Predicate
-		 * 8: SentenceBegin Actors Modality Negation AuxiliaryVerb Predicate
-		 * 9: Actors Modality Predicate SentenceEnding
-		 * 10: Actors Modality Negation Predicate SentenceEnding
-		 * 11: Actors Modality AuxiliaryVerb Predicate SentenceEnding
-		 * 12: Actors Modality Negation AuxiliaryVerb Predicate SentenceEnding
-		 * 13: SentenceBegin Actors Modality Negation AuxiliaryVerb Predicate SentenceEnding
+		 * Req 1: Actors Modality Predicate
+		 * Req 2: Actors Modality Negation Predicate
+		 * Req 3: SentenceBegin Actors Modality Predicate
+		 * Req 4: SentenceBegin Actors Modality Negation Predicate
+		 * Req 5: Actors Modality AuxiliaryVerb Predicate
+		 * Req 6: Actors Modality Negation AuxiliaryVerb Predicate
+		 * Req 7: SentenceBegin Actors Modality AuxiliaryVerb Predicate
+		 * Req 8: SentenceBegin Actors Modality Negation AuxiliaryVerb Predicate
+		 * Req 9: Actors Modality Predicate SentenceEnding
+		 * Req 10: Actors Modality Negation Predicate SentenceEnding
+		 * Req 11: Actors Modality AuxiliaryVerb Predicate SentenceEnding
+		 * Req 12: Actors Modality Negation AuxiliaryVerb Predicate SentenceEnding
+		 * Req 13: SentenceBegin Actors Modality Negation AuxiliaryVerb Predicate SentenceEnding
 		 */ 
 		testSequence('''
-			1: x shall x.
-			1: x should x.
-			1: x will x.
-			1: x would x.
-			1: x can x.
-			1: x could x.
-			1: x must x.
+			Req 1: x shall x.
+			Req 1: x should x.
+			Req 1: x will x.
+			Req 1: x would x.
+			Req 1: x can x.
+			Req 1: x could x.
+			Req 1: x must x.
 			
-			2: x shall not x.
-			2: x should not x.
-			2: x will not x.
-			2: x would not x.
-			2: x can not x.
-			2: x could not x.
-			2: x must not x.
+			Req 2: x shall not x.
+			Req 2: x should not x.
+			Req 2: x will not x.
+			Req 2: x would not x.
+			Req 2: x can not x.
+			Req 2: x could not x.
+			Req 2: x must not x.
 			
-			3: in relation to x, x shall x.
-			4: in relation to x, x shall not x.
+			Req 3: in relation to x, x shall x.
+			Req 4: in relation to x, x shall not x.
 			
-			5: x shall is x.
-			5: x shall are x.
-			5: x shall be x.
-			5: x shall been x.
-			5: x shall has x.
-			5: x shall have x.
-			5: x shall do x.
-			5: x shall does x.
+			Req 5: x shall is x.
+			Req 5: x shall are x.
+			Req 5: x shall be x.
+			Req 5: x shall been x.
+			Req 5: x shall has x.
+			Req 5: x shall have x.
+			Req 5: x shall do x.
+			Req 5: x shall does x.
 			
-			6: x shall not do x.
-			7: in relation to x, x shall do x.
-			8: in relation to x, x shall not do x.
+			Req 6: x shall not do x.
+			Req 7: in relation to x, x shall do x.
+			Req 8: in relation to x, x shall not do x.
 			
-			9: x shall x in x.
-			10: x shall not x in x.
-			11: x shall do x in x.
-			12: x shall not do x in x.
-			13: in relation to x, x shall not do x in x.
+			Req 9: x shall x in x.
+			Req 10: x shall not x in x.
+			Req 11: x shall do x in x.
+			Req 12: x shall not do x in x.
+			Req 13: in relation to x, x shall not do x in x.
 			
 		''')
 		
 		/*
 		 * Test of the PredicateSentence rule
 		 * 
-		 * 1: Actors AuxNeg
-		 * 2: SentenceBegin Actors AuxNeg
-		 * 3: Actors AuxNeg AuxiliaryVerb
-		 * 4: SentenceBegin Actors AuxNeg AuxiliaryVerb
-		 * 5: Actors AuxNeg Preds
-		 * 6: SentenceBegin Actors AuxNeg Preds
-		 * 7: Actors AuxNeg AuxiliaryVerb Preds
-		 * 8: SentenceBegin Actors AuxNeg AuxiliaryVerb Preds
-		 * 9: Actors AuxNeg SentenceEnding
-		 * 10: SentenceBegin Actors AuxNeg SentenceEnding
-		 * 11: Actors AuxNeg AuxiliaryVerb SentenceEnding
-		 * 12: SentenceBegin Actors AuxNeg AuxiliaryVerb SentenceEnding
-		 * 13: Actors AuxNeg Preds SentenceEnding
-		 * 14: SentenceBegin Actors AuxNeg Preds SentenceEnding
-		 * 15: Actors AuxNeg AuxiliaryVerb Preds SentenceEnding
-		 * 16: SentenceBegin Actors AuxNeg AuxiliaryVerb Preds SentenceEnding
-		 * 17: Actors Preds
-		 * 18: SentenceBegin Actors Preds
-		 * 19: Actors Preds SentenceEnding
-		 * 20: SentenceBegin Actors Preds SentenceEnding
+		 * Req 1: Actors AuxNeg
+		 * Req 2: SentenceBegin Actors AuxNeg
+		 * Req 3: Actors AuxNeg AuxiliaryVerb
+		 * Req 4: SentenceBegin Actors AuxNeg AuxiliaryVerb
+		 * Req 5: Actors AuxNeg Preds
+		 * Req 6: SentenceBegin Actors AuxNeg Preds
+		 * Req 7: Actors AuxNeg AuxiliaryVerb Preds
+		 * Req 8: SentenceBegin Actors AuxNeg AuxiliaryVerb Preds
+		 * Req 9: Actors AuxNeg SentenceEnding
+		 * Req 10: SentenceBegin Actors AuxNeg SentenceEnding
+		 * Req 11: Actors AuxNeg AuxiliaryVerb SentenceEnding
+		 * Req 12: SentenceBegin Actors AuxNeg AuxiliaryVerb SentenceEnding
+		 * Req 13: Actors AuxNeg Preds SentenceEnding
+		 * Req 14: SentenceBegin Actors AuxNeg Preds SentenceEnding
+		 * Req 15: Actors AuxNeg AuxiliaryVerb Preds SentenceEnding
+		 * Req 16: SentenceBegin Actors AuxNeg AuxiliaryVerb Preds SentenceEnding
+		 * Req 17: Actors Preds
+		 * Req 18: SentenceBegin Actors Preds
+		 * Req 19: Actors Preds SentenceEnding
+		 * Req 20: SentenceBegin Actors Preds SentenceEnding
 		 */ 
 		testSequence('''
-			1: x is.
-			2: in relation to x, x is.
-			3: x doesn´t is.
-			4: in relation to x, x doesn´t is.
-			5: x is x.
-			6: in relation to x, x is x.
-			7: x doesn´t is x.
-			8: in relation to x, x doesn´t is x.
-			9: x is in x.
-			10: in relation to x, x is in x.
-			11: x doesn´t is in x.
-			12: in relation to x, x doesn´t is in x.
-			13: x is x in x.
-			14: in relation to x, x is x in x.
-			15: x doesn´t is x in x.
-			16: in relation to x, x doesn´t is x in x.
-			17: x x.
-			18: in relation to x, x x.
-			19: x x in x.
-			20: in relation to x, x x in x.
+			Req 1: x is.
+			Req 2: in relation to x, x is.
+			Req 3: x doesn´t is.
+			Req 4: in relation to x, x doesn´t is.
+			Req 5: x is x.
+			Req 6: in relation to x, x is x.
+			Req 7: x doesn´t is x.
+			Req 8: in relation to x, x doesn´t is x.
+			Req 9: x is in x.
+			Req 10: in relation to x, x is in x.
+			Req 11: x doesn´t is in x.
+			Req 12: in relation to x, x doesn´t is in x.
+			Req 13: x is x in x.
+			Req 14: in relation to x, x is x in x.
+			Req 15: x doesn´t is x in x.
+			Req 16: in relation to x, x doesn´t is x in x.
+			Req 17: x x.
+			Req 18: in relation to x, x x.
+			Req 19: x x in x.
+			Req 20: in relation to x, x x in x.
 			
 		''')
 		
 		/*
 		 * Test of the ExistenceSentence rule
 		 * 
-		 * 1: ExistencePreface Actors, relativeClause,
-		 * 2: ExistencePreface Actors, relativeClause, Conjunction MainClause
-		 * 3: MainClause Conjunction ExistencePreface Actors, relativeClause, Conjunction MainClause
+		 * Req 1: ExistencePreface Actors, relativeClause,
+		 * Req 2: ExistencePreface Actors, relativeClause, Conjunction MainClause
+		 * Req 3: MainClause Conjunction ExistencePreface Actors, relativeClause, Conjunction MainClause
 		 */
 		testSequence('''
-			1: There exist x, who must x,.
-			1: There exists x, who must x,.
-			2: There exist x, who must x, and x x.
-			2: There exists x, who must x, and x x.
-			3: x x and there exist x, who must x, and x x.
-			3: x x and there exists x, who must x, and x x.
+			Req 1: There exist x, who must x,.
+			Req 1: There exists x, who must x,.
+			Req 2: There exist x, who must x, and x x.
+			Req 2: There exists x, who must x, and x x.
+			Req 3: x x and there exist x, who must x, and x x.
+			Req 3: x x and there exists x, who must x, and x x.
 			
 		''')
 		
 		/*
 		 * Test of the PropertySentence rule
 		 * 
-		 * 1: Actors Property Modality PredOrObject
-		 * 2: Actors Property Relation Modality PredOrObject
-		 * 3: Actors Property Modality Negation PredOrObject
-		 * 4: Actors Property Relation Modality Negation PredOrObject
-		 * 5: Actors Property Modality AuxiliaryVerb PredOrObject
-		 * 6: Actors Property Relation Modality AuxiliaryVerb PredOrObject
-		 * 7: Actors Property Modality Negation AuxiliaryVerb PredOrObject
-		 * 8: Actors Property Relation Modality Negation AuxiliaryVerb PredOrObject
-		 * 9: Actors Property Modality PredOrObject SentenceEnding
-		 * 10: Actors Property Relation Modality PredOrObject SentenceEnding
-		 * 11: Actors Property Modality Negation PredOrObject SentenceEnding
-		 * 12: Actors Property Relation Modality Negation PredOrObject SentenceEnding
-		 * 13: Actors Property Modality AuxiliaryVerb PredOrObject SentenceEnding
-		 * 14: Actors Property Relation Modality AuxiliaryVerb PredOrObject SentenceEnding
-		 * 15: Actors Property Modality Negation AuxiliaryVerb PredOrObject SentenceEnding
-		 * 16: Actors Property Relation Modality Negation AuxiliaryVerb PredOrObject SentenceEnding
-		 * 17: Actors Property AuxNeg PredOrObject
-		 * 18: Actors Property AuxNeg Constraints
-		 * 19: Actors Property Relation AuxNeg PredOrObject
-		 * 20: Actors Property Relation AuxNeg constraints
-		 * 21: Actors Property AuxNeg PredOrObject SentenceEnding
-		 * 22: Actors Property AuxNeg Constraints SentenceEnding
-		 * 23: Actors Property Relation AuxNeg PredOrObject SentenceEnding
-		 * 24: Actors Property Relation AuxNeg constraints SentenceEnding
+		 * Req 1: Actors Property Modality PredOrObject
+		 * Req 2: Actors Property Relation Modality PredOrObject
+		 * Req 3: Actors Property Modality Negation PredOrObject
+		 * Req 4: Actors Property Relation Modality Negation PredOrObject
+		 * Req 5: Actors Property Modality AuxiliaryVerb PredOrObject
+		 * Req 6: Actors Property Relation Modality AuxiliaryVerb PredOrObject
+		 * Req 7: Actors Property Modality Negation AuxiliaryVerb PredOrObject
+		 * Req 8: Actors Property Relation Modality Negation AuxiliaryVerb PredOrObject
+		 * Req 9: Actors Property Modality PredOrObject SentenceEnding
+		 * Req 10: Actors Property Relation Modality PredOrObject SentenceEnding
+		 * Req 11: Actors Property Modality Negation PredOrObject SentenceEnding
+		 * Req 12: Actors Property Relation Modality Negation PredOrObject SentenceEnding
+		 * Req 13: Actors Property Modality AuxiliaryVerb PredOrObject SentenceEnding
+		 * Req 14: Actors Property Relation Modality AuxiliaryVerb PredOrObject SentenceEnding
+		 * Req 15: Actors Property Modality Negation AuxiliaryVerb PredOrObject SentenceEnding
+		 * Req 16: Actors Property Relation Modality Negation AuxiliaryVerb PredOrObject SentenceEnding
+		 * Req 17: Actors Property AuxNeg PredOrObject
+		 * Req 18: Actors Property AuxNeg Constraints
+		 * Req 19: Actors Property Relation AuxNeg PredOrObject
+		 * Req 20: Actors Property Relation AuxNeg constraints
+		 * Req 21: Actors Property AuxNeg PredOrObject SentenceEnding
+		 * Req 22: Actors Property AuxNeg Constraints SentenceEnding
+		 * Req 23: Actors Property Relation AuxNeg PredOrObject SentenceEnding
+		 * Req 24: Actors Property Relation AuxNeg constraints SentenceEnding
 		 */ 
 		testSequence('''
-			1: x´s x shall x.
-			2: x´s x in relation to x shall x.
-			3: x´s x shall not x.
-			4: x´s x in relation to x shall not x.
-			5: x´s x shall do x.
-			6: x´s x in relation to x shall do x.
-			7: x´s x shall not do x.
-			8: x´s x in relation to x shall not do x.
-			9: x´s x shall x in x.
-			10: x´s x in relation to x shall x in x.
-			11: x´s x shall not x in x.
-			12: x´s x in relation to x shall not x in x.
-			13: x´s x shall do x in x.
-			14: x´s x in relation to x shall do x in x.
-			15: x´s x shall not do x in x.
-			16: x´s x in relation to x shall not do x in x.
-			17: x´s x is x.
-			18: x´s x is in x.
-			19: x´s x in relation to x is x.
-			20: x´s x in relation to x is in x.
-			21: x´s x is x in x.
-			22: x´s x is in x in relation to x.
-			23: x´s x in relation to x is x in x.
-			24: x´s x in relation to x is x in relation to x.
+			Req 1: x´s x shall x.
+			Req 2: x´s x in relation to x shall x.
+			Req 3: x´s x shall not x.
+			Req 4: x´s x in relation to x shall not x.
+			Req 5: x´s x shall do x.
+			Req 6: x´s x in relation to x shall do x.
+			Req 7: x´s x shall not do x.
+			Req 8: x´s x in relation to x shall not do x.
+			Req 9: x´s x shall x in x.
+			Req 10: x´s x in relation to x shall x in x.
+			Req 11: x´s x shall not x in x.
+			Req 12: x´s x in relation to x shall not x in x.
+			Req 13: x´s x shall do x in x.
+			Req 14: x´s x in relation to x shall do x in x.
+			Req 15: x´s x shall not do x in x.
+			Req 16: x´s x in relation to x shall not do x in x.
+			Req 17: x´s x is x.
+			Req 18: x´s x is in x.
+			Req 19: x´s x in relation to x is x.
+			Req 20: x´s x in relation to x is in x.
+			Req 21: x´s x is x in x.
+			Req 22: x´s x is in x in relation to x.
+			Req 23: x´s x in relation to x is x in x.
+			Req 24: x´s x in relation to x is x in relation to x.
 			
 		''')
 		
 		/*
 		 * Test of the relativeClause rule
 		 * 
-		 * 1: ExistencePreface Actors, relativeSentence Conjunction ConditionalClause,
+		 * Req 1: ExistencePreface Actors, relativeSentence Conjunction ConditionalClause,
 		 */ 
 		testSequence('''
-			1: There exists x, who must x and when x x,.
-			1: There exists x, who must x or when x x,.
+			Req 1: There exists x, who must x and when x x,.
+			Req 1: There exists x, who must x or when x x,.
 			
 		''')
 		
 		/*
 		 * Test of the relativeSentence rule
 		 * 
-		 * 1: ExistencePreface Actors, RelativePronounsSubject Modality Predicate,
-		 * 2: ExistencePreface Actors, RelativePronounsSubject Modality Negation Predicate,
-		 * 3: ExistencePreface Actors, RelativePronounsSubject Modality Predicate Constraints,
-		 * 4: ExistencePreface Actors, RelativePronounsSubject Modality Negation Predicate Constraints,
-		 * 5: ExistencePreface Actors, RelativePronounsSubject Predicate,
-		 * 6: ExistencePreface Actors, RelativePronounsSubject WORD Negation Predicate,
-		 * 7: ExistencePreface Actors, RelativePronounsSubject Predicate Constraints,
-		 * 8: ExistencePreface Actors, RelativePronounsSubject WORD Negation Predicate Constraints,
-		 * 9: ExistencePreface Actors, RelativePronounsObject ModalitySentence,
-		 * 10: ExistencePreface Actors, RelativePronounsObject PredicateSentence,
+		 * Req 1: ExistencePreface Actors, RelativePronounsSubject Modality Predicate,
+		 * Req 2: ExistencePreface Actors, RelativePronounsSubject Modality Negation Predicate,
+		 * Req 3: ExistencePreface Actors, RelativePronounsSubject Modality Predicate Constraints,
+		 * Req 4: ExistencePreface Actors, RelativePronounsSubject Modality Negation Predicate Constraints,
+		 * Req 5: ExistencePreface Actors, RelativePronounsSubject Predicate,
+		 * Req 6: ExistencePreface Actors, RelativePronounsSubject WORD Negation Predicate,
+		 * Req 7: ExistencePreface Actors, RelativePronounsSubject Predicate Constraints,
+		 * Req 8: ExistencePreface Actors, RelativePronounsSubject WORD Negation Predicate Constraints,
+		 * Req 9: ExistencePreface Actors, RelativePronounsObject ModalitySentence,
+		 * Req 10: ExistencePreface Actors, RelativePronounsObject PredicateSentence,
 		 */ 
 		testSequence('''
-			1: There exists x, which must x,.
-			1: There exists x, who must x,.
-			1: There exists x, that must x,.
-			2: There exists x, which must not x,.
-			3: There exists x, who must x in x,.
-			4: There exists x, that must not x in x,.
-			5: There exists x, which x,.
-			6: There exists x, who x not x,.
-			7: There exists x, that x in x,.
-			8: There exists x, who x not x in x,.
-			9: There exists x, whose x must x,.
-			9: There exists x, whom x must x,.
-			10: There exists x, whose x x,.
-			10: There exists x, whom x x,.
+			Req 1: There exists x, which must x,.
+			Req 1: There exists x, who must x,.
+			Req 1: There exists x, that must x,.
+			Req 2: There exists x, which must not x,.
+			Req 3: There exists x, who must x in x,.
+			Req 4: There exists x, that must not x in x,.
+			Req 5: There exists x, which x,.
+			Req 6: There exists x, who x not x,.
+			Req 7: There exists x, that x in x,.
+			Req 8: There exists x, who x not x in x,.
+			Req 9: There exists x, whose x must x,.
+			Req 9: There exists x, whom x must x,.
+			Req 10: There exists x, whose x x,.
+			Req 10: There exists x, whom x x,.
 			
 		''')
 		
 		/*
 		 * Test of the Actors rule
 		 * 
-		 * 1: Actor Conjunction Actor Predicate
-		 * 2: Actor Conjunction Actor Predicate Conjunction MainClause
+		 * Req 1: Actor Conjunction Actor Predicate
+		 * Req 2: Actor Conjunction Actor Predicate Conjunction MainClause
 		 */ 
 		testSequence('''
-			1: x and x x.
-			1: x or x x.
-			2: x and x x and x x.
+			Req 1: x and x x.
+			Req 1: x or x x.
+			Req 2: x and x x and x x.
 			
 		''')
 		
 		/*
 		 * Test of the Actor rule
 		 * 
-		 * 1: Quantification WORD Predicate
-		 * 2: Articles WORD Predicate
-		 * 3: RefArticles WORD Predicate
-		 * 4: PreNominative STRING Predicate
+		 * Req 1: Quantification WORD Predicate
+		 * Req 2: Articles WORD Predicate
+		 * Req 3: RefArticles WORD Predicate
+		 * Req 4: PreNominative STRING Predicate
 		 */ 
 		testSequence('''
-			1: all x x.
-			1: every x x.
-			1: each x x.
-			1: whole x x.
-			1: any x x.
-			1: several x x.
-			1: either x x.
-			1: All x x.
-			1: Every x x.
-			1: Each x x.
-			1: Whole x x.
-			1: Any x x.
-			1: Several x x.
-			1: Either x x.
+			Req 1: all x x.
+			Req 1: every x x.
+			Req 1: each x x.
+			Req 1: whole x x.
+			Req 1: any x x.
+			Req 1: several x x.
+			Req 1: either x x.
+			Req 1: All x x.
+			Req 1: Every x x.
+			Req 1: Each x x.
+			Req 1: Whole x x.
+			Req 1: Any x x.
+			Req 1: Several x x.
+			Req 1: Either x x.
 			
-			2: The x x.
-			2: the x x.
-			2: A x x.
-			2: a x x.
-			2: An x x.
-			2: an x x.
+			Req 2: The x x.
+			Req 2: the x x.
+			Req 2: A x x.
+			Req 2: a x x.
+			Req 2: An x x.
+			Req 2: an x x.
 			
-			3: That x x.
-			3: that x x.
-			3: This x x.
-			3: this x x.
+			Req 3: That x x.
+			Req 3: that x x.
+			Req 3: This x x.
+			Req 3: this x x.
 			
-			4: The "x" x.
-			4: the 'x' x.
+			Req 4: The "x" x.
+			Req 4: the 'x' x.
 			
 		''')
 		
 		/*
 		 * Test of the Predicate rule
 		 * 
-		 * 1: Actor WORD WORD
-		 * 2: Actor STRING
-		 * 3: Actor WORD PredicateObject
-		 * 4: Actor WORD WORD PredicateObject
+		 * Req 1: Actor WORD WORD
+		 * Req 2: Actor STRING
+		 * Req 3: Actor WORD PredicateObject
+		 * Req 4: Actor WORD WORD PredicateObject
 		 */ 
 		testSequence('''
-			1: the x x x.
-			2: any x "x".
-			2: a x 'x'.
-			3: That x x a x.
-			4: an x x x a x.
+			Req 1: the x x x.
+			Req 2: any x "x".
+			Req 2: a x 'x'.
+			Req 3: That x x a x.
+			Req 4: an x x x a x.
 			
 		''')
 		
 		/*
 		 * Test of the PredicateObject rule
 		 * 
-		 * 1: Actor Predicate Quantification WORD
-		 * 2: Actor Predicate Articles WORD
-		 * 3: Actor Predicate RefArticles WORD
-		 * 4: Actor Predicate PreNominative WORD WORD
-		 * 5: Actor Predicate PreNominative STRING
+		 * Req 1: Actor Predicate Quantification WORD
+		 * Req 2: Actor Predicate Articles WORD
+		 * Req 3: Actor Predicate RefArticles WORD
+		 * Req 4: Actor Predicate PreNominative WORD WORD
+		 * Req 5: Actor Predicate PreNominative STRING
 		 */ 
 		testSequence('''
-			1: x x all x.
-			2: x x the x.
-			3: x x this x.
-			4: x x a x x.
-			5: x x a "x".
-			5: x x a 'x'.
+			Req 1: x x all x.
+			Req 2: x x the x.
+			Req 3: x x this x.
+			Req 4: x x a x x.
+			Req 5: x x a "x".
+			Req 5: x x a 'x'.
 			
 		''')
 		
 		/*
 		 * Test of the Property rule
 		 * 
-		 * 1: Actors PROPERTY_TERM WORD WORD Modality Predicate
-		 * 2: Actors PROPERTY_TERM STRING Modality Predicate
+		 * Req 1: Actors PROPERTY_TERM WORD WORD Modality Predicate
+		 * Req 2: Actors PROPERTY_TERM STRING Modality Predicate
 		 */ 
 		testSequence('''
-			1: x´s x x must x.
-			2: x´s "x" must x.
-			2: x´s 'x' must x.
+			Req 1: x´s x x must x.
+			Req 2: x´s "x" must x.
+			Req 2: x´s 'x' must x.
 			
 		''')
 		
 		/*
 		 * Test of the SentenceEnding rule
 		 * 
-		 * 1: Actors Predicate Constraints Constraints
-		 * 2: Actors Predicate Constraints Relation
-		 * 3: Actors Predicate Constraints Constraints Relation
-		 * 4: Actors Predicate Relation
-		 * 5: Actors Predicate Relation Constraints
-		 * 6: Actors Predicate Relation Constraints Constraints
+		 * Req 1: Actors Predicate Constraints Constraints
+		 * Req 2: Actors Predicate Constraints Relation
+		 * Req 3: Actors Predicate Constraints Constraints Relation
+		 * Req 4: Actors Predicate Relation
+		 * Req 5: Actors Predicate Relation Constraints
+		 * Req 6: Actors Predicate Relation Constraints Constraints
 		 */ 
 		testSequence('''
-			1: x x in x to x.
-			2: x x in x in relation to x.
-			3: x x in x to x in relation to x.
-			4: x x in relation to x.
-			5: x x in relation to x in x.
-			6: x x in relation to x in x to x.
+			Req 1: x x in x to x.
+			Req 2: x x in x in relation to x.
+			Req 3: x x in x to x in relation to x.
+			Req 4: x x in relation to x.
+			Req 5: x x in relation to x in x.
+			Req 6: x x in relation to x in x to x.
 			
 		''')
 		
 		/*
 		 * Test of the Object rule
 		 * 
-		 * 1: Actor Predicate WORD WORD
-		 * 2: Actor Predicate Quantification WORD WORD
-		 * 3: Actor Predicate Articles WORD WORD
-		 * 4: Actor Predicate RefArticles WORD WORD
-		 * 5: Actor Predicate PreNominative STRING
+		 * Req 1: Actor Predicate WORD WORD
+		 * Req 2: Actor Predicate Quantification WORD WORD
+		 * Req 3: Actor Predicate Articles WORD WORD
+		 * Req 4: Actor Predicate RefArticles WORD WORD
+		 * Req 5: Actor Predicate PreNominative STRING
 		 */ 
 		testSequence('''
-			1: x x x x.
-			2: x x all x x.
-			3: x x the x x.
-			4: x x this x x.
-			5: x x a "x".
-			5: x x a 'x'.
+			Req 1: x x x x.
+			Req 2: x x all x x.
+			Req 3: x x the x x.
+			Req 4: x x this x x.
+			Req 5: x x a "x".
+			Req 5: x x a 'x'.
 			
 		''')
 		
 		/*
 		 * Test of the SentenceBegin rule
 		 * 
-		 * : Relation, Actor Predicate
+		 * Req : Relation, Actor Predicate
 		 */ 
 		testSequence('''
-			: in relation to x, x x.
+			Req : in relation to x, x x.
 			//: In relation to x, x x.
 			
 		''')
 		
 		/*
 		 * Test of the Object rule
-		 * 1: Actor Predicate Adverbial PreNominative WORD
-		 * 2: Actor Predicate Adverbial WORD
-		 * 3: Actor Predicate Adverbial PreNominative STRING
-		 * 4: Actor Predicate Adverbial STRING
-		 * 5: PositionAdverbial RelationDelimiter Comparators Object, Actor Predicate
+		 * Req 1: Actor Predicate Adverbial PreNominative WORD
+		 * Req 2: Actor Predicate Adverbial WORD
+		 * Req 3: Actor Predicate Adverbial PreNominative STRING
+		 * Req 4: Actor Predicate Adverbial STRING
+		 * Req 5: PositionAdverbial RelationDelimiter Comparators Object, Actor Predicate
 		 */
 		testSequence('''
-			1: x x in the x.
-			2: x x in x.
-			3: x x in the "x".
-			3: x x in the 'x'.
-			4: x x in "x".
-			4: x x in 'x'.
-			5: in relation to the x, x x.
-			5: in relation to x, x x.
-			5: in relation to the "x", x x.
-			5: in relation to the 'x', x x.
-			5: in relation to "x", x x.
-			5: in relation to 'x', x x.
+			Req 1: x x in the x.
+			Req 2: x x in x.
+			Req 3: x x in the "x".
+			Req 3: x x in the 'x'.
+			Req 4: x x in "x".
+			Req 4: x x in 'x'.
+			Req 5: in relation to the x, x x.
+			Req 5: in relation to x, x x.
+			Req 5: in relation to the "x", x x.
+			Req 5: in relation to the 'x', x x.
+			Req 5: in relation to "x", x x.
+			Req 5: in relation to 'x', x x.
 			
 		''')
 		
 		/*
 		 * Test of the ExistencePreface rule
 		 * 
-		 * 1: 'There' 'exist' Actors, relativeClause,
-		 * 2: 'there' 'exist' Actors, relativeClause,
-		 * 3: 'There' 'exists' Actors, relativeClause,
-		 * 4: 'there' 'exists' Actors, relativeClause,
-		 * 5: 'T/there' Modifier 'exist/s' Actors, relativeClause,
+		 * Req 1: 'There' 'exist' Actors, relativeClause,
+		 * Req 2: 'there' 'exist' Actors, relativeClause,
+		 * Req 3: 'There' 'exists' Actors, relativeClause,
+		 * Req 4: 'there' 'exists' Actors, relativeClause,
+		 * Req 5: 'T/there' Modifier 'exist/s' Actors, relativeClause,
 		 */ 
 		testSequence('''
-			1: There exist x, who x,.
-			2: there exist x, who x,.
-			3: There exists x, who x,.
-			4: there exists x, who x,.
-			5: There always exist x, who x,.
-			5: there always exist x, who x,.
-			5: There always exists x, who x,.
-			5: there always exists x, who x,.
+			Req 1: There exist x, who x,.
+			Req 2: there exist x, who x,.
+			Req 3: There exists x, who x,.
+			Req 4: there exists x, who x,.
+			Req 5: There always exist x, who x,.
+			Req 5: there always exist x, who x,.
+			Req 5: There always exists x, who x,.
+			Req 5: there always exists x, who x,.
 			
 		''')
 		
 		/*
 		 * Test of the AuxNeg rule
 		 * 
-		 * 1: Actor AuxiliaryVerb Predicate
-		 * 2: Actor AuxiliaryVerb Negation Predicate
-		 * 3: Actor AuxiliaryVerbNegation Predicate
-		 * 4: Actors Property AuxNeg
+		 * Req 1: Actor AuxiliaryVerb Predicate
+		 * Req 2: Actor AuxiliaryVerb Negation Predicate
+		 * Req 3: Actor AuxiliaryVerbNegation Predicate
+		 * Req 4: Actors Property AuxNeg
 		 */ 
 		testSequence('''
-			1: x is x.
-			2: x is not x.
-			3: x doesn´t x.
-			3: x don´t x.
-			3: x isn´t x.
-			3: x aren´t x.
-			4: x´s x is x.
-			4: x´s x is not x.
-			4: x´s x doesn´t x.
+			Req 1: x is x.
+			Req 2: x is not x.
+			Req 3: x doesn´t x.
+			Req 3: x don´t x.
+			Req 3: x isn´t x.
+			Req 3: x aren´t x.
+			Req 4: x´s x is x.
+			Req 4: x´s x is not x.
+			Req 4: x´s x doesn´t x.
 			
 		''')
 		
 		/*
 		 * Test of the Relation rule
 		 * 
-		 * : Actor Predicate PositionAdverbial RelationDelimiter Comparators RelObjects
+		 * Req : Actor Predicate PositionAdverbial RelationDelimiter Comparators RelObjects
 		 */ 
 		testSequence('''
-			: x x in relation to x.
+			Req : x x in relation to x.
 			
 		''')
 		
 		/*
 		 * Test of the RelObjects rule
 		 * 
-		 * 1: Actor Predicate PositionAdverbial RelationDelimiter Comparators Object
-		 * 2: Actor Predicate PositionAdverbial RelationDelimiter Comparators Object Property
-		 * 3: Actor Predicate PositionAdverbial RelationDelimiter Comparators Object Rel_Conjunction Object
-		 * 4: Actor Predicate PositionAdverbial RelationDelimiter Comparators Object Property Rel_Conjunction Object
-		 * 5: Actor Predicate PositionAdverbial RelationDelimiter Comparators Object Rel_Conjunction Object Property
-		 * 6: Actor Predicate PositionAdverbial RelationDelimiter Comparators Object Property Rel_Conjunction Object Property
-		 * 7: Actor Predicate PositionAdverbial RelationDelimiter Comparators Object Rel_Conjunction Object Rel_Conjunction Object
+		 * Req 1: Actor Predicate PositionAdverbial RelationDelimiter Comparators Object
+		 * Req 2: Actor Predicate PositionAdverbial RelationDelimiter Comparators Object Property
+		 * Req 3: Actor Predicate PositionAdverbial RelationDelimiter Comparators Object Rel_Conjunction Object
+		 * Req 4: Actor Predicate PositionAdverbial RelationDelimiter Comparators Object Property Rel_Conjunction Object
+		 * Req 5: Actor Predicate PositionAdverbial RelationDelimiter Comparators Object Rel_Conjunction Object Property
+		 * Req 6: Actor Predicate PositionAdverbial RelationDelimiter Comparators Object Property Rel_Conjunction Object Property
+		 * Req 7: Actor Predicate PositionAdverbial RelationDelimiter Comparators Object Rel_Conjunction Object Rel_Conjunction Object
 		 */
 		testSequence('''
-			1: x x in relation to x.
-			2: x x in relation to x´s x.
-			3: x x in relation to x and_to x.
-			3: x x in relation to x or_to x.
-			4: x x in relation to x´s x and_to x.
-			4: x x in relation to x´s x or_to x.
-			5: x x in relation to x and_to x´s x.
-			5: x x in relation to x or_to x´s x.
-			6: x x in relation to x´s x and_to x´s x.
-			6: x x in relation to x´s x or_to x´s x.
-			7: x x in relation to x and_to x or_to x.
+			Req 1: x x in relation to x.
+			Req 2: x x in relation to x´s x.
+			Req 3: x x in relation to x and_to x.
+			Req 3: x x in relation to x or_to x.
+			Req 4: x x in relation to x´s x and_to x.
+			Req 4: x x in relation to x´s x or_to x.
+			Req 5: x x in relation to x and_to x´s x.
+			Req 5: x x in relation to x or_to x´s x.
+			Req 6: x x in relation to x´s x and_to x´s x.
+			Req 6: x x in relation to x´s x or_to x´s x.
+			Req 7: x x in relation to x and_to x or_to x.
 			
 		''')
 		
 		/*
 		 * Test of the Constraint rule
 		 * 
-		 * 1: Actor Predicate ConstraintOrdinators ObjectConstraint
-		 * 2: Actor Predicate ConstraintOrdinators UnitConstraints
-		 * 3: Actor Predicate ConstraintOrdinators SetConstraint
+		 * Req 1: Actor Predicate ConstraintOrdinators ObjectConstraint
+		 * Req 2: Actor Predicate ConstraintOrdinators UnitConstraints
+		 * Req 3: Actor Predicate ConstraintOrdinators SetConstraint
 		 */ 
 		testSequence('''
-			1: x x in x.
-			2: x x in 1.0.
-			3: x x in {x}.
+			Req 1: x x in x.
+			Req 2: x x in 1.0.
+			Req 3: x x in {x}.
 			
 		''')
 		
 		/*
 		 * Test of the ConstraintOrdinator rule
 		 * 
-		 * 1: Actor Predicate SizeAdverbial ObjectConstraint
-		 * 2: Actor Predicate PositionAdverbial ObjectConstraint
-		 * 3: Actor Predicate ComparisonAdverbial ObjectConstraint
-		 * 4: Actor Predicate Adverbial Comparators ObjectConstraint 
-		 * 5: Actor Predicate SuffWord Adverbial ObjectConstraint 
-		 * 6: Actor Predicate SuffWord Adverbial Comparators ObjectConstraint 
+		 * Req 1: Actor Predicate SizeAdverbial ObjectConstraint
+		 * Req 2: Actor Predicate PositionAdverbial ObjectConstraint
+		 * Req 3: Actor Predicate ComparisonAdverbial ObjectConstraint
+		 * Req 4: Actor Predicate Adverbial Comparators ObjectConstraint 
+		 * Req 5: Actor Predicate SuffWord Adverbial ObjectConstraint 
+		 * Req 6: Actor Predicate SuffWord Adverbial Comparators ObjectConstraint 
 		 */  
 		testSequence('''
-			1: x x higher x.
-			1: x x less x.
-			1: x x more x.
-			1: x x larger x.
-			1: x x smaller x.
-			1: x x as_long_as x.
+			Req 1: x x higher x.
+			Req 1: x x less x.
+			Req 1: x x more x.
+			Req 1: x x larger x.
+			Req 1: x x smaller x.
+			Req 1: x x as_long_as x.
 			
-			2: x x between x.
-			2: x x next x.
-			2: x x on x.
-			2: x x above x.
-			2: x x in x.
-			2: x x within x.
-			2: x x in_front_of x.
-			2: x x behind x.
-			2: x x out x.
-			2: x x under x.
+			Req 2: x x between x.
+			Req 2: x x next x.
+			Req 2: x x on x.
+			Req 2: x x above x.
+			Req 2: x x in x.
+			Req 2: x x within x.
+			Req 2: x x in_front_of x.
+			Req 2: x x behind x.
+			Req 2: x x out x.
+			Req 2: x x under x.
 			
-			3: x x equal x.
-			3: x x faster x.
-			3: x x slower x.
-			3: x x better x.
-			3: x x by x.
-			3: x x to x.
+			Req 3: x x equal x.
+			Req 3: x x faster x.
+			Req 3: x x slower x.
+			Req 3: x x better x.
+			Req 3: x x by x.
+			Req 3: x x to x.
 			
-			4: x x higher than x.
-			4: x x higher as x.
-			4: x x higher to x.
-			4: x x higher of x.
+			Req 4: x x higher than x.
+			Req 4: x x higher as x.
+			Req 4: x x higher to x.
+			Req 4: x x higher of x.
 			
-			5: x x with equal x.
-			6: x x with more than x.
+			Req 5: x x with equal x.
+			Req 6: x x with more than x.
 			
 		''')
 		
 		/*
 		 * Test of the SetConstraint rule
 		 * 
-		 * 1: Actor Predicate ConstraintOrdinators {Actor}
-		 * 2: Actor Predicate ConstraintOrdinators {Actor; Actor}
-		 * 3: Actor Predicate ConstraintOrdinators {Actor; Actor; Actor}
-		 * 4: Actor Predicate ConstraintOrdinators {PreNominative Actor; ...}
-		 * 5: Actor Predicate ConstraintOrdinators {IntValue; ...}
-		 * 6: Actor Predicate ConstraintOrdinators {FloatValue; ...}
-		 * 7: Actor Predicate ConstraintOrdinators {INT/FLOAT Unit; ...}
+		 * Req 1: Actor Predicate ConstraintOrdinators {Actor}
+		 * Req 2: Actor Predicate ConstraintOrdinators {Actor; Actor}
+		 * Req 3: Actor Predicate ConstraintOrdinators {Actor; Actor; Actor}
+		 * Req 4: Actor Predicate ConstraintOrdinators {PreNominative Actor; ...}
+		 * Req 5: Actor Predicate ConstraintOrdinators {IntValue; ...}
+		 * Req 6: Actor Predicate ConstraintOrdinators {FloatValue; ...}
+		 * Req 7: Actor Predicate ConstraintOrdinators {INT/FLOAT Unit; ...}
 		 */ 
 		testSequence('''
-			1: x x in {x}.
-			2: x x in {x; x}.
-			3: x x in {x; x; x}.
-			4: x x in {a x}.
-			4: x x in {the x; x}.
-			4: x x in {all x; a x; the x}.
-			5: x x in {1}.
-			5: x x in {1; 1}.
-			5: x x in {1; 1; 1}.
-			6: x x in {1.1}.
-			6: x x in {1.1; 1.1}.
-			6: x x in {1.1; 1.0; 1}.
-			7: x x in {1m}.
-			7: x x in {1m; 1m}.
-			7: x x in {1m; 10m; 100m}.
-			7: x x in {1.1m}.
-			7: x x in {1.1m; 1.1m}.
-			7: x x in {1.1m; 10.0m; 100m}.
+			Req 1: x x in {x}.
+			Req 2: x x in {x; x}.
+			Req 3: x x in {x; x; x}.
+			Req 4: x x in {a x}.
+			Req 4: x x in {the x; x}.
+			Req 4: x x in {all x; a x; the x}.
+			Req 5: x x in {1}.
+			Req 5: x x in {1; 1}.
+			Req 5: x x in {1; 1; 1}.
+			Req 6: x x in {1.1}.
+			Req 6: x x in {1.1; 1.1}.
+			Req 6: x x in {1.1; 1.0; 1}.
+			Req 7: x x in {1m}.
+			Req 7: x x in {1m; 1m}.
+			Req 7: x x in {1m; 10m; 100m}.
+			Req 7: x x in {1.1m}.
+			Req 7: x x in {1.1m; 1.1m}.
+			Req 7: x x in {1.1m; 10.0m; 100m}.
 			
 		''')
 		
 		/*
 		 * Test of the TimeConstraint rule
-		 * : Actor Predicate ConstraintOrdinators INT TimeUnits
+		 * Req : Actor Predicate ConstraintOrdinators INT TimeUnits
 		 */
 		testSequence('''
-			: x x in 1 ns.
-			: x x in 1 ms.
-			: x x in 1 s.
-			: x x in 1 sec.
-			: x x in 1 second.
-			: x x in 1 minute.
-			: x x in 1 minutes.
-			: x x in 1 min.
-			: x x in 1 hour.
-			: x x in 1 h.
-			: x x in 1 day.
-			: x x in 1 days.
-			: x x in 1 d.
-			: x x in 1 month.
-			: x x in 1 months.
-			: x x in 1 mon.
-			: x x in 1 year.
-			: x x in 1 years.
-			: x x in 1 y.
-			: x x in 10 ns.
+			Req : x x in 1 ns.
+			Req : x x in 1 ms.
+			Req : x x in 1 s.
+			Req : x x in 1 sec.
+			Req : x x in 1 second.
+			Req : x x in 1 minute.
+			Req : x x in 1 minutes.
+			Req : x x in 1 min.
+			Req : x x in 1 hour.
+			Req : x x in 1 h.
+			Req : x x in 1 day.
+			Req : x x in 1 days.
+			Req : x x in 1 d.
+			Req : x x in 1 month.
+			Req : x x in 1 months.
+			Req : x x in 1 mon.
+			Req : x x in 1 year.
+			Req : x x in 1 years.
+			Req : x x in 1 y.
+			Req : x x in 10 ns.
 			
 		''')
 		
 		/* 
 		 * Test of the IntervallConstraints rule
 		 * 
-		 * : Actor Predicate ConstraintOrdinators [Value, Value]
+		 * Req : Actor Predicate ConstraintOrdinators [Value, Value]
 		 */ 
 		testSequence('''
-			: x x in [1,2].
-			: x x in [1m, 2m].
-			: x x in [1m, 2].
-			: x x in [1,2m].
-			: x x in [1.1,2.2].
-			: x x in [1.0m, 2m].
-			: x x in [1.4m, 2].
-			: x x in [1,2.5m].
+			Req : x x in [1,2].
+			Req : x x in [1m, 2m].
+			Req : x x in [1m, 2].
+			Req : x x in [1,2m].
+			Req : x x in [1.1,2.2].
+			Req : x x in [1.0m, 2m].
+			Req : x x in [1.4m, 2].
+			Req : x x in [1,2.5m].
 			
 		''')
 		
 		/* 
 		 * Test of the SingleValueConstraints rule
 		 * 
-		 * 1: Actor Predicate ConstraintOrdinators IntValue
-		 * 2: Actor Predicate ConstraintOrdinators FloatValue
+		 * Req 1: Actor Predicate ConstraintOrdinators IntValue
+		 * Req 2: Actor Predicate ConstraintOrdinators FloatValue
 		 */
 		testSequence('''
-			1: x x in 1.
-			1: x x in 1 .
-			1: x x in 1m.
-			1: x x in 1 m.
-			1: x x in 1.1.
-			2: x x in 1.1 .
-			2: x x in 1.1m.
-			2: x x in 1.1 m.
-			2: x x in 10.11.
+			Req 1: x x in 1.
+			Req 1: x x in 1 .
+			Req 1: x x in 1m.
+			Req 1: x x in 1 m.
+			Req 1: x x in 1.1.
+			Req 2: x x in 1.1 .
+			Req 2: x x in 1.1m.
+			Req 2: x x in 1.1 m.
+			Req 2: x x in 10.11.
 			
 		''')
 		
 		/* 
 		 * Test of the Value rule
 		 * 
-		 * 1: Actor Predicate ConstraintOrdinators INT LengthUnits
-		 * 2: Actor Predicate ConstraintOrdinators INT PresureUnits
-		 * 3: Actor Predicate ConstraintOrdinators INT HeatUnits
-		 * 4: Actor Predicate ConstraintOrdinators INT MassUnits
-		 * 5: Actor Predicate ConstraintOrdinators INT VelocityUnits
-		 * 6: Actor Predicate ConstraintOrdinators INT Cuvature
-		 * 7: Actor Predicate ConstraintOrdinators INT/FLOAT WORD
-		 * 8: Actor Predicate ConstraintOrdinators INT/FLOAT Unit WORD
-		 * 9: Actor Predicate ConstraintOrdinators INT/FLOAT WORD WORD WORD
-		 * 10: Actor Predicate ConstraintOrdinators INT/FLOAT Unit WORD WORD WORD
+		 * Req 1: Actor Predicate ConstraintOrdinators INT LengthUnits
+		 * Req 2: Actor Predicate ConstraintOrdinators INT PresureUnits
+		 * Req 3: Actor Predicate ConstraintOrdinators INT HeatUnits
+		 * Req 4: Actor Predicate ConstraintOrdinators INT MassUnits
+		 * Req 5: Actor Predicate ConstraintOrdinators INT VelocityUnits
+		 * Req 6: Actor Predicate ConstraintOrdinators INT Cuvature
+		 * Req 7: Actor Predicate ConstraintOrdinators INT/FLOAT WORD
+		 * Req 8: Actor Predicate ConstraintOrdinators INT/FLOAT Unit WORD
+		 * Req 9: Actor Predicate ConstraintOrdinators INT/FLOAT WORD WORD WORD
+		 * Req 10: Actor Predicate ConstraintOrdinators INT/FLOAT Unit WORD WORD WORD
 		 */
 		testSequence('''
-			1: x x in 1 m.
-			1: x x in 1 f.
-			1: x x in 1 km.
-			1: x x in 1 cm.
-			1: x x in 1 mm.
-			1: x x in 1 nm.
+			Req 1: x x in 1 m.
+			Req 1: x x in 1 f.
+			Req 1: x x in 1 km.
+			Req 1: x x in 1 cm.
+			Req 1: x x in 1 mm.
+			Req 1: x x in 1 nm.
 			
-			2: x x in 1 bar.
-			2: x x in 1 Pa.
-			2: x x in 1 hPa.
+			Req 2: x x in 1 bar.
+			Req 2: x x in 1 Pa.
+			Req 2: x x in 1 hPa.
 			
-			3: x x in 1 C.
-			3: x x in 1 F.
+			Req 3: x x in 1 C.
+			Req 3: x x in 1 F.
 			
-			4: x x in 1 kg.
-			4: x x in 1 g.
-			4: x x in 1 mg.
-			4: x x in 1 t.
+			Req 4: x x in 1 kg.
+			Req 4: x x in 1 g.
+			Req 4: x x in 1 mg.
+			Req 4: x x in 1 t.
 			
-			5: x x in 1 m/s.
-			5: x x in 1 knots.
-			5: x x in 1 km/h.
-			5: x x in 1 m/min.
+			Req 5: x x in 1 m/s.
+			Req 5: x x in 1 knots.
+			Req 5: x x in 1 km/h.
+			Req 5: x x in 1 m/min.
 			
-			6: x x in 1 rad/m.
-			6: x x in 1°.
-			6: x x in 1 rad.
-			6: x x in 1 °/m.
+			Req 6: x x in 1 rad/m.
+			Req 6: x x in 1°.
+			Req 6: x x in 1 rad.
+			Req 6: x x in 1 °/m.
 			
-			7: x x in 1 x.
-			7: x x in 1.2 x.
-			8: x x in 1 m x.
-			8: x x in 1.2 m x.
-			9: x x in 1 x x x.
-			9: x x in 1.1 x x x.
-			10: x x in 1 m x x x.
-			10: x x in 1.2 m x x x.
+			Req 7: x x in 1 x.
+			Req 7: x x in 1.2 x.
+			Req 8: x x in 1 m x.
+			Req 8: x x in 1.2 m x.
+			Req 9: x x in 1 x x x.
+			Req 9: x x in 1.1 x x x.
+			Req 10: x x in 1 m x x x.
+			Req 10: x x in 1.2 m x x x.
 			
 		''')
 		
 		/* 
 		 * Test of the ReqID rule
 		 * 
-		 * ID: Actor Predicate.
-		 * ID.: Actor Predicate.
-		 * ID INT: Actor Predicate.
-		 * ID.INT: Actor Predicate.
-		 * ID.INT INT: Actor Predicate.
-		 * ID.INT INT INT: Actor Predicate.
-		 * ID.INT.INT: Actor Predicate.
-		 * INT: Actor Predicate.
-		 * INT.INT: Actor Predicate.
-		 * INT INT INT: Actor Predicate.
-		 * INT INT.INT INT: Actor Predicate.
+		 * Req ID: Actor Predicate.
+		 * Req ID.: Actor Predicate.
+		 * Req ID INT: Actor Predicate.
+		 * Req ID.INT: Actor Predicate.
+		 * Req ID.INT INT: Actor Predicate.
+		 * Req ID.INT INT INT: Actor Predicate.
+		 * Req ID.INT.INT: Actor Predicate.
+		 * Req INT: Actor Predicate.
+		 * Req INT.INT: Actor Predicate.
+		 * Req INT INT INT: Actor Predicate.
+		 * Req INT INT.INT INT: Actor Predicate.
 		 */
 		testSequence('''
-			x: x x.
-			x.: x x.
-			x1: x x.
-			x 1 : x x.
-			x.1: x x.
-			x.11: x x.
-			x.111: x x.
-			x.1.1: x x.
-			x.1 .1: x x.
-			1: x x.
-			1.1: x x.
-			1 .1: x x.
-			111: x x.
-			11 .11: x x.
+			Req x: x x.
+			Req x.: x x.
+			Req x1: x x.
+			Req x 1 : x x.
+			Req x.1: x x.
+			Req x.11: x x.
+			Req x.111: x x.
+			Req x.1.1: x x.
+			Req x.1 .1: x x.
+			Req 1: x x.
+			Req 1.1: x x.
+			Req 1 .1: x x.
+			Req 111: x x.
+			Req 11 .11: x x.
 			
 		''')
 		
@@ -932,33 +921,33 @@ class RequirementDSLParsingTest {
 		 * Test of the WORD rule
 		 */ 
 		testSequence('''
-			x-x: x x.
+			Req x-x: x x.
 			
-			b: x x.
-			B: x x.
-			_: x x.
+			Req b: x x.
+			Req B: x x.
+			Req _: x x.
 			
-			aa: x x.
-			aA: x x.
-			a_: x x.
-			a-: x x.
-			a1: x x.
+			Req aa: x x.
+			Req aA: x x.
+			Req a_: x x.
+			Req a-: x x.
+			Req a1: x x.
 			
-			Aa: x x.
-			AA: x x.
-			A_: x x.
-			A-: x x.
-			A1: x x.
+			Req Aa: x x.
+			Req AA: x x.
+			Req A_: x x.
+			Req A-: x x.
+			Req A1: x x.
 			
-			_a: x x.
-			_A: x x.
-			__: x x.
-			_-: x x.
-			_0: x x.
+			Req _a: x x.
+			Req _A: x x.
+			Req __: x x.
+			Req _-: x x.
+			Req _0: x x.
 			
-			^a: x x.
-			^A: x x.
-			^_: x x.
+			Req ^a: x x.
+			Req ^A: x x.
+			Req ^_: x x.
 			
 		''')
 		
@@ -966,7 +955,7 @@ class RequirementDSLParsingTest {
 		 * Test of the x rule
 		 */ 
 		testSequence('''
-			: x x.
+			Req : x x.
 			
 		''')
 		
