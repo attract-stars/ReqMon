@@ -712,6 +712,8 @@ public class MappingPage {
 				@Override
 				public void textChanged(TextEvent event) {
 					if (isModelLoading) {
+						// set the text selection to 0 after the saved text is inserted
+						embed.getViewer().setSelectedRange(0, 0);
 						return;
 					}
 					String text = embed.getDocument().get();
