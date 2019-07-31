@@ -103,19 +103,19 @@ public class SystemController {
 						}
 					}
 					
-					// validate the system model, create Injector and update the mapping list
+					// validate the system model, create Injector, show the system model path 
+					// and update the mapping list
 					if (sysImporter != null) {
 						boolean isValid = sysImporter.check(path);
-						mp.createDslInjectorAndUpdateList(isValid);
 						
-						/*mp.getDisplay().asyncExec(new Runnable() {
+						mp.getDisplay().asyncExec(new Runnable() {
 							
 							@Override
 							public void run() {
-								mp.createDslInjector(isValid);
+								mp.createDslInjectorAndUpdateList(isValid);
 							}
 							
-						});*/
+						});
 						
 					}
 					else {

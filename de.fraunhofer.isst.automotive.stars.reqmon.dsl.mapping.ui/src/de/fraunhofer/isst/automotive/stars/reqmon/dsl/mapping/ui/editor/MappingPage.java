@@ -1,17 +1,11 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.jface.text.ITextListener;
-import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.source.LineNumberRulerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -33,7 +27,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.xtext.ui.editor.embedded.EmbeddedEditor;
-import org.eclipse.xtext.ui.editor.embedded.EmbeddedEditorModelAccess;
 
 import com.google.inject.Injector;
 
@@ -42,9 +35,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.Generator
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.MappingParserController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.ProposalController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.RequirementController;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.SerializationController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.SystemController;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.SaveModel;
 
 /**
  * This class creates the GUI of the language mapping editor. 
@@ -63,6 +54,8 @@ public class MappingPage {
 	private Composite compositeInScroll;
 	private Composite maincomp;
 	private ScrolledComposite scrolledComposite;
+	private Text reqPathText;
+	private Text sysPathText;
 	
 	// Controllers
 	private RequirementController reqCon;
@@ -83,26 +76,11 @@ public class MappingPage {
 	 * If it is true, then requirement elements exists for displaying
 	 */
 	private boolean isReqElems;
-	/** 
-	 * If it is true, then the requirements will be updated with the saved requirements.
-	 */ 
-	private boolean isModelLoading;
 	
 	/**
 	 * The system model path. The model is needed to complete the DSL of the mapping parser.
 	 */
 	private String systemPath;
-	
-	// for serialization
-	private String editorName;
-	private SaveModel savedModel;
-	private List<IRequirementElement> savedReqList;
-	private String savedSystemPath;
-	private String savedReqPath;
-	private List<String> savedEditorContent;
-	private List<EmbeddedEditorModelAccess> modelAccessList;
-	// for access of the save and dirty method and part name 
-	private LanguageMappingEditor langMapEditor;
 	
 	private MappingPage mp;
 	
@@ -117,8 +95,6 @@ public class MappingPage {
 		this.display = display;
 		this.shell = shell;
 		this.mp = this;
-		this.langMapEditor = langMapEditor;
-		this.editorName = langMapEditor.getPartName(); 
 		
 		setup();
 	}
@@ -138,7 +114,7 @@ public class MappingPage {
 	}
 	
 	/**
-	 * Configures all relevant dependencies and load the saved model or create a new one for saving. 
+	 * Configures all relevant dependencies. 
 	 */
 	protected void setup() {
 		// create the important GUI components 
@@ -158,22 +134,6 @@ public class MappingPage {
 		
 		// create the helper for the embedded xtext editor
 		this.editorHelper = new MappingEditorHelper();
-		
-		// set the editor name for serialization and deserialization 
-		SerializationController.getInstance().setFilename(editorName);
-		
-		// load the SaveModel 
-		this.savedModel = SerializationController.getInstance().load();
-		
-		// create a new SaveModel if the model is null 
-		if (this.savedModel == null) {
-			System.out.println("Save new model of the file " + editorName);
-			this.savedModel = new SaveModel();
-		}
-		// otherwise load the saved data
-		else {
-			setupSavedData();
-		}
 		
 		// select the appropriate mapping parser 
 		String lang = "map";  // TODO: get the appropriate language
@@ -243,47 +203,14 @@ public class MappingPage {
 		List<IRequirementElement> reqList = null;
 		
 		// take the requirement elements which are new selected by the user
-		if (!isModelLoading && reqCon.getRequirements() != null) {
+		if (reqCon.getRequirements() != null) {
 			reqList = reqCon.getRequirements();
 			elemSize = reqList.size();
-			
-			// add requirements to the SaveModel for serialization 
-			savedModel.setReqList(reqCon.getRequirements());
-			
 		}
 		
-		/* take the saved requirement elements, while the mapping editor is loading
-		 * or take the saved elements if no new ones have been selected by the user 
-		 * and the mapping editor is already loaded */
-		else if (isModelLoading && savedReqList != null || isReqElems && reqCon.getRequirements() == null) {
-			reqList = savedReqList;
-			elemSize = savedReqList.size();
-		}
-		
-		this.modelAccessList = new ArrayList<EmbeddedEditorModelAccess>();
 		for (int i = 0; i < elemSize; i++) {
-			EmbeddedEditorModelAccess modelAccess = null;
-			
-			/* create the box item with the saved requirement element and the saved editor content,
-			 * if the mapping editor is loading, 
-			 * saved requirements and saved editor contents exist 
-			 * and both lists have the same length */
-			if (isModelLoading && savedEditorContent != null && savedReqList != null &&
-					savedReqList.size() == savedEditorContent.size()) {
-				modelAccess = createBoxItem(reqList.get(i), i+1, savedEditorContent.get(i));
-			}
-			/* create the box item with the new or saved requirement element without editor content,
-			 * if the mapping editor is already loaded 
-			 * or no saved requirements and / or no saved editor contents exist
-			 * or both list do not have the same length */
-			else {
-				modelAccess = createBoxItem(reqList.get(i), i+1, null);
-				// changes for saving
-				langMapEditor.setDirty(true);
-			}
-			
-			// add the model access of the new created embedded editor to a new model access list
-			modelAccessList.add(modelAccess);
+			/* create the box item */
+			createBoxItem(reqList.get(i), i+1);
 			
 			compositeInScroll.pack();
 			compositeInScroll.layout(true);
@@ -292,12 +219,11 @@ public class MappingPage {
 		
 		// now the requirement elements should be visible in the mapping editor
 		isReqElems = true;
-		// the model is ready loaded
-		isModelLoading = false;
 	}
 	
 	/**
-	 * Creates the injector for the mapping language and calls updateList if the system model is valid. 
+	 * Creates the injector for the mapping language and calls updateList and shows the system
+	 * mode path if the system model is valid. 
 	 * @param isValidSystemModel if this value is true, the injector is created, otherwise not
 	 */
 	public void createDslInjectorAndUpdateList(boolean isValidSystemModel) {
@@ -306,10 +232,8 @@ public class MappingPage {
 			if (systemPath != null) {
 				parserCon.createDslInjectorAndUpdateList(mp, URI.createFileURI(systemPath));
 			}
-			// otherwise take the saved path, if it exist
-			else if (savedSystemPath != null) {
-				parserCon.createDslInjectorAndUpdateList(mp, URI.createFileURI(savedSystemPath));
-			}
+			/// show the selected file path 
+	        sysPathText.setText(systemPath);
 		}
 	}
 	
@@ -324,56 +248,6 @@ public class MappingPage {
 	
 	public Display getDisplay() {
 		return display;
-	}
-	
-	/**
-	 * Saves all contents of the model: the file paths (requirement and system model) 
-	 * and the mapping object list (requirement elements and content of the embedded editors).
-	 * Sets the dirty value to false.
-	 */
-	public void save() {
-		// add all contents of the embedded editor model access list to the SaveModel for serialization
-		savedEditorContent = new ArrayList<String>();
-		System.out.println("Model access list: " + modelAccessList.size());
-		for (EmbeddedEditorModelAccess modelAccess : modelAccessList) {
-			//System.out.println("Serialized Model: " + modelAccess.getSerializedModel());
-			String content = modelAccess.getEditablePart();
-			System.out.println("Mapping content: " + content);
-			savedEditorContent.add(content);
-		}
-		savedModel.setEditorContentList(savedEditorContent);
-		
-		// start the serialization
-		SerializationController.getInstance().save(savedModel);
-		langMapEditor.setDirty(false);
-	}
-	
-	/**
-	 * Save the model as the selected filename. 
-	 */
-	public void saveAs() {
-		FileDialog fd = new FileDialog(shell, SWT.SAVE);
-        fd.setText("Save");
-        fd.setFilterPath("C:/");
-        String[] filterExt = { "*.txt", "*.dslm", ".ser", "*.*" }; // only .ser is used in the background
-        fd.setFilterExtensions(filterExt);
-        String selected = fd.open();
-        System.out.println(selected);
-        if (selected != null) {
-        	SerializationController.getInstance().setFilename(selected);
-        	save(); // TODO: How shall "save as" work?
-        }
-        
-        
-        // change name of the mapping editor
-       /* String[] nameParts = selected.split(Pattern.quote("."));
-		String name = "";
-        if (nameParts.length != 0) {
-			name = nameParts[0] + ".dslm";
-		}
-        langMapEditor.setMappingEditorName(name);*/
-        
-        
 	}
 	
 	protected Composite getParentComposite() {
@@ -482,24 +356,13 @@ public class MappingPage {
 		sysComp.setLayout(compLayout);
 		
 		// create the path labels as non editable Text 
-		Text reqPath = new Text(reqComp, SWT.BORDER);
-		Text sysPath = new Text(sysComp, SWT.BORDER);
-		reqPath.setEditable(false);
-		sysPath.setEditable(false);
+		reqPathText = new Text(reqComp, SWT.BORDER);
+		sysPathText = new Text(sysComp, SWT.BORDER);
+		reqPathText.setEditable(false);
+		sysPathText.setEditable(false);
 		
-		// load the saved paths if they are not empty otherwise set default text
-		if (savedReqPath != null && !savedReqPath.equals("")) {
-			reqPath.setText(savedReqPath);
-		}
-		else {
-			reqPath.setText("path of the requirement file ...");
-		}
-		if (savedSystemPath != null && !savedSystemPath.equals("")) {
-			sysPath.setText(savedSystemPath);
-		}
-		else {
-			sysPath.setText("path of the system file ...");
-		}
+		reqPathText.setText("path of the requirement file ...");
+		sysPathText.setText("path of the system file ...");
 		
 		// create the buttons 
 		Button reqButton = new Button(reqComp, SWT.PUSH);
@@ -515,23 +378,7 @@ public class MappingPage {
 				FileDialog fd = new FileDialog(shell, SWT.OPEN);
 		        fd.setText("Open");
 		        
-		        // remember the path (after serialization and new start of the application)
-		        // if the path for the requirement file is not given, look after the path of the system model file
-		        String filterpath = "C:/";
-		        if (savedModel.getReqPath() != null && !savedModel.getReqPath().equals("")) {
-		        	filterpath = savedModel.getReqPath();
-		        }
-		        else if (savedModel.getSysPath() != null && !savedModel.getSysPath().equals("")) {
-		        	filterpath = savedModel.getSysPath();
-		        }
-		        if (!filterpath.equals("C:/")) {
-		        	String[] pathSegments = filterpath.split(Pattern.quote("\\"));
-		        	filterpath = "";
-		        	for(int i = 0; i < pathSegments.length - 1; i++) {
-			        	filterpath += pathSegments[i] + "\\";
-			        }
-			        System.out.println("Filterpath: " + filterpath);
-		        }
+		        String filterpath = "C:/"; 
 		        fd.setFilterPath(filterpath);
 		        
 		        // TODO: ? show the files with the correct file extension ?
@@ -542,12 +389,9 @@ public class MappingPage {
 		        if (selected != null) {
 		        	System.out.println(selected);
 		        	// show the selected file path
-		        	reqPath.setText(selected);
+		        	reqPathText.setText(selected);
 		        	// execute the RequirementImporter 
 		        	reqCon.execute(display, selected);
-		        	// add the selected path to the SaveModel for the serialization 
-		        	savedModel.setReqPath(selected);
-		        	langMapEditor.setDirty(true);
 		        }
 			}
 		});
@@ -560,23 +404,7 @@ public class MappingPage {
 				FileDialog fd = new FileDialog(shell, SWT.OPEN);
 		        fd.setText("Open");
 		        
-		        // remember the path (after serialization and new start of the application)
-		        // if the path for the system model file is not given, look after the path of the requirement file
 		        String filterpath = "C:/";
-		        if (savedModel.getSysPath() != null && !savedModel.getSysPath().equals("")) {
-		        	filterpath = savedModel.getSysPath();
-		        }
-		        else if (savedModel.getReqPath() != null && !savedModel.getReqPath().equals("")) {
-		        	filterpath = savedModel.getReqPath();
-		        }
-		        if (!filterpath.equals("C:/")) {
-		        	String[] pathSegments = filterpath.split(Pattern.quote("\\"));
-		        	filterpath = "";
-		        	for(int i = 0; i < pathSegments.length - 1; i++) {
-			        	filterpath += pathSegments[i] + "\\";
-			        }
-			        System.out.println("Filterpath: " + filterpath);
-		        }
 		        fd.setFilterPath(filterpath);
 		        
 		        // TODO: ? show the files with the correct file extension ? 
@@ -586,12 +414,8 @@ public class MappingPage {
 		        systemPath = fd.open();
 		        if (systemPath != null) {
 		        	System.out.println(systemPath);
-		        	/// show the selected file path 
-			        sysPath.setText(systemPath);
-			        // add the selected path to the SaveModel for the serialization 
-		        	savedModel.setSysPath(systemPath);
-		        	langMapEditor.setDirty(true);
-					/* validate the selected file, create the injector for the mapping parser 
+			        /* validate the selected file, create the injector for the mapping parser,
+			         * show the selected file path 
 					 * and update the item list if the validation is correct */
 			        sysCon.checkFileAndCreateInjectorAndUpdateList(systemPath, mp);
 		        }
@@ -599,8 +423,8 @@ public class MappingPage {
 		});
 		
 		GridData gridData = new GridData(SWT.FILL,SWT.FILL, true, false);
-		reqPath.setLayoutData(gridData);
-		sysPath.setLayoutData(gridData);
+		reqPathText.setLayoutData(gridData);
+		sysPathText.setLayoutData(gridData);
 		
 	}
 	
@@ -610,10 +434,8 @@ public class MappingPage {
 	 * an arrow symbol and a text field for the mapping.
 	 * @param reqElem the requirement Element of type IRequirementElement
 	 * @param num the number of the item
-	 * @param savedContent the saved embedded editor content
-	 * @return the EmebeddedEditorModelAccess for serialization and deserialization of the embedded editor content
 	 */
-	private EmbeddedEditorModelAccess createBoxItem(IRequirementElement reqElem, int num, String savedContent) {
+	private void createBoxItem(IRequirementElement reqElem, int num) {
 		Composite child = new Composite(compositeInScroll, SWT.NONE);
 		child.setLayout(new FillLayout());
 		
@@ -694,44 +516,19 @@ public class MappingPage {
 		
 		// create an embedded xtextEditor for the mapping 
 		Composite embeddedEditorComposite = new Composite(group, SWT.BORDER);
-		
 		embeddedEditorComposite.setLayout(new GridLayout());
 		GridData gridDataText = new GridData(SWT.FILL, SWT.FILL, true, true);
 		embeddedEditorComposite.setLayoutData(gridDataText);
 		
 		EmbeddedEditor embed = editorHelper.createEditorWithoutActivation(embeddedEditorComposite, dslInjector);
-		EmbeddedEditorModelAccess modelAccess= null;
 		
 		if (embed != null) {
 			// Important method that activates the nice behavior of a xtext editor 
-			modelAccess = embed.createPartialEditor();
+			embed.createPartialEditor();
 			
 			LineNumberRulerColumn lineNumberRulerColumn = new LineNumberRulerColumn();
 			embed.getViewer().addVerticalRulerColumn(lineNumberRulerColumn);
 			
-			// Listen to text changes to set the dirty status
-			embed.getViewer().addTextListener(new ITextListener() {
-				
-				@Override
-				public void textChanged(TextEvent event) {
-					if (isModelLoading) {
-						return;
-					}
-					String text = embed.getDocument().get();
-					if (savedEditorContent == null && !text.equals("")) {
-						langMapEditor.setDirty(true);
-					}
-					else if (savedEditorContent != null && !savedEditorContent.get(num-1).equals(text)) {
-						langMapEditor.setDirty(true);
-					}
-					
-				}
-			});
-			
-			// if there exists a saved embedded editor content write it back to the embedded editor 
-			if (savedContent != null) {
-				modelAccess.updateModel(savedContent);
-			}
 		}
 		
 		
@@ -740,26 +537,24 @@ public class MappingPage {
 		gridData_1.horizontalAlignment = SWT.FILL;
 
 		GridData gridData_2 = new GridData();
-		gridData_2.minimumHeight = 150; //75;
+		gridData_2.minimumHeight = 75;
 		gridData_2.minimumWidth = 200;
-		gridData_2.heightHint = 150; //75;
+		gridData_2.heightHint = 75;
 		gridData_2.widthHint = 250;
 		
 		GridData gridData_3 = new GridData();
 		gridData_3.horizontalAlignment = SWT.FILL;
 		
 		GridData gridData_4 = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gridData_4.minimumHeight = 150; //75;
+		gridData_4.minimumHeight = 75;
 		gridData_4.minimumWidth = 350;
-		gridData_4.heightHint = 150; //75;
+		gridData_4.heightHint = 75;
 		gridData_4.widthHint = 400;
 
 		number.setLayoutData(gridData_1);
 		reqLabelcomp.setLayoutData(gridData_2);
 		symbol.setLayoutData(gridData_3);
 		embeddedEditorComposite.setLayoutData(gridData_4);
-		
-		return modelAccess;
 	}
 	
 	/**
@@ -783,15 +578,11 @@ public class MappingPage {
 		saveButton.setText("  Save  ");
 		saveButton.setAlignment(SWT.CENTER);
 		
-		/* save all data (requirement path and system model path, requirement list and embedded editor content list) 
-		 * when the save button is selected */
 		saveButton.addSelectionListener(new SelectionAdapter() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println("Save as called!");
-				//save();
-				saveAs();
 			}
 		});
 		
@@ -870,25 +661,6 @@ public class MappingPage {
 	    
 	}
 	
-	/**
-	 * Loads all data of the saved model, 
-	 * creates the injector for the mapping parser based on the saved system model path,
-	 * updates the item list
-	 */
-	private void setupSavedData() {
-		this.savedReqPath = this.savedModel.getReqPath();
-		this.savedSystemPath = this.savedModel.getSysPath();
-		this.savedReqList = this.savedModel.getReqList();
-		this.savedEditorContent = this.savedModel.getEditorContentList();
-		this.savedEditorContent = this.savedModel.getEditorContentList();
-		this.isModelLoading = true;
-		
-		isReqElems = true;
-		
-		if (savedSystemPath != null && !savedSystemPath.equals("")) {
-			sysCon.checkFileAndCreateInjectorAndUpdateList(savedSystemPath, this);
-		}
-	}
 	
 	
 
