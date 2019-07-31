@@ -3,16 +3,6 @@
  */
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.ui.contentassist
 
-import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor
-import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
-import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor.Delegate
-import org.eclipse.jface.text.contentassist.ICompletionProposal
-import org.eclipse.xtext.ui.editor.contentassist.ConfigurableCompletionProposal
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.xtext.RuleCall
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.Model
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.Mapping
-//import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.MessageNode
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
@@ -41,7 +31,7 @@ class MappingProposalProvider extends AbstractMappingProposalProvider {
 	
 
 	
-	static class StringProposalDelegate extends Delegate {
+	/*static class StringProposalDelegate extends Delegate {
  
         ContentAssistContext ctx
  
@@ -64,6 +54,6 @@ class MappingProposalProvider extends AbstractMappingProposalProvider {
             super.accept(proposal)
         }
  
-    }
+    }*/
 	
 }

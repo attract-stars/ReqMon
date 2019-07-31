@@ -15,7 +15,10 @@
     </genClasses>
     <genClasses ecoreClass="Mapping.ecore#//Definition">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//Definition/def"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//Definition/unit"/>
+    </genClasses>
+    <genClasses ecoreClass="Mapping.ecore#//DefinitionElememnt">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//DefinitionElememnt/def"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//DefinitionElememnt/unit"/>
     </genClasses>
     <genClasses ecoreClass="Mapping.ecore#//SystemID">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mapping.ecore#//SystemID/def"/>
@@ -42,13 +45,21 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//AttributeID/attr"/>
     </genClasses>
     <genClasses ecoreClass="Mapping.ecore#//Rule">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mapping.ecore#//Rule/neg"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//Rule/elem"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mapping.ecore#//Rule/op"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//Rule/interval"/>
+    </genClasses>
+    <genClasses ecoreClass="Mapping.ecore#//NegationRule">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mapping.ecore#//NegationRule/neg"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//NegationRule/attrOfDef"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//NegationRule/def"/>
     </genClasses>
     <genClasses ecoreClass="Mapping.ecore#//Element">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//Element/attrOfDef"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//Element/value"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//Element/def"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//Element/ref"/>
     </genClasses>
     <genClasses ecoreClass="Mapping.ecore#//AttributeOfDefined">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//AttributeOfDefined/system"/>
@@ -59,54 +70,60 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//AttributeOfDefined/object"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//AttributeOfDefined/attribute"/>
     </genClasses>
-    <genClasses ecoreClass="Mapping.ecore#//GetSystemAttribute">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mapping.ecore#//GetSystemAttribute/attr"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetSystemAttribute/systemName"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetSystemAttribute/version"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetSystemAttribute/description"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetSystemAttribute/message"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetSystemAttribute/signal"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetSystemAttribute/datastruc"/>
+    <genClasses ecoreClass="Mapping.ecore#//GetAttributeSystem">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mapping.ecore#//GetAttributeSystem/attr"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeSystem/systemName"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeSystem/version"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeSystem/description"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeSystem/message"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeSystem/signal"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeSystem/datastruc"/>
     </genClasses>
-    <genClasses ecoreClass="Mapping.ecore#//GetMessageAttribute">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mapping.ecore#//GetMessageAttribute/attr"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetMessageAttribute/messageName"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetMessageAttribute/location"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetMessageAttribute/bit"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetMessageAttribute/signalRef"/>
+    <genClasses ecoreClass="Mapping.ecore#//GetAttributeMessage">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mapping.ecore#//GetAttributeMessage/attr"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeMessage/messageName"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeMessage/location"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeMessage/bit"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeMessage/signalRef"/>
     </genClasses>
-    <genClasses ecoreClass="Mapping.ecore#//GetSignalAttribute">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mapping.ecore#//GetSignalAttribute/attr"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetSignalAttribute/signalName"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetSignalAttribute/id"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetSignalAttribute/description"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetSignalAttribute/datatype"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetSignalAttribute/location"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetSignalAttribute/bit"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetSignalAttribute/minvalue"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetSignalAttribute/maxvalue"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetSignalAttribute/prefvalue"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetSignalAttribute/stepsize"/>
+    <genClasses ecoreClass="Mapping.ecore#//GetAttributeSignal">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mapping.ecore#//GetAttributeSignal/attr"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeSignal/signalName"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeSignal/id"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeSignal/description"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeSignal/datatype"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeSignal/location"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeSignal/bit"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeSignal/minvalue"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeSignal/maxvalue"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeSignal/prefvalue"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeSignal/stepsize"/>
     </genClasses>
-    <genClasses ecoreClass="Mapping.ecore#//GetStructureAttribute">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mapping.ecore#//GetStructureAttribute/attr"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetStructureAttribute/structureName"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetStructureAttribute/description"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetStructureAttribute/location"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetStructureAttribute/bit"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetStructureAttribute/clas"/>
+    <genClasses ecoreClass="Mapping.ecore#//GetAttributeStructure">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mapping.ecore#//GetAttributeStructure/attr"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeStructure/structureName"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeStructure/description"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeStructure/location"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeStructure/bit"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeStructure/clas"/>
     </genClasses>
-    <genClasses ecoreClass="Mapping.ecore#//GetClassAttribute">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mapping.ecore#//GetClassAttribute/attr"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetClassAttribute/className"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetClassAttribute/description"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetClassAttribute/attribute"/>
+    <genClasses ecoreClass="Mapping.ecore#//GetAttributeClass">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mapping.ecore#//GetAttributeClass/attr"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeClass/className"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeClass/description"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeClass/inherit"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeClass/attribute"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeClass/attrAttr"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeClass/attrSignal"/>
     </genClasses>
     <genClasses ecoreClass="Mapping.ecore#//GetAttributeAttribute">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mapping.ecore#//GetAttributeAttribute/attr"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeAttribute/className"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeAttribute/description"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetAttributeAttribute/type"/>
+    </genClasses>
+    <genClasses ecoreClass="Mapping.ecore#//Ref">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mapping.ecore#//Ref/ref"/>
     </genClasses>
     <genClasses ecoreClass="Mapping.ecore#//Value">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//Value/unit"/>
@@ -126,6 +143,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetUnit/signal"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mapping.ecore#//GetUnit/get"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//GetUnit/datatype"/>
+    </genClasses>
+    <genClasses ecoreClass="Mapping.ecore#//Intervall">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//Intervall/lower"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mapping.ecore#//Intervall/higher"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

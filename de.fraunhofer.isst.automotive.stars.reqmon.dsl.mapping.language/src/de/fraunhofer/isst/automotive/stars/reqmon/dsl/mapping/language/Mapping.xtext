@@ -14,16 +14,22 @@ Model:
 Mapping:
 	definition=Definition 
 	| rule=Rule
+	| rule = NegationRule
 ;
 
 Definition:
-	//def = SystemID 
+	def+=DefinitionElememnt
+;
+
+DefinitionElememnt:
 	  def = MessageID
 	| def = SignalID
-	//| def = StructureID
 	| def = ClassID
 	| def = AttributeID
 	| unit=Unit
+	
+	//| def = SystemID 
+	//| def = StructureID
 ;
 
 SystemID:
@@ -52,28 +58,38 @@ AttributeID:
 
 
 Rule:
-	 elem+=Element (op+=Operators elem+=Element)+
+	neg+=Negation? '('* elem+=Element 
+	(
+		(
+			  op+=Operators neg+=Negation? '('* elem+=Element 
+			| neg+=Negation? op+='in' interval+=Intervall
+		) ')'*
+	)+
 ;
 
+NegationRule:
+	neg=Negation (attrOfDef=AttributeOfDefined | def=AttributeID)
+;
 
 Element:
 	attrOfDef+=AttributeOfDefined
 	| value=Value
 	| def=Definition
+	| ref=Ref
 ;
 
 
 
 AttributeOfDefined:
-	  system=SystemID getAttr+=GetSystemAttribute
-	| message=MessageID getAttr+=GetMessageAttribute
-	| signal=SignalID getAttr+=GetSignalAttribute
-	| structure=StructureID getAttr+=GetStructureAttribute
-	| object=ClassID getAttr+=GetClassAttribute
+	  system=SystemID getAttr+=GetAttributeSystem
+	| message=MessageID getAttr+=GetAttributeMessage
+	| signal=SignalID getAttr+=GetAttributeSignal
+	| structure=StructureID getAttr+=GetAttributeStructure
+	| object=ClassID getAttr+=GetAttributeClass
 	| attribute=AttributeID getAttr+=GetAttributeAttribute
 ;
 
-GetSystemAttribute:
+GetAttributeSystem:
 	attr='.systemName_' systemName=[system::SystemNode | STRING]
 	| attr='.systemVersion_' version=[system::VersionNode | STRING]
 	| attr='.systemDescription_' description=[system::DescriptionNode | STRING]
@@ -83,7 +99,7 @@ GetSystemAttribute:
 	| attr='.this_system'
 ;
 
-GetMessageAttribute:
+GetAttributeMessage:
 	attr='.messageName_' messageName=[system::MessageNode | STRING]
 	| attr='.messageLocation_' location=[system::LocationNode | STRING]
 	| attr='.messageBitsize_' bit=[system::BitNode | STRING]
@@ -91,7 +107,7 @@ GetMessageAttribute:
 	| attr='.this_message'
 ;
 
-GetSignalAttribute:
+GetAttributeSignal:
 	attr='.signalName_' signalName=[system::SignalNode | STRING]
 	| attr='.signalID_' id=[system::IDAtrr | STRING]
 	| attr='.signalDescription_' description=[system::DescriptionNode | STRING]
@@ -105,9 +121,8 @@ GetSignalAttribute:
 	| attr='.this_signal'
 ;
 
-GetStructureAttribute:
+GetAttributeStructure:
 	attr='.structureName_' structureName=[system::DataStructureNode | STRING]
-	//| attr='.structureID_' id=[system::IDAtrr | STRING]
 	| attr='.structureDescription_' description=[system::DescriptionNode | STRING]
 	| attr='.structureLocation_' location=[system::LocationNode | STRING]
 	| attr='.structureBitsize_' bit=[system::BitNode | STRING]
@@ -115,20 +130,24 @@ GetStructureAttribute:
 	| attr='.this_structure'
 ;
 
-GetClassAttribute:
+GetAttributeClass:
 	attr='.className_' className=[system::ClassNode | STRING]
 	| attr='.classDescription_' description=[system::DescriptionNode | STRING]
-	//| attr='.classInheritance_from_' inherit=[system::InheritanceNode | STRING]
+	| attr='.classInheritance_from_' inherit=[system::InheritanceNode | STRING]
 	| attr='.classAttribute_' attribute=[system::AttributeNode | STRING] 
+			attrAttr=GetAttributeAttribute? attrSignal=GetAttributeSignal?
 	| attr='.this_class'
 ;
 
 GetAttributeAttribute:
 	attr='.attributeName_' className=[system::AttributeNode | STRING]
 	| attr='.attributeDescription_' description=[system::DescriptionNode | STRING]
-	//| attr='.attrtype_' attrtype=[system::AttrTypeNode | STRING]
 	| attr='.attributeType_' type=[system::Type | STRING]
 	| attr='.this_attribute'
+;
+
+Ref:
+	'{' ref=INT '}'
 ;
 
 Value:
@@ -136,86 +155,31 @@ Value:
 ;
 
 IntValue:
-	value=INT unit=[Unit]? 
+	value=INT unit=[Unit | STRING]? 
 ;
 
 FloatValue:
-	value=FLOAT unit=[Unit]? 
+	value=FLOAT unit=[Unit | STRING]? 
 ;
 
 Unit:
-	def='unit' name=ID ':=' unit=GetUnit
+	def='unit' name=STRING ':=' unit=GetUnit
 ;
 
 GetUnit:
 	signal=SignalID get+='.signalDatatype_' datatype=[system::DataTypeNode | STRING]
-	//| system=SystemID get+='.systemSignal_' signaltype=[system::SignalNode | STRING] 
-		//get+='.signalDatatype_' datatype=[system::DataTypeNode | STRING]
 ;
 	
-/*Relations:
-	relation+=Relation (conj+=Conjunction relation+=Relation)*
-;*/
 
-/* 
-Relation:
-	fstObject=ObjectOrValue negation=Negation? comp=Comparators secObject=ObjectOrValue 
-;*/
-/*
-Functions:
-	function+=Function (conj+=Conjunction function+=Function)*
-;
-
-Function:
-	op+=Operators? function+=SimpleFunction (op+=Operators function+=Function)* |
-	'(' op+=Operators? function+=SimpleFunction (op+=Operators function+=Function)* ')' 
-;
-
-
-SimpleFunction:
-	op=Operators fstObject=ObjectOrValue |
-	'(' op=Operators fstObject=ObjectOrValue ')' |
-	fstObject=ObjectOrValue op=Operators secObject=ObjectOrValue |
-	'(' fstObject=ObjectOrValue op=Operators secObject=ObjectOrValue ')'
-;
-*/
-
-/*ObjectOrValue:
-	(object=Object | value=Value)
-;*/
-
-/*Objects:
-	object+=Object (conj+=Conjunction object+= Object)*
-;*/
-
-
-
-/*Object:
-	(object=ID | object=STRING) 
-;*/
 
 /* =========== VALUES =========== */
 
-/*
+
 Intervall:
 	'[' lower=Value','higher=Value ']'
 ;
 
 
-ValueSet:
-	 '{' (elements+=Value) (';'elements+=Value)*'}'
-;
-
-ObjectSet:
-	  '{' (elements+=Object) (';'elements+=Object)*'}'
-;*/
-
-
-
-
-/*WORD returns ecore::EString: 
-	ID('-'ID)*
-;*/
 
  
 FLOAT returns ecore::EFloat:
@@ -232,10 +196,6 @@ Operators:
 	| Relative 
 	| Conclusion 
 	| Equivalence 
-	//| Unknown 
-	| Negation 
-	//| Quantification 
-	//| Existance 
 	| Junctor
 ;
 
@@ -244,78 +204,37 @@ Calculation:
 	'+' | '-' | '*' | '/' | '^' 
 ;
 
-Unknown:
-	'?'
-;
-
-Conclusion:
-	'=>' | '==>' | '<==' | '~>' | '<~'
-;
-
-Equivalence:
-	'<=>' | '<==>'
-;
-
-Relative:
- // for which
-	':' 
-// in relation to
-	| '~'
-;
-
-Negation:
-	'!'
-;
-
-Quantification:
-	'V'
-;
-
-Existance:
-	'E'
-;
-
 Junctor:
-	/** and */
-	'&' |
-	
-	/** or */
-	'|'
+	'&' | 'and'|
+	'|' | 'or'
 ;
 	
 Comparators:
-	/** -> SizeAdverbial (higher, more, larger), ComparisonAdverbial (faster, better),
-	 *        PositionAdverbial (above, on, in_front_of) */
-	'>' |
-	
-	/** -> SizeAdverbial (less, smaller), ComparisonAdverbial (slower),
-	 *        PositionAdverbial (below, behind, under) */ 
-	'<' |
-	 
-	/** -> ComparisonAdverbial (equal) */
-	'=' | 
-	
-	/** ->  SizeAdverbial (as_long_as) */
-	'==' | 
-	
-	/** greater or equal  */
+	'>'  |
+	'<'  |
+	'='  | 
 	'>=' |
-	
-	/** smaller or equal */ 
-	'<=' | 
-	
-	/** -> PositionAdverbial (out) */
-	'<>' | 
-	
-	/** -> PositionAdverbial (between, in, within) */
-	'><' | 
-	
-	/** -> PositionAdverbial (next) */
-	'>=<'
-	
-	/** ('<<' a lot smaller, '>>' a lot bigger, '<<<' much smaller, '>>>' much bigger) */ 
-	// | '<<' | '<<<' | '>>' | '>>>'
+	'<='  
 ;
+
+Conclusion:
+	'=>' 
+;
+
+Equivalence:
+	'<=>'
+;
+
+Relative:
+	'~'
+;
+
+Negation:
+	'!' | 'not'
+;
+
+
+
 
 
 

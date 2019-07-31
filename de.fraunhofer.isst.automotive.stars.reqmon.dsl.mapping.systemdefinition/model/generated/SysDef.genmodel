@@ -129,7 +129,7 @@
     </genClasses>
     <genClasses ecoreClass="SysDef.ecore#//InheritanceNode">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//InheritanceNode/node"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference SysDef.ecore#//InheritanceNode/class"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//InheritanceNode/name"/>
     </genClasses>
     <genClasses ecoreClass="SysDef.ecore#//AttributeNode">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute SysDef.ecore#//AttributeNode/node"/>
