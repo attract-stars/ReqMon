@@ -26,8 +26,8 @@ class RequirementDSLParsingTest {
 		testSequence('''
 			Req 1: The system must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is behind the ego vehicle and the vehicle´s relative velocity is more than 5 m/s.
 			Req 2: The system must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is in front to the ego vehicle and the vehicle´s relative velocity is less than 5 m/s.
-			Req Req3a: The system must not perform a lane change to any lane if a vehicle is on the ego lane and the vehicle is in_front_of the ego-vehicle and the vehicle´s distance in relation to the ego-vehicle is less than 1m.
-			Req Req3b: The system must not perform a lane change to any lane if a vehicle is on the ego-lane and the vehicle is in_front_of the ego-vehicle and the vehicle´s distance is less than 1 m in relation to the ego-vehicle.
+			Req Req3a: The system must not perform a lane change to any lane if a vehicle is on the ego lane and the vehicle is in front of the ego-vehicle and the vehicle´s distance in relation to the ego-vehicle is less than 1m.
+			Req Req3b: The system must not perform a lane change to any lane if a vehicle is on the ego-lane and the vehicle is in front of the ego-vehicle and the vehicle´s distance is less than 1 m in relation to the ego-vehicle.
 			Req 4: The system must not perform a lane change to any lane if a vehicle is on the ego lane and the vehicle is behind the ego vehicle  and the vehicle´s relative velocity is larger than 10 m/s.
 			Req 5: The system must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is next to the ego vehicle and the vehicle´s relative velocity is less than 2m/s.
 			Req 5: The system must not perform a lane change to any lane if the lane´s markings are solid.
@@ -437,6 +437,7 @@ class RequirementDSLParsingTest {
 		 * Req 2: Articles WORD Predicate
 		 * Req 3: RefArticles WORD Predicate
 		 * Req 4: PreNominative STRING Predicate
+		 * Req 5: PreNominative relative WORD Predicate
 		 */ 
 		testSequence('''
 			Req 1: all x x.
@@ -469,6 +470,8 @@ class RequirementDSLParsingTest {
 			Req 4: The "x" x.
 			Req 4: the 'x' x.
 			
+			Req 5: the relative 'x' x.
+			
 		''')
 		
 		/*
@@ -496,6 +499,12 @@ class RequirementDSLParsingTest {
 		 * Req 3: Actor Predicate RefArticles WORD
 		 * Req 4: Actor Predicate PreNominative WORD WORD
 		 * Req 5: Actor Predicate PreNominative STRING
+		 * 
+		 * Req 6: Actor Predicate Quantification relative WORD
+		 * Req 7: Actor Predicate Articles relative WORD
+		 * Req 8: Actor Predicate RefArticles relative WORD
+		 * Req 9: Actor Predicate PreNominative relative WORD WORD
+		 * Req 10: Actor Predicate PreNominative relative STRING
 		 */ 
 		testSequence('''
 			Req 1: x x all x.
@@ -505,6 +514,13 @@ class RequirementDSLParsingTest {
 			Req 5: x x a "x".
 			Req 5: x x a 'x'.
 			
+			Req 6: x x all relative x.
+			Req 7: x x the relative x.
+			Req 8: x x this relative x.
+			Req 9: x x a relative x x.
+			Req 10: x x a relative "x".
+			Req 11: x x a relative 'x'.
+			
 		''')
 		
 		/*
@@ -512,12 +528,16 @@ class RequirementDSLParsingTest {
 		 * 
 		 * Req 1: Actors PROPERTY_TERM WORD WORD Modality Predicate
 		 * Req 2: Actors PROPERTY_TERM STRING Modality Predicate
+		 * Req 3: Actors PROPERTY_TERM relative WORD WORD Modality Predicate
+		 * Req 4: Actors PROPERTY_TERM realtive STRING Modality Predicate
 		 */ 
 		testSequence('''
 			Req 1: x´s x x must x.
 			Req 2: x´s "x" must x.
 			Req 2: x´s 'x' must x.
-			
+			Req 3: x´s realtive x x must x.
+			Req 4: x´s relative "x" must x.
+			Req 4: x´s relative 'x' must x.
 		''')
 		
 		/*
@@ -533,29 +553,11 @@ class RequirementDSLParsingTest {
 		testSequence('''
 			Req 1: x x in x to x.
 			Req 2: x x in x in relation to x.
+			Req 2: x x in x relative to x.
 			Req 3: x x in x to x in relation to x.
 			Req 4: x x in relation to x.
 			Req 5: x x in relation to x in x.
 			Req 6: x x in relation to x in x to x.
-			
-		''')
-		
-		/*
-		 * Test of the Object rule
-		 * 
-		 * Req 1: Actor Predicate WORD WORD
-		 * Req 2: Actor Predicate Quantification WORD WORD
-		 * Req 3: Actor Predicate Articles WORD WORD
-		 * Req 4: Actor Predicate RefArticles WORD WORD
-		 * Req 5: Actor Predicate PreNominative STRING
-		 */ 
-		testSequence('''
-			Req 1: x x x x.
-			Req 2: x x all x x.
-			Req 3: x x the x x.
-			Req 4: x x this x x.
-			Req 5: x x a "x".
-			Req 5: x x a 'x'.
 			
 		''')
 		
@@ -566,17 +568,24 @@ class RequirementDSLParsingTest {
 		 */ 
 		testSequence('''
 			Req : in relation to x, x x.
-			//: In relation to x, x x.
-			
+			Req : relative to x, x x.
+			Req : In relation to x, x x.
+			Req : Relative to x, x x.
 		''')
 		
 		/*
-		 * Test of the Object rule
+		 * Test of the Object rule (in ObjectConstraint and RelObjects)
+		 * 
 		 * Req 1: Actor Predicate Adverbial PreNominative WORD
 		 * Req 2: Actor Predicate Adverbial WORD
 		 * Req 3: Actor Predicate Adverbial PreNominative STRING
 		 * Req 4: Actor Predicate Adverbial STRING
-		 * Req 5: PositionAdverbial RelationDelimiter Comparators Object, Actor Predicate
+		 * Req 5: RelationDelimiter Object, Actor Predicate
+		 * Req 6: Actor Predicate Adverbial PreNominative relative WORD
+		 * Req 7: Actor Predicate Adverbial relative WORD
+		 * Req 8: Actor Predicate Adverbial PreNominative relative STRING
+		 * Req 9: Actor Predicate Adverbial relative STRING
+		 * Req 10: RelationDelimiter Object, Actor Predicate
 		 */
 		testSequence('''
 			Req 1: x x in the x.
@@ -585,13 +594,21 @@ class RequirementDSLParsingTest {
 			Req 3: x x in the 'x'.
 			Req 4: x x in "x".
 			Req 4: x x in 'x'.
+			
 			Req 5: in relation to the x, x x.
+			Req 5: relative to the x, x x.
 			Req 5: in relation to x, x x.
 			Req 5: in relation to the "x", x x.
 			Req 5: in relation to the 'x', x x.
 			Req 5: in relation to "x", x x.
 			Req 5: in relation to 'x', x x.
 			
+			Req 6: x x in the relative x.
+			Req 7: x x in relative x.
+			Req 8: x x in the relative "x".
+			Req 9: x x in relative "x".
+			Req 10: in relation to the relative x, x x.
+			Req 10: relative to the relative x, x x.
 		''')
 		
 		/*
@@ -643,7 +660,7 @@ class RequirementDSLParsingTest {
 		 */ 
 		testSequence('''
 			Req : x x in relation to x.
-			
+			Req : x x relative to x.
 		''')
 		
 		/*
@@ -660,15 +677,15 @@ class RequirementDSLParsingTest {
 		testSequence('''
 			Req 1: x x in relation to x.
 			Req 2: x x in relation to x´s x.
-			Req 3: x x in relation to x and_to x.
-			Req 3: x x in relation to x or_to x.
-			Req 4: x x in relation to x´s x and_to x.
-			Req 4: x x in relation to x´s x or_to x.
-			Req 5: x x in relation to x and_to x´s x.
-			Req 5: x x in relation to x or_to x´s x.
-			Req 6: x x in relation to x´s x and_to x´s x.
-			Req 6: x x in relation to x´s x or_to x´s x.
-			Req 7: x x in relation to x and_to x or_to x.
+			Req 3: x x in relation to x and to x.
+			Req 3: x x in relation to x or to x.
+			Req 4: x x in relation to x´s x and to x.
+			Req 4: x x in relation to x´s x or to x.
+			Req 5: x x in relation to x and to x´s x.
+			Req 5: x x in relation to x or to x´s x.
+			Req 6: x x in relation to x´s x and to x´s x.
+			Req 6: x x in relation to x´s x or to x´s x.
+			Req 7: x x in relation to x and to x or to x.
 			
 		''')
 		
@@ -702,7 +719,7 @@ class RequirementDSLParsingTest {
 			Req 1: x x more x.
 			Req 1: x x larger x.
 			Req 1: x x smaller x.
-			Req 1: x x as_long_as x.
+			Req 1: x x as long as x.
 			
 			Req 2: x x between x.
 			Req 2: x x next x.
@@ -710,7 +727,7 @@ class RequirementDSLParsingTest {
 			Req 2: x x above x.
 			Req 2: x x in x.
 			Req 2: x x within x.
-			Req 2: x x in_front_of x.
+			Req 2: x x in front of x.
 			Req 2: x x behind x.
 			Req 2: x x out x.
 			Req 2: x x under x.
