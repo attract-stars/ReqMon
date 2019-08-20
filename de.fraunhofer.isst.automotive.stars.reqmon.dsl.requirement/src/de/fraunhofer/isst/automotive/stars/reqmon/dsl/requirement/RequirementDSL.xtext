@@ -258,14 +258,19 @@ WORD returns ecore::EString:
 @Override 
 terminal ID: '^'?('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'-'|'0'..'9')*;
 
+// overriding STRING to allow only the '"' quote (the "'" quote is needed for the Property-term)
+@Override
+terminal STRING: 
+	'"' ( '\\'('b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\') | !('\\'|'"') )* '"'
+;
+
 terminal WS_HYPHEN : ' - '; 
 
 //@Override
 //terminal WS : (' '|'\t'|'\r')+ ;
 
 terminal PROPERTY_TERM returns ecore::EBoolean:
-	//'\'s' |	'`s' |
-	'´s'
+	'\'s' |	'`s' | '´s'
 ;
 /* =========== BASIC SYNTAX =========== */
 
@@ -312,7 +317,7 @@ Negation:
 ;
 
 AuxiliaryVerbNegation:
-	'doesn´t' | 'don´t' | 'isn´t' | 'aren´t'
+	'doesn\'t' | 'don\'t' | 'isn\'t' | 'aren\'t'
 ;
 
 enum Modality:
