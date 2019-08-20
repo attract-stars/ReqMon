@@ -1,5 +1,6 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
@@ -207,6 +208,26 @@ public class MappingPage {
 			reqList = reqCon.getRequirements();
 			elemSize = reqList.size();
 		}
+		
+		// sort reqlist: objects, functions, relations
+		ArrayList<IRequirementElement> objects = new ArrayList<IRequirementElement>();
+		ArrayList<IRequirementElement> functions = new ArrayList<IRequirementElement>();
+		ArrayList<IRequirementElement> relations = new ArrayList<IRequirementElement>();
+		
+		for (IRequirementElement elem : reqList) {
+			if (elem.getElementType().equals(RequirementType.OBJECT)) {
+				objects.add(elem);
+			} 
+			else if (elem.getElementType().equals(RequirementType.FUNCTION)) {
+				functions.add(elem);
+			}
+			else if (elem.getElementType().equals(RequirementType.RELATION)) {
+				relations.add(elem);
+			}
+		}
+		objects.addAll(functions);
+		objects.addAll(relations);
+		reqList = objects;
 		
 		for (int i = 0; i < elemSize; i++) {
 			/* create the box item */
