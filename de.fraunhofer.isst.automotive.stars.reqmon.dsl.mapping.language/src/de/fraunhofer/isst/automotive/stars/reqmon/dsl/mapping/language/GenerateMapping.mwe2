@@ -32,7 +32,6 @@ Workflow {
 		language = StandardLanguage {
 			name = "de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.Mapping"
 			fileExtensions = "mapping"
-			//referencedResource = "platform:/resource/de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement/model/generated/RequirementDSL.genmodel"
 			referencedResource = "platform:/resource/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition/model/generated/SysDef.genmodel"
 
 			serializer = {
