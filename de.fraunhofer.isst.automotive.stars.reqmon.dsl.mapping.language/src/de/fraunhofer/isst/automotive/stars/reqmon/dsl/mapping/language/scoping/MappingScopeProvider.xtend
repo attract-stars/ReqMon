@@ -10,6 +10,12 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.scoping
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#scoping
  * on how and when to use it.
  */
-class MappingScopeProvider extends AbstractMappingScopeProvider {
+//class MappingScopeProvider extends AbstractDeclarativeScopeProvider {
+	
+  /*def IScope scope_Farewell_greeting(Farewell farewell, EReference eReference) {
+    Scopes::scopeFor((farewell.eContainer as Model).greetings.filter [ honest ])
+  }*/
+  
+//}
 
-}
+class MappingScopeProvider extends AbstractMappingScopeProvider {}

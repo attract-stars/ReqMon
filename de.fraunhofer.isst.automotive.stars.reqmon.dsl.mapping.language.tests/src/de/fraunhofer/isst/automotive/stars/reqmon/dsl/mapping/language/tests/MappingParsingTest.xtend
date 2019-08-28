@@ -18,11 +18,219 @@ class MappingParsingTest {
 	@Inject
 	ParseHelper<Model> parseHelper
 	
+	// Test examples uses the mycar.sysdef example (in: mapping.ui.test/material),
+	// but the tests accept any referenced String 
+	// because the reference to a sysdef file is missing for the tests
+	
 	@Test
 	def void loadModel() {
-		val result = parseHelper.parse('''
-			Hello Xtext!
+		
+		// Object-examples:
+		
+		// lane change
+		testSequence('''
+			class "mycar.data structure.vehicle"
 		''')
+		
+		// lane
+		testSequence('''
+			class "mycar.data structure.lane"
+		''')
+		
+		// vehicle
+		testSequence('''
+			class "mycar.data structure.lane" & 
+			attribute "mycar.data structure.vehicle.lane change"
+		''')
+		
+		// ego vehicle
+		testSequence('''
+			class "mycar.data structure.this car"
+		''')
+		
+		// vehicle relative velocity
+		testSequence('''
+			attribute "mycar.data structure.vehicle.velocity"
+		''')
+		
+		// vehicle distance
+		testSequence('''
+			class "mycar.data structure.vehicle" &
+			attribute "mycar.data structure.vehicle.front distance"
+		''')
+		
+		// lane markings
+		testSequence('''
+			class "mycar.data structure.lane" & 
+			attribute "mycar.data structure.lane.marking"
+		''')
+		
+		// lane restricted
+		testSequence('''
+			class "mycar.data structure.lane" & 
+			attribute "mycar.data structure.lane.restricted"
+		''')
+		
+		// lane curvature
+		testSequence('''
+			class "mycar.data structure.lane" & 
+			attribute "mycar.data structure.lane.curvature"
+		''')
+		
+		// ego vehicle velocity
+		testSequence('''
+			attribute "mycar.data structure.vehicle.velocity"
+		''')
+		
+		// Relation examples:
+		
+		// <vehicle> on <lane>
+		testSequence('''
+			class "mycar.data structure.vehicle".classAttribute_"mycar.data structure.vehicle.position" 
+			= class "mycar.data structure.lane"
+		''')
+		
+		// <vehicle> on <lane>
+		testSequence('''
+			class "mycar.data structure.vehicle".classAttribute_"mycar.data structure.vehicle.position" 
+			= class "mycar.data structure.lane"
+		''')
+		
+		// <vehicle> behind <ego vehicle>
+		// 2 examples
+		testSequence('''
+			class "mycar.data structure.vehicle" 
+			< class "mycar.data structure.this car"
+			
+			|
+			
+			class "mycar.data structure.vehicle".classAttribute_"mycar.data structure.position.front vehicle"
+			= class "mycar.data structure.this car"
+			&
+			class "mycar.data structure.this car".classAttribute_"mycar.data structure.position.back vehicle" 
+			= class "mycar.data structure.vehicle"
+		''')
+		
+		// <vehicle relative velocity> more than <5 m/s>
+		testSequence('''
+			unit "m/s" :=signal "mycar.velocity".signalDatatype_"mycar.velocity.m/s"
+			attribute "mycar.data structure.vehicle.velocity".this_attribute > 5 "m/s"
+		''')
+		
+		// <vehicle relative velocity> less than <5 m/s>
+		testSequence('''
+			unit "m/s" :=signal "mycar.velocity".signalDatatype_"mycar.velocity.m/s"
+			attribute "mycar.data structure.vehicle.velocity".this_attribute < 5 "m/s"
+		''')
+		
+		// <vehicle> next to <ego vehicle>
+		testSequence('''
+			class "mycar.data structure.left vehicle" & attribute "mycar.data structure.vehicle.exist" |
+			class "mycar.data structure.back vehicle" & attribute "mycar.data structure.vehicle.exist" |
+			class "mycar.data structure.front vehicle" & attribute "mycar.data structure.vehicle.exist" |
+			class "mycar.data structure.right vehicle" & attribute "mycar.data structure.vehicle.exist"
+		''')
+		
+		// <lane curvature> higher than <25 rad/m>
+		testSequence('''
+			unit "rad/m" := signal "mycar.curvature".signalDatatype_"mycar.curvature.rad/m"
+			class "mycar.data structure.lane".classAttribute_"mycar.data structure.lane.curvature" < 25 "rad/m"
+		''')
+		
+		// <lane change> not in <progress>
+		// 2 examples
+		testSequence('''
+			not class "mycar.data structure.this car".classAttribute_"mycar.data structure.vehicle.lane change"
+			
+			|
+			
+			class "mycar.data structure.this car"
+			.classAttribute_"mycar.data structure.vehicle.lane change" = 0
+		''')
+		
+		// <in relation to> more than <0.4 m>
+		// {41}: reference to the 41. requirement element
+		testSequence('''
+			unit "m" := signal "mycar.front distance".signalDatatype_"mycar.front distance.m"
+			{41} > 0.4 "m"
+		''')
+		
+		// Function examples
+		
+		// <lane markings> are <solid>
+		// 2 examples
+		testSequence('''
+			class "mycar.data structure.lane".classAttribute_"mycar.data structure.lane.marking" &
+			class "mycar.data structure.marking".classAttribute_"mycar.data structure.marking.solid" = 1
+			
+			|
+			
+			class "mycar.data structure.lane".classAttribute_"mycar.data structure.lane.marking" &
+			attribute "mycar.data structure.marking.solid" = 1
+		''')
+		
+		// <lane markings> is <unknown>
+		testSequence('''
+			class "mycar.data structure.lane".classAttribute_"mycar.data structure.lane.marking" = 0 
+		''')
+		
+		// <lane> is <unknown>
+		testSequence('''
+			class "mycar.data structure.lane" = 0
+		''')
+		
+		// <lane> is not <existing>
+		testSequence('''
+			class "mycar.data structure.lane" = 0
+		''')
+		
+		// <lane> is <lane restricted>
+		testSequence('''
+			class "mycar.data structure.lane".classAttribute_"mycar.data structure.lane.restricted" = 1
+		''')
+		
+		// <ego vehicle lateral offset> in relation to <ego lane center>
+		testSequence('''
+			 class "mycar.data structure.this car".classAttribute_"???" 
+			 ~ class "mycar.data structure.lane".classAttribute_"mycar.data structure.lane.center"
+		''')
+		
+		// <system> must not perform <lane change>
+		testSequence('''
+			class "mycar.data structure.this car".classAttribute_"mycar.data structure.vehicle.lane change" = 0
+		''')
+		
+		// <on> and <behind> and <more than>
+		// {19}, {20} and {21} references to the 19., 20. and 21. requirement element
+		testSequence('''
+			{19} & {20} & {21}
+		''')
+		
+		// <must not perform> if <and, and>
+		// {44} and {42} references to the 44. and 42. requirement element
+		testSequence('''
+			{44} => {42}
+		''')
+		
+		// more examples
+		
+		testSequence('''
+			5 > 3
+			
+			((class "mycar.data structure.position".classAttribute_"mycar.data structure.vehicle.front distance"
+			.signalDatatype_"mycar.front distance.m" = (0 + 8))*9)
+			
+			class "mycar.data structure.position" in [0, 5]
+			
+			class "mycar.data structure.back vehicle".classInheritance_from_"mycar.data structure.back vehicle.vehicle" => 777
+			
+			attribute "mycar.data structure.lane.curvature" <
+			signal "mycar.curvature" .signalMaxvalue_"mycar.curvature.100"
+		''')
+	}
+	
+	def void testSequence(CharSequence seq) {
+		val result = parseHelper.parse(seq)
 		Assertions.assertNotNull(result)
 		val errors = result.eResource.errors
 		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
