@@ -3,6 +3,8 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.testApp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.ecore.resource.Resource;
+
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IGenerator;
 
 /**
@@ -63,9 +65,16 @@ public class TestAppGenerator implements IGenerator {
 		return "";
 	}
 	
-	@Override
+	
 	public void generate() {
 		System.out.println("Call the " + generateLabels.get(index));
+	}
+
+
+	@Override
+	public void generate(List<Resource> resource) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

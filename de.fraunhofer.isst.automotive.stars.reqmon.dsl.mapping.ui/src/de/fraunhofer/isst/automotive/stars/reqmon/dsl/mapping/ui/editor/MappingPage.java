@@ -1,8 +1,10 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.text.source.LineNumberRulerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -68,6 +70,9 @@ public class MappingPage {
 	 * Helps to create the embedded xtext editor.
 	 */
 	private MappingEditorHelper editorHelper;
+	
+	private List<Resource> resourceList;
+	
 	/**
 	 * Injector for the mapping parser.
 	 */
@@ -134,6 +139,8 @@ public class MappingPage {
 		
 		// create the helper for the embedded xtext editor
 		this.editorHelper = new MappingEditorHelper();
+		
+		this.resourceList = new ArrayList<Resource>();
 		
 		// select the appropriate mapping parser 
 		String lang = "map";  // TODO: get the appropriate language
@@ -528,6 +535,8 @@ public class MappingPage {
 			
 			LineNumberRulerColumn lineNumberRulerColumn = new LineNumberRulerColumn();
 			embed.getViewer().addVerticalRulerColumn(lineNumberRulerColumn);
+			
+			resourceList.add(editorHelper.getResource());
 		}
 		
 		
@@ -640,7 +649,7 @@ public class MappingPage {
 		genButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				genCon.executeSelectedGenerator();
+				genCon.executeSelectedGenerator(resourceList);
 			}
 		});
 		

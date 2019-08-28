@@ -1,5 +1,9 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test;
 
+import java.util.List;
+
+import org.eclipse.emf.ecore.resource.Resource;
+
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IGenerator;
 
 /**
@@ -11,9 +15,16 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IGe
  */
 public class TestOtherGenerator implements IGenerator {
 
-	@Override
+	
 	public void generate() {
 		System.out.println("Other test generator executed");
+		
+	}
+
+
+	@Override
+	public void generate(List<Resource> resource) {
+		// TODO Auto-generated method stub
 		
 	}
 

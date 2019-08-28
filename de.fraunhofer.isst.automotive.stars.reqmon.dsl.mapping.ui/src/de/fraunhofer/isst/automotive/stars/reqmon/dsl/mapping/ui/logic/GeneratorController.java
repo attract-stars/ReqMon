@@ -12,6 +12,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.ecore.resource.Resource;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IGenerator;
 
@@ -160,10 +161,12 @@ public class GeneratorController {
 		return generateLabels.get(index);
 	}
 	
+	
 	/**
 	 * Executes the generator which name is selected in the Combo.
+	 * @param resource the resource of the mapping input
 	 */
-	public void executeSelectedGenerator() {
+	public void executeSelectedGenerator(List<Resource> resourceList) {
 		if (!isRegistry) {
 			return;
 		}
@@ -172,7 +175,7 @@ public class GeneratorController {
 			for (IConfigurationElement e : configGen) {
 				final Object o = e.createExecutableExtension("class");
 				if (o instanceof IGenerator && name.contains(e.getAttribute("name"))) {
-					executeGenerator(o);
+					executeGenerator(o, resourceList);
 					break;
 				}
 			}
@@ -230,13 +233,14 @@ public class GeneratorController {
 	
 	/**
 	 * Executes the given generator.
-	 * @param o an Object of the type of an IGenerator 
+	 * @param o an Object of the type of an IGenerator
+	 * @param resource the resource of the mapping input 
 	 */
-	private void executeGenerator(Object o) {
+	private void executeGenerator(Object o, List<Resource> resourceList) {
 		Job job = new Job("Execute Generator") { 
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
-					((IGenerator) o).generate();
+					((IGenerator) o).generate(resourceList);
 				} 
 				catch (Exception ex) {
 					System.out.println("Exception in generator client:");

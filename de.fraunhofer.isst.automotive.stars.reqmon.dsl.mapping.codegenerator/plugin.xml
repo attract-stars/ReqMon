@@ -4,10 +4,10 @@
    <extension
          point="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.generator">
       <client
-            class="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.FirstGenerator"
-            label="Generate (first)"
-            lang="first"
-            name="FirstGenerator">
+            class="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.CGenerator"
+            label="Generate (c)"
+            lang="c"
+            name="CGenerator">
       </client>
    </extension>
 
