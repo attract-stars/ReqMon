@@ -1,4 +1,4 @@
-grammar de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.SysDef with org.eclipse.xtext.common.Terminals
+grammar de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.SysDef with org.eclipse.xtext.common.Terminals //hidden(ML_COMMENT)
 
 generate sysDef "http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/mapping/SysDef"
 
@@ -7,94 +7,184 @@ Model:
 ;
 	
 Node:
-	//begin=NodeBegin info=NodeText? end=NodeEnd |
-	com=Comment | version=Version | systemNode=SystemNode
+	version=Version | systemNode=SystemNode
 	
 ;
 
-
-NodeBegin:
-	'<' nodenName=NodeName info+=NodeInfo* '>' 
-;
-
-NodeEnd:
-	'</' NodeName '>'
+Version:
+	version='<?xml' info+=NodeInfo+ '?>'
 ;
 
 NodeInfo:
 	info+=ID (':' info+=ID)* '=' text=STRING
 ;
 
-NodeText:
-	name=ID node+=Node* | node+=Node+ | val=Value
-;
-
-
-NodeName:
-	nodename=KeyName | nodename=Parameter | nodename=ID | nodename=Value
-;
-
 SystemNode:
-	'<system' info+=NodeInfo* '>' namenode=NameNode? versionNode=VersionNode? 
-	descriptionNode=DescriptionNode? messageNode=MessageNode '</system>' 
+	node='<system' info+=NodeInfo* id=IDAtrr '>' 
+	namenode='<name>' name = ID? '</name>' 
+	versionNode=VersionNode? 
+	descriptionNode=DescriptionNode? 
+	messageNode=MessageNode?
+	signalNode+=SignalNode* 
+	datastruct=DataStructureNode?
+	'</system>' 
 ;
 
-NameNode:
-	'<name>' name=ID '</name>'
+IDAtrr:
+	id='id=' int=STRING
 ;
 
 VersionNode:
-	'<version>' name=ID '</version>'
+	node='<version>' name=STRING? '</version>'
 ;
 
 DescriptionNode:
-	'<description>' name=ID '</description>'
+	node='<description>' name=STRING? '</description>'
 ;
 
 MessageNode:
-	'<message>' nameNode=NameNode alloc=AllocationNode datas=DataNode '</message>'
+	node='<message>' 
+	nameNode='<name>' name = STRING? '</name>'
+	alloc=AllocationNode 
+	datas=DataNode 
+	'</message>'
 ;
 
 AllocationNode:
-	'<allocation>' bit=BitNode loc=LocationNode '</allocation>'
+	node='<allocation>' 
+	bit=BitNode 
+	loc=LocationNode 
+	'</allocation>'
 ;
 
+// Value instead of IDs?
 BitNode:
-	'<bit_size>' name=ID '</bit_size>'
+	node='<bit_size>' name=STRING? '</bit_size>'
 ;
 
+// Value instead of IDs?
 LocationNode:
-	'<location>' name=ID '</location>'
+	node='<location>' name=STRING? '</location>'
 ;
 
 DataNode:
-	'<data_objects>' signal+=SignalRefNode+ '</data_objects>'
+	node='<data_objects>' signal+=SignalRefNode+ '</data_objects>'
 ;
 
 SignalRefNode:
-	'<signal_object>' ref=RefNode '</signal_object>'
+	node='<signal_object>' ref=RefNode '</signal_object>'
 ;
 
 RefNode:
-	'<ref>' name=ID '</ref>'
+	node='<ref>' name=STRING? '</ref>'
 ;
 
-Comment:
-	'<!--' (com+=ID+ | info+=NodeInfo+) '-->'
+SignalNode:
+	node='<signal' id=IDAtrr '>' 
+	nameNode='<name>' name = STRING? '</name>' 
+	descriptionNode=DescriptionNode? 
+	datatype=DataTypeNode 
+	alloc=AllocationNode 
+	minval=MinValueNode 
+	maxval=MaxValueNode 
+	prefval=PrefValueNode? 
+	step=StepSizeNode? 
+	'</signal>'
 ;
 
-Version:
-	'<?xml' info+=NodeInfo+ '?>'
+DataTypeNode:
+	node='<datatype>' name=STRING? '</datatype>'
 ;
 
-KeyName:
-	'system' | 'message' 
+// Value instead of IDs?
+MinValueNode:
+	node='<min_value>' name=STRING? '</min_value>'
 ;
 
-Parameter:
-	'name'
+// Value instead of IDs?
+MaxValueNode:
+	node='<max_value>' name=STRING? '</max_value>'
+;
+
+// Value instead of IDs?
+PrefValueNode:
+	node='<preferred_value>' name=STRING? '</preferred_value>'
+;
+
+// Value instead of IDs?
+StepSizeNode:
+	node='<step_size>' name=STRING? '</step_size>'
+;
+
+DataStructureNode:
+	node='<data_structure' id=IDAtrr '>' 
+	((nameNode='<name>' name = STRING? '</name>') & 
+	description=DescriptionNode? & 
+	alloc=AllocationNode & 
+	class+=ClassNode+) 
+	'</data_structure>'
+;
+
+ClassNode:
+	node='<class>' 
+	nameNode='<name>' name = STRING? '</name>' 
+	description=DescriptionNode? 
+	inheritance=InheritanceNode?
+	attribute+=AttributeNode* 
+	'</class>'
+;
+
+InheritanceNode:
+	node='<inheritance_from>' name=STRING? '</inheritance_from>'
+;
+
+AttributeNode:
+	node='<attribute>' 
+	nameNode='<name>' name = STRING? '</name>' 
+	description=DescriptionNode? 
+	attrtype=AttrTypeNode 
+	'</attribute>'
+;
+
+AttrTypeNode:
+	node='<attrType>' type=Types '</attrType>'
+;
+
+Types:
+	type=Type | list=List | set=Set | newtype=newType
+;
+
+Type:
+	type='<type>' name=TypeDefinition '</type>'
+;
+
+List:
+	list='<list>' type+=Type+ '</list>'
+;
+
+Set:
+	set='<set>' type+=Type+ '</set>'
+;
+
+newType:
+	type='<newType>' 
+	nameNode='<name>' name = STRING? '</name>' 
+	description=DescriptionNode 
+	'</newType>'
+;
+
+@Override 
+terminal ML_COMMENT: 
+   '/*' -> '*/' |
+   	'<!--' -> '-->'
 ;
 
 Value:
 	INT | INT '.' INT
 ;
+
+TypeDefinition:
+	'integer' | 'float' | 'short' | 'double' | 'byte' | 'string' | 'char' |
+	'time' | 'date' | 'boolean' | 'newType' | 'class' | 'signal'
+;
+

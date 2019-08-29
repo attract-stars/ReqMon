@@ -280,20 +280,20 @@ class RequirementDSLParsingTest {
 		testSequence('''
 			Req 1: x is.
 			Req 2: in relation to x, x is.
-			Req 3: x doesn´t is.
-			Req 4: in relation to x, x doesn´t is.
+			Req 3: x doesn't is.
+			Req 4: in relation to x, x doesn't is.
 			Req 5: x is x.
 			Req 6: in relation to x, x is x.
-			Req 7: x doesn´t is x.
-			Req 8: in relation to x, x doesn´t is x.
+			Req 7: x doesn't is x.
+			Req 8: in relation to x, x doesn't is x.
 			Req 9: x is in x.
 			Req 10: in relation to x, x is in x.
-			Req 11: x doesn´t is in x.
-			Req 12: in relation to x, x doesn´t is in x.
+			Req 11: x doesn't is in x.
+			Req 12: in relation to x, x doesn't is in x.
 			Req 13: x is x in x.
 			Req 14: in relation to x, x is x in x.
-			Req 15: x doesn´t is x in x.
-			Req 16: in relation to x, x doesn´t is x in x.
+			Req 15: x doesn't is x in x.
+			Req 16: in relation to x, x doesn't is x in x.
 			Req 17: x x.
 			Req 18: in relation to x, x x.
 			Req 19: x x in x.
@@ -347,26 +347,26 @@ class RequirementDSLParsingTest {
 		 * Req 24: Actors Property Relation AuxNeg constraints SentenceEnding
 		 */ 
 		testSequence('''
-			Req 1: x´s x shall x.
-			Req 2: x´s x in relation to x shall x.
-			Req 3: x´s x shall not x.
-			Req 4: x´s x in relation to x shall not x.
-			Req 5: x´s x shall do x.
-			Req 6: x´s x in relation to x shall do x.
-			Req 7: x´s x shall not do x.
-			Req 8: x´s x in relation to x shall not do x.
-			Req 9: x´s x shall x in x.
-			Req 10: x´s x in relation to x shall x in x.
-			Req 11: x´s x shall not x in x.
-			Req 12: x´s x in relation to x shall not x in x.
-			Req 13: x´s x shall do x in x.
-			Req 14: x´s x in relation to x shall do x in x.
-			Req 15: x´s x shall not do x in x.
-			Req 16: x´s x in relation to x shall not do x in x.
-			Req 17: x´s x is x.
-			Req 18: x´s x is in x.
-			Req 19: x´s x in relation to x is x.
-			Req 20: x´s x in relation to x is in x.
+			Req 1: x's x shall x.
+			Req 2: x's x in relation to x shall x.
+			Req 3: x's x shall not x.
+			Req 4: x's x in relation to x shall not x.
+			Req 5: x's x shall do x.
+			Req 6: x's x in relation to x shall do x.
+			Req 7: x's x shall not do x.
+			Req 8: x's x in relation to x shall not do x.
+			Req 9: x's x shall x in x.
+			Req 10: x`s x in relation to x shall x in x.
+			Req 11: x`s x shall not x in x.
+			Req 12: x`s x in relation to x shall not x in x.
+			Req 13: x`s x shall do x in x.
+			Req 14: x`s x in relation to x shall do x in x.
+			Req 15: x`s x shall not do x in x.
+			Req 16: x`s x in relation to x shall not do x in x.
+			Req 17: x`s x is x.
+			Req 18: x`s x is in x.
+			Req 19: x`s x in relation to x is x.
+			Req 20: x`s x in relation to x is in x.
 			Req 21: x´s x is x in x.
 			Req 22: x´s x is in x in relation to x.
 			Req 23: x´s x in relation to x is x in x.
@@ -467,7 +467,7 @@ class RequirementDSLParsingTest {
 			Req 3: this x x.
 			
 			Req 4: The "x" x.
-			Req 4: the 'x' x.
+			//Req 4: the 'x' x.
 			
 		''')
 		
@@ -482,7 +482,7 @@ class RequirementDSLParsingTest {
 		testSequence('''
 			Req 1: the x x x.
 			Req 2: any x "x".
-			Req 2: a x 'x'.
+			//Req 2: a x 'x'.
 			Req 3: That x x a x.
 			Req 4: an x x x a x.
 			
@@ -503,7 +503,7 @@ class RequirementDSLParsingTest {
 			Req 3: x x this x.
 			Req 4: x x a x x.
 			Req 5: x x a "x".
-			Req 5: x x a 'x'.
+			//Req 5: x x a 'x'.
 			
 		''')
 		
@@ -516,7 +516,7 @@ class RequirementDSLParsingTest {
 		testSequence('''
 			Req 1: x´s x x must x.
 			Req 2: x´s "x" must x.
-			Req 2: x´s 'x' must x.
+			//Req 2: x´s 'x' must x.
 			
 		''')
 		
@@ -555,7 +555,7 @@ class RequirementDSLParsingTest {
 			Req 3: x x the x x.
 			Req 4: x x this x x.
 			Req 5: x x a "x".
-			Req 5: x x a 'x'.
+			//Req 5: x x a 'x'.
 			
 		''')
 		
@@ -582,15 +582,15 @@ class RequirementDSLParsingTest {
 			Req 1: x x in the x.
 			Req 2: x x in x.
 			Req 3: x x in the "x".
-			Req 3: x x in the 'x'.
+			//Req 3: x x in the 'x'.
 			Req 4: x x in "x".
-			Req 4: x x in 'x'.
+			//Req 4: x x in 'x'.
 			Req 5: in relation to the x, x x.
 			Req 5: in relation to x, x x.
 			Req 5: in relation to the "x", x x.
-			Req 5: in relation to the 'x', x x.
+			//Req 5: in relation to the 'x', x x.
 			Req 5: in relation to "x", x x.
-			Req 5: in relation to 'x', x x.
+			//Req 5: in relation to 'x', x x.
 			
 		''')
 		
@@ -626,13 +626,13 @@ class RequirementDSLParsingTest {
 		testSequence('''
 			Req 1: x is x.
 			Req 2: x is not x.
-			Req 3: x doesn´t x.
-			Req 3: x don´t x.
-			Req 3: x isn´t x.
-			Req 3: x aren´t x.
-			Req 4: x´s x is x.
-			Req 4: x´s x is not x.
-			Req 4: x´s x doesn´t x.
+			Req 3: x doesn't x.
+			Req 3: x don't x.
+			Req 3: x isn't x.
+			Req 3: x aren't x.
+			Req 4: x's x is x.
+			Req 4: x's x is not x.
+			Req 4: x's x doesn't x.
 			
 		''')
 		
