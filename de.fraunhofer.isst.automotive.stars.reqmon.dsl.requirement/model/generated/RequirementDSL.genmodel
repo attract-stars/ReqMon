@@ -98,6 +98,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//PropertySentence/constraints"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//Property">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//Property/relativ"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//Property/property"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//SentenceBegin">
@@ -126,6 +127,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//Actors/conjunction"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//Actor">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//Actor/relativ"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//Actor/actor"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//Preds">
@@ -138,10 +140,12 @@
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//PredicateObject">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//PredicateObject/article"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//PredicateObject/relativ"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//PredicateObject/object"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//Object">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//Object/article"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//Object/relativ"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//Object/object"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//PredOrObject">
@@ -163,9 +167,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//PreNominative/article"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//Relation">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//Relation/relposAdv"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//Relation/relDel"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//Relation/relComp"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//Relation/relElements"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//RelObjects">

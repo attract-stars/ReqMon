@@ -1,0 +1,19 @@
+Req 1: The system must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is behind the ego vehicle and the vehicle큦 relative velocity is more than 5 m/s.
+Req 2: The system must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is in front to the ego vehicle and the vehicle큦 relative velocity is less than 5 m/s.
+Req Req3a: The system must not perform a lane change to any lane if a vehicle is on the ego lane and the vehicle is in front of the ego-vehicle and the vehicle큦 distance in relation to the ego-vehicle is less than 1m.
+Req Req3b: The system must not perform a lane change to any lane if a vehicle is on the ego-lane and the vehicle is in front of the ego-vehicle and the vehicle큦 distance is less than 1 m in relation to the ego-vehicle.
+Req 4: The system must not perform a lane change to any lane if a vehicle is on the ego lane and the vehicle is behind the ego vehicle  and the vehicle큦 relative velocity is larger than 10 m/s.
+Req 5: The system must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is next to the ego vehicle and the vehicle큦 relative velocity is less than 2m/s.
+Req 5: The system must not perform a lane change to any lane if the lane큦 markings are solid.
+Req 6: The system must not perform a lane change to any lane if the lane큦 markings is unknown.
+Req 7: The system must not perform a lane change to any lane if the lane is unknown.
+Req 8: The system must not perform a lane change to any lane if the lane is not existing.
+Req 9: The system must not perform a lane change to any lane if the  lane is a restricted lane.
+Req 10: The system must not perform a lane change to any lane if the lane is a emergency lane.
+Req 12: The system must not perform a lane change to any lane if the lane is next to a highway on-ramp.
+Req 13: The system must not perform a lane change to any lane if the lane큦 curvature is higher than 25 rad/m.
+Req 14: The system must not perform a lane change to any lane if ego-vehicle큦 velocity is less than 10 m/s.
+Req 15: The system must not perform a lane change to any lane if domain is not handled.
+Req 16: The system must not perform a lane change to any lane if the driver overturns the system with more than 10 nm.
+Req Req17a: The system must not perform a lane change to any lane if the ego-vehicle큦 lateral-offset in relation to the ego-lane큦 center is more than 0.4 m. 
+Req Req17b: The system must not perform a lane change to any lane if the ego-vehicle큦 lateral-offset in relation to the ego-lane큦 center is more than 0.4 m and a lane-change is not in progress.
