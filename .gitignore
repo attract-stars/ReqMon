@@ -181,3 +181,4 @@ local.properties
 
 # End of https://www.gitignore.io/api/eclipse
 >>>>>>> master
+*.orig

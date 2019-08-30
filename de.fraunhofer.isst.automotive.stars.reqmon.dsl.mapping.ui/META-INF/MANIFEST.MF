@@ -19,8 +19,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.edit.ui,
  org.eclipse.xtext.ui,
  org.eclipse.ui.workbench,
- org.eclipse.swt
- de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement,
+ org.eclipse.swt,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement
 Export-Package: 
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions,
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor,
