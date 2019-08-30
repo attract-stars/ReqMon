@@ -117,7 +117,6 @@ public class RequirementController implements IRequirementController {
 		}
 		
 		Job job = new Job("Parse file") { 
-			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
 					//TimeUnit.SECONDS.sleep(5);

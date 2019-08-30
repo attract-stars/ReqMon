@@ -4,8 +4,10 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.ISy
 
 public class TestSystemImporter implements ISystemImporter {
 
-	public void execute(String path) {
-		System.out.println("TestSystem for txt executed!");
+	@Override
+	public boolean check(String path) {
+		System.out.println("TestSystemImporterCheck");
+		return false;
 	}
 	
 	

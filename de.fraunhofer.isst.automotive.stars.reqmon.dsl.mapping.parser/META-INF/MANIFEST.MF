@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Parser
+Bundle-SymbolicName: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.parser;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.parser
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language;bundle-version="1.0.0",
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui;bundle-version="1.0.0",
+ org.eclipse.xtext;bundle-version="2.17.1",
+ org.eclipse.emf.mwe.core,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.ui
+Import-Package: com.google.inject

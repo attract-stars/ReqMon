@@ -16,7 +16,7 @@ Model:
 
 Requirement:
 	//PROBLEM condClauses before and after mainClause lead to ambiguity
-	'Req'? reqID=ReqID? ':' text=RequirementText ('.'|';') ('\n')+
+	'Req' reqID=ReqID? ':' text=RequirementText ('.'|';')
 ;
 
 RequirementText:
@@ -78,7 +78,7 @@ PropertySentence:
 ;
 
 Property:
-	PROPERTY_TERM (property+=WORD+ | property+=STRING)
+	PROPERTY_TERM relativ='relative'? (property+=WORD+ | property+=STRING)
 ;
 
 SentenceBegin:
@@ -114,7 +114,7 @@ Actors:
 ;
 
 Actor:
-  	 PreNominative=PreNominative? (actor=WORD | actor=STRING) 
+  	  PreNominative=PreNominative? relativ='relative'? (actor=WORD | actor=STRING) 
 //    (determiner=Determiner|article=Articles|article=RefArticles)? (object=WORD | object=STRING) (property?=PROPERTY (adjectives+=Adjective)* (objects=WORD | objects=STRING))? 
    
 ;
@@ -130,11 +130,11 @@ Predicate:
 ;
 
 PredicateObject:
-	article=PreNominative (object+=WORD+ | object+=STRING) 
+	article=PreNominative relativ='relative'? (object+=WORD+ | object+=STRING) 
 ;
 
 Object:
-	article=PreNominative? (object+=WORD+ | object+=STRING) 
+	article=PreNominative? relativ='relative'? (object+=WORD+ | object+=STRING) 
 ;
 
 PredOrObject:
@@ -165,14 +165,14 @@ PreNominative :
 ;
 
 Adverbial:
-	SizeAdverbial | PositionAdverbial | ComparisonAdverbial	//| (WORD 'of')
+	SizeAdverbial | PositionAdverbial | ComparisonAdverbial //| PositionAdverbial PositionAdverbial Comperators	
+	//| (WORD 'of')
 ;
 
 /* =========== Relations =========== */
 
-//TODO WAS IST WENN MAN HIER 'IN' SAGT?!?!? DUPLIUCATE RULE?
 Relation:
-	relposAdv=PositionAdverbial relDel=RelationDelimiter relComp=Comperators relElements=RelObjects
+	/*relposAdv=PositionAdverbial*/ relDel=RelationDelimiter /*relComp=Comperators*/ relElements=RelObjects
 ;
 
 RelObjects:
@@ -264,20 +264,26 @@ WORD returns ecore::EString:
 @Override 
 terminal ID: '^'?('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'-'|'0'..'9')*;
 
+// overriding STRING to allow only the '"' quote (the "'" quote is needed for the Property-term)
+@Override
+terminal STRING: 
+	'"' ( '\\'('b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\') | !('\\'|'"') )* '"'
+;
+
 terminal WS_HYPHEN : ' - '; 
 
-@Override
-terminal WS : (' '|'\t'|'\r')+ ;
+//@Override
+//terminal WS : (' '|'\t'|'\r')+ ;
 
 terminal PROPERTY_TERM returns ecore::EBoolean:
-	//'\'s' |	'`s' |
-	'´s'
+	'\'s' |	'`s' | '´s'
 ;
 /* =========== BASIC SYNTAX =========== */
 
 RelationDelimiter:
-	'relation'
-	//'in' 'relation' 'to'  | 'relative' 'to' //mutiple word relation leads to false identification of properties
+	//'relation'
+	'in' 'relation' 'to'  | 'relative' 'to' |
+	'In' 'relation' 'to'  | 'Relative' 'to' 
 ;
 
 AuxiliaryVerb:
@@ -289,7 +295,7 @@ Conjunction:
 ;
 
 RelConjunction:
-	'and_to' | 'or_to'
+	'and' 'to' | 'or' 'to'
 ;
 
 Comperators:
@@ -297,11 +303,12 @@ Comperators:
 ;
 		 
 SizeAdverbial:
-	'higher' | 'less'| 'more' | 'larger'|'smaller' | 'as_long_as'
+	'higher' | 'less'| 'more' | 'larger'|'smaller' | 'as' 'long' 'as'
 ;
 
 PositionAdverbial:
-	'between'|'next' | 'on' | 'above' | 'below' | 'in' | 'within' | 'in_front_of' | 'behind' | 'out' | 'under'
+	'between'|'next' | 'on' | 'above' | 'below' | 'in' | 'within' | 'in' 'front' 'of' | 'in' 'front' 'to' 
+	| 'behind' | 'out' | 'under'
 ;
 
 ComparisonAdverbial:
@@ -318,7 +325,7 @@ Negation:
 ;
 
 AuxiliaryVerbNegation:
-	'doesn´t' | 'don´t' | 'isn´t' | 'aren´t'
+	'doesn\'t' | 'don\'t' | 'isn\'t' | 'aren\'t'
 ;
 
 enum Modality:

@@ -16,17 +16,18 @@ import org.eclipse.ui.part.EditorPart;
  * @author sgraf
  */
 public class LanguageMappingEditor extends EditorPart {
+	
+	private String editorName;
+	private MappingPage mapping;
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void doSaveAs() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	/**
@@ -36,21 +37,14 @@ public class LanguageMappingEditor extends EditorPart {
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
 		setInput(input);
-		String name = input.getName();
-		System.out.println(name);
-		setPartName(name);
-		
+		editorName = input.getName();
+		System.out.println(editorName);
+		setPartName(editorName);
 	}
 
-	@Override
-	public boolean isDirty() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	
 	@Override
 	public boolean isSaveAsAllowed() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -65,7 +59,7 @@ public class LanguageMappingEditor extends EditorPart {
 		FormLayout layout = new FormLayout();
 		composite.setLayout(layout);
 		
-		MappingPage mapping = new MappingPage(composite, display, shell);
+		mapping = new MappingPage(composite, display, shell, this);
 		mapping.createMappingPage();
 	}
 
@@ -73,6 +67,12 @@ public class LanguageMappingEditor extends EditorPart {
 	public void setFocus() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean isDirty() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

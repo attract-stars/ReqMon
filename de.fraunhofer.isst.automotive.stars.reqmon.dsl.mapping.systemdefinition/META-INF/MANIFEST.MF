@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition
+Bundle-ManifestVersion: 2
+Bundle-Name: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext,
+ org.eclipse.xtext.xbase,
+ org.eclipse.equinox.common;bundle-version="3.5.0",
+ org.eclipse.emf.ecore,
+ org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
+ org.eclipse.xtext.util,
+ org.eclipse.emf.common,
+ org.eclipse.xtend.lib;bundle-version="2.14.0",
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.generator,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.serializer,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.util,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.validation,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.parser.antlr.internal,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.scoping,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.parser.antlr,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.impl,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.services
+Import-Package: org.apache.log4j

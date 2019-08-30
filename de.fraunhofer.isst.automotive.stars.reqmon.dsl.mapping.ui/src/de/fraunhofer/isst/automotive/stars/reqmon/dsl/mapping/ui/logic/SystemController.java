@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.ISystemImporter;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.MappingPage;
 
 /**
  * This class manages the SystemImporter extensions.
@@ -31,11 +32,13 @@ public class SystemController {
 	private boolean isRegistry;
 	private ISystemImporter sysImporter;
 	
+	
 	/**
 	 * This constructor checks if a registry exists and if SystemImporters are registered.
 	 */
 	public SystemController() {
 		registry = Platform.getExtensionRegistry();
+		
 		if (registry == null) {
 			System.out.println("No registry!");
 			isRegistry = false;
@@ -47,6 +50,7 @@ public class SystemController {
 			if (configSys.length == 0) {
 				System.out.println("No SystemImporter registered!");
 			}
+			
 		}
 	}
 	
@@ -70,22 +74,22 @@ public class SystemController {
 		}
 	}
 	
+	
 	/**
-	 * Executes the SystemImporter for the given system file path.
-	 * The SystemImporter is selected in dependence of the file extension.
+	 * Selects the SystemImporter in dependence of the file extension.
+	 * If an appropriate SystemImporter exists it
+	 * checks if the system model of the given path has syntax errors. 
+	 * After the validation it calls the createDslInjector method of the MappingPage.
 	 * @param path the path of the system file
+	 * @param mp the MappingPage
 	 */
-	public void execute(String path) {
-		if (!isRegistry) {
-			return;
-		}
-		
-		Job job = new Job("Parse file") { 
+	public void checkFileAndCreateInjectorAndUpdateList(String path, MappingPage mp) {
+		Job job = new Job("Check file") { 
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
-					//TimeUnit.SECONDS.sleep(5);
 					sysImporter = null;
-					/** select the importer that can read the file of the given path */
+					
+					// select the importer that can read the file of the given path 
 					for (IConfigurationElement e : configSys) {
 						final Object o = e.createExecutableExtension("class");
 						if (o instanceof ISystemImporter) {
@@ -98,13 +102,25 @@ public class SystemController {
 							}
 						}
 					}
+					
+					// validate the system model, create Injector, show the system model path 
+					// and update the mapping list
 					if (sysImporter != null) {
-						sysImporter.execute(path);
+						boolean isValid = sysImporter.check(path);
+						
+						mp.getDisplay().asyncExec(new Runnable() {
+							
+							@Override
+							public void run() {
+								mp.createDslInjectorAndUpdateList(isValid);
+							}
+							
+						});
+						
 					}
 					else {
 						System.out.println("There is no SystemImporter for this file!");
 					}
-					
 				} 
 				catch (Exception ex) {
 					System.out.println("Exception in system importer client:");
@@ -118,6 +134,7 @@ public class SystemController {
 		job.schedule();
 	}
 	
+
 	/**
 	 * Checks if the SystemImporter is executable.
 	 * @param o an object of the type ISystemImporter
@@ -138,6 +155,7 @@ public class SystemController {
 		SafeRunner.run(runnable);
 		
 	}
+
 	
 	
 	

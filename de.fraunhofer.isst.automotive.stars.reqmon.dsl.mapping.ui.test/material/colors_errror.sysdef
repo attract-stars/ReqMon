@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<system
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="system.xsd"
+id='123'>
+fgfhlj error!!!
+	<name>black</name>
+	<message>
+		<name>white</name>
+		<allocation>
+			<bit_size>green</bit_size>
+			<location>blue</location>
+		</allocation>
+		<data_objects>
+			<signal_object>
+				<ref>red</ref>
+			</signal_object>
+			<signal_object>
+				<ref>orange</ref>
+			</signal_object>
+		</data_objects>
+	</message>
+</system>
+

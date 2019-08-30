@@ -5,9 +5,12 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.ISy
 public class TestOtherSystemImporter implements ISystemImporter{
 
 	@Override
-	public void execute(String path) {
-		System.out.println("Other TestSystem for xml executed!");
-		
+	public boolean check(String path) {
+		System.out.println("TestOtherSystemImporterCheck");
+		return false;
 	}
+
+	
+	
 
 }

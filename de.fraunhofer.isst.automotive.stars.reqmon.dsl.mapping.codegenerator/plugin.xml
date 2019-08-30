@@ -2,9 +2,13 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="de.fraunhofer.isst.automotive.stars.reqmon.sdl.mapping.generator">
+         point="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.generator">
       <client
-            class="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.FirstGenerator"></client>
+            class="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.FirstGenerator"
+            label="Generate (first)"
+            lang="first"
+            name="FirstGenerator">
+      </client>
    </extension>
 
 </plugin>
