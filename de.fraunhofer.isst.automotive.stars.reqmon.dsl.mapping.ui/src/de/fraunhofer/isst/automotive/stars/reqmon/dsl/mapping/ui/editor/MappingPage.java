@@ -213,7 +213,7 @@ public class MappingPage {
 		if (reqList.isEmpty()) {
 			return;
 		}
-		reqList.sort(reqList.get(0).getComparator());
+		reqList.sort(reqList.get(0).getElementTypeComparator());
 		
 		for (int i = 0; i < elemSize; i++) {
 			/* create the box item */
