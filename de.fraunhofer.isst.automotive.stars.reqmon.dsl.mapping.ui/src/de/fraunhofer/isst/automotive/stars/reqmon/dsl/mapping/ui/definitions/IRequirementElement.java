@@ -39,9 +39,9 @@ public interface IRequirementElement {
 	public void setElementType(RequirementType type);
 	
 	/**
-	 * Returns a comparator to allow the sorting of the requirement elements.
+	 * Returns a comparator to allow the sorting of the requirement elements by RequirementType.
 	 * @return requirement element comparator
 	 */
-	public Comparator<? super IRequirementElement> getComparator();
+	public Comparator<? super IRequirementElement> getElementTypeComparator();
 	
 }

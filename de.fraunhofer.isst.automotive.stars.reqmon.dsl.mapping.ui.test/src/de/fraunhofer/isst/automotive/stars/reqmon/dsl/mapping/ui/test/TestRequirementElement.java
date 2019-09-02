@@ -38,7 +38,7 @@ public class TestRequirementElement implements IRequirementElement {
 	}
 
 	@Override
-	public Comparator<? super IRequirementElement> getComparator() {
+	public Comparator<? super IRequirementElement> getElementTypeComparator() {
 		
 		return new Comparator<IRequirementElement>() {
 
@@ -54,7 +54,9 @@ public class TestRequirementElement implements IRequirementElement {
 						o2.getElementType().equals(RequirementType.RELATION)) {
 					return -1;
 				}
-				return 1;
+				else {
+					return 1;
+				}
 			}
 		};
 			
