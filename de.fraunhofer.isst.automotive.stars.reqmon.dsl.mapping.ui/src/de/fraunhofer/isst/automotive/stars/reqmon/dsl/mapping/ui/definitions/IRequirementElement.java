@@ -1,5 +1,7 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions;
 
+import java.util.Comparator;
+
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.RequirementType;
 
 /**
@@ -35,5 +37,11 @@ public interface IRequirementElement {
 	 * @param type OBJECT, RELATION or FUNCTION
 	 */
 	public void setElementType(RequirementType type);
+	
+	/**
+	 * Returns a comparator to allow the sorting of the requirement elements.
+	 * @return requirement element comparator
+	 */
+	public Comparator<? super IRequirementElement> getComparator();
 	
 }

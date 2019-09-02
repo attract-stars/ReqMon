@@ -210,24 +210,10 @@ public class MappingPage {
 		}
 		
 		// sort reqlist: objects, functions, relations
-		ArrayList<IRequirementElement> objects = new ArrayList<IRequirementElement>();
-		ArrayList<IRequirementElement> functions = new ArrayList<IRequirementElement>();
-		ArrayList<IRequirementElement> relations = new ArrayList<IRequirementElement>();
-		
-		for (IRequirementElement elem : reqList) {
-			if (elem.getElementType().equals(RequirementType.OBJECT)) {
-				objects.add(elem);
-			} 
-			else if (elem.getElementType().equals(RequirementType.FUNCTION)) {
-				functions.add(elem);
-			}
-			else if (elem.getElementType().equals(RequirementType.RELATION)) {
-				relations.add(elem);
-			}
+		if (reqList.isEmpty()) {
+			return;
 		}
-		objects.addAll(functions);
-		objects.addAll(relations);
-		reqList = objects;
+		reqList.sort(reqList.get(0).getComparator());
 		
 		for (int i = 0; i < elemSize; i++) {
 			/* create the box item */
