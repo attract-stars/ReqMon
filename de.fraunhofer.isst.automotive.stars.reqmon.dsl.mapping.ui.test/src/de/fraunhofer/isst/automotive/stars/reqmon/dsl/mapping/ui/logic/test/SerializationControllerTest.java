@@ -286,7 +286,7 @@ public class SerializationControllerTest {
 		}
 
 		@Override
-		public Comparator<? super IRequirementElement> getComparator() {
+		public Comparator<? super IRequirementElement> getElementTypeComparator() {
 			return new Comparator<IRequirementElement>() {
 
 				@Override

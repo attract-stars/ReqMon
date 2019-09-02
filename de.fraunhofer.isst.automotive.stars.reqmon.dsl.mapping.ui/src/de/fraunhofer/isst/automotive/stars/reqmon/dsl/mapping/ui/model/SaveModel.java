@@ -104,7 +104,7 @@ public class SaveModel implements Serializable {
 			}
 
 			@Override
-			public Comparator<? super IRequirementElement> getComparator() {
+			public Comparator<? super IRequirementElement> getElementTypeComparator() {
 				return new Comparator<IRequirementElement>() {
 
 					@Override
