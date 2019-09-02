@@ -39,7 +39,7 @@ public class TestAppRequirementElement implements IRequirementElement {
 	
 	
 	@Override
-	public Comparator<? super IRequirementElement> getComparator() {
+	public Comparator<? super IRequirementElement> getElementTypeComparator() {
 		
 		return new Comparator<IRequirementElement>() {
 
@@ -49,13 +49,15 @@ public class TestAppRequirementElement implements IRequirementElement {
 					return 0;
 				}
 				else if (o1.getElementType().equals(RequirementType.OBJECT)) {
-					return 1;
+					return -1;
 				}
 				else if (o1.getElementType().equals(RequirementType.FUNCTION) && 
 						o2.getElementType().equals(RequirementType.RELATION)) {
+					return -1;
+				}
+				else {
 					return 1;
 				}
-				return -1;
 			}
 		};
 			
