@@ -325,6 +325,7 @@ Negation:
 ;
 
 AuxiliaryVerbNegation:
+	//TODO MUSS HIER NICHT AUCH ANDERE ABOSTROPH HINZU
 	'doesn\'t' | 'don\'t' | 'isn\'t' | 'aren\'t'
 ;
 

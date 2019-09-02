@@ -3,6 +3,7 @@
 =======
 # Exlude bin files
 bin/
+test-bin/
 
 # Exclude gen files
 xtend-gen

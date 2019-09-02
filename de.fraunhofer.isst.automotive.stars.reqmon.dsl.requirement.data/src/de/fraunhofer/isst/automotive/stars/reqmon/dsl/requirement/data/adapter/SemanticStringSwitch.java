@@ -165,7 +165,7 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 			//negation is not considered
 		} else {//getAuxiliarVerb ==null -> Infomration are in get AuxiliarVerbNeg
 			//change negative to positive
-			//'doesn´t' | 'don´t' | 'isn´t' | 'aren´t'
+			//'doesnï¿½t' | 'donï¿½t' | 'isnï¿½t' | 'arenï¿½t'
 			objTxt.add(eleminateAulixierNegation(object.getAuxiliarVerbNeg()));
 		}
 		return objTxt.toString();
@@ -173,13 +173,14 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 
 	private String eleminateAulixierNegation(String auxiliarVerbNeg) {
 		switch(auxiliarVerbNeg) {
-		case "doesn´t": 
+		//TODO WAS IST MIT ANDEREN ABOSTROPH!?
+		case "doesn't": 
 			return "does";
-		case "don´t":
+		case "don't":
 			return "do";
-		case "isn´t":
+		case "isn't":
 			return "is";
-		case "aren´t":
+		case "aren't":
 			return "are";
 		default:
 			return null;
@@ -294,14 +295,8 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 		if (object == null)
 			return "";
 		StringJoiner objTxt = new StringJoiner(" ");
-		if (object.getRelposAdv() != null) {
-
-		}
 		if (object.getRelDel() != null && !object.getRelDel().isEmpty()) {
 			objTxt.add(object.getRelDel());
-		}
-		if (object.getRelComp() != null && !object.getRelComp().isEmpty()) {
-			objTxt.add(object.getRelComp());
 		}
 		if (object.getRelElements() != null) {
 			objTxt.add("<"+caseRelObjects(object.getRelElements())+">");
