@@ -1,5 +1,6 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
@@ -207,6 +208,12 @@ public class MappingPage {
 			reqList = reqCon.getRequirements();
 			elemSize = reqList.size();
 		}
+		
+		// sort reqlist: objects, functions, relations
+		if (reqList.isEmpty()) {
+			return;
+		}
+		reqList.sort(reqList.get(0).getComparator());
 		
 		for (int i = 0; i < elemSize; i++) {
 			/* create the box item */
