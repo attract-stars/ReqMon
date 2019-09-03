@@ -336,8 +336,8 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	}
 	
 	def text(Relation ele) {
-		if (ele.relComp !== null && ele.relDel !== null && ele.relposAdv !== null) {
-			"Relation: " + ele.relposAdv + " " + ele.relDel + " " + ele.relComp 
+		if (ele.relDel !== null) {
+			"Relation: " + ele.relDel
 		}
 		else {
 			"Relation" 
