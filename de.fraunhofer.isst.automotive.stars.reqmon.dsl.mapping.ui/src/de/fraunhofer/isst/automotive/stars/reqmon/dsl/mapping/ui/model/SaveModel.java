@@ -23,9 +23,15 @@ public class SaveModel implements Serializable {
 	 */
 	private static final long serialVersionUID = -943340977918585830L;
 	private String reqPath;
-	private String SysPath;
+	private String sysPath;
 	private List<MappingObject> mappingObjects;
 	
+	
+	public SaveModel() {
+		reqPath = "";
+		sysPath = "";
+		mappingObjects = new ArrayList<MappingObject>();
+	}
 	
 	
 	/**
@@ -202,7 +208,7 @@ public class SaveModel implements Serializable {
 	 * @return the system model path
 	 */
 	public String getSysPath() {
-		return SysPath;
+		return sysPath;
 	}
 	
 	/**
@@ -210,7 +216,7 @@ public class SaveModel implements Serializable {
 	 * @param sysPath the system model path
 	 */
 	public void setSysPath(String sysPath) {
-		SysPath = sysPath;
+		this.sysPath = sysPath;
 	}
 	
 	/**
