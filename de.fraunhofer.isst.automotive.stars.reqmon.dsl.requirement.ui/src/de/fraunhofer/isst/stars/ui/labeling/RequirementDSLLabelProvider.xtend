@@ -220,14 +220,15 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 		"PredicateObject: " + ele.object.join(" ")
 	}
 	
+	//TODO
 	def text(PreNominative ele) {
-		if (ele.article !== null && ele.actor !== null) {
-			"Article and Actor: " + ele.article + " " + ele.actor
-		} 
-		else if (ele.determiner !== null && ele.actor !== null) {
-			"Determiner and Actor: " + ele.determiner + " " + ele.actor	
-		}
-		else if (ele.article !== null) {
+//		if (ele.article !== null && ele.actor !== null) {
+//			"Article and Actor: " + ele.article + " " + ele.actor
+//		} 
+//		else if (ele.determiner !== null && ele.actor !== null) {
+//			"Determiner and Actor: " + ele.determiner + " " + ele.actor	
+//		}
+		if (ele.article !== null) {
 			"Article: " + ele.article
 		}
 		else if (ele.article !== null) {
