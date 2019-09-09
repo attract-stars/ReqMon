@@ -42,6 +42,10 @@ Workflow {
 			parserGenerator ={
 				debugGrammar=true
 			}
+			
+			junitSupport= {
+				junitVersion = "5"
+			}
 		}
 	}
 }
