@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.xtext.ui.editor.embedded.EmbeddedEditor;
@@ -255,11 +256,17 @@ public class MappingPage {
 			reqList = savedReqList;
 			elemSize = savedReqList.size();
 		}
+		else {
+			System.out.println("No requirements!");
+			return;
+		}
 		
 		this.modelAccessList = new ArrayList<EmbeddedEditorModelAccess>();
 		
 		// sort reqlist: objects, functions, relations
 		if (reqList.isEmpty()) {
+			// the model is ready loaded
+			isModelLoading = false;
 			return;
 		}
 		reqList.sort(reqList.get(0).getElementTypeComparator());
@@ -274,6 +281,11 @@ public class MappingPage {
 			if (isModelLoading && savedEditorContent != null && savedReqList != null &&
 					savedReqList.size() == savedEditorContent.size()) {
 				modelAccess = createBoxItem(reqList.get(i), i+1, savedEditorContent.get(i));
+			}
+			/* create the box item with the saved requirement element but without editor content,
+			 * if the mapping editor is loading and saved requirements exist */
+			else if (isModelLoading && savedEditorContent == null && !savedReqList.isEmpty()) {
+				modelAccess = createBoxItem(reqList.get(i), i+1, null);
 			}
 			/* create the box item with the new or saved requirement element without editor content,
 			 * if the mapping editor is already loaded 
@@ -300,8 +312,8 @@ public class MappingPage {
 	}
 	
 	/**
-	 * Creates the injector for the mapping language and calls updateList and shows the system
-	 * mode path if the system model is valid. 
+	 * Creates the injector for the mapping language and calls updateList if requirements exists 
+	 * and shows the system model path if the system model is valid. 
 	 * @param isValidSystemModel if this value is true, the injector is created, otherwise not
 	 */
 	public void createDslInjectorAndUpdateList(boolean isValidSystemModel) {
@@ -313,6 +325,10 @@ public class MappingPage {
 			// otherwise take the saved path, if it exist
 			else if (savedSystemPath != null) {
 				parserCon.createDslInjectorAndUpdateList(mp, URI.createFileURI(savedSystemPath));
+				// set modelLoading to false after injector creation if no requirements are saved
+				if (savedReqList == null || savedReqList.isEmpty()) {
+					isModelLoading = false;
+				}
 			}
 		}
 	}
@@ -338,18 +354,49 @@ public class MappingPage {
 	public void save() {
 		// add all contents of the embedded editor model access list to the SaveModel for serialization
 		savedEditorContent = new ArrayList<String>();
-		System.out.println("Model access list: " + modelAccessList.size());
-		for (EmbeddedEditorModelAccess modelAccess : modelAccessList) {
-			//System.out.println("Serialized Model: " + modelAccess.getSerializedModel());
-			String content = modelAccess.getEditablePart();
-			System.out.println("Mapping content: " + content);
-			savedEditorContent.add(content);
-		}
-		savedModel.setEditorContentList(savedEditorContent);
+		//System.out.println("Model access list: " + modelAccessList.size());
 		
-		// start the serialization
-		SerializationController.getInstance().save(savedModel);
-		langMapEditor.setDirty(false);
+		if (modelAccessList != null) {
+			for (EmbeddedEditorModelAccess modelAccess : modelAccessList) {
+				if (modelAccess != null) {
+					System.out.println("Save with content");
+					String content = modelAccess.getEditablePart();
+					System.out.println("Mapping content: " + content);
+					savedEditorContent.add(content);
+				}
+				// if there is no content save only the requirement elements and the paths
+				else {
+					System.out.println("Save without content");
+					savedEditorContent.add(null);
+				}
+			}
+			savedModel.setEditorContentList(savedEditorContent);
+		}
+		
+		// print warning if no requirements are selected
+		if (!this.isReqElems) {
+			MessageBox messageBox = new MessageBox(shell, SWT.ICON_WARNING | SWT.YES | SWT.NO | SWT.CANCEL);
+	        
+	        messageBox.setText("Warning");
+	        messageBox.setMessage("There are no requirements selected! Save anyway?");
+	        int buttonID = messageBox.open();
+	        switch(buttonID) {
+	          case SWT.YES:
+	        	// start the serialization
+	  			SerializationController.getInstance().save(savedModel);
+	  			langMapEditor.setDirty(false);
+	          case SWT.NO:
+	            break;
+	          case SWT.CANCEL:
+	        }
+	        System.out.println(buttonID);
+		}
+		else {
+			// start the serialization
+			SerializationController.getInstance().save(savedModel);
+			langMapEditor.setDirty(false);
+		}
+		
 	}
 	
 	/**
@@ -889,10 +936,18 @@ public class MappingPage {
 		this.savedEditorContent = this.savedModel.getEditorContentList();
 		this.isModelLoading = true;
 		
-		isReqElems = true;
+		if (savedReqList == null || savedReqList.isEmpty()) {
+			isReqElems = false;
+		}
+		else {
+			isReqElems = true;
+		}
 		
 		if (savedSystemPath != null && !savedSystemPath.equals("")) {
 			sysCon.checkFileAndCreateInjectorAndUpdateList(savedSystemPath, this);
+		}
+		else {
+			updateList();
 		}
 	}
 	
