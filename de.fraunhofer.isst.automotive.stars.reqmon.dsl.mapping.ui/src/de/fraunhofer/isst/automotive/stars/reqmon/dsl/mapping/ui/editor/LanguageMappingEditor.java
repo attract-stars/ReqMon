@@ -17,17 +17,18 @@ import org.eclipse.ui.part.EditorPart;
  */
 public class LanguageMappingEditor extends EditorPart {
 	
+	private boolean dirty = false;
 	private String editorName;
 	private MappingPage mapping;
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		// TODO Auto-generated method stub
+		mapping.save();
 	}
 
 	@Override
 	public void doSaveAs() {
-		// TODO Auto-generated method stub
+		mapping.saveAs();
 	}
 
 	/**
@@ -42,6 +43,16 @@ public class LanguageMappingEditor extends EditorPart {
 		setPartName(editorName);
 	}
 
+	
+	@Override
+	public boolean isDirty() {
+		return dirty;
+	}
+	
+	public void setDirty(boolean dirty) {
+		this.dirty = dirty;
+		firePropertyChange(PROP_DIRTY);
+	}
 	
 	@Override
 	public boolean isSaveAsAllowed() {
@@ -69,10 +80,6 @@ public class LanguageMappingEditor extends EditorPart {
 		
 	}
 
-	@Override
-	public boolean isDirty() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
 
 }
