@@ -850,15 +850,27 @@ public class MappingPage {
 		Combo comboDropDown = new Combo(box, SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
 		Button genButton = new Button(box, SWT.PUSH);
 		
-		// take the labels of the generators in the generator list for the combo items 
+		// take the labels of the generators in the generator list for the combo items and
+		// take the label for the generate button 
 		List<String> genList = genCon.getGenerators();
 	    for (String name : genList) {
 	      comboDropDown.add(" " + name);
 	    }
-	    comboDropDown.select(0);
-		
-		// take the label of the first generator in the generator list for the generate button 
-		genButton.setText(genCon.getGenerateLabels().get(0));
+	    
+	    if (isModelLoading) {
+	    	comboDropDown.select(savedModel.getGeneratorIndex());
+	    	genCon.setIndex(savedModel.getGeneratorIndex());
+	    	genButton.setText(savedModel.getGenLabel());
+	    }
+	    else {
+	    	comboDropDown.select(0);
+	    	savedModel.setGeneratorIndex(0);
+	    	
+			String firstGenLabel = genCon.getGenerateLabels().get(0);
+		    genButton.setText(firstGenLabel);
+			savedModel.setGenLabel(firstGenLabel);
+	    }
+	    
 		genButton.setAlignment(SWT.CENTER);
 		
 		// execute the generator that is actual selected in the combo 
@@ -869,6 +881,12 @@ public class MappingPage {
 			}
 		});
 		
+		// update the selected generator in the combo and the name of the generate button during loading
+		if (isModelLoading) {
+			genButton.setText(savedModel.getGenLabel());
+			comboDropDown.select(savedModel.getGeneratorIndex());
+		}
+		
 		// update the selected generator in the combo and the name of the generate button 
 	    comboDropDown.addSelectionListener(new SelectionListener() {
 			@Override
@@ -876,6 +894,9 @@ public class MappingPage {
 				System.out.println("Selected: " + comboDropDown.getText().substring(1));	
 				String genLabel = genCon.getLabel(comboDropDown.getText().substring(1));
 				genButton.setText(genLabel);
+				savedModel.setGenLabel(genLabel);
+				savedModel.setGeneratorIndex(genCon.getIndex());
+				langMapEditor.setDirty(true);
 				box.layout(true);
 			}
 			

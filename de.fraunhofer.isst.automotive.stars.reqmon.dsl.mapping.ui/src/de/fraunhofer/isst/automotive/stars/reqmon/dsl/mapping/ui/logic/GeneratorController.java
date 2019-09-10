@@ -131,6 +131,14 @@ public class GeneratorController {
 	public void setGenerateLabels(List<String> generateLabels) {
 		this.generateLabels = generateLabels;
 	}
+	
+	/**
+	 * Sets the generator index. The index points to the actual selected generator.
+	 * @param generatorIndex the pointer to the actual generator.
+	 */
+	public void setIndex(int generatorIndex) {
+		this.index = generatorIndex;
+	}
 
 	/**
 	 * Deletes the generator which name and label match the given name and label. 
@@ -253,6 +261,8 @@ public class GeneratorController {
 		job.setPriority(Job.SHORT);
 		job.schedule();
 	}
+
+	
 	
 	
 }

@@ -25,7 +25,8 @@ public class SaveModel implements Serializable {
 	private String reqPath;
 	private String SysPath;
 	private List<MappingObject> mappingObjects;
-	
+	private String genLabel;
+	private int generatorIndex;
 	
 	
 	/**
@@ -227,6 +228,22 @@ public class SaveModel implements Serializable {
 	 */
 	public void setMappingObjects(List<MappingObject> mappingObjects) {
 		this.mappingObjects = mappingObjects;
+	}
+
+	public String getGenLabel() {
+		return genLabel;
+	}
+
+	public void setGenLabel(String genLabel) {
+		this.genLabel = genLabel;
+	}
+
+	public int getGeneratorIndex() {
+		return generatorIndex;
+	}
+
+	public void setGeneratorIndex(int generatorIndex) {
+		this.generatorIndex = generatorIndex;
 	}
 	
 	

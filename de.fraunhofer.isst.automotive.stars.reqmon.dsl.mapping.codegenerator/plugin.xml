@@ -4,7 +4,7 @@
    <extension
          point="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.generator">
       <client
-            class="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.CGenerator"
+            class="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.CGenerator"
             label="Generate (c)"
             lang="c"
             name="CGenerator">

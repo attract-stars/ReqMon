@@ -37,7 +37,6 @@ public class CostumResourceProvider implements IEditedResourceProvider {
 		XtextResource xtextResource = (XtextResource) resourceSet.createResource(uri);
 		resourceSet.getResources().add(xtextResource);
 		this.resource = xtextResource;
-		System.out.println("index: " + index);
 		return xtextResource;
 	}
 

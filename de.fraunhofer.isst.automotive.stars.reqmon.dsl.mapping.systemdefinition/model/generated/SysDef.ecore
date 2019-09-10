@@ -155,7 +155,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="InheritanceNode">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="node" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="name" eType="#//ClassNode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AttributeNode">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="node" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

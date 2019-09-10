@@ -142,6 +142,8 @@ public class SerializationController {
 					//System.out.println("ReqType: " + req.getElementType());
 				}
 			}
+			//System.out.println("Generator: " + saveModel.getGenLabel() + ", index: " 
+				//	+ saveModel.getGeneratorIndex());
 			
 		} catch (FileNotFoundException e) {
 			System.out.println("No saved model!");
