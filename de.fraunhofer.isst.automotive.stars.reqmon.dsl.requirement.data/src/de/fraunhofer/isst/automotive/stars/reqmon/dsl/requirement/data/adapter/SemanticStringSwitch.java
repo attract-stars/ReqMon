@@ -28,14 +28,14 @@ import de.fraunhofer.isst.stars.requirementDSL.SentenceBegin;
 import de.fraunhofer.isst.stars.requirementDSL.SentenceEnding;
 import de.fraunhofer.isst.stars.requirementDSL.SetConstraint;
 import de.fraunhofer.isst.stars.requirementDSL.SingleValueConstraints;
+import de.fraunhofer.isst.stars.requirementDSL.TimeConstraint;
 import de.fraunhofer.isst.stars.requirementDSL.UnitConstraints;
 import de.fraunhofer.isst.stars.requirementDSL.Value;
 import de.fraunhofer.isst.stars.requirementDSL.ValueSet;
 import de.fraunhofer.isst.stars.requirementDSL.util.RequirementDSLSwitch;
 
 /**
- * @author mmauritz
- * Process the text of the AST Elements.
+ * @author mmauritz Process the text of the AST Elements.
  */
 public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 
@@ -157,36 +157,45 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 
 	@Override
 	public String caseAuxNeg(AuxNeg object) {
-		if(object==null) return "";
+		if (object == null)
+			return "";
 		StringJoiner objTxt = new StringJoiner(" ");
-		
-		if(object.getAuxiliarVerb()!=null) {
+
+		if (object.getAuxiliarVerb() != null) {
 			objTxt.add(object.getAuxiliarVerb());
-			//negation is not considered
-		} else {//getAuxiliarVerb ==null -> Infomration are in get AuxiliarVerbNeg
-			//change negative to positive
-			//'doesn�t' | 'don�t' | 'isn�t' | 'aren�t'
+			// negation is not considered
+		} else {// getAuxiliarVerb ==null -> Infomration are in get AuxiliarVerbNeg
+			// change negative to positive
+			// 'doesn�t' | 'don�t' | 'isn�t' | 'aren�t'
 			objTxt.add(eleminateAulixierNegation(object.getAuxiliarVerbNeg()));
 		}
 		return objTxt.toString();
 	}
 
 	private String eleminateAulixierNegation(String auxiliarVerbNeg) {
-		switch(auxiliarVerbNeg) {
-		//TODO WAS IST MIT ANDEREN ABOSTROPH!?
-		case "doesn't": 
+		switch (auxiliarVerbNeg) {
+		// TODO WAS IST MIT ANDEREN ABOSTROPH!?
+		case "doesn't":
+		case "doesn´t":
+		case "doesn`t":
 			return "does";
 		case "don't":
+		case "don´t":
+		case "dont`":
 			return "do";
 		case "isn't":
+		case "isn´t":
+		case "isn`t":
 			return "is";
 		case "aren't":
+		case "aren´t":
+		case "aren`t":
 			return "are";
 		default:
 			return null;
 		}
 	}
-	
+
 	@Override
 	public String caseSentenceEnding(SentenceEnding object) {
 		StringJoiner objTxt = new StringJoiner(" ");
@@ -195,6 +204,9 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 			for (Constraints con : object.getConst()) {
 				if (con.getConstraint() != null) {
 					objTxt.add(caseConstraint(con.getConstraint()));
+				}
+				if (con.getTimeConstraint() != null) {
+					objTxt.add(caseTimeConstraint(con.getTimeConstraint()));
 				}
 			}
 		}
@@ -240,6 +252,21 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 	}
 
 	@Override
+	public String caseTimeConstraint(TimeConstraint object) {
+		if (object == null)
+			return "";
+		StringJoiner objTxt = new StringJoiner(" ");
+		if (object.getOrdinator() != null) {
+			objTxt.add(caseConstraintOrdinators(object.getOrdinator()));
+		}
+		if (!object.getUnit().isEmpty()) {
+			objTxt.add(object.getUnit());
+		}
+		objTxt.add(Integer.toString(object.getTime()));
+		return objTxt.toString();
+	}
+
+	@Override
 	public String caseSetConstraint(SetConstraint object) {
 		if (object == null)
 			return "";
@@ -265,13 +292,33 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 	}
 
 	@Override
+	public String caseObjectSet(ObjectSet object) {
+		if (object != null && object.getElements() != null && !object.getElements().isEmpty()) {
+			StringJoiner objTxt = new StringJoiner(";", "[", "]");
+			for (Actor val : object.getElements()) {
+				objTxt.add(caseActor(val));
+			}
+			return objTxt.toString();
+		}
+		return "";
+	}
+
+	@Override
+	public String caseActor(Actor object) {
+		if (object != null && !object.getActor().isEmpty()) {
+			return object.getActor();
+		}
+		return "";
+	}
+
+	@Override
 	public String caseActors(Actors object) {
 		if (object != null && !object.getActors().isEmpty()) {
-				StringJoiner actorsStr = new StringJoiner(" ");
-				for (Actor act : object.getActors()) {
-					actorsStr.add(act.getActor());
-				}
-				return actorsStr.toString();
+			StringJoiner actorsStr = new StringJoiner(" ");
+			for (Actor act : object.getActors()) {
+				actorsStr.add(caseActor(act));
+			}
+			return actorsStr.toString();
 		}
 		return super.caseActors(object);
 	}
@@ -299,7 +346,7 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 			objTxt.add(object.getRelDel());
 		}
 		if (object.getRelElements() != null) {
-			objTxt.add("<"+caseRelObjects(object.getRelElements())+">");
+			objTxt.add("<" + caseRelObjects(object.getRelElements()) + ">");
 		}
 		return objTxt.toString();
 	}
@@ -308,7 +355,7 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 	public String caseRelObjects(RelObjects object) {
 		if (object == null)
 			return "";
-		//StringJoiner objTxt = new StringJoiner(";", "<", ">");
+		// StringJoiner objTxt = new StringJoiner(";", "<", ">");
 		StringJoiner objTxt = new StringJoiner(" ");
 		// iterate over objects and add corresponding property
 		// get the object for iteration over all objects
@@ -340,56 +387,56 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 		}
 		return objTxt.toString();
 	}
-	
+
 	@Override
 	public String caseObject(Object object) {
 		if (object == null)
 			return "";
 		StringJoiner objTxt = new StringJoiner(" ");
-		if(object.getObject()!=null&&!object.getObject().isEmpty()) {
-			for(String objStr: object.getObject()) {
+		if (object.getObject() != null && !object.getObject().isEmpty()) {
+			for (String objStr : object.getObject()) {
 				objTxt.add(objStr);
 			}
 		}
 		return objTxt.toString();
 	}
-	
+
 	@Override
 	public String caseProperty(Property object) {
 		if (object == null)
 			return "";
 		StringJoiner objTxt = new StringJoiner(" ");
-		if(object.getProperty()!=null && !object.getProperty().isEmpty()) {
-			for(String word: object.getProperty()) {
-			objTxt.add(word);
+		if (object.getProperty() != null && !object.getProperty().isEmpty()) {
+			for (String word : object.getProperty()) {
+				objTxt.add(word);
 			}
 		}
 		return objTxt.toString();
 	}
-	
+
 	@Override
 	public String casePredOrObject(PredOrObject object) {
 		if (object == null)
 			return "";
 		StringJoiner objTxt = new StringJoiner(" ");
-		if(object.getPredicate()!=null) {
+		if (object.getPredicate() != null) {
 			objTxt.add(casePredicate(object.getPredicate()));
 		}
-		if(object.getPredObj()!=null) {
+		if (object.getPredObj() != null) {
 			objTxt.add(casePredicateObject(object.getPredObj()));
 		}
 		return objTxt.toString();
 	}
-	
+
 	@Override
 	public String caseConstraints(Constraints object) {
-		//Time Constraint has not be manually mapped
-		return caseConstraint(object.getConstraint());	
+		// Time Constraint has not be manually mapped
+		return caseConstraint(object.getConstraint());
 	}
-	
+
 	@Override
 	public String caseSentenceBegin(SentenceBegin object) {
-		if(object.getRela()!=null) {
+		if (object.getRela() != null) {
 			return caseRelation(object.getRela());
 		}
 		return "";

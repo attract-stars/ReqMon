@@ -86,6 +86,8 @@ SentenceBegin:
 ;
 
 SentenceEnding:
+	//TODO FEHLT HIER NICHT EINE Conjunction?!
+	//TODO SOLLTE nicht Relation in CONTRAINTS drin sein
 	const+=Constraints+ |
 	const+=Constraints* rela=Relation |
 	rela=Relation const+=Constraints+
