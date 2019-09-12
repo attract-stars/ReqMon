@@ -31,10 +31,11 @@ public class CGenerator implements IGenerator {
 
 	private List<String> headerContent;
 //	private List<String> cppContent;
-	//private String file = "../stars/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.test/mapped.h";
-	private String file = "mapped.h";
+	private String file = "../stars/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator/mapped.h";
+	//private String file = "mapped.h";
 	//private String filename2 = "mapped.cpp";
-	private IFileSystemAccess2 fsa;
+	//private IFileSystemAccess2 fsa;
+	private CGeneratedTextHeader genHeader;
 
 	@Override
 	public void generate(List<Resource> resourceList) {
@@ -45,9 +46,9 @@ public class CGenerator implements IGenerator {
 				.getInjector(LanguageActivator.DE_FRAUNHOFER_ISST_AUTOMOTIVE_STARS_REQMON_DSL_MAPPING_LANGUAGE_MAPPING);
 		MappingGenerator generator = injector.getInstance(MappingGenerator.class);
 		
-		fsa = new InMemoryFileSystemAccess();
+		IFileSystemAccess2 fsa = new InMemoryFileSystemAccess();
 		
-		CGeneratedTextHeader genHeader = new CGeneratedTextHeader();
+		genHeader = new CGeneratedTextHeader();
 	//	CGeneratedText genText = new CGeneratedText();
 		
 		headerContent = new ArrayList<String>();
@@ -76,7 +77,7 @@ public class CGenerator implements IGenerator {
 			CharSequence seqHeader = genHeader.compileClasses(resource);
 			generator.setCharSequence(seqHeader);
 			generator.doGenerate(resource, fsa, null);
-			getGeneratedContent();
+			getGeneratedContent(fsa);
 				
 			// generate the cpp content
 		/*	generator.setCharSequence(seqCpp);
@@ -91,7 +92,7 @@ public class CGenerator implements IGenerator {
 			CharSequence seqHeader = genHeader.compileSignalsAndAttributes(resource);
 			generator.setCharSequence(seqHeader);
 			generator.doGenerate(resource, fsa, null);
-			getGeneratedContent();
+			getGeneratedContent(fsa);
 		}
 		
 		// add at least the ending of the include guard for the header file
@@ -102,9 +103,28 @@ public class CGenerator implements IGenerator {
 	}
 	
 	/**
+	 * This method can be used for testing.
+	 * @param generator MappingGenerator
+	 * @param resource Resource
+	 * @param fsa IFileSystemAccess2
+	 * @return String
+	 */
+	public String generateCode(MappingGenerator generator, Resource resource, IFileSystemAccess2 fsa) {
+		String code = "";
+		CharSequence seqHeader = genHeader.compileSignalsAndAttributes(resource);
+		generator.setCharSequence(seqHeader);
+		generator.doGenerate(resource, fsa, null);
+		getGeneratedContent(fsa);
+		for(String text : headerContent) {
+			code.concat(text);
+		}
+		return code;
+	}
+	
+	/**
 	 * Adds the generated content to the headerContent list. 
 	 */
-	private void getGeneratedContent() {
+	private void getGeneratedContent(IFileSystemAccess2 fsa) {
 		for (Entry<String, CharSequence> file : ((InMemoryFileSystemAccess) fsa).getTextFiles().entrySet()) {
 			//System.out.println("Generated file path : "+file.getKey());
 			System.out.print(file.getValue());

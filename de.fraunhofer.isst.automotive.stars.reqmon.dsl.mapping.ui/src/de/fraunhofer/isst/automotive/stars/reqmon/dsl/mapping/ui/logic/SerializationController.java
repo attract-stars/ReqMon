@@ -85,6 +85,8 @@ public class SerializationController {
 			fileStream = new FileOutputStream(new File(filename));
 			System.out.println("Save model as " + filename);
 			
+			//System.out.println("syspath: " + model.getSysPath());
+			
 			out = new ObjectOutputStream(fileStream);
 			
 			out.writeObject(model);

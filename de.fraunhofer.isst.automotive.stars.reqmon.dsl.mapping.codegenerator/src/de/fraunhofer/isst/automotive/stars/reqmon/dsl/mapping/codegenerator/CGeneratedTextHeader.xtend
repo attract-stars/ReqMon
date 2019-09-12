@@ -129,26 +129,25 @@ class CGeneratedTextHeader {
 	 * struct [class_name] : [inheritance] { [attribute_type] [attribute_name]; ... };
 	 */
 	def compileClassID(ClassID id) '''
-		struct «id.cla.name.replace(" ", "_").toFirstUpper» «id.cla.compileInheritance»{
-			«IF id.cla.inheritance !== null && id.cla.inheritance.name !== null 
-			&& id.cla.inheritance.name.name!== null && !id.cla.inheritance.name.name.equals("")»
-			«id.cla.inheritance.name.compileAttributes»
-			«ELSE»
+		«IF id.cla.attribute.empty»
+		struct «id.cla.name.replace(" ", "_").toFirstUpper» «id.cla.compileInheritance»{};
+		«ELSE»
+		struct «id.cla.name.replace(" ", "_").toFirstUpper» «id.cla.compileInheritance»{	
 			«id.cla.compileAttributes»
-			«ENDIF»
 		};
+		«ENDIF»
 		
 	'''
 	
 	/**
 	 * Constructs the inheritance if it exists.
 	 */
-	def compileInheritance(ClassNode node) '''
-		«IF node.inheritance !== null && node.inheritance.name !== null 
-			&& node.inheritance.name.name!== null && !node.inheritance.name.name.equals("")»
-		: «node.inheritance.name.name.toFirstUpper» 
-		«ENDIF»
-	'''
+	def compileInheritance(ClassNode node) {
+		if (node.inheritance !== null && node.inheritance.name !== null 
+			&& node.inheritance.name.name!== null && !node.inheritance.name.name.equals("")) {
+		''': «node.inheritance.name.name.toFirstUpper» ''' 
+		}
+	}
 
 	/**
 	 * Constructs all attributes of the given class.
@@ -216,13 +215,5 @@ class CGeneratedTextHeader {
 	}
 	
 	
-
-	
-	//var List<ClassNode> classlist = newArrayList; 
-	//var List<String> classNameList = newArrayList; 
-	//classlist = resource.allContents.toIterable.filter(ClassNode).toList
-		//classNameList = classlist.map[node | node.name]
-		//println(classlist)
-		//println(classNameList)
 	
 }

@@ -857,9 +857,9 @@ public class MappingPage {
 	      comboDropDown.add(" " + name);
 	    }
 	    
-	    if (isModelLoading) {
+	    if (isModelLoading && savedModel.getGenLabel() != null) {
 	    	comboDropDown.select(savedModel.getGeneratorIndex());
-	    	genCon.setIndex(savedModel.getGeneratorIndex());
+		    genCon.setIndex(savedModel.getGeneratorIndex());
 	    	genButton.setText(savedModel.getGenLabel());
 	    }
 	    else {
