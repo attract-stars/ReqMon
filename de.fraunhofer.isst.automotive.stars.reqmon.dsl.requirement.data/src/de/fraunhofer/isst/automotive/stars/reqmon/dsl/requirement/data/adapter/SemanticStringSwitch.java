@@ -259,6 +259,7 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 		if (object.getOrdinator() != null) {
 			objTxt.add(caseConstraintOrdinators(object.getOrdinator()));
 		}
+		objTxt.add(Integer.toString(object.getTime()));
 		if (!object.getUnit().isEmpty()) {
 			objTxt.add(object.getUnit());
 		}
@@ -433,8 +434,15 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 
 	@Override
 	public String caseConstraints(Constraints object) {
+		// its an exclusive OR
+		if (object.getConstraint() != null) {
+			return caseConstraint(object.getConstraint());
+		}
 		// Time Constraint has not be manually mapped
-		return caseConstraint(object.getConstraint());
+		if (object.getTimeConstraint() != null) {
+			return caseTimeConstraint(object.getTimeConstraint());
+		}
+		return "";
 	}
 
 	@Override

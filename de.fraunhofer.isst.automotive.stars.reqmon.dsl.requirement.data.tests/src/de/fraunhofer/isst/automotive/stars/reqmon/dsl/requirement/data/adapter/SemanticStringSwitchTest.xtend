@@ -288,9 +288,35 @@ package class SemanticStringSwitchTest {
 	 * Test method for {@link SemanticStringSwitch#casePredicate(de.fraunhofer.isst.stars.requirementDSL.Predicate)}.
 	 */
 	@Test def package void testCasePredicatePredicate() {
-		//TODO BRAUCHEN WIR HIER größere Strukturen?
-		val pre1 = RequirementDSLFactory.eINSTANCE.createPredicate();
-		fail("Not yet implemented")
+		//predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
+		val pred1 = RequirementDSLFactory.eINSTANCE.createPredicate();
+		pred1.predicates.addAll("tree","house");
+		assertThat(sw.casePredicate(pred1)).^as("Matching String Representation of Predicate:").contains("tree","house");
+		
+		val pred2 = RequirementDSLFactory.eINSTANCE.createPredicate();
+		pred2.predicates.addAll("tree","house");
+		val obj2 = RequirementDSLFactory.eINSTANCE.createPredicateObject();
+		val pre2 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+//		article=PreNominative relativ='relative'? (object+=WORD+ | object+=STRING) 
+//		pre2.determiner = quant;
+		pre2.article = "the";
+		obj2.article = pre2;
+		obj2.object.addAll("sky","weekend");
+		pred2.object = obj2;
+		assertThat(sw.casePredicate(pred2)).^as("Matching String Representation of Predicate:").contains("tree","house","sky","weekend");
+		
+		val pred3 = RequirementDSLFactory.eINSTANCE.createPredicate();
+		pred3.predicates.addAll("tree","house");
+		val obj3 = RequirementDSLFactory.eINSTANCE.createPredicateObject();
+		val pre3 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+//		article=PreNominative relativ='relative'? (object+=WORD+ | object+=STRING) 
+//		pre3.determiner = quant;
+		pre3.article = "the";
+		obj3.article = pre3;
+		obj3.relativ = "relative";
+		obj3.object.addAll("sea","weekends");
+		pred3.object = obj3;
+		assertThat(sw.casePredicate(pred3)).^as("Matching String Representation of Predicate:").contains("tree","house","sea","weekends");
 	}
 
 	/** 
@@ -764,7 +790,7 @@ package class SemanticStringSwitchTest {
 		objSet5.elements.addAll(act51,act52);
 		setConstr5.set = objSet5;
 		const5.constraint = setConstr5;
-		softly.assertThat(sw.caseConstraint(const5)).^as("Matching String Representation of SentenceEnding:").contains("Paul","Dan");
+		softly.assertThat(sw.caseConstraint(const5)).^as("Matching String Representation of Constraint:").contains("Paul","Dan");
 		
 		//Test 6 Value SetConstraint
 		val const6 = RequirementDSLFactory.eINSTANCE.createConstraint();
@@ -784,7 +810,7 @@ package class SemanticStringSwitchTest {
 		valCon6.elements.addAll(float6,int6)
 		setConstr6.set=valCon6;
 		const6.constraint = setConstr6;
-		softly.assertThat(sw.caseConstraint(const6)).^as("Matching String Representation of SentenceEnding:").contains("20","m","2.2");
+		softly.assertThat(sw.caseConstraint(const6)).^as("Matching String Representation of Constraint:").contains("20","m","2.2");
 		softly.assertAll();
 	}
 
@@ -900,14 +926,60 @@ package class SemanticStringSwitchTest {
 	 */
 	@Test def package void testCasePredsPreds() {
 		//predicate=Predicate | predObj=PredicateObject
-
-		fail("Not yet implemented")
+		//predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
+		val preds1 = RequirementDSLFactory.eINSTANCE.createPreds();
+		val pred1 = RequirementDSLFactory.eINSTANCE.createPredicate();
+		pred1.predicates.addAll("tree","house");
+		preds1.predicate = pred1
+		assertThat(sw.casePreds(preds1)).^as("Matching String Representation of Preds:").contains("tree","house");
+		
+		val preds2 = RequirementDSLFactory.eINSTANCE.createPreds();
+		val pred2 = RequirementDSLFactory.eINSTANCE.createPredicate();
+		pred2.predicates.addAll("tree","house");
+		val obj2 = RequirementDSLFactory.eINSTANCE.createPredicateObject();
+		val pre2 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+//		article=PreNominative relativ='relative'? (object+=WORD+ | object+=STRING) 
+//		pre2.determiner = quant;
+		pre2.article = "the";
+		obj2.article = pre2;
+		obj2.object.addAll("sky","weekend");
+		pred2.object = obj2;
+		preds2.predicate = pred2
+		assertThat(sw.casePreds(preds2)).^as("Matching String Representation of Preds:").contains("tree","house","sky","weekend");
+		
+		val preds3 = RequirementDSLFactory.eINSTANCE.createPreds();
+		val pred3 = RequirementDSLFactory.eINSTANCE.createPredicate();
+		pred3.predicates.addAll("tree","house");
+		val obj3 = RequirementDSLFactory.eINSTANCE.createPredicateObject();
+		val pre3 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+//		article=PreNominative relativ='relative'? (object+=WORD+ | object+=STRING) 
+//		pre3.determiner = quant;
+		pre3.article = "the";
+		obj3.article = pre3;
+		obj3.relativ = "relative";
+		obj3.object.addAll("sea","weekends");
+		pred3.object = obj3;
+		preds3.predicate = pred3
+		assertThat(sw.casePreds(preds3)).^as("Matching String Representation of Preds:").contains("tree","house","sea","weekends");
+		
+		val preds4 = RequirementDSLFactory.eINSTANCE.createPreds();
+		val obj4 = RequirementDSLFactory.eINSTANCE.createPredicateObject();
+		val pre4 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+//		article=PreNominative relativ='relative'? (object+=WORD+ | object+=STRING) 
+//		pre4.determiner = quant;
+		pre4.article = "the";
+		obj4.article = pre4;
+		obj4.relativ = "relative";
+		obj4.object.addAll("bear","hug");
+		preds4.predObj = obj4;
+		assertThat(sw.casePreds(preds4)).^as("Matching String Representation of Preds:").contains("bear","hug");
 	}
 
 	/** 
 	 * Test method for {@link SemanticStringSwitch#caseRelation(de.fraunhofer.isst.stars.requirementDSL.Relation)}.
 	 */
 	@Test def package void testCaseRelationRelation() {
+		//TODO BENÖTIGT RElObjects
 		fail("Not yet implemented")
 	}
 
@@ -1006,13 +1078,158 @@ package class SemanticStringSwitchTest {
 	 * Test method for {@link SemanticStringSwitch#caseConstraints(de.fraunhofer.isst.stars.requirementDSL.Constraints)}.
 	 */
 	@Test def package void testCaseConstraintsConstraints() {
-		fail("Not yet implemented")
+		//timeConstraint=TimeConstraint | constraint=Constraint
+
+
+		val softly = new SoftAssertions();	
+		//Test 1 ObjectConstraint
+		val consts1 = RequirementDSLFactory.eINSTANCE.createConstraints();
+		val const1 = RequirementDSLFactory.eINSTANCE.createConstraint();
+		val conOrd1 = RequirementDSLFactory.eINSTANCE.createConstraintOrdinators();
+//		conOrd1.stuffing = 
+		conOrd1.adverbial = "on"
+//		conOrd1.comperator = value
+		const1.ordinator = conOrd1;
+		val objConstr1 = RequirementDSLFactory.eINSTANCE.createObjectConstraint();
+		val obj1 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre1 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre1.article = "the"
+		obj1.article = pre1;
+		obj1.object.addAll("park","spot");
+		objConstr1.object = obj1;
+		const1.constraint = objConstr1;
+		consts1.constraint = const1;
+		softly.assertThat(sw.caseConstraints(consts1)).^as("Matching String Representation of Constraints:").contains("park","spot");
+		
+		//Test 2 SingleValueConstraints - INT
+		val consts2 = RequirementDSLFactory.eINSTANCE.createConstraints();
+		val const2 = RequirementDSLFactory.eINSTANCE.createConstraint();
+		val conOrd2 = RequirementDSLFactory.eINSTANCE.createConstraintOrdinators();
+//		conOrd2.stuffing = 
+		conOrd2.adverbial = "on"
+//		conOrd2.comperator = value
+		const2.ordinator = conOrd2;
+		val valconst2 = RequirementDSLFactory.eINSTANCE.createSingleValueConstraints();
+		val value2 = RequirementDSLFactory.eINSTANCE.createIntValue();
+		value2.unit = "sec";
+		value2.value = 5; 
+		valconst2.value = value2;
+		const2.constraint = valconst2;
+		consts2.constraint = const2;
+		softly.assertThat(sw.caseConstraints(consts2)).^as("Matching String Representation of Constraints:").contains("5","sec");
+		
+		
+		//Test 3 SingleValueConstraints - Float
+		val consts3 = RequirementDSLFactory.eINSTANCE.createConstraints();
+		val const3 = RequirementDSLFactory.eINSTANCE.createConstraint();
+		val conOrd3 = RequirementDSLFactory.eINSTANCE.createConstraintOrdinators();
+//		conOrd3.stuffing = 
+		conOrd3.adverbial = "on"
+//		conOrd3.comperator = value
+		const3.ordinator = conOrd3;
+		val constr3 = RequirementDSLFactory.eINSTANCE.createSingleValueConstraints();
+		val value3 = RequirementDSLFactory.eINSTANCE.createFloatValue();
+		value3.unit = "km";
+		value3.value = 44.33f; 
+		constr3.value = value3;
+		const3.constraint = constr3;
+		consts3.constraint = const3;
+		softly.assertThat(sw.caseConstraints(consts3)).^as("Matching String Representation of Constraints:").contains("44.33","km");		
+		
+		//Test 4 IntervallConstraints
+		val consts4 = RequirementDSLFactory.eINSTANCE.createConstraints();
+		val const4 = RequirementDSLFactory.eINSTANCE.createConstraint();
+		val conOrd4 = RequirementDSLFactory.eINSTANCE.createConstraintOrdinators();
+//		conOrd4.stuffing = 
+		conOrd4.adverbial = "on"
+//		conOrd4.comperator = value
+		const4.ordinator = conOrd4;
+		val valConstr4 = RequirementDSLFactory.eINSTANCE.createIntervallConstraints();
+		val value41 = RequirementDSLFactory.eINSTANCE.createIntValue();
+		value41.unit = "km";
+		value41.value = 2;
+		val value42 = RequirementDSLFactory.eINSTANCE.createFloatValue();
+		value42.unit = "sec";
+		value42.value = 14.23f;  
+		valConstr4.lower = value41;
+		valConstr4.higher = value42;
+		const4.constraint = valConstr4;
+		consts4.constraint = const4;
+		softly.assertThat(sw.caseConstraints(consts4)).^as("Matching String Representation of Constraints:").contains("2","sec","14.23","km");
+		
+		//Test 5 Object SetConstraint
+		val consts5 = RequirementDSLFactory.eINSTANCE.createConstraints();
+		val const5 = RequirementDSLFactory.eINSTANCE.createConstraint();
+		val conOrd5 = RequirementDSLFactory.eINSTANCE.createConstraintOrdinators();
+//		conOrd5.stuffing = 
+		conOrd5.adverbial = "on"
+//		conOrd5.comperator = value
+		const5.ordinator = conOrd5;
+		val setConstr5 = RequirementDSLFactory.eINSTANCE.createSetConstraint();
+		val objSet5= RequirementDSLFactory.eINSTANCE.createObjectSet();
+		val act51= RequirementDSLFactory.eINSTANCE.createActor();
+//		  PreNominative=PreNominative? relativ='relative'? (actor=WORD | actor=STRING) 
+		val pre51= RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre51.article = "the";
+		act51.preNominative = pre51;
+		act51.actor = "Paul";
+		val act52= RequirementDSLFactory.eINSTANCE.createActor();
+//		  PreNominative=PreNominative? relativ='relative'? (actor=WORD | actor=STRING) 
+		val pre52= RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre52.article = "the";
+		act52.preNominative = pre52;
+		act52.actor = "Dan"
+		objSet5.elements.addAll(act51,act52);
+		setConstr5.set = objSet5;
+		const5.constraint = setConstr5;
+		consts5.constraint = const5;
+		softly.assertThat(sw.caseConstraints(consts5)).^as("Matching String Representation of Constraints:").contains("Paul","Dan");
+		
+		//Test 6 Value SetConstraint
+		val consts6 = RequirementDSLFactory.eINSTANCE.createConstraints();
+		val const6 = RequirementDSLFactory.eINSTANCE.createConstraint();
+		val conOrd6 = RequirementDSLFactory.eINSTANCE.createConstraintOrdinators();
+//		conOrd6.stuffing = 
+		conOrd6.adverbial = "on"
+//		conOrd6.comperator = value
+		const6.ordinator = conOrd6;
+		val setConstr6 = RequirementDSLFactory.eINSTANCE.createSetConstraint();
+		val valCon6 = RequirementDSLFactory.eINSTANCE.createValueSet();
+		val float6 = RequirementDSLFactory.eINSTANCE.createFloatValue();
+		float6.value = 2.2f;
+		float6.unit = "m";
+		val int6 = RequirementDSLFactory.eINSTANCE.createFloatValue();
+		int6.value = 20;
+		int6.unit = "m";
+		valCon6.elements.addAll(float6,int6)
+		setConstr6.set=valCon6;
+		const6.constraint = setConstr6;
+		consts6.constraint = const6;
+		softly.assertThat(sw.caseConstraints(consts6)).^as("Matching String Representation of Constraints:").contains("20","m","2.2");
+		softly.assertAll();
+		
+		val const7= RequirementDSLFactory.eINSTANCE.createConstraints();
+		val tcon7 = RequirementDSLFactory.eINSTANCE.createTimeConstraint();
+//		ConstraintOrdinators:	stuffing=StuffWord? adverbial=Adverbial comperator=Comperators?
+		val conOrd7 = RequirementDSLFactory.eINSTANCE.createConstraintOrdinators();
+//		conOrd7.stuffing = 
+		conOrd7.adverbial = "in";
+//		conOrd7.comperator = 
+		tcon7.ordinator = conOrd7;
+		tcon7.time = 5;
+		tcon7.unit = "sec";
+		const7.timeConstraint = tcon7;
+		assertThat(sw.caseConstraints(const7)).^as("Matching String Representation of Constraints (TIME):").contains("in","5","sec");
 	}
 
 	/** 
 	 * Test method for {@link SemanticStringSwitch#caseSentenceBegin(de.fraunhofer.isst.stars.requirementDSL.SentenceBegin)}.
 	 */
 	@Test def package void testCaseSentenceBeginSentenceBegin() {
+		//TODO BENÖTIGT RELATION
+//		(rela=Relation ',')
+		val beg1= RequirementDSLFactory.eINSTANCE.createSentenceBegin();
+		
 		fail("Not yet implemented")
 	}
 }
