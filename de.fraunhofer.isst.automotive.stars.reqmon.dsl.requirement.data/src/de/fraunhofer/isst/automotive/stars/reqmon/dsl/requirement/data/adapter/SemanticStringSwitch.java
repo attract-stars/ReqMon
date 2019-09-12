@@ -181,7 +181,7 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 			return "does";
 		case "don't":
 		case "don´t":
-		case "dont`":
+		case "don`t":
 			return "do";
 		case "isn't":
 		case "isn´t":
@@ -406,6 +406,9 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 		if (object == null)
 			return "";
 		StringJoiner objTxt = new StringJoiner(" ");
+		if (object.getRelativ() != null && !object.getRelativ().isEmpty()) {
+			objTxt.add(object.getRelativ());
+		}
 		if (object.getProperty() != null && !object.getProperty().isEmpty()) {
 			for (String word : object.getProperty()) {
 				objTxt.add(word);

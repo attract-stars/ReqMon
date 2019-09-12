@@ -80,7 +80,7 @@ package class SemanticStringSwitchTest {
 		value2.unit = "sec"
 		value2.value = 20
 		value2.object.add("delay");
-		assertThat(sw.caseValue(value2)).^as("Matching String Representation of Value:").contains("10","sec","delay");
+		assertThat(sw.caseValue(value2)).^as("Matching String Representation of Value:").contains("20","sec","delay");
 	}
 
 	/** 
@@ -954,14 +954,52 @@ package class SemanticStringSwitchTest {
 	 * Test method for {@link SemanticStringSwitch#caseProperty(de.fraunhofer.isst.stars.requirementDSL.Property)}.
 	 */
 	@Test def package void testCasePropertyProperty() {
-		fail("Not yet implemented")
+		//PROPERTY_TERM relativ='relative'? (property+=WORD+ | property+=STRING)
+		val prop1 = RequirementDSLFactory.eINSTANCE.createProperty();
+		//internal '\'s' |	'`s' | '´s'
+		prop1.property.addAll("position");
+//		RelConjunction:	'and' 'to' | 'or' 'to';
+		assertThat(sw.caseProperty(prop1)).^as("Matching String Representation of Property:").contains("position");
+		val prop2 = RequirementDSLFactory.eINSTANCE.createProperty();
+		//internal '\'s' |	'`s' | '´s'
+		prop2.relativ = "relative";
+		prop2.property.addAll("position");
+		assertThat(sw.caseProperty(prop2)).^as("Matching String Representation of Property:").contains("relative","position");
+		val prop3 = RequirementDSLFactory.eINSTANCE.createProperty();
+		//internal '\'s' |	'`s' | '´s'
+		prop3.property.addAll("house","spot");
+		assertThat(sw.caseProperty(prop3)).^as("Matching String Representation of Property:").contains("house","spot");
 	}
 
 	/** 
 	 * Test method for {@link SemanticStringSwitch#casePredOrObject(de.fraunhofer.isst.stars.requirementDSL.PredOrObject)}.
 	 */
 	@Test def package void testCasePredOrObjectPredOrObject() {
-		fail("Not yet implemented")
+	//	predicate=Predicate | predObj=PredicateObject
+		val or1 = RequirementDSLFactory.eINSTANCE.createPredOrObject();
+	//	Predicate: predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
+		val pred1 = RequirementDSLFactory.eINSTANCE.createPredicate;
+		pred1.predicates.addAll("cook", "butter");
+		or1.predicate = pred1;
+		assertThat(sw.casePredOrObject(or1)).^as("Matching String Representation of PredOrObject:").contains("cook","butter");
+		
+		val or2 = RequirementDSLFactory.eINSTANCE.createPredOrObject();
+	//	Predicate: predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
+		val pred2 = RequirementDSLFactory.eINSTANCE.createPredicate();
+		pred2.predicates.addAll("cook", "butter");
+		val obj2 = RequirementDSLFactory.eINSTANCE.createPredicateObject;
+		obj2.object.addAll("honey","mustard");
+		pred2.object = obj2;
+		or2.predicate = pred2;
+		assertThat(sw.casePredOrObject(or2)).^as("Matching String Representation of PredOrObject:").contains("cook","butter","honey","mustard");
+		
+	//	PredicateObject: article=PreNominative relativ='relative'? (object+=WORD+ | object+=STRING) 
+		val or3 = RequirementDSLFactory.eINSTANCE.createPredOrObject();
+	//	Predicate: predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
+		val obj3 = RequirementDSLFactory.eINSTANCE.createPredicateObject;
+		obj3.object.addAll("honey","mustard");
+		or3.predObj = obj2;
+		assertThat(sw.casePredOrObject(or3)).^as("Matching String Representation of PredOrObject:").contains("honey","mustard");
 	}
 
 	/** 
