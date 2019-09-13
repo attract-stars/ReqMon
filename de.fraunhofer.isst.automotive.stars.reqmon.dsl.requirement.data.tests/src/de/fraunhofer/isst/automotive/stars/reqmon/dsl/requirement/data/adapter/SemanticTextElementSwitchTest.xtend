@@ -111,7 +111,7 @@ package class SemanticTextElementSwitchTest {
 		fail("Not yet implemented")
 	}
 
-	@Test def package void testCasePropertyProperty() {
+	@Test def package void testCasePropertyProperty1() {
 		// PROPERTY_TERM relativ='relative'? (property+=WORD+ | property+=STRING)
 		val prop1 = RequirementDSLFactory.eINSTANCE.createProperty();
 		prop1.property.addAll("position");
@@ -119,19 +119,41 @@ package class SemanticTextElementSwitchTest {
 		sw.caseProperty(prop1);
 		assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
 		assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry("position", resElement1);
+		val prop12 = RequirementDSLFactory.eINSTANCE.createProperty();
+		prop12.property.addAll("position");
+		sw.caseProperty(prop12);
+		assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
+		assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry("position", resElement1);
+	}
 
+	@Test def package void testCasePropertyProperty2() {
 		val prop2 = RequirementDSLFactory.eINSTANCE.createProperty();
 		prop2.relativ = "relative";
 		prop2.property.addAll("position");
 		val resElement2 = new SemanticTextElement("relative position", RequirementType.FUNCTION);
 		sw.caseProperty(prop2);
 		assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
-		assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry("relative position", resElement2);
-		
+		assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry("relative position",
+			resElement2);
+		val prop22 = RequirementDSLFactory.eINSTANCE.createProperty();
+		prop22.relativ = "relative";
+		prop22.property.addAll("position");
+		sw.caseProperty(prop22);
+		assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
+		assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry("relative position",
+			resElement2);
+	}
+
+	@Test def package void testCasePropertyProperty3() {
 		val prop3 = RequirementDSLFactory.eINSTANCE.createProperty();
 		prop3.property.addAll("house", "spot");
 		val resElement3 = new SemanticTextElement("house spot", RequirementType.FUNCTION);
 		sw.caseProperty(prop3);
+		assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
+		assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry("house spot", resElement3);
+		val prop32 = RequirementDSLFactory.eINSTANCE.createProperty();
+		prop32.property.addAll("house", "spot");
+		sw.caseProperty(prop32);
 		assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
 		assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry("house spot", resElement3);
 	}

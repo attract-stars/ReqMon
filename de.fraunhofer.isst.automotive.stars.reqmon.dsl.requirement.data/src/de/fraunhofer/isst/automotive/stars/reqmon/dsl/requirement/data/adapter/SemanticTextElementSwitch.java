@@ -169,6 +169,9 @@ public class SemanticTextElementSwitch extends RequirementDSLSwitch<SemanticText
 		System.out.println("Analyzing: " + object.toString());
 		if (!(object.getProperty().isEmpty())) {
 			StringJoiner objTxt = new StringJoiner(" ");
+			if (object.getRelativ() != null && !object.getRelativ().isEmpty()) {
+				objTxt.add(object.getRelativ());
+			}
 			for (String text : object.getProperty()) {
 				// the text object lists all words for the real meaning these word have to be
 				// concatenated
