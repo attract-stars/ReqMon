@@ -6,26 +6,20 @@ import com.google.inject.Inject
 import com.google.inject.Injector
 import de.fraunhofer.isst.stars.requirementDSL.RequirementDSLFactory
 import de.fraunhofer.isst.stars.tests.RequirementDSLInjectorProvider
+import org.assertj.core.api.SoftAssertions
+import org.eclipse.emf.common.util.BasicEList
+import org.eclipse.emf.common.util.EList
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.^extension.ExtendWith
-
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.ValueSource
-import org.eclipse.emf.common.util.EList
-import org.eclipse.emf.common.util.BasicEList.UnmodifiableEList
-import org.eclipse.emf.common.util.BasicEList
-import de.fraunhofer.isst.stars.requirementDSL.PredicateObject
-import de.fraunhofer.isst.stars.requirementDSL.impl.PredicateObjectImpl
-import de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage
 import org.junit.jupiter.params.provider.CsvSource
-import org.eclipse.emf.ecore.EObject
-import org.assertj.core.api.SoftAssertions
+import org.junit.jupiter.params.provider.ValueSource
+
+import static org.assertj.core.api.Assertions.*
 
 /** 
  * @author mmauritz
