@@ -979,15 +979,215 @@ package class SemanticStringSwitchTest {
 	 * Test method for {@link SemanticStringSwitch#caseRelation(de.fraunhofer.isst.stars.requirementDSL.Relation)}.
 	 */
 	@Test def package void testCaseRelationRelation() {
-		//TODO BENÖTIGT RElObjects
-		fail("Not yet implemented")
+		///*relposAdv=PositionAdverbial*/ relDel=RelationDelimiter /*relComp=Comperators*/ relElements=RelObjects
+		val rel1 = RequirementDSLFactory.eINSTANCE.createRelation();
+		rel1.relDel = "in relation to";
+		val relObj1 = RequirementDSLFactory.eINSTANCE.createRelObjects();
+		val obj1 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre1 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre1.article = "the";
+		obj1.article = pre1;
+//		obj1.relativ = value;
+		obj1.object.addAll("build","scheme");
+		relObj1.object.addAll(obj1);
+		rel1.relElements = relObj1;
+		assertThat(sw.caseRelation(rel1)).^as("Matching String Representation of Relation:").contains("build","scheme");
+		
+		val rel2 = RequirementDSLFactory.eINSTANCE.createRelation();
+		rel2.relDel = "in relation to";
+		val relObj2 = RequirementDSLFactory.eINSTANCE.createRelObjects();
+		val obj2 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre2 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre2.article = "the";
+		obj2.article = pre2;
+		obj2.relativ = "relative";
+		obj2.object.addAll("build","scheme");
+		relObj2.object.addAll(obj2);
+		rel2.relElements = relObj2;
+		assertThat(sw.caseRelation(rel2)).^as("Matching String Representation of Relation:").contains("relative","build","scheme");	
+		
+		val rel3 = RequirementDSLFactory.eINSTANCE.createRelation();
+		rel3.relDel = "relative to";
+		val relObj3 = RequirementDSLFactory.eINSTANCE.createRelObjects();
+		val obj3 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre3 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre3.article = "the";
+		obj3.article = pre3;
+//		obj3.relativ = "relative";
+		obj3.object.addAll("build","scheme");
+		relObj3.object.addAll(obj3);
+		val prop3 = RequirementDSLFactory.eINSTANCE.createProperty();
+//		prop3.relativ="relative";
+		prop3.property.addAll("bus","lane");
+		relObj3.property.addAll(prop3)
+		rel3.relElements = relObj3;
+		assertThat(sw.caseRelation(rel3)).^as("Matching String Representation of RelationObjectss:").contains("build","scheme","bus","lane");
+		
+		//Test 4: multiple Objects
+		val rel4 = RequirementDSLFactory.eINSTANCE.createRelation();
+		rel4.relDel = "relative to";
+		val relObj4 = RequirementDSLFactory.eINSTANCE.createRelObjects();
+		val obj41 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre41 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre41.article = "the";
+		obj41.article = pre41;
+//		obj4.relativ = "relative";
+		obj41.object.addAll("build","scheme");
+		val obj42 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre42 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre42.article = "the";
+		obj42.article = pre42;
+//		obj4.relativ = "relative";
+		obj42.object.addAll("altar","mountain");
+		val obj43 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre43 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre43.article = "the";
+		obj43.article = pre43;
+//		obj4.relativ = "relative";
+		obj43.object.addAll("brick","wall");
+		val prop43 = RequirementDSLFactory.eINSTANCE.createProperty();
+//		prop3.relativ="relative";
+		prop43.property.addAll("car","park");
+		relObj4.object.addAll(obj41,obj42,obj43);
+		relObj4.relConj.addAll("and","and");
+		relObj4.property.addAll(prop43);
+		rel4.relElements = relObj4;
+		assertThat(sw.caseRelation(rel4)).^as("Matching String Representation of RelationObjectss:").contains("build","scheme","altar","mountain","brick","wall","car","park");
 	}
 
 	/** 
 	 * Test method for {@link SemanticStringSwitch#caseRelObjects(de.fraunhofer.isst.stars.requirementDSL.RelObjects)}.
 	 */
 	@Test def package void testCaseRelObjectsRelObjects() {
-		fail("Not yet implemented")
+		//object+=Object property+=Property? (relConj+=RelConjunction object+=Object property+=Property?)*
+		val softly = new SoftAssertions();
+		//Test 1: Object
+		val relObj1 = RequirementDSLFactory.eINSTANCE.createRelObjects();
+		val obj1 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre1 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre1.article = "the";
+		obj1.article = pre1;
+//		obj1.relativ = value;
+		obj1.object.addAll("build","scheme");
+		relObj1.object.addAll(obj1);
+		softly.assertThat(sw.caseRelObjects(relObj1)).^as("Matching String Representation of RelationObjectss:").contains("build","scheme");
+		
+		//Test 2: relative Object
+		val relObj2 = RequirementDSLFactory.eINSTANCE.createRelObjects();
+		val obj2 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre2 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre2.article = "the";
+		obj2.article = pre2;
+		obj2.relativ = "relative";
+		obj2.object.addAll("build","scheme");
+		relObj2.object.addAll(obj2);
+		softly.assertThat(sw.caseRelObjects(relObj2)).^as("Matching String Representation of RelationObjectss:").contains("relative","build","scheme");	
+		
+		//Test 3: Object + Property
+		val relObj3 = RequirementDSLFactory.eINSTANCE.createRelObjects();
+		val obj3 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre3 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre3.article = "the";
+		obj3.article = pre3;
+//		obj3.relativ = "relative";
+		obj3.object.addAll("build","scheme");
+		relObj3.object.addAll(obj3);
+		val prop3 = RequirementDSLFactory.eINSTANCE.createProperty();
+//		prop3.relativ="relative";
+		prop3.property.addAll("bus","lane");
+		relObj3.property.addAll(prop3)
+		softly.assertThat(sw.caseRelObjects(relObj3)).^as("Matching String Representation of RelationObjectss:").contains("build","scheme","bus","lane");
+		
+		//Test 4: multiple Objects
+		val relObj4 = RequirementDSLFactory.eINSTANCE.createRelObjects();
+		val obj41 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre41 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre41.article = "the";
+		obj41.article = pre41;
+//		obj4.relativ = "relative";
+		obj41.object.addAll("build","scheme");
+		val obj42 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre42 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre42.article = "the";
+		obj42.article = pre42;
+//		obj4.relativ = "relative";
+		obj42.object.addAll("altar","mountain");
+		val obj43 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre43 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre43.article = "the";
+		obj43.article = pre43;
+//		obj4.relativ = "relative";
+		obj43.object.addAll("brick","wall");
+		relObj4.object.addAll(obj41,obj42,obj43);
+		relObj4.relConj.addAll("and","and");
+		softly.assertThat(sw.caseRelObjects(relObj4)).^as("Matching String Representation of RelationObjectss:").contains("build","scheme","altar","mountain","brick","wall");
+		
+		//Test 5: multiple Objects with Properties
+		val relObj5 = RequirementDSLFactory.eINSTANCE.createRelObjects();
+		val obj51 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre51 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre51.article = "the";
+		obj51.article = pre51;
+//		obj5.relativ = "relative";
+		obj51.object.addAll("build","scheme");
+		val prop51 = RequirementDSLFactory.eINSTANCE.createProperty();
+//		prop3.relativ="relative";
+		prop51.property.addAll("bus","lane");
+		val obj52 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre52 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre52.article = "the";
+		obj52.article = pre52;
+//		obj5.relativ = "relative";
+		obj52.object.addAll("altar","mountain");
+		val prop52 = RequirementDSLFactory.eINSTANCE.createProperty();
+//		prop3.relativ="relative";
+		prop52.property.addAll("hammer","lake");
+		val obj53 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre53 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre53.article = "the";
+		obj53.article = pre53;
+//		obj5.relativ = "relative";
+		obj53.object.addAll("brick","wall");
+		val prop53 = RequirementDSLFactory.eINSTANCE.createProperty();
+//		prop3.relativ="relative";
+		prop53.property.addAll("car","park");
+		relObj5.object.addAll(obj51,obj52,obj53);
+		relObj5.property.addAll(prop51,prop52,prop53);
+		relObj5.relConj.addAll("and","and");
+		softly.assertThat(sw.caseRelObjects(relObj5)).^as("Matching String Representation of RelationObjectss:").contains("build","scheme","bus","lane","altar","mountain","hammer","lake","brick","wall","car","park");
+		
+		
+		//Test 6: mixed Objects with/without Properties
+		val relObj6 = RequirementDSLFactory.eINSTANCE.createRelObjects();
+		val obj61 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre61 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre61.article = "the";
+		obj61.article = pre61;
+//		obj6.relativ = "relative";
+		obj61.object.addAll("build","scheme");
+		val prop61 = RequirementDSLFactory.eINSTANCE.createProperty();
+//		prop3.relativ="relative";
+		prop61.property.addAll("bus","lane");
+		val obj62 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre62 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre62.article = "the";
+		obj62.article = pre62;
+//		obj6.relativ = "relative";
+		obj62.object.addAll("altar","mountain");
+		val obj63 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre63 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre63.article = "the";
+		obj63.article = pre63;
+//		obj6.relativ = "relative";
+		obj63.object.addAll("brick","wall");
+		val prop63 = RequirementDSLFactory.eINSTANCE.createProperty();
+//		prop3.relativ="relative";
+		prop63.property.addAll("car","park");
+		relObj6.object.addAll(obj61,obj62,obj63);
+		relObj6.property.addAll(prop61,prop63);
+		relObj6.relConj.addAll("and","or");
+		softly.assertThat(sw.caseRelObjects(relObj6)).^as("Matching String Representation of RelationObjectss:").contains("build","scheme","bus","lane","altar","mountain","brick","wall","car","park");
+		softly.assertAll();
 	}
 
 	/** 
@@ -1006,6 +1206,8 @@ package class SemanticStringSwitchTest {
 		pre33.determiner = quant; 
 		obj.object.addAll(ob1,ob2===null?"":ob2,ob3===null? "":ob3);
 		assertThat(sw.caseObject(obj)).^as("Matching String Representation of Object:").contains(ob1,ob2===null?"":ob2,ob3===null? "":ob3);
+		obj.relativ = "relative";
+		assertThat(sw.caseObject(obj)).^as("Matching String Representation of Object:").contains("relative",ob1,ob2===null?"":ob2,ob3===null? "":ob3);
 	}
 	
 		/** 
@@ -1020,6 +1222,8 @@ package class SemanticStringSwitchTest {
 		pre33.article = art; 
 		obj.object.addAll(ob1,ob2===null?"":ob2,ob3===null? "":ob3);
 		assertThat(sw.caseObject(obj)).^as("Matching String Representation of Object:").contains(ob1,ob2===null?"":ob2,ob3===null? "":ob3);
+		obj.relativ = "relative";
+		assertThat(sw.caseObject(obj)).^as("Matching String Representation of Object:").contains("relative",ob1,ob2===null?"":ob2,ob3===null? "":ob3);
 	}
 
 	/** 
@@ -1229,7 +1433,88 @@ package class SemanticStringSwitchTest {
 		//TODO BENÖTIGT RELATION
 //		(rela=Relation ',')
 		val beg1= RequirementDSLFactory.eINSTANCE.createSentenceBegin();
+		val rel1 = RequirementDSLFactory.eINSTANCE.createRelation();
+		rel1.relDel = "in relation to";
+		val relObj1 = RequirementDSLFactory.eINSTANCE.createRelObjects();
+		val obj1 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre1 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre1.article = "the";
+		obj1.article = pre1;
+//		obj1.relativ = value;
+		obj1.object.addAll("build","scheme");
+		relObj1.object.addAll(obj1);
+		rel1.relElements = relObj1;
+		beg1.rela = rel1;
+		assertThat(sw.caseSentenceBegin(beg1)).^as("Matching String Representation of SentenceBeginning:").contains("build","scheme");
 		
-		fail("Not yet implemented")
+		
+		val beg2= RequirementDSLFactory.eINSTANCE.createSentenceBegin();
+		val rel2 = RequirementDSLFactory.eINSTANCE.createRelation();
+		rel2.relDel = "in relation to";
+		val relObj2 = RequirementDSLFactory.eINSTANCE.createRelObjects();
+		val obj2 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre2 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre2.article = "the";
+		obj2.article = pre2;
+		obj2.relativ = "relative";
+		obj2.object.addAll("build","scheme");
+		relObj2.object.addAll(obj2);
+		rel2.relElements = relObj2;
+		beg2.rela = rel2;
+		assertThat(sw.caseSentenceBegin(beg2)).^as("Matching String Representation of SentenceBeginning:").contains("relative","build","scheme");	
+		
+		val beg3= RequirementDSLFactory.eINSTANCE.createSentenceBegin();
+		val rel3 = RequirementDSLFactory.eINSTANCE.createRelation();
+		rel3.relDel = "relative to";
+		val relObj3 = RequirementDSLFactory.eINSTANCE.createRelObjects();
+		val obj3 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre3 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre3.article = "the";
+		obj3.article = pre3;
+//		obj3.relativ = "relative";
+		obj3.object.addAll("build","scheme");
+		relObj3.object.addAll(obj3);
+		val prop3 = RequirementDSLFactory.eINSTANCE.createProperty();
+//		prop3.relativ="relative";
+		prop3.property.addAll("bus","lane");
+		relObj3.property.addAll(prop3)
+		rel3.relElements = relObj3;
+		beg3.rela = rel3;
+		assertThat(sw.caseSentenceBegin(beg3)).^as("Matching String Representation of SentenceBeginning:").contains("build","scheme","bus","lane");
+
+		val beg4= RequirementDSLFactory.eINSTANCE.createSentenceBegin();		
+		val rel4 = RequirementDSLFactory.eINSTANCE.createRelation();
+		rel4.relDel = "relative to";
+		val relObj4 = RequirementDSLFactory.eINSTANCE.createRelObjects();
+		val obj41 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre41 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre41.article = "the";
+		obj41.article = pre41;
+//		obj4.relativ = "relative";
+		obj41.object.addAll("build","scheme");
+		val obj42 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre42 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre42.article = "the";
+		obj42.article = pre42;
+//		obj4.relativ = "relative";
+		obj42.object.addAll("altar","mountain");
+		val obj43 = RequirementDSLFactory.eINSTANCE.createObject();
+		val pre43 = RequirementDSLFactory.eINSTANCE.createPreNominative();
+		pre43.article = "the";
+		obj43.article = pre43;
+//		obj4.relativ = "relative";
+		obj43.object.addAll("brick","wall");
+		val prop43 = RequirementDSLFactory.eINSTANCE.createProperty();
+//		prop3.relativ="relative";
+		prop43.property.addAll("car","park");
+		relObj4.object.addAll(obj41,obj42,obj43);
+		relObj4.relConj.addAll("and","and");
+		relObj4.property.addAll(prop43);
+		rel4.relElements = relObj4;
+		beg4.rela = rel4;
+		assertThat(sw.caseSentenceBegin(beg4)).^as("Matching String Representation of SentenceBeginning:").contains("build","scheme","altar","mountain","brick","wall","car","park");
+		
+		
+		
 	}
 }

@@ -365,6 +365,10 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 			// iterate overall objects - there should not be a property without object
 			for (int i = 0; i < object.getObject().size(); i++) {
 				// Object may consists of multiple string -> concatenate them
+				if (object.getObject().get(i).getRelativ() != null
+						&& !object.getObject().get(i).getRelativ().isEmpty()) {
+					objProps.add(object.getObject().get(i).getRelativ());
+				}
 				if (object.getObject().get(i) != null && !object.getObject().get(i).getObject().isEmpty()) {
 					// Concatenate multi Word String
 					for (String objStr : object.getObject().get(i).getObject()) {
@@ -394,6 +398,9 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 		if (object == null)
 			return "";
 		StringJoiner objTxt = new StringJoiner(" ");
+		if (object.getRelativ() != null && !object.getRelativ().isEmpty()) {
+			objTxt.add(object.getRelativ());
+		}
 		if (object.getObject() != null && !object.getObject().isEmpty()) {
 			for (String objStr : object.getObject()) {
 				objTxt.add(objStr);
