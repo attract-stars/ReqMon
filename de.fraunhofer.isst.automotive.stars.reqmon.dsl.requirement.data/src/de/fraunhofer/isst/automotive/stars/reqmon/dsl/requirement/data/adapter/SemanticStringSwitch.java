@@ -347,7 +347,8 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 			objTxt.add(object.getRelDel());
 		}
 		if (object.getRelElements() != null) {
-			objTxt.add("<" + caseRelObjects(object.getRelElements()) + ">");
+//			objTxt.add("<" + caseRelObjects(object.getRelElements()) + ">");
+			objTxt.add(caseRelObjects(object.getRelElements()));
 		}
 		return objTxt.toString();
 	}
@@ -379,6 +380,7 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 				// Check for property and make sure not to be out of bounds
 				if (object.getProperty() != null && !object.getProperty().isEmpty()
 						&& i < object.getProperty().size()) {
+					objProps.add("\'s");// Hinterlässt ein whitespace zuvor
 					// Object may consists of multiple string -> concatenate them
 					if (object.getProperty().get(i) != null) {
 						for (String propStr : object.getProperty().get(i).getProperty()) {

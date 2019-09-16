@@ -27,7 +27,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.Requireme
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.SemanticTextElement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.adapter.RequirementDslResourceContentAdappter;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.adapter.SemanticTextElementSwitch;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui.internal.RequirementActivator;
+import de.fraunhofer.isst.stars.RequirementDSLStandaloneSetup;
 
 /**
  * @author mmauritz
@@ -46,8 +46,9 @@ public class RequirementDslParser implements IRequirementImporter {
 	}
 
 	protected void setupXtextParser() {
-		Injector injector = RequirementActivator.getInstance()
-				.getInjector(RequirementActivator.DE_FRAUNHOFER_ISST_STARS_REQUIREMENTDSL);
+		Injector injector = new RequirementDSLStandaloneSetup().createInjectorAndDoEMFRegistration();
+//		Injector injector = RequirementActivator.getInstance()
+//				.getInjector(RequirementActivator.DE_FRAUNHOFER_ISST_STARS_REQUIREMENTDSL);
 		injector.injectMembers(this);
 	}
 

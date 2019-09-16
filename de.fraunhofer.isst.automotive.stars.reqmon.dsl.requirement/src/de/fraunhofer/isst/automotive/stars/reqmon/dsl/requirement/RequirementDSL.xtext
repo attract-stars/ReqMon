@@ -6,6 +6,7 @@ generate requirementDSL "http://www.fraunhofer.de/isst/automotive/stars/reqmon/d
 
 /* =========== Model =========== */
 //TODO WIR BRAUCHEN EIN BESSERES OBJECT IN DER SPRACHE FÜR OBJECT + PROPERTY denn eig ist das eine Einheit
+//TODO RENAME MODEL
 Model:
 	requirements+=Requirement*
 ;
