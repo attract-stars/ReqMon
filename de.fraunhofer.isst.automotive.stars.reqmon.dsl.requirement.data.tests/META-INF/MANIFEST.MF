@@ -3,16 +3,17 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Tests
 Bundle-SymbolicName: de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.tests
 Bundle-Version: 1.0.0.qualifier
-Export-Package: de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data,
- de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.adapter,
- de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.parser
 Require-Bundle: org.eclipse.xtext;bundle-version="2.14.0",
  org.eclipse.xtext.testing;bundle-version="2.14.0",
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- org.eclipse.emf.common.source;bundle-version="2.16.0"
+ org.eclipse.emf.common.source;bundle-version="2.16.0",
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement;bundle-version="1.0.0",
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data;bundle-version="1.0.0",
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui;bundle-version="1.0.0",
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.tests;bundle-version="1.0.0"
 Bundle-Vendor: Fraunhofer ISST
 Bundle-ClassPath: lib/hamcrest-2.2-rc1.jar,
  .
