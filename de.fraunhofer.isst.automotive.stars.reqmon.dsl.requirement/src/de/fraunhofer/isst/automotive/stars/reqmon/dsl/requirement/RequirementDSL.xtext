@@ -6,6 +6,7 @@ generate requirementDSL "http://www.fraunhofer.de/isst/automotive/stars/reqmon/d
 
 /* =========== Model =========== */
 //TODO WIR BRAUCHEN EIN BESSERES OBJECT IN DER SPRACHE FÜR OBJECT + PROPERTY denn eig ist das eine Einheit
+//TODO RENAME MODEL
 Model:
 	requirements+=Requirement*
 ;
@@ -86,6 +87,8 @@ SentenceBegin:
 ;
 
 SentenceEnding:
+	//TODO FEHLT HIER NICHT EINE Conjunction?!
+	//TODO SOLLTE nicht Relation in CONTRAINTS drin sein
 	const+=Constraints+ |
 	const+=Constraints* rela=Relation |
 	rela=Relation const+=Constraints+

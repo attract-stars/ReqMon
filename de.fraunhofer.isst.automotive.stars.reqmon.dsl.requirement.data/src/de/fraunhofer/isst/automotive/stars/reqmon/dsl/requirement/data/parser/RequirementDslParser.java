@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -28,10 +27,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.Requireme
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.SemanticTextElement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.adapter.RequirementDslResourceContentAdappter;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.adapter.SemanticTextElementSwitch;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui.internal.RequirementActivator;
-import de.fraunhofer.isst.stars.requirementDSL.ConditionalClause;
-import de.fraunhofer.isst.stars.requirementDSL.Requirement;
-import de.fraunhofer.isst.stars.requirementDSL.RequirementText;
+import de.fraunhofer.isst.stars.RequirementDSLStandaloneSetup;
 
 /**
  * @author mmauritz
@@ -49,13 +45,14 @@ public class RequirementDslParser implements IRequirementImporter {
 		setupXtextParser();
 	}
 
-	private void setupXtextParser() {
-		Injector injector = RequirementActivator.getInstance()
-				.getInjector(RequirementActivator.DE_FRAUNHOFER_ISST_STARS_REQUIREMENTDSL);
+	protected void setupXtextParser() {
+		Injector injector = new RequirementDSLStandaloneSetup().createInjectorAndDoEMFRegistration();
+//		Injector injector = RequirementActivator.getInstance()
+//				.getInjector(RequirementActivator.DE_FRAUNHOFER_ISST_STARS_REQUIREMENTDSL);
 		injector.injectMembers(this);
 	}
 
-	private List<SemanticTextElement> analyze(EObject model) {
+	protected List<SemanticTextElement> analyze(EObject model) {
 		System.out.println("Analyzing Requirement DSL");
 		TreeIterator<EObject> modelIterator = model.eAllContents();
 
@@ -95,7 +92,7 @@ public class RequirementDslParser implements IRequirementImporter {
 		// Saving Mapping from syntactic elements to semantic elements in Repository
 		eleRepo.put(model.eResource().getURI(), mapping);
 		// Add a Adapter to see if resource is changed to not load a dirty mapping
-		//TODO FUNCKTIONIERT GAR NICHT!!!
+		// TODO FUNCKTIONIERT GAR NICHT!!!
 		EContentAdapter changeModellAdapter = new RequirementDslResourceContentAdappter(mapping);
 		changeModellAdapter.setTarget(model.eResource().getResourceSet());
 		model.eResource().getResourceSet().eAdapters().add(changeModellAdapter);
@@ -106,38 +103,7 @@ public class RequirementDslParser implements IRequirementImporter {
 		return visitor.getSingleSemanticTextElements();
 	}
 
-	protected void analyzeRequirements(org.eclipse.emf.common.util.EList<Requirement> requirements) {
-		for (Requirement req : requirements) {
-			analyzeRequirementText(req.getText());
-		}
-	}
-
-	/**
-	 * @param text
-	 */
-	protected void analyzeRequirementText(RequirementText text) {
-		analzyeCondClauses(text.getCondClauses());
-	}
-
-	/**
-	 * @param condClauses
-	 */
-	protected void analzyeCondClauses(EList<ConditionalClause> condClauses) {
-		for (ConditionalClause clause : condClauses) {
-			analyzeConditionalClause(clause);
-		}
-
-	}
-
-	/**
-	 * @param clause
-	 */
-	private void analyzeConditionalClause(ConditionalClause clause) {
-		// TODO Auto-generated method stub
-
-	}
-
-	private EObject parseDslRequirementFile(URI file) throws ParseException {
+	protected EObject parseDslRequirementFile(URI file) throws ParseException {
 		try {
 			Resource resource = resourceSet.getResource(file, true);
 			if (!resource.isLoaded()) {

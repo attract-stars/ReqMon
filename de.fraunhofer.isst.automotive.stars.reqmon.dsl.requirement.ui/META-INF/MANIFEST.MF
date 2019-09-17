@@ -19,7 +19,8 @@ Require-Bundle: de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement,
  org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",org.eclipse.xtend.lib;bundle-version="2.14.0";resolution:=optional
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: de.fraunhofer.isst.stars.ui.quickfix,
- de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui.internal,
- de.fraunhofer.isst.stars.ui.contentassist
+Export-Package: de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui.internal,
+ de.fraunhofer.isst.stars.ui,
+ de.fraunhofer.isst.stars.ui.contentassist,
+ de.fraunhofer.isst.stars.ui.quickfix
 Bundle-Activator: de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui.internal.RequirementActivator

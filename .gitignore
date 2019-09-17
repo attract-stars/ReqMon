@@ -1,9 +1,10 @@
 
-<<<<<<< HEAD
-=======
 # Exlude bin files
 bin/
 test-bin/
+
+# Exclude testing files
+testing/
 
 # Exclude gen files
 xtend-gen
@@ -16,13 +17,7 @@ src-gen
 # Exclude ser files
 *.ser
 
-
->>>>>>> master
-# Created by https://www.gitignore.io/api/eclipse
-# Edit at https://www.gitignore.io/?templates=eclipse
 ### Eclipse ###
-
-<<<<<<< HEAD
 *target*
 *.jar
 *.war
@@ -162,24 +157,10 @@ local.properties
 ### Eclipse Patch ###
 # Eclipse Core
 #.project
->>>>>>> master
 
 # JDT-specific (Eclipse Java Development Tools)
 #.classpath
 
-# Annotation Processing
-<<<<<<< HEAD
-.apt_generated
-
-.sts4-cache/
-
-# End of https://www.gitignore.io/api/eclipse
-*/bin
-=======
-#.apt_generated
-
 #.sts4-cache/
 
-# End of https://www.gitignore.io/api/eclipse
->>>>>>> master
 *.orig
