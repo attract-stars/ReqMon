@@ -117,7 +117,7 @@ Actors:
 ;
 
 Actor:
-	//TODO BEKOMMT MAN HIER NICHT MEHRERE WÖRTER REIN!? -> DANN WÄRE ES OBJECT
+	//TODO BEKOMMT MAN HIER NICHT MEHRERE WÖRTER REIN!? -> DANN WÄRE ES OBJECT - Problem Parser Matching
   	  PreNominative=PreNominative? relativ='relative'? (actor=WORD | actor=STRING) 
 //    (determiner=Determiner|article=Articles|article=RefArticles)? (object=WORD | object=STRING) (property?=PROPERTY (adjectives+=Adjective)* (objects=WORD | objects=STRING))? 
    
@@ -232,7 +232,7 @@ ValueSet:
 ;
 
 ObjectSet:
-	  '{' (elements+=Actor) (';'elements+=Actor)*'}'
+	  '{' (elements+=Object) (';'elements+=Object)*'}'
 ;
 
 Value:
