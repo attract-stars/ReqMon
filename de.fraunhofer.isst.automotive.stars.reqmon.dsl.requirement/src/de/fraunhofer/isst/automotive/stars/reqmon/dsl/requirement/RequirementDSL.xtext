@@ -5,7 +5,6 @@ import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 generate requirementDSL "http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/requirement/RequirementDSL" 
 
 /* =========== Model =========== */
-//TODO WIR BRAUCHEN EIN BESSERES OBJECT IN DER SPRACHE FÜR OBJECT + PROPERTY denn eig ist das eine Einheit
 RequirementModel:
 	requirements+=Requirement*
 ;
@@ -61,7 +60,8 @@ PredicateSentence :
 ;
 
 ExistenceSentence :
-	Existence actors=Actors ','   relativeClause=RelativeClause  ',' 
+	//TODO WAS IST WENN REQUIREMENT NACHT RELATIVE CLAUSE ENDED?
+	Existence actors=Actors ','   relativeClause=RelativeClause  ','
 ;
 
 PropertySentence:
@@ -99,13 +99,14 @@ SentenceEnding:
 
 RelativeClause:
 	//TODO WARUM WIRD HIER DER CONTITIONAL CLAUSE RAUFGERUFEN UND NICHT IN EXISTING CLAUSE
+	//TODO Sollte hier nicht die conjunction weg sein? Alla: ... which is done if ...
 //  pronoun=RelativePronouns actors=Actors? modelity=Modality? negation?=Negation? predicate=Predicate constraints+=Constraints*
 	sentence=RelativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*	
 ;
 RelativeSentence :
-	//TODO Here the auxiliar is any word and not one predefine by AUXILIARVERB
 	pronoun=RelativePronounsSubject modelity=Modality negation?=Negation? predicate=Predicate  constraints+=Constraints*  |
-	pronoun=RelativePronounsSubject (auxiliar=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
+	pronoun=RelativePronounsSubject (auxiliar=AuxiliaryVerb negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
+	pronoun=RelativePronounsSubject auxNeg=AuxiliaryVerbNegation predicate=Predicate  constraints+=Constraints* |
 	pronoun=RelativePronounsObject  (clause=ModalitySentence | clause=PredicateSentence)
 ;
 
@@ -124,7 +125,7 @@ Actor:
 ;
 
 Preds:
-	//TODO WARUM KANN DAS NICHT HIER EINFACH PREDICATE SEIN und erhalt PREDOBJ als eigenes Element?
+	//TODO WARUM KANN DAS NICHT HIER EINFACH PREDICATE SEIN und erhalt PREDOBJ als eigenes Element? Mathing PROBLEM!!
 	predicate=Predicate | predObj=PredicateObject
 ;
 
@@ -323,7 +324,8 @@ Negation:
 ;
 
 AuxiliaryVerbNegation:
-	//TODO MUSS HIER NICHT AUCH ANDERE ABOSTROPH HINZU
+	'doesn´t' | 'don´t' | 'isn´t' | 'aren´t' |
+	'doesn`t' | 'don`t' | 'isn`t' | 'aren`t' |
 	'doesn\'t' | 'don\'t' | 'isn\'t' | 'aren\'t'
 ;
 
