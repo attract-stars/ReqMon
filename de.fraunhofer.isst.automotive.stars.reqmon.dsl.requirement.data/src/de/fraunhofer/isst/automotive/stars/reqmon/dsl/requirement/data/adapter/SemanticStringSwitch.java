@@ -129,6 +129,9 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 	@Override
 	public String casePredicateObject(PredicateObject object) {
 		StringJoiner objTxt = new StringJoiner(" ");
+		if (object != null && object.getRelativ() != null && !object.getRelativ().isEmpty()) {
+			objTxt.add(object.getRelativ());
+		}
 		if (object != null && object.getObject() != null && !(object.getObject().isEmpty())) {
 			for (String text : object.getObject()) {
 				// the text object lists all words for the real meaning these word have to be

@@ -95,6 +95,9 @@ public class SemanticTextElementSwitch extends RequirementDSLSwitch<SemanticText
 			objTxt.add(semanticStringSwitch.casePredicate(object.getPredicate()));
 		}
 		// constraints
+		if (object.getBegin() != null) {
+			objTxt.add(semanticStringSwitch.caseSentenceBegin(object.getBegin()));
+		}
 		if (object.getEnding() != null) {
 			objTxt.add(semanticStringSwitch.caseSentenceEnding(object.getEnding()));
 		}
