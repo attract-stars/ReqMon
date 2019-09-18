@@ -16,11 +16,10 @@ import de.fraunhofer.isst.stars.requirementDSL.IntValue;
 import de.fraunhofer.isst.stars.requirementDSL.IntervallConstraints;
 import de.fraunhofer.isst.stars.requirementDSL.Object;
 import de.fraunhofer.isst.stars.requirementDSL.ObjectConstraint;
+import de.fraunhofer.isst.stars.requirementDSL.ObjectProperty;
 import de.fraunhofer.isst.stars.requirementDSL.ObjectSet;
-import de.fraunhofer.isst.stars.requirementDSL.PredOrObject;
 import de.fraunhofer.isst.stars.requirementDSL.Predicate;
 import de.fraunhofer.isst.stars.requirementDSL.PredicateObject;
-import de.fraunhofer.isst.stars.requirementDSL.Preds;
 import de.fraunhofer.isst.stars.requirementDSL.Property;
 import de.fraunhofer.isst.stars.requirementDSL.RelObjects;
 import de.fraunhofer.isst.stars.requirementDSL.Relation;
@@ -299,8 +298,8 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 	public String caseObjectSet(ObjectSet object) {
 		if (object != null && object.getElements() != null && !object.getElements().isEmpty()) {
 			StringJoiner objTxt = new StringJoiner(";", "[", "]");
-			for (Actor val : object.getElements()) {
-				objTxt.add(caseActor(val));
+			for (Object val : object.getElements()) {
+				objTxt.add(caseObject(val));
 			}
 			return objTxt.toString();
 		}
@@ -328,20 +327,6 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 	}
 
 	@Override
-	public String casePreds(Preds object) {
-		if (object == null)
-			return "";
-		StringJoiner objTxt = new StringJoiner(" ");
-		if (object.getPredicate() != null) {
-			objTxt.add(casePredicate(object.getPredicate()));
-		}
-		if (object.getPredObj() != null) {
-			objTxt.add(casePredicateObject(object.getPredObj()));
-		}
-		return objTxt.toString();
-	}
-
-	@Override
 	public String caseRelation(Relation object) {
 		if (object == null)
 			return "";
@@ -361,41 +346,50 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 		if (object == null)
 			return "";
 		// StringJoiner objTxt = new StringJoiner(";", "<", ">");
-		StringJoiner objTxt = new StringJoiner(" ");
+		StringJoiner relObjTxt = new StringJoiner(" ");
 		// iterate over objects and add corresponding property
 		// get the object for iteration over all objects
 		if (object.getObject() != null && !object.getObject().isEmpty()) {
-			StringJoiner objProps = new StringJoiner(" ");
+			StringJoiner objTxt = new StringJoiner(" ");
 			// iterate overall objects - there should not be a property without object
-			for (int i = 0; i < object.getObject().size(); i++) {
+			for (Object obj : object.getObject()) {
 				// Object may consists of multiple string -> concatenate them
-				if (object.getObject().get(i).getRelativ() != null
-						&& !object.getObject().get(i).getRelativ().isEmpty()) {
-					objProps.add(object.getObject().get(i).getRelativ());
+				if (obj.getRelativ() != null && !obj.getRelativ().isEmpty()) {
+					objTxt.add(obj.getRelativ());
 				}
-				if (object.getObject().get(i) != null && !object.getObject().get(i).getObject().isEmpty()) {
+				if (obj.getObject() != null && !obj.getObject().isEmpty()) {
 					// Concatenate multi Word String
-					for (String objStr : object.getObject().get(i).getObject()) {
-						objProps.add(objStr);
+					for (String objStr : obj.getObject()) {
+						objTxt.add(objStr);
 					}
 
 				}
-				// Check for property and make sure not to be out of bounds
-				if (object.getProperty() != null && !object.getProperty().isEmpty()
-						&& i < object.getProperty().size()) {
-					objProps.add("\'s");// Hinterlässt ein whitespace zuvor
-					// Object may consists of multiple string -> concatenate them
-					if (object.getProperty().get(i) != null) {
-						for (String propStr : object.getProperty().get(i).getProperty()) {
-							objProps.add(propStr);
-						}
-						;
-					}
-				}
-				objTxt.add(objProps.toString());
 			}
+			relObjTxt.add(objTxt.toString());
 		}
-		return objTxt.toString();
+		if (object.getProperty() != null && !object.getProperty().isEmpty()) {
+			StringJoiner propTxt = new StringJoiner(" ");
+			for (ObjectProperty prop : object.getProperty()) {
+				propTxt.add(caseObjectProperty(prop));
+			}
+			relObjTxt.add(propTxt.toString());
+		}
+		return relObjTxt.toString();
+	}
+
+	@Override
+	public String caseObjectProperty(ObjectProperty object) {
+		if (object == null)
+			return "";
+		StringJoiner propText = new StringJoiner(" ");
+		// Check for property and make sure not to be out of bounds
+		if (object.getObject() != null) {
+			propText.add(caseObject(object.getObject()) + "\'s");
+		}
+		if (object.getProperty() != null) {
+			propText.add(caseProperty(object.getProperty()));
+		}
+		return propText.toString();
 	}
 
 	@Override
@@ -426,20 +420,6 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 			for (String word : object.getProperty()) {
 				objTxt.add(word);
 			}
-		}
-		return objTxt.toString();
-	}
-
-	@Override
-	public String casePredOrObject(PredOrObject object) {
-		if (object == null)
-			return "";
-		StringJoiner objTxt = new StringJoiner(" ");
-		if (object.getPredicate() != null) {
-			objTxt.add(casePredicate(object.getPredicate()));
-		}
-		if (object.getPredObj() != null) {
-			objTxt.add(casePredicateObject(object.getPredObj()));
 		}
 		return objTxt.toString();
 	}
