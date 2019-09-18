@@ -2,7 +2,7 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="requirementDSL" nsURI="http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/requirement/RequirementDSL"
     nsPrefix="requirementDSL">
-  <eClassifiers xsi:type="ecore:EClass" name="Model">
+  <eClassifiers xsi:type="ecore:EClass" name="RequirementModel">
     <eStructuralFeatures xsi:type="ecore:EReference" name="requirements" upperBound="-1"
         eType="#//Requirement" containment="true"/>
   </eClassifiers>
@@ -52,27 +52,24 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="actors" eType="#//Actors"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="auxNeg" upperBound="-1"
-        eType="#//AuxNeg" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="auxiliarVerb" unique="false"
-        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="preds" eType="#//Preds"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="auxNeg" eType="#//AuxNeg"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="auxiliarVerb" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="predicate" eType="#//Predicate"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ending" eType="#//SentenceEnding"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ExistenceSentence" eSuperTypes="#//Clause"/>
   <eClassifiers xsi:type="ecore:EClass" name="PropertySentence" eSuperTypes="#//Clause">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="actors" eType="#//Actors"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="property" eType="#//Property"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="properties" eType="#//ActorProperties"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rela" eType="#//Relation"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="modality" eType="#//Modality"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="negation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="auxiliarVerb" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="predObj" eType="#//PredOrObject"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="predicate" eType="#//Predicate"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ending" eType="#//SentenceEnding"
         containment="true"/>
@@ -81,9 +78,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="constraints" eType="#//Constraints"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Property">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="relativ" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="property" unique="false"
+  <eClassifiers xsi:type="ecore:EClass" name="ActorProperties">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="property" upperBound="-1"
+        eType="#//ObjectProperty" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="conjunction" unique="false"
         upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SentenceBegin">
@@ -96,15 +94,15 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="rela" eType="#//Relation"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="relativeClause">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="sentence" eType="#//relativeSentence"
+  <eClassifiers xsi:type="ecore:EClass" name="RelativeClause">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sentence" eType="#//RelativeSentence"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="conjunction" unique="false"
         upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="condClauses" upperBound="-1"
         eType="#//ConditionalClause" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="relativeSentence">
+  <eClassifiers xsi:type="ecore:EClass" name="RelativeSentence">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="pronoun" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="modelity" eType="#//Modality"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="negation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -113,6 +111,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="constraints" upperBound="-1"
         eType="#//Constraints" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="auxiliar" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="auxNeg" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="clause" eType="#//Clause"
         containment="true"/>
   </eClassifiers>
@@ -123,14 +122,10 @@
         upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Actor">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="PreNominative" eType="#//PreNominative"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="relativ" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="actor" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Preds">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="predicate" eType="#//Predicate"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="predObj" eType="#//PredicateObject"
-        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Predicate">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="predicates" unique="false"
@@ -152,25 +147,18 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="object" unique="false"
         upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PredOrObject">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="predicate" eType="#//Predicate"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="predObj" eType="#//PredicateObject"
-        containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ExistencePreface" eSuperTypes="#//ExistenceSentence">
+  <eClassifiers xsi:type="ecore:EClass" name="Existence" eSuperTypes="#//ExistenceSentence">
     <eStructuralFeatures xsi:type="ecore:EReference" name="actors" eType="#//Actors"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="relativeClause" eType="#//relativeClause"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="relativeClause" eType="#//RelativeClause"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modifier" eType="#//Modifier"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AuxNeg">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="auxiliarVerb" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="negation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="auxiliarVerbNeg" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PreNominative" eSuperTypes="#//Actor">
+  <eClassifiers xsi:type="ecore:EClass" name="PreNominative">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="determiner" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="article" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
@@ -183,8 +171,19 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="object" upperBound="-1"
         eType="#//Object" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="property" upperBound="-1"
-        eType="#//Property" containment="true"/>
+        eType="#//ObjectProperty" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="relConj" unique="false"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ObjectProperty">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="object" eType="#//Object"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="property" eType="#//Property"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Property">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="relativ" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="property" unique="false"
         upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Constraints">
@@ -235,7 +234,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ObjectSet">
     <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
-        eType="#//Actor" containment="true"/>
+        eType="#//Object" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Value">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="unit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -284,5 +283,8 @@
     <eLiterals name="WHILE" value="13" literal="While"/>
     <eLiterals name="BEFORE" value="14" literal="Before"/>
     <eLiterals name="UNTIL" value="15" literal="Until"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExistencePreface" eSuperTypes="#//Existence">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modifier" eType="#//Modifier"/>
   </eClassifiers>
 </ecore:EPackage>

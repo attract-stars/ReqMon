@@ -137,7 +137,7 @@ Object:
 ;
 
 Existence:
-	{ExistencePreface} ('there' | 'There') (modifier=Modifier?) ('exist' | 'exists') // (WORD+|STRING) //defining the verbs for 'there is' / 'there are' is a problem for later usages of 'is'/'are' in other clauses
+	{ExistencePreface} ('there' | 'There') (modifier=Modifier?) ('exist' | 'exists') 
 ;
 
 AuxNeg:
@@ -162,7 +162,7 @@ Relation:
 
 RelObjects:
 //	object+=Object property+=Property? (relConj+=RelConjunction object+=Object property+=Property?)*
-	(object+=Object|property+=ObjectProperty) (relConj+=RelConjunction (object+=Object|property+=ObjectProperty))*
+	(object+=Object|property+=ObjectProperty) (relConj+=RelConjunction (object+=Object | property+=ObjectProperty))*
 ;
 
 
@@ -270,43 +270,42 @@ terminal PROPERTY_TERM returns ecore::EBoolean:
 /* =========== BASIC SYNTAX =========== */
 
 RelationDelimiter:
-	//'relation'
-	'in' 'relation' 'to'  | 'relative' 'to' |
-	'In' 'relation' 'to'  | 'Relative' 'to' 
+	('in' 'relation' 'to'  | 'relative' 'to' |
+	'In' 'relation' 'to'  | 'Relative' 'to') 
 ;
 
 AuxiliaryVerb:
-	'is' | 'are' | 'be' | 'been' | 'has' | 'have' | 'do' | 'does'
+	('is' | 'are' | 'be' | 'been' | 'has' | 'have' | 'do' | 'does')
 ;
 
 Conjunction:
-	'and'| 'or'
+	('and'| 'or')
 ;
 
 RelConjunction:
-	'and' 'to' | 'or' 'to'
+	('and' 'to' | 'or' 'to')
 ;
 
 Comperators:
-	'than'|'as'|'to' | 'of'
+	('than'|'as'|'to' | 'of')
 ;
 		 
 SizeAdverbial:
-	'higher' | 'less'| 'more' | 'larger'|'smaller' | 'as' 'long' 'as'
+	('higher' | 'less'| 'more' | 'larger'|'smaller' | 'as' 'long' 'as')
 ;
 
 PositionAdverbial:
-	'between'|'next' | 'on' | 'above' | 'below' | 'in' | 'within' | 'in' 'front' 'of' | 'in' 'front' 'to' 
-	| 'behind' | 'out' | 'under'
+	('between'|'next' | 'on' | 'above' | 'below' | 'in' | 'within' | 'in' 'front' 'of' | 'in' 'front' 'to' 
+	| 'behind' | 'out' | 'under')
 ;
 
 ComparisonAdverbial:
-	'equal' | 'faster' | 'slower' | 'better' | 'by' | 'to'
+	('equal' | 'faster' | 'slower' | 'better' | 'by' | 'to')
 ;
 
 Quantification:
-	'all' | 'every' | 'each' | 'whole' | 'any' | 'several' | 'either' |
-	'All' | 'Every' | 'Each' | 'Whole' | 'Any' | 'Several' | 'Either'
+	('all' | 'every' | 'each' | 'whole' | 'any' | 'several' | 'either' |
+	'All' | 'Every' | 'Each' | 'Whole' | 'Any' | 'Several' | 'Either')
 ;
 
 Negation:
@@ -314,9 +313,9 @@ Negation:
 ;
 
 AuxiliaryVerbNegation:
-	'doesn´t' | 'don´t' | 'isn´t' | 'aren´t' |
+	('doesn´t' | 'don´t' | 'isn´t' | 'aren´t' |
 	'doesn`t' | 'don`t' | 'isn`t' | 'aren`t' |
-	'doesn\'t' | 'don\'t' | 'isn\'t' | 'aren\'t'
+	'doesn\'t' | 'don\'t' | 'isn\'t' | 'aren\'t')
 ;
 
 enum Modality:
@@ -333,12 +332,12 @@ enum ClauseOrdinator:
 ;
 
 Articles:
-	'the' | 'a' | 'an' | 
-	'The' | 'A' | 'An' 
+	('the' | 'a' | 'an' | 
+	'The' | 'A' | 'An') 
 ;
 
 RefArticles:
-	'that' | 'this' | 'That' | 'This'
+	('that' | 'this' | 'That' | 'This')
 ;
 
 StuffWord:
@@ -347,11 +346,11 @@ StuffWord:
 	
 // Separation of Relative Pronouns due to impact on the following sentence structure
 RelativePronounsSubject:
-	'which' | 'who' | 'that'
+	('which' | 'who' | 'that')
 ;
 
 RelativePronounsObject:
-	'whose'| 'whom'
+	('whose'| 'whom')
 ;
 
 /* =========== BASIC UNITS =========== */
@@ -366,30 +365,30 @@ Unit:
 
 
 Cuvature:
-	'rad/m' | '°' | 'rad' | '°/m'	
+	('rad/m' | '°' | 'rad' | '°/m')	
 ;
 
 VelcoityUnits:
-	'm/s' | 'knots'  |'km/h' | 'm/min'
-	;
+	('m/s' | 'knots'  |'km/h' | 'm/min')
+;
 
 MassUnits:
-	'kg'| 'g' | 'mg' | 't'
+	('kg'| 'g' | 'mg' | 't')
 ;
 
 HeatUnits:
-	'C' | 'F'
+	('C' | 'F')
 ;
 
 PresureUnits:
-	'bar' | 'Pa' | 'hPa'
+	('bar' | 'Pa' | 'hPa')
 ;
 
 
 LengthUnits:
-	'm' | 'f' | 'km' | 'cm' | 'mm' |'nm'
+	('m' | 'f' | 'km' | 'cm' | 'mm' |'nm')
 ;
 
 TimeUnits:
-	 'ns'|'ms'|'s' | 'sec' | 'second' | 'seconds'| 'minute' | 'minutes' | 'min' | 'hour' | 'hours' | 'h' | 'day' | 'days' | 'd' | 'month'| 'months' | 'mon' |'year'| 'years'| 'y' 
+	 ('ns'|'ms'|'s' | 'sec' | 'second' | 'seconds'| 'minute' | 'minutes' | 'min' | 'hour' | 'hours' | 'h' | 'day' | 'days' | 'd' | 'month'| 'months' | 'mon' |'year'| 'years'| 'y') 
 ;
