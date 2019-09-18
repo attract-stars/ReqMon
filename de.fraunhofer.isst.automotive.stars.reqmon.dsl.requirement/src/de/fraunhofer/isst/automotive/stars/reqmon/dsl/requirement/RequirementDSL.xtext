@@ -50,8 +50,8 @@ ModalitySentence :
 ;
 
 PredicateSentence :
-	begin=SentenceBegin? actors=Actors  auxNeg=AuxNeg auxiliarVerb=AuxiliaryVerb? preds=Preds?  ending=SentenceEnding? |
-	begin=SentenceBegin? actors=Actors  preds=Preds  ending=SentenceEnding? 
+	begin=SentenceBegin? actors=Actors  auxNeg=AuxNeg auxiliarVerb=AuxiliaryVerb? predicate=Predicate?  ending=SentenceEnding? |
+	begin=SentenceBegin? actors=Actors  predicate=Predicate  ending=SentenceEnding? 
 	
 	//actors=Actors  (auxiliarVerb+=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
 	//actors=Actors  predicate=Predicate constraints+=Constraints* |	
@@ -69,8 +69,8 @@ PropertySentence:
 	//TODO Warum haben wir hier constraints im ODER und nohcmal im SentenceEnding - Reicht hier nicht auch PredOrObject?
 //	(actors=Actors| properties=Properties) rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predObj=PredOrObject  ending=SentenceEnding? |
 //	(actors=Actors| properties=Properties) rela=Relation? auxNeg=AuxNeg (predObj=PredOrObject | constraints=Constraints) ending=SentenceEnding?
-	properties=ActorProperties rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predObj=PredOrObject  ending=SentenceEnding? |
-	properties=ActorProperties rela=Relation? auxNeg=AuxNeg (predObj=PredOrObject | constraints=Constraints) ending=SentenceEnding?
+	properties=ActorProperties rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  ending=SentenceEnding? |
+	properties=ActorProperties rela=Relation? auxNeg=AuxNeg (predicate=Predicate | constraints=Constraints) ending=SentenceEnding?
 	
 	//property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  constraints+=Constraints* |
 	//property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb object=PredicateObject?  constraints+=Constraints* |
@@ -124,14 +124,8 @@ Actor:
    
 ;
 
-Preds:
-	//TODO WARUM KANN DAS NICHT HIER EINFACH PREDICATE SEIN und erhalt PREDOBJ als eigenes Element? Mathing PROBLEM!!
-	predicate=Predicate | predObj=PredicateObject
-;
-
 Predicate:
-	//verb=Verb | activity=Activity
-	predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
+	predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject | object=PredicateObject
 ;
 
 PredicateObject:
@@ -140,10 +134,6 @@ PredicateObject:
 
 Object:
 	article=PreNominative? relativ='relative'? (object+=WORD+ | object+=STRING) 
-;
-
-PredOrObject:
-	predicate=Predicate | predObj=PredicateObject
 ;
 
 Existence:
