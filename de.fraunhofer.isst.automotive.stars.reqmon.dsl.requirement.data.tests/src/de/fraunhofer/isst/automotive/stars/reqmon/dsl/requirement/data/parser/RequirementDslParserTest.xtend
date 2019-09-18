@@ -8,7 +8,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.MappingP
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.RequirementType
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.RequirementController
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.SemanticTextElement
-import de.fraunhofer.isst.stars.requirementDSL.Model
+import de.fraunhofer.isst.stars.requirementDSL.RequirementModel
 import de.fraunhofer.isst.stars.tests.RequirementDSLInjectorProvider
 import java.io.File
 import java.io.FileOutputStream
@@ -53,7 +53,7 @@ package class RequirementDslParserTest {
 	static val req6 = '''Req Req17a: The system must not perform a lane change to any lane if the ego-vehicle's lateral-offset in relation to the ego-lane's center is more than 0.4 m.\n'''
 	
 
-	@Inject ParseHelper<Model> parser;
+	@Inject ParseHelper<RequirementModel> parser;
 	@Inject extension ValidationTestHelper validator;
 
 	@Inject
