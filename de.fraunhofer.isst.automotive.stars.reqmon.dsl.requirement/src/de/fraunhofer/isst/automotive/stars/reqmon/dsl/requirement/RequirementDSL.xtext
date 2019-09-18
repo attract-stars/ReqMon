@@ -9,12 +9,8 @@ RequirementModel:
 	requirements+=Requirement*
 ;
 
-//Requirement:
-//	(condClauses+=Subclause)* (mainclauses+=Clauses) (condClauses+=Subclause)*
-//	;
 
 Requirement:
-	//PROBLEM condClauses before and after mainClause lead to ambiguity
 	'Req' reqID=ReqID? ':' text=RequirementText ('.'|';')
 ;
 
@@ -65,8 +61,7 @@ ExistenceSentence :
 ;
 
 PropertySentence:
-	//TODO mach hier auch Preds sinn?+
-	//TODO Warum haben wir hier constraints im ODER und nohcmal im SentenceEnding - Reicht hier nicht auch PredOrObject?
+	//TODO Warum haben wir hier constraints im ODER und nohcmal im SentenceEnding
 //	(actors=Actors| properties=Properties) rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predObj=PredOrObject  ending=SentenceEnding? |
 //	(actors=Actors| properties=Properties) rela=Relation? auxNeg=AuxNeg (predObj=PredOrObject | constraints=Constraints) ending=SentenceEnding?
 	properties=ActorProperties rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  ending=SentenceEnding? |
@@ -150,18 +145,16 @@ PreNominative :
 ;
 
 Adverbial:
-	SizeAdverbial | PositionAdverbial | ComparisonAdverbial //| PositionAdverbial PositionAdverbial Comperators	
-	//| (WORD 'of')
+	SizeAdverbial | PositionAdverbial | ComparisonAdverbial 
 ;
 
 /* =========== Relations =========== */
 
 Relation:
-	/*relposAdv=PositionAdverbial*/ relDel=RelationDelimiter /*relComp=Comperators*/ relElements=RelObjects
+	relDel=RelationDelimiter relElements=RelObjects
 ;
 
 RelObjects:
-//	object+=Object property+=Property? (relConj+=RelConjunction object+=Object property+=Property?)*
 	(object+=Object|property+=ObjectProperty) (relConj+=RelConjunction (object+=Object | property+=ObjectProperty))*
 ;
 
@@ -261,9 +254,6 @@ terminal STRING:
 
 terminal WS_HYPHEN : ' - '; 
 
-//@Override
-//terminal WS : (' '|'\t'|'\r')+ ;
-
 terminal PROPERTY_TERM returns ecore::EBoolean:
 	'\'s' |	'`s' | '´s'
 ;
@@ -309,7 +299,7 @@ Quantification:
 ;
 
 Negation:
-	'not' //| 'donot' | 'doesnot' | 'doesn\'t' | 'don\'t'
+	'not'
 ;
 
 AuxiliaryVerbNegation:
