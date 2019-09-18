@@ -5,18 +5,12 @@ import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 generate requirementDSL "http://www.fraunhofer.de/isst/automotive/stars/reqmon/dsl/requirement/RequirementDSL" 
 
 /* =========== Model =========== */
-//TODO WIR BRAUCHEN EIN BESSERES OBJECT IN DER SPRACHE FÜR OBJECT + PROPERTY denn eig ist das eine Einheit
-//TODO RENAME MODEL
-Model:
+RequirementModel:
 	requirements+=Requirement*
 ;
 
-//Requirement:
-//	(condClauses+=Subclause)* (mainclauses+=Clauses) (condClauses+=Subclause)*
-//	;
 
 Requirement:
-	//PROBLEM condClauses before and after mainClause lead to ambiguity
 	'Req' reqID=ReqID? ':' text=RequirementText ('.'|';')
 ;
 
@@ -52,8 +46,8 @@ ModalitySentence :
 ;
 
 PredicateSentence :
-	begin=SentenceBegin? actors=Actors  auxNeg=AuxNeg auxiliarVerb=AuxiliaryVerb? preds=Preds?  ending=SentenceEnding? |
-	begin=SentenceBegin? actors=Actors  preds=Preds  ending=SentenceEnding? 
+	begin=SentenceBegin? actors=Actors  auxNeg=AuxNeg auxiliarVerb=AuxiliaryVerb? predicate=Predicate?  ending=SentenceEnding? |
+	begin=SentenceBegin? actors=Actors  predicate=Predicate  ending=SentenceEnding? 
 	
 	//actors=Actors  (auxiliarVerb+=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
 	//actors=Actors  predicate=Predicate constraints+=Constraints* |	
@@ -62,15 +56,16 @@ PredicateSentence :
 ;
 
 ExistenceSentence :
-	Existence actors=Actors ','   relativeClause=RelativeClause  ',' 
+	//TODO WAS IST WENN REQUIREMENT NACHT RELATIVE CLAUSE ENDED?
+	Existence actors=Actors ','   relativeClause=RelativeClause  ','
 ;
 
 PropertySentence:
-	//TODO HIER SOLLTE MAN DOCH (ACTOR+PROPERTY)* haben!?
-	//TODO mach hier auch Preds sinn?+
-	//TODO Warum haben wir hier constraints im ODER und nohcmal im SentenceEnding - Reicht hier nicht auch PredOrObject?
-	actors=Actors property=Property rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predObj=PredOrObject  ending=SentenceEnding? |
-	actors=Actors property=Property rela=Relation? auxNeg=AuxNeg (predObj=PredOrObject | constraints=Constraints) ending=SentenceEnding?
+	//TODO Warum haben wir hier constraints im ODER und nohcmal im SentenceEnding
+//	(actors=Actors| properties=Properties) rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predObj=PredOrObject  ending=SentenceEnding? |
+//	(actors=Actors| properties=Properties) rela=Relation? auxNeg=AuxNeg (predObj=PredOrObject | constraints=Constraints) ending=SentenceEnding?
+	properties=ActorProperties rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  ending=SentenceEnding? |
+	properties=ActorProperties rela=Relation? auxNeg=AuxNeg (predicate=Predicate | constraints=Constraints) ending=SentenceEnding?
 	
 	//property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  constraints+=Constraints* |
 	//property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb object=PredicateObject?  constraints+=Constraints* |
@@ -78,8 +73,8 @@ PropertySentence:
 	//property=Property (predicateWord=WORD| predicateWord=STRING) object=PredicateObject? constraints+=Constraints* //Leads to mismatch in xtext but not in AntLRworks
 ;
 
-Property:
-	PROPERTY_TERM relativ='relative'? (property+=WORD+ | property+=STRING)
+ActorProperties:
+	property+=ObjectProperty (conjunction+=Conjunction property+=ObjectProperty)* 
 ;
 
 SentenceBegin:
@@ -99,13 +94,14 @@ SentenceEnding:
 
 RelativeClause:
 	//TODO WARUM WIRD HIER DER CONTITIONAL CLAUSE RAUFGERUFEN UND NICHT IN EXISTING CLAUSE
+	//TODO Sollte hier nicht die conjunction weg sein? Alla: ... which is done if ...
 //  pronoun=RelativePronouns actors=Actors? modelity=Modality? negation?=Negation? predicate=Predicate constraints+=Constraints*
 	sentence=RelativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*	
 ;
 RelativeSentence :
-	//TODO Here the auxiliar is any word and not one predefine by AUXILIARVERB
 	pronoun=RelativePronounsSubject modelity=Modality negation?=Negation? predicate=Predicate  constraints+=Constraints*  |
-	pronoun=RelativePronounsSubject (auxiliar=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
+	pronoun=RelativePronounsSubject (auxiliar=AuxiliaryVerb negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
+	pronoun=RelativePronounsSubject auxNeg=AuxiliaryVerbNegation predicate=Predicate  constraints+=Constraints* |
 	pronoun=RelativePronounsObject  (clause=ModalitySentence | clause=PredicateSentence)
 ;
 
@@ -117,19 +113,14 @@ Actors:
 ;
 
 Actor:
+	//TODO BEKOMMT MAN HIER NICHT MEHRERE WÖRTER REIN!? -> DANN WÄRE ES OBJECT - Problem Parser Matching
   	  PreNominative=PreNominative? relativ='relative'? (actor=WORD | actor=STRING) 
 //    (determiner=Determiner|article=Articles|article=RefArticles)? (object=WORD | object=STRING) (property?=PROPERTY (adjectives+=Adjective)* (objects=WORD | objects=STRING))? 
    
 ;
 
-Preds:
-	//TODO WARUM KANN DAS NICHT HIER EINFACH PREDICATE SEIN und erhalt PREDOBJ als eigenes Element?
-	predicate=Predicate | predObj=PredicateObject
-;
-
 Predicate:
-	//verb=Verb | activity=Activity
-	predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
+	predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject | object=PredicateObject
 ;
 
 PredicateObject:
@@ -140,23 +131,9 @@ Object:
 	article=PreNominative? relativ='relative'? (object+=WORD+ | object+=STRING) 
 ;
 
-PredOrObject:
-	predicate=Predicate | predObj=PredicateObject
-;
-
 Existence:
-	{ExistencePreface} ('there' | 'There') (modifier=Modifier?) ('exist' | 'exists') // (WORD+|STRING) //defining the verbs for 'there is' / 'there are' is a problem for later usages of 'is'/'are' in other clauses
+	{ExistencePreface} ('there' | 'There') (modifier=Modifier?) ('exist' | 'exists') 
 ;
-
-/* The same as Actors and Actor
-Objects:
-	(objects+=Object) (conjunction+=Conjunction objects+=Object)*
-;
-
-Object:
-    PreNominative? (object+=WORD+ | object+=STRING)  
-;
-*/
 
 AuxNeg:
 	auxiliarVerb=AuxiliaryVerb negation=Negation? |
@@ -168,25 +145,27 @@ PreNominative :
 ;
 
 Adverbial:
-	SizeAdverbial | PositionAdverbial | ComparisonAdverbial //| PositionAdverbial PositionAdverbial Comperators	
-	//| (WORD 'of')
+	SizeAdverbial | PositionAdverbial | ComparisonAdverbial 
 ;
 
 /* =========== Relations =========== */
 
 Relation:
-	/*relposAdv=PositionAdverbial*/ relDel=RelationDelimiter /*relComp=Comperators*/ relElements=RelObjects
+	relDel=RelationDelimiter relElements=RelObjects
 ;
 
 RelObjects:
-	object+=Object property+=Property? (relConj+=RelConjunction object+=Object property+=Property?)*
+	(object+=Object|property+=ObjectProperty) (relConj+=RelConjunction (object+=Object | property+=ObjectProperty))*
 ;
 
 
-/*Properties:
-	(properties+=Property) (conjunction+=Conjunction properties+=Property)* 
-;*/
+ObjectProperty:
+	object=Object property=Property
+;
 
+Property:
+	PROPERTY_TERM relativ='relative'? (property+=WORD+ | property+=STRING)
+;
 
 /* =========== CONSTRAINTS =========== */
 
@@ -237,7 +216,7 @@ ValueSet:
 ;
 
 ObjectSet:
-	  '{' (elements+=Actor) (';'elements+=Actor)*'}'
+	  '{' (elements+=Object) (';'elements+=Object)*'}'
 ;
 
 Value:
@@ -275,61 +254,58 @@ terminal STRING:
 
 terminal WS_HYPHEN : ' - '; 
 
-//@Override
-//terminal WS : (' '|'\t'|'\r')+ ;
-
 terminal PROPERTY_TERM returns ecore::EBoolean:
 	'\'s' |	'`s' | '´s'
 ;
 /* =========== BASIC SYNTAX =========== */
 
 RelationDelimiter:
-	//'relation'
-	'in' 'relation' 'to'  | 'relative' 'to' |
-	'In' 'relation' 'to'  | 'Relative' 'to' 
+	('in' 'relation' 'to'  | 'relative' 'to' |
+	'In' 'relation' 'to'  | 'Relative' 'to') 
 ;
 
 AuxiliaryVerb:
-	'is' | 'are' | 'be' | 'been' | 'has' | 'have' | 'do' | 'does'
+	('is' | 'are' | 'be' | 'been' | 'has' | 'have' | 'do' | 'does')
 ;
 
 Conjunction:
-	'and'| 'or'
+	('and'| 'or')
 ;
 
 RelConjunction:
-	'and' 'to' | 'or' 'to'
+	('and' 'to' | 'or' 'to')
 ;
 
 Comperators:
-	'than'|'as'|'to' | 'of'
+	('than'|'as'|'to' | 'of')
 ;
 		 
 SizeAdverbial:
-	'higher' | 'less'| 'more' | 'larger'|'smaller' | 'as' 'long' 'as'
+	('higher' | 'less'| 'more' | 'larger'|'smaller' | 'as' 'long' 'as')
 ;
 
 PositionAdverbial:
-	'between'|'next' | 'on' | 'above' | 'below' | 'in' | 'within' | 'in' 'front' 'of' | 'in' 'front' 'to' 
-	| 'behind' | 'out' | 'under'
+	('between'|'next' | 'on' | 'above' | 'below' | 'in' | 'within' | 'in' 'front' 'of' | 'in' 'front' 'to' 
+	| 'behind' | 'out' | 'under')
 ;
 
 ComparisonAdverbial:
-	'equal' | 'faster' | 'slower' | 'better' | 'by' | 'to'
+	('equal' | 'faster' | 'slower' | 'better' | 'by' | 'to')
 ;
 
 Quantification:
-	'all' | 'every' | 'each' | 'whole' | 'any' | 'several' | 'either' |
-	'All' | 'Every' | 'Each' | 'Whole' | 'Any' | 'Several' | 'Either'
+	('all' | 'every' | 'each' | 'whole' | 'any' | 'several' | 'either' |
+	'All' | 'Every' | 'Each' | 'Whole' | 'Any' | 'Several' | 'Either')
 ;
 
 Negation:
-	'not' //| 'donot' | 'doesnot' | 'doesn\'t' | 'don\'t'
+	'not'
 ;
 
 AuxiliaryVerbNegation:
-	//TODO MUSS HIER NICHT AUCH ANDERE ABOSTROPH HINZU
-	'doesn\'t' | 'don\'t' | 'isn\'t' | 'aren\'t'
+	('doesn´t' | 'don´t' | 'isn´t' | 'aren´t' |
+	'doesn`t' | 'don`t' | 'isn`t' | 'aren`t' |
+	'doesn\'t' | 'don\'t' | 'isn\'t' | 'aren\'t')
 ;
 
 enum Modality:
@@ -346,12 +322,12 @@ enum ClauseOrdinator:
 ;
 
 Articles:
-	'the' | 'a' | 'an' | 
-	'The' | 'A' | 'An' 
+	('the' | 'a' | 'an' | 
+	'The' | 'A' | 'An') 
 ;
 
 RefArticles:
-	'that' | 'this' | 'That' | 'This'
+	('that' | 'this' | 'That' | 'This')
 ;
 
 StuffWord:
@@ -360,11 +336,11 @@ StuffWord:
 	
 // Separation of Relative Pronouns due to impact on the following sentence structure
 RelativePronounsSubject:
-	'which' | 'who' | 'that'
+	('which' | 'who' | 'that')
 ;
 
 RelativePronounsObject:
-	'whose'| 'whom'
+	('whose'| 'whom')
 ;
 
 /* =========== BASIC UNITS =========== */
@@ -379,30 +355,30 @@ Unit:
 
 
 Cuvature:
-	'rad/m' | '°' | 'rad' | '°/m'	
+	('rad/m' | '°' | 'rad' | '°/m')	
 ;
 
 VelcoityUnits:
-	'm/s' | 'knots'  |'km/h' | 'm/min'
-	;
+	('m/s' | 'knots'  |'km/h' | 'm/min')
+;
 
 MassUnits:
-	'kg'| 'g' | 'mg' | 't'
+	('kg'| 'g' | 'mg' | 't')
 ;
 
 HeatUnits:
-	'C' | 'F'
+	('C' | 'F')
 ;
 
 PresureUnits:
-	'bar' | 'Pa' | 'hPa'
+	('bar' | 'Pa' | 'hPa')
 ;
 
 
 LengthUnits:
-	'm' | 'f' | 'km' | 'cm' | 'mm' |'nm'
+	('m' | 'f' | 'km' | 'cm' | 'mm' |'nm')
 ;
 
 TimeUnits:
-	 'ns'|'ms'|'s' | 'sec' | 'second' | 'seconds'| 'minute' | 'minutes' | 'min' | 'hour' | 'hours' | 'h' | 'day' | 'days' | 'd' | 'month'| 'months' | 'mon' |'year'| 'years'| 'y' 
+	 ('ns'|'ms'|'s' | 'sec' | 'second' | 'seconds'| 'minute' | 'minutes' | 'min' | 'hour' | 'hours' | 'h' | 'day' | 'days' | 'd' | 'month'| 'months' | 'mon' |'year'| 'years'| 'y') 
 ;

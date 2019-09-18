@@ -41,9 +41,7 @@ import de.fraunhofer.isst.stars.requirementDSL.Property
 import de.fraunhofer.isst.stars.requirementDSL.SentenceBegin
 import de.fraunhofer.isst.stars.requirementDSL.SentenceEnding
 import de.fraunhofer.isst.stars.requirementDSL.RelObjects
-import de.fraunhofer.isst.stars.requirementDSL.PredOrObject
 import de.fraunhofer.isst.stars.requirementDSL.AuxNeg
-import de.fraunhofer.isst.stars.requirementDSL.Preds
 import de.fraunhofer.isst.stars.requirementDSL.Relation
 
 /**
@@ -155,7 +153,7 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	
 	def text(PredicateSentence ele) {
 		if (!ele.auxiliarVerb.empty) {
-			"PredicateSentence: " + ele.auxiliarVerb.join(" ")
+			"PredicateSentence: " + String.join(" ",ele.auxiliarVerb)
 		}
 		else {
 			"PredicateSentence"
@@ -204,7 +202,7 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	}
 	
 	def text(Actor ele) {
-		"Actor: " + ele.actor
+		"Actor: " + ele.preNominative +" "+ ele.actor
 	}
 	
 	def text(Predicate ele) {
@@ -220,14 +218,7 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 		"PredicateObject: " + ele.object.join(" ")
 	}
 	
-	//TODO
 	def text(PreNominative ele) {
-//		if (ele.article !== null && ele.actor !== null) {
-//			"Article and Actor: " + ele.article + " " + ele.actor
-//		} 
-//		else if (ele.determiner !== null && ele.actor !== null) {
-//			"Determiner and Actor: " + ele.determiner + " " + ele.actor	
-//		}
 		if (ele.article !== null) {
 			"Article: " + ele.article
 		}
@@ -349,10 +340,6 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 		"RelObjects" //+ ele.actor.map[a | return a.actor]
 	}
 	
-	def text(PredOrObject ele) {
-		"PredicateOrObject"
-	}
-	
 	def text(AuxNeg ele) {
 		if (ele.auxiliarVerb !== null) {
 			"AuxNeg: " + ele.auxiliarVerb
@@ -366,10 +353,6 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 		else {
 			"AuxNeg"
 		}
-	}
-	
-	def text(Preds ele) {
-		"Predicate or PredicateObject"
 	}
 
 }

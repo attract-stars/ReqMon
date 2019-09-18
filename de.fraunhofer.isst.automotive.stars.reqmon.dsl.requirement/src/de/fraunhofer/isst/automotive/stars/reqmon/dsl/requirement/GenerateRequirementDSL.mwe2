@@ -41,6 +41,13 @@ Workflow {
 			}
 			parserGenerator ={
 				debugGrammar=true
+				options = {
+					// smaller files for  ANTLR WORKS -> but still not working
+			        classSplitting = true
+			        casesPerSpecialStateSwitch= "200"
+			        fieldsPerClass = "200"
+			        methodsPerClass = "200"
+	    		}
 			}
 			
 			junitSupport= {

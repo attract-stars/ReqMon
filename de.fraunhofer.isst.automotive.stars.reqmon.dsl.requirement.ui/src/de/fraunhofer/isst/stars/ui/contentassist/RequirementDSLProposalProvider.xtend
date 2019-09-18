@@ -19,8 +19,8 @@ import org.eclipse.xtext.ui.editor.contentassist.ConfigurableCompletionProposal
  */
 class RequirementDSLProposalProvider extends AbstractRequirementDSLProposalProvider {
 	
-	override void completeModel_Requirements(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-		super.completeModel_Requirements(model, assignment, context, acceptor)
+	override void completeRequirementModel_Requirements(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.completeRequirementModel_Requirements(model, assignment, context, acceptor)
 		
 		val String featureType = "Requirement"
 		val String type_1 = "ReqID"
@@ -503,12 +503,12 @@ class RequirementDSLProposalProvider extends AbstractRequirementDSLProposalProvi
 		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
 	}
 	
-	override void complete_RelativeClause(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	override complete_RelativeClause(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
 		super.complete_RelativeClause(model, ruleCall, context, acceptor)
 		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
 	}
 	
-	override void complete_RelativeSentence(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+	override complete_RelativeSentence(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
 		super.complete_RelativeSentence(model, ruleCall, context, acceptor)
 		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
 	}
@@ -520,11 +520,6 @@ class RequirementDSLProposalProvider extends AbstractRequirementDSLProposalProvi
 	
 	override void complete_Actor(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
 		super.complete_Actor(model, ruleCall, context, acceptor)
-		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
-	}
-	
-	override void complete_Preds(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-		super.complete_Preds(model, ruleCall, context, acceptor)
 		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
 	}
 	
@@ -543,11 +538,11 @@ class RequirementDSLProposalProvider extends AbstractRequirementDSLProposalProvi
 		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
 	}
 	
-	override void complete_PredOrObject(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-		super.complete_PredOrObject(model, ruleCall, context, acceptor)
-		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
-	}
-		
+//	override void complete_ExistencePreface(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+//		super.complete_ExistencePreface(model, ruleCall, context, acceptor)
+//		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
+//	}
+	
 	override void complete_AuxNeg(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
 		super.complete_AuxNeg(model, ruleCall, context, acceptor)
 		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
