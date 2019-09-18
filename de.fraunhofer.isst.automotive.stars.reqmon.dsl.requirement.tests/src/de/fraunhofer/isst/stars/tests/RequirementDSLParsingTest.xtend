@@ -4,22 +4,23 @@
 package de.fraunhofer.isst.stars.tests
 
 import com.google.inject.Inject
-import de.fraunhofer.isst.stars.requirementDSL.Model
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.XtextRunner
 import org.eclipse.xtext.testing.util.ParseHelper
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
+import de.fraunhofer.isst.stars.requirementDSL.RequirementModel
 
 @RunWith(XtextRunner)
 @InjectWith(RequirementDSLInjectorProvider)
 class RequirementDSLParsingTest {
 	@Inject
-	ParseHelper<Model> parseHelper
+	ParseHelper<RequirementModel> parseHelper
 	
 	@Test
 	def void loadModel() {
+		
 		/*
 		 * Test of the given requirement examples
 		 */ 
@@ -407,13 +408,16 @@ class RequirementDSLParsingTest {
 			Req 3: There exists x, who must x in x,.
 			Req 4: There exists x, that must not x in x,.
 			Req 5: There exists x, which x,.
-			Req 6: There exists x, who x not x,.
+			Req 6: There exists x, who is not x,.
 			Req 7: There exists x, that x in x,.
-			Req 8: There exists x, who x not x in x,.
+			Req 8: There exists x, who are not x in x,.
 			Req 9: There exists x, whose x must x,.
 			Req 9: There exists x, whom x must x,.
 			Req 10: There exists x, whose x x,.
-			Req 10: There exists x, whom x x,.
+			Req 11: There exists x, whom x x,.
+			Req 12: There exists x, who be not x,.
+			Req 13: There exists x, who does not x,.
+			Req 14: There exists x, who has not x,.
 			
 		''')
 		
@@ -646,6 +650,7 @@ class RequirementDSLParsingTest {
 			
 		''')
 		
+		
 		/*
 		 * Test of the RelObjects rule
 		 * 
@@ -660,15 +665,15 @@ class RequirementDSLParsingTest {
 		testSequence('''
 			Req 1: x x in relation to x.
 			Req 2: x x in relation to x´s x.
-			Req 3: x x in relation to x and_to x.
-			Req 3: x x in relation to x or_to x.
-			Req 4: x x in relation to x´s x and_to x.
-			Req 4: x x in relation to x´s x or_to x.
-			Req 5: x x in relation to x and_to x´s x.
-			Req 5: x x in relation to x or_to x´s x.
-			Req 6: x x in relation to x´s x and_to x´s x.
-			Req 6: x x in relation to x´s x or_to x´s x.
-			Req 7: x x in relation to x and_to x or_to x.
+			Req 3: x x in relation to x and to x.
+			Req 3: x x in relation to x or to x.
+			Req 4: x x in relation to x´s x and to x.
+			Req 4: x x in relation to x´s x or to x.
+			Req 5: x x in relation to x and to x´s x.
+			Req 5: x x in relation to x or to x´s x.
+			Req 6: x x in relation to x´s x and to x´s x.
+			Req 6: x x in relation to x´s x or to x´s x.
+			Req 7: x x in relation to x and to x or to x.
 			
 		''')
 		
