@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 import com.google.common.collect.Lists;
@@ -20,10 +19,9 @@ import de.fraunhofer.isst.stars.requirementDSL.Constraints;
 import de.fraunhofer.isst.stars.requirementDSL.Existence;
 import de.fraunhofer.isst.stars.requirementDSL.ModalitySentence;
 import de.fraunhofer.isst.stars.requirementDSL.Object;
+import de.fraunhofer.isst.stars.requirementDSL.ObjectProperty;
 import de.fraunhofer.isst.stars.requirementDSL.PredicateSentence;
-import de.fraunhofer.isst.stars.requirementDSL.Property;
 import de.fraunhofer.isst.stars.requirementDSL.PropertySentence;
-import de.fraunhofer.isst.stars.requirementDSL.RelObjects;
 import de.fraunhofer.isst.stars.requirementDSL.RelativeClause;
 import de.fraunhofer.isst.stars.requirementDSL.RelativeSentence;
 import de.fraunhofer.isst.stars.requirementDSL.util.RequirementDSLSwitch;
@@ -139,10 +137,6 @@ public class SemanticTextElementSwitch extends RequirementDSLSwitch<SemanticText
 		}
 		System.out.println("Analyzing: " + object.toString() + " for predicates and constraints");
 		StringJoiner objTxt = new StringJoiner(" ");
-		if (object.getBegin() != null) {
-			// TODO HAS THIS PREDEFINITION TO BE SORTED DIFFERENTLY IN THE ORDER!"?
-			objTxt.add(semanticStringSwitch.caseSentenceBegin(object.getBegin()));
-		}
 		if (object.getActors() != null) {
 			objTxt.add(addTextMarkings(semanticStringSwitch.caseActors(object.getActors())));
 		}
@@ -152,8 +146,13 @@ public class SemanticTextElementSwitch extends RequirementDSLSwitch<SemanticText
 		if (object.getAuxiliarVerb() != null) {
 			objTxt.add(object.getAuxiliarVerb());
 		}
-		if (object.getPreds() != null) {
-			objTxt.add(semanticStringSwitch.casePreds(object.getPreds()));
+		if (object.getPredicate() != null) {
+			objTxt.add(semanticStringSwitch.casePredicate(object.getPredicate()));
+		}
+		// add the SentenceBeginning at the end -
+		// TODO look for necessary adjustment -> Case
+		if (object.getBegin() != null) {
+			objTxt.add(semanticStringSwitch.caseSentenceBegin(object.getBegin()));
 		}
 		if (object.getEnding() != null) {
 			objTxt.add(semanticStringSwitch.caseSentenceEnding(object.getEnding()));
@@ -168,59 +167,25 @@ public class SemanticTextElementSwitch extends RequirementDSLSwitch<SemanticText
 		}
 	}
 
+	// TODO PROBLEM IF PROPERTY IS IN RELATION -> RELATION NOT CONSIDERED
 	@Override
-	public SemanticTextElement caseProperty(Property object) {
-		// TODO PROBLEM IF PROPERTY IS IN RELATION -> RELATION NOT CONSIDERED
+	public SemanticTextElement caseObjectProperty(ObjectProperty object) {
 		System.out.println("Analyzing: " + object.toString());
-		if (!(object.getProperty().isEmpty())) {
-			StringJoiner objTxt = new StringJoiner(" ");
-			if (object.getRelativ() != null && !object.getRelativ().isEmpty()) {
-				objTxt.add(object.getRelativ());
-			}
-			for (String text : object.getProperty()) {
-				// the text object lists all words for the real meaning these word have to be
-				// concatenated
-				objTxt.add(text);
-			}
-			// adding additional text for better Understand -> The preceeding object
-			String prefix = "";
-			String relationSuffix = "";
-			if (object.eContainer() instanceof PropertySentence) {
-				// PREFIX
-				PropertySentence sentence = (PropertySentence) object.eContainer();
-				EList<Actor> actors = sentence.getActors().getActors();
-				Actor lastActor = actors.get(actors.size() - 1);
-				prefix = lastActor.getActor() + "\'s";// TODO HIER WIRD NUR DER LETZTE ACTOR ADDRESSIERT
-				// SUFFIX
-				if (sentence.getRela() != null) {
-					relationSuffix = semanticStringSwitch.caseRelation(sentence.getRela());
-				}
-			}
-			if (object.eContainer() instanceof RelObjects) {
-				RelObjects relObjects = (RelObjects) object.eContainer();
-				// PREFIX
-				EList<Object> objects = relObjects.getObject();
-				Object lastObject = objects.get(objects.size() - 1);// TODO HIER WIRD NUR DAS LETZTE OBJECT ADDRESSIERT
-				StringJoiner obj2Text = new StringJoiner(" ");
-				for (String str : lastObject.getObject()) {
-					// the text object lists all words for the real meaning these word have to be
-					// concatenated
-					obj2Text.add(str);
-				}
-				prefix = obj2Text.toString() + "\'s";
-				// NO SUFFIX
-			}
-			String text = !prefix.isEmpty() ? prefix + " " + objTxt.toString() : objTxt.toString();
-			text = !relationSuffix.isEmpty() ? text + " " + relationSuffix : text;
-			if (elementLookup.containsKey(text)) {
-				return elementLookup.get(text);
-			} else {
-				SemanticTextElement texElement = new SemanticTextElement(text, RequirementType.FUNCTION);
-				elementLookup.put(text, texElement);
-				return texElement;
-			}
+		StringJoiner objPropTxt = new StringJoiner(" ");
+		if (object.getObject() != null) {
+			objPropTxt.add(semanticStringSwitch.caseObject(object.getObject()) + "\'s");
 		}
-		return super.caseProperty(object);
+		if (object.getProperty() != null) {
+			objPropTxt.add(semanticStringSwitch.caseProperty(object.getProperty()));
+		}
+		// TODO SHOULD NOT HERE BE THE RELATION!?
+		if (elementLookup.containsKey(objPropTxt.toString())) {
+			return elementLookup.get(objPropTxt.toString());
+		} else {
+			SemanticTextElement texElement = new SemanticTextElement(objPropTxt.toString(), RequirementType.FUNCTION);
+			elementLookup.put(objPropTxt.toString(), texElement);
+			return texElement;
+		}
 	}
 
 	@Override
@@ -230,21 +195,17 @@ public class SemanticTextElementSwitch extends RequirementDSLSwitch<SemanticText
 		}
 		System.out.println("Analyzing: " + object.toString() + " for predicates and constraints");
 		StringJoiner objTxt = new StringJoiner(" ");
-		if (object.getActors() != null && object.getProperty() != null) {
-			// for "<"... ">" encapsulation of actors properties
+		// TODO go for OBJECTS and PROPERTIES
+		if (object.getProperties() != null) {
+			// for "<"... ">" encapsulation of actor's properties
 			StringJoiner actorPropTxt = new StringJoiner(" ", "<", ">");// DOUBLE "<" ">" due to actors
-			actorPropTxt.add(semanticStringSwitch.caseActors(object.getActors()) + "'s");
-//			if (actorPropTxt.length() != 0) {
-//				actorPropTxt.add();
-//			}
-			if (object.getProperty() != null) {
-				actorPropTxt.add(semanticStringSwitch.caseProperty(object.getProperty()));
-			}
+			actorPropTxt.add(semanticStringSwitch.caseActorProperties(object.getProperties()));
 			if (object.getRela() != null) {
 				actorPropTxt.add(semanticStringSwitch.caseRelation(object.getRela()));
 			}
 			objTxt.add(actorPropTxt.toString());
 		}
+
 		// first version of property senctence
 		if (object.getAuxiliarVerb() != null) {
 			objTxt.add(object.getAuxiliarVerb());
@@ -253,8 +214,8 @@ public class SemanticTextElementSwitch extends RequirementDSLSwitch<SemanticText
 		if (object.getAuxNeg() != null) {
 			objTxt.add(semanticStringSwitch.caseAuxNeg(object.getAuxNeg()));
 		}
-		if (object.getPredObj() != null) {
-			objTxt.add(semanticStringSwitch.casePredOrObject(object.getPredObj()));
+		if (object.getPredicate() != null) {
+			objTxt.add(semanticStringSwitch.casePredicate(object.getPredicate()));
 		}
 		if (object.getConstraints() != null) {
 			objTxt.add(semanticStringSwitch.caseConstraints(object.getConstraints()));
@@ -316,7 +277,7 @@ public class SemanticTextElementSwitch extends RequirementDSLSwitch<SemanticText
 			return "";
 		}
 		container = container.eContainer();
-		if (container instanceof Existence) {// TODO Existence instead of ExistenceSentence working here?
+		if (container instanceof Existence) {
 			return semanticStringSwitch.caseActors(((Existence) container).getActors());
 		} else {
 			return "";

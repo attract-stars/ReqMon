@@ -6,6 +6,7 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.adapter;
 import java.util.StringJoiner;
 
 import de.fraunhofer.isst.stars.requirementDSL.Actor;
+import de.fraunhofer.isst.stars.requirementDSL.ActorProperties;
 import de.fraunhofer.isst.stars.requirementDSL.Actors;
 import de.fraunhofer.isst.stars.requirementDSL.AuxNeg;
 import de.fraunhofer.isst.stars.requirementDSL.Constraint;
@@ -443,5 +444,24 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 			return caseRelation(object.getRela());
 		}
 		return "";
+	}
+
+	@Override
+	public String caseActorProperties(ActorProperties object) {
+		if (object == null)
+			return "";
+		StringJoiner propText = new StringJoiner(" ");
+		// Check for property and make sure not to be out of bounds
+		if (object.getProperty() != null && !object.getProperty().isEmpty()) {
+			for (int i = 0; i < object.getProperty().size(); i++) {
+				propText.add(caseObjectProperty(object.getProperty().get(i)));
+				// TODO TAKE OUT IF only SINGLE ELEMENTS ARE
+				if (object.getConjunction() != null && !object.getConjunction().isEmpty()
+						&& i < object.getConjunction().size()) {
+					propText.add(object.getConjunction().get(i));
+				}
+			}
+		}
+		return propText.toString();
 	}
 }
