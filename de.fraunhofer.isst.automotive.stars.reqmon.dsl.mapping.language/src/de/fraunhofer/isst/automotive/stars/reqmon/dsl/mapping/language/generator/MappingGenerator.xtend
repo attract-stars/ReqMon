@@ -7,10 +7,6 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.DefinitionElememnt
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.ClassID
-import org.eclipse.emf.ecore.EObject
-
 
 /**
  * Generates code from your model files on save.
@@ -19,41 +15,15 @@ import org.eclipse.emf.ecore.EObject
  */
 class MappingGenerator extends AbstractGenerator {
 	
-	CharSequence seq;
 
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 //		fsa.generateFile('greetings.txt', 'People to greet: ' + 
 //			resource.allContents
 //				.filter(Greeting)
 //				.map[name]
-//				.join(', '))
-		if (resource !== null && resource.allContents !== null) {
-			fsa.generateFile('C:/Users/sgraf/Documents/example.h', seq)
-		}
-		
-	}
-	
-	def void setCharSequence(CharSequence seq) {
-		this.seq = seq
+//				.join(', '))	
 	}
 	
 	
-	
-/*	def compile(Resource resource) '''
-		 «FOR elem : resource.allContents.toIterable.filter(DefinitionElememnt)»
-		 «elem.def.select»
-		 «ENDFOR»
-	'''
-		
-	def select(EObject obj) '''
-		«IF obj instanceof ClassID»
-		«obj.compileClassID»
-		«ENDIF»
-	'''
-
-	def compileClassID(ClassID cl) '''
-		«cl.def» «cl.cla.name»
-	'''
-	*/
 	
 }

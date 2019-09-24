@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IGenerator;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.GenerationModel;
 
 /**
  * This class manages the generator extensions. All registered generators want to be listed with their names in the Combo of the GUI.
@@ -174,7 +175,7 @@ public class GeneratorController {
 	 * Executes the generator which name is selected in the Combo.
 	 * @param resource the resource of the mapping input
 	 */
-	public void executeSelectedGenerator(List<Resource> resourceList) {
+	public void executeSelectedGenerator(GenerationModel model) {
 		if (!isRegistry) {
 			return;
 		}
@@ -183,7 +184,7 @@ public class GeneratorController {
 			for (IConfigurationElement e : configGen) {
 				final Object o = e.createExecutableExtension("class");
 				if (o instanceof IGenerator && name.contains(e.getAttribute("name"))) {
-					executeGenerator(o, resourceList);
+					executeGenerator(o, model);
 					break;
 				}
 			}
@@ -244,11 +245,11 @@ public class GeneratorController {
 	 * @param o an Object of the type of an IGenerator
 	 * @param resource the resource of the mapping input 
 	 */
-	private void executeGenerator(Object o, List<Resource> resourceList) {
+	private void executeGenerator(Object o, GenerationModel model) {
 		Job job = new Job("Execute Generator") { 
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
-					((IGenerator) o).generate(resourceList);
+					((IGenerator) o).generate(model);
 				} 
 				catch (Exception ex) {
 					System.out.println("Exception in generator client:");

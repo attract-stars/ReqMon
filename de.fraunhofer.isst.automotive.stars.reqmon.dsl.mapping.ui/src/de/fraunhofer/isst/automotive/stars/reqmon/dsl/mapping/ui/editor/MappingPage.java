@@ -44,6 +44,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.ProposalC
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.RequirementController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.SerializationController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.SystemController;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.GenerationModel;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.SaveModel;
 
 /**
@@ -78,6 +79,7 @@ public class MappingPage {
 	private MappingEditorHelper editorHelper;
 	
 	private List<Resource> resourceList;
+	private GenerationModel generationModel;
 	
 	/**
 	 * Injector for the mapping parser.
@@ -162,7 +164,9 @@ public class MappingPage {
 		// create the helper for the embedded xtext editor
 		this.editorHelper = new MappingEditorHelper();
 		
+		// create resource list and model for the generators
 		this.resourceList = new ArrayList<Resource>();
+		this.generationModel = new GenerationModel();
 		
 		// set the editor name for serialization and deserialization 
 		SerializationController.getInstance().setFilename(editorName);
@@ -767,6 +771,7 @@ public class MappingPage {
 			embed.getViewer().addVerticalRulerColumn(lineNumberRulerColumn);
 			
 			resourceList.add(editorHelper.getResource());
+			generationModel.setMappingResourceList(resourceList);
 
 			// Listen to text changes to set the dirty status
 			embed.getViewer().addTextListener(new ITextListener() {
@@ -924,7 +929,7 @@ public class MappingPage {
 		genButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				genCon.executeSelectedGenerator(resourceList);
+				genCon.executeSelectedGenerator(generationModel);
 			}
 		});
 		

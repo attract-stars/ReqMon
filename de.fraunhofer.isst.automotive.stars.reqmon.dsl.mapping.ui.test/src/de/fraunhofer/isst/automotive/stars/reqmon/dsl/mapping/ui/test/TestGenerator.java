@@ -1,10 +1,8 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test;
 
-import java.util.List;
-
-import org.eclipse.emf.ecore.resource.Resource;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IGenerator;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.GenerationModel;
 
 /**
  * This class implements the IGenerator interface to test if this extension is registered correctly. 
@@ -21,8 +19,9 @@ public class TestGenerator implements IGenerator {
 		
 	}
 
+
 	@Override
-	public void generate(List<Resource> resource) {
+	public void generate(GenerationModel model) {
 		// TODO Auto-generated method stub
 		
 	}

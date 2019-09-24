@@ -1,4 +1,4 @@
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates
 
 import org.eclipse.emf.ecore.resource.Resource
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.DefinitionElememnt
@@ -9,57 +9,63 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.A
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.Types
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.SignalID
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.AttributeNode
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.GenerationModel
 
 /**
  * This class generates the header file content.
  * @author sgraf
  */
-class CGeneratedTextHeader {
+class ExampleCHeaderTemplate {
 	
-	/**
-	 * Constructs the include gards with the given file name:
-	 * #ifndef FILENAME.H
-	 * #define FILENAME.H
-	 */
-	def CharSequence constructIncludeGardsBegin(String filename) {
-		return '''
-		#ifndef «filename.replace(".", "_").toUpperCase»
-		#define «filename.replace(".", "_").toUpperCase»
+	
+	def CharSequence generateExampleTemplate(GenerationModel model) '''
+	#ifndef «includeGardsBegin»
+	#define «includeGardsBegin»
+	
+	«model.structs»
+	
+	«model.signalsAndAttributes»
+	
+	#endif
+	'''
 		
-		'''
-	}
-	
-	/**
-	 * Constructs the ending of the include gard: #endif
-	 */
-	def CharSequence constructIncludeGardsEnd() {
-		return '''
 		
-		#endif
-		'''
-	}
+
+	def getIncludeGardsBegin() '''
+	EXAMPLE.H
+	'''
 	
 	/**
-	 * Constructs structures with the information given in the resource for classes.
+	 * Returns structures with the information given in the resource for classes.
 	 */
-	def CharSequence compileClasses(Resource resource) {
-		return '''
-			«FOR elem : resource.allContents.toIterable.filter(DefinitionElememnt)»
-			«elem.def.selectClasses»
-			«ENDFOR»
-		'''
-	}
+	def getStructs(GenerationModel model) '''
+	«FOR res : model.mappingResourceList»
+		«res.struct»
+	«ENDFOR»
+	'''
+		
+	
+	def getStruct(Resource resource) '''
+	«FOR elem : resource.allContents.toIterable.filter(DefinitionElememnt)»
+		«elem.def.selectClasses»
+	«ENDFOR»
+	'''
+	
+	def getSignalsAndAttributes(GenerationModel model) '''
+	«FOR res : model.mappingResourceList»
+		«res.signalAndAttribute»
+	«ENDFOR»
+	'''
 	
 	/**
 	 * Constructs data types with the information given in the resource for signals and attributes.
 	 */
-	def CharSequence compileSignalsAndAttributes(Resource resource) {
-		return '''
-			«FOR elem : resource.allContents.toIterable.filter(DefinitionElememnt)»
-			«elem.def.selectSignalsAndAttributes»
-			«ENDFOR»
-		'''
-	}
+	def getSignalAndAttribute(Resource resource) '''
+	«FOR elem : resource.allContents.toIterable.filter(DefinitionElememnt)»
+		«elem.def.selectSignalsAndAttributes»
+	«ENDFOR»
+	'''
+
 	
 	/**
 	 * Select the correct compiler method for the given EObject: 
