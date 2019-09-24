@@ -6,7 +6,7 @@ $more_defines$
 
 $includes$
 
-class $class_name$ : public $class_name$
+class $class_name$ : public cFilter
 {
 	ADTF_DECLARE_FILTER_VERSION(OID_DADAS_$oid_name$, "$filter_name$", OBJCAT_DataFilter, "$Version$", $0, 1, 0$, "$oid_designation$")
 	
@@ -43,7 +43,6 @@ class $class_name$ : public $class_name$
 		$type function3$();
 		
 	protected: 
-		tResult OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception = NULL);
 		tResult Evaluate($parameter$);
 		
 		$type function1$();

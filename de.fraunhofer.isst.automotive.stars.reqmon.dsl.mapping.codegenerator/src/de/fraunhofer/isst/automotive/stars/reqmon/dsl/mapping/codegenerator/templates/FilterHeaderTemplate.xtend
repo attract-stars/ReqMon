@@ -2,7 +2,7 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.tem
 
 class FilterHeaderTemplate {
 	
-	def CharSequence generateTemplate() '''
+	def CharSequence generateTemplate(String filtertype) '''
 	#ifndef «filename»
 	#define «filename»
 	
@@ -11,7 +11,7 @@ class FilterHeaderTemplate {
 	
 	«includes»
 	
-	class «className» «'aff'.inheritances»
+	class «className» «filtertype.inheritances»
 	{
 		ADTF_DECLARE_FILTER_VERSION(OID_DADAS_«oidName», "«filterName»", OBJCAT_DataFilter, "«versionTerm»", «version», "«oidDesignation»")
 		
@@ -41,7 +41,7 @@ class FilterHeaderTemplate {
 			«publicFunctions»
 			
 		protected: 
-			«protectedFunctions»
+			«filtertype.protectedFunctions»
 	}
 	
 	#endif
@@ -68,10 +68,9 @@ class FilterHeaderTemplate {
 	// inheritnace macro
 	def getInheritances(String filtertype) '''
 	: public «switch(filtertype) {
-		case 'aff': '''cConditionTriggeredFilter'''
-		case 'fcof': '''cConditionTriggeredFilter'''
-		case 'saf': '''cFilter'''
-		case 'tcmf': '''ILoadRecordsInterface, public cConditionTriggeredFilter'''
+		case 'one': '''cConditionTriggeredFilter'''
+		case 'two': '''cFilter'''
+		case 'three': '''ILoadRecordsInterface, public cConditionTriggeredFilter'''
 		default: '''$class_name$''' 	
 		}»
 	'''
@@ -120,10 +119,19 @@ class FilterHeaderTemplate {
 	'''
 	
 	// protected function macro
-	def getProtectedFunctions() '''
+	def getProtectedFunctions(String filtertype) '''
+	«IF !filtertype.equals("two")»
+	tResult OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception = NULL);
+	«ENDIF»
+	tResult Evaluate(«parameter»);
+	
 	$type function1$();
 	$type function2$();
 	$type function3$();
+	
+	void LOG(cString mes);
 	'''
+	
+	def getParameter() '''$parameter$'''
 	
 }

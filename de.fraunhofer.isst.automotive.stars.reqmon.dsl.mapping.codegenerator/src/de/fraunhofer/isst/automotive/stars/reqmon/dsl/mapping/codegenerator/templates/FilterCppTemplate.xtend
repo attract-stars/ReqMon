@@ -2,7 +2,7 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.tem
 
 class FilterCppTemplate {
 	
-	def CharSequence generateTemplate() '''
+	def CharSequence generateTemplate(String filtertype) '''
 	«includes»
 	
 	«datatypeSettings»
@@ -26,17 +26,17 @@ class FilterCppTemplate {
 	
 	tResult «className»::Start(__exception)
 	{
-		«start»
+		«filtertype.start»
 	}
 	
 	tResult «className»::Stop(__exception)
 	{
-		«stop»
+		«filtertype.stop»
 	}
 	
 	tResult «className»::Shutdown(tInitStage eStage, __exception)
 	{
-		«shutdown»
+		«filtertype.shutdown»
 	}
 	
 	«publicMethods»
@@ -68,11 +68,119 @@ class FilterCppTemplate {
 	
 	def getInit() '''$init_implementation$'''
 	
-	def getStart() '''$start_implementation$'''
+	def getStart(String filtertype) {
+		switch(filtertype) {
+			case 'one': '''«startWithTypeOne»'''
+			case 'two': '''«startWithTypeTwo»'''
+			case 'three': '''«startWitTypeThree»'''
+			default: '''$start_implementation$'''
+		}
+	}
 	
-	def getStop() '''$stop_implementation$'''
+	def getStartWithTypeOne() '''
+	// start the timeout
+	if (m_bTimeout)
+	{
+		m_oTimeout.Start();
+	}
+		
+	RETURN_IF_FAILED(cConditionTriggeredFilter::Start(__exception_ptr));
 	
-	def getShutdown() '''$shutdown_implementation$'''
+	RETURN_NOERROR;
+	'''
+	
+	def getStartWithTypeTwo() '''
+	RETURN_IF_FAILED(cFilter::Start(__exception_ptr));
+	
+	RETURN_NOERROR;
+	'''
+	
+	def getStartWitTypeThree() '''
+	// start the timeout
+	if (m_bTimeout)
+	{
+		m_oTimeout.Start();
+	}
+	
+	RETURN_IF_FAILED(cConditionTriggeredFilter::Start(__exception_ptr));
+	
+	«moreConditions»
+	
+	RETURN_NOERROR;
+	'''
+	
+	def getMoreConditions() '''$if (...)$'''
+	
+	def getStop(String filtertype) {
+		switch(filtertype) {
+			case 'one': '''«stopWithTypeOne»'''
+			case 'two': '''«stopWithTypeTwo»'''
+			case 'three': '''«stopWithTypeThree»'''
+			default: '''$stop_implementation$'''
+		}
+	}
+	
+	def getStopWithTypeOne() '''
+	// cancel the timeout, we expect no more samples
+	if (m_bTimeout)
+	{
+		m_oTimeout.Cancel();
+	}
+	
+	return cConditionTriggeredFilter::Stop(__exception_ptr);
+	'''
+	
+	def getStopWithTypeTwo() '''
+	return cFilter::Stop(__exception_ptr);
+	'''
+	
+	def getStopWithTypeThree() '''
+	// cancel the timeout, we expect no more samples
+	if (m_bTimeout)
+	{
+		m_oTimeout.Cancel();
+	}
+	
+	«moreConditions»
+	
+	return cConditionTriggeredFilter::Stop(__exception_ptr);
+	'''
+	
+	def getShutdown(String filtertype) {
+		switch(filtertype) {
+			case 'one': '''«shutdownWithTypeOne»'''
+			case 'two': '''«shutdownWithTypeTwo»'''
+			case 'three': '''«shutdownWithTypeOne»'''
+			default: '''$shutdown_implementation$'''
+		}
+	}
+	
+	def getShutdownWithTypeOne() '''
+	if (StageGraphReady == eStage)
+	{
+		m_oTimeout.Release();
+	}
+	
+	return cConditionTriggeredFilter::Shutdown(eStage, __exception_ptr);
+	'''
+	
+	def getShutdownWithTypeTwo() '''
+	switch (eStage)
+	{
+	case StageFirst:
+		{
+			m_pCoderDesc = NULL;
+			break;
+		}
+	default:
+		{
+			break;
+		}
+	}
+	
+	return cFilter::Shutdown(eStage, __exception_ptr);
+	'''
+	
 	
 	def getPublicMethods() '''$public_methods_implementation$'''
 	

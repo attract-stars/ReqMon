@@ -9,7 +9,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.A
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.Types
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.SignalID
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.AttributeNode
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.GenerationModel
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.MappingModel
 
 /**
  * This class generates the header file content.
@@ -18,7 +18,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.Generatio
 class ExampleCHeaderTemplate {
 	
 	
-	def CharSequence generateExampleTemplate(GenerationModel model) '''
+	def CharSequence generateExampleTemplate(MappingModel model) '''
 	#ifndef «includeGardsBegin»
 	#define «includeGardsBegin»
 	
@@ -38,8 +38,8 @@ class ExampleCHeaderTemplate {
 	/**
 	 * Returns structures with the information given in the resource for classes.
 	 */
-	def getStructs(GenerationModel model) '''
-	«FOR res : model.mappingResourceList»
+	def getStructs(MappingModel model) '''
+	«FOR res : model.getMappingResourceList»
 		«res.struct»
 	«ENDFOR»
 	'''
@@ -51,8 +51,8 @@ class ExampleCHeaderTemplate {
 	«ENDFOR»
 	'''
 	
-	def getSignalsAndAttributes(GenerationModel model) '''
-	«FOR res : model.mappingResourceList»
+	def getSignalsAndAttributes(MappingModel model) '''
+	«FOR res : model.getMappingResourceList»
 		«res.signalAndAttribute»
 	«ENDFOR»
 	'''

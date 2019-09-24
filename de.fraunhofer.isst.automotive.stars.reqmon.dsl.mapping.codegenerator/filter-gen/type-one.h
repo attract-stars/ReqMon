@@ -6,7 +6,7 @@ $more_defines$
 
 $includes$
 
-class $class_name$ : public $class_name$
+class $class_name$ : public cConditionTriggeredFilter
 {
 	ADTF_DECLARE_FILTER_VERSION(OID_DADAS_$oid_name$, "$filter_name$", OBJCAT_DataFilter, "$Version$", $0, 1, 0$, "$oid_designation$")
 	

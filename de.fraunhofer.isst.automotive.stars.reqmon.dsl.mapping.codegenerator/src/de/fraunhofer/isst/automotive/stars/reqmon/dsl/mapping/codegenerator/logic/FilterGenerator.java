@@ -16,7 +16,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.temp
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.FilterHeaderTemplate;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.StandardAndTypesTemplate;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IGenerator;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.GenerationModel;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.MappingModel;
 
 /**
  * This class generates a header file and a c++ file (.cpp) with the informations given in the resources.
@@ -34,7 +34,7 @@ public class FilterGenerator implements IGenerator {
 	
 
 	@Override
-	public void generate(GenerationModel model) {
+	public void generate(MappingModel model) {
 		System.out.println("FilterGenerator called!");
 		
 		// setup
@@ -43,9 +43,18 @@ public class FilterGenerator implements IGenerator {
 		files = new ArrayList<String>();
 		files.add(filePath.concat("mapped-filter.h"));
 		files.add(filePath.concat("mapped-filter.cpp"));
+		
 		files.add(filePath.concat("dtypes.h"));
 		files.add(filePath.concat("stdafx.h"));
+		
 		files.add(filePath.concat("mapped.h"));
+		
+		files.add(filePath.concat("type-one.h"));
+		files.add(filePath.concat("type-one.cpp"));
+		files.add(filePath.concat("type-two.h"));
+		files.add(filePath.concat("type-two.cpp"));
+		files.add(filePath.concat("type-three.h"));
+		files.add(filePath.concat("type-three.cpp"));
 		
 		System.out.println("\n\nGenerated content:\n");
 		
@@ -54,11 +63,21 @@ public class FilterGenerator implements IGenerator {
 		FilterCppTemplate filterCppTemp = new FilterCppTemplate();
 		StandardAndTypesTemplate stdTypesTemp = new StandardAndTypesTemplate();
 		ExampleCHeaderTemplate exampleTemp = new ExampleCHeaderTemplate();
-		generateAndAddToContentList(filterHeaderTemp.generateTemplate());
-		generateAndAddToContentList(filterCppTemp.generateTemplate());
+		
+		generateAndAddToContentList(filterHeaderTemp.generateTemplate(""));
+		generateAndAddToContentList(filterCppTemp.generateTemplate(""));
+		
 		generateAndAddToContentList(stdTypesTemp.generateTypesTemplate());
 		generateAndAddToContentList(stdTypesTemp.generateStdTemplate());
+		
 		generateAndAddToContentList(exampleTemp.generateExampleTemplate(model));
+		
+		generateAndAddToContentList(filterHeaderTemp.generateTemplate("one"));
+		generateAndAddToContentList(filterCppTemp.generateTemplate("one"));
+		generateAndAddToContentList(filterHeaderTemp.generateTemplate("two"));
+		generateAndAddToContentList(filterCppTemp.generateTemplate("two"));
+		generateAndAddToContentList(filterHeaderTemp.generateTemplate("three"));
+		generateAndAddToContentList(filterCppTemp.generateTemplate("three"));
 		
 		
 		// write in files

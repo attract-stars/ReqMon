@@ -44,7 +44,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.ProposalC
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.RequirementController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.SerializationController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.SystemController;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.GenerationModel;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.MappingModel;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.SaveModel;
 
 /**
@@ -79,7 +79,7 @@ public class MappingPage {
 	private MappingEditorHelper editorHelper;
 	
 	private List<Resource> resourceList;
-	private GenerationModel generationModel;
+	private MappingModel generationModel;
 	
 	/**
 	 * Injector for the mapping parser.
@@ -166,7 +166,7 @@ public class MappingPage {
 		
 		// create resource list and model for the generators
 		this.resourceList = new ArrayList<Resource>();
-		this.generationModel = new GenerationModel();
+		this.generationModel = new MappingModel();
 		
 		// set the editor name for serialization and deserialization 
 		SerializationController.getInstance().setFilename(editorName);
