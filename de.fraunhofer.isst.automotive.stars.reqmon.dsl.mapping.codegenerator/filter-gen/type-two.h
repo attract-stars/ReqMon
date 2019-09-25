@@ -37,10 +37,6 @@ class $class_name$ : public cFilter
 		tResult Stop(__exception);
 		tResult Shutdown(tInitStage eStage, __exception);
 		
-	public: // $comment$
-		$type function1$();
-		$type function2$();
-		$type function3$();
 		
 	protected: 
 		tResult Evaluate($parameter$);

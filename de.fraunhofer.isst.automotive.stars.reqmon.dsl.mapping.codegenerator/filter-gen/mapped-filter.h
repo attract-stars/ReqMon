@@ -37,13 +37,8 @@ class $class_name$ : public $class_name$
 		tResult Stop(__exception);
 		tResult Shutdown(tInitStage eStage, __exception);
 		
-	public: // $comment$
-		$type function1$();
-		$type function2$();
-		$type function3$();
 		
 	protected: 
-		tResult OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception = NULL);
 		tResult Evaluate($parameter$);
 		
 		$type function1$();

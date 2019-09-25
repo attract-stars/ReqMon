@@ -1,5 +1,9 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates
 
+/**
+ * This class offers templates for the stdafx.h file and the dtypes.h file. 
+ * @author sgraf
+ */
 class StandardAndTypesTemplate {
 	
 	def CharSequence generateStdTemplate() '''

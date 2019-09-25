@@ -1,7 +1,14 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates
 
+/**
+ * This class offers header templates for three different filter types in c++.
+ * @author sgraf
+ */
 class FilterHeaderTemplate {
 	
+	/**
+	 * Generates a filter header of the given type.
+	 */
 	def CharSequence generateTemplate(String filtertype) '''
 	#ifndef «filename»
 	#define «filename»
@@ -37,8 +44,7 @@ class FilterHeaderTemplate {
 			tResult Stop(__exception);
 			tResult Shutdown(tInitStage eStage, __exception);
 			
-		public: «comment»
-			«publicFunctions»
+		«filtertype.publicFunctions»
 			
 		protected: 
 			«filtertype.protectedFunctions»
@@ -49,24 +55,24 @@ class FilterHeaderTemplate {
 	
 
 	// filename for the include guard macro
-	def getFilename() '''$name$'''
+	def private getFilename() '''$name$'''
 	
 	//  oid macro
-	def getOidName() '''$oid_name$'''
+	def private getOidName() '''$oid_name$'''
 	
-	def getOidString() '''$oid_string$'''
+	def private getOidString() '''$oid_string$'''
 	
 	// defines macro
-	def getMoreDefines() '''$more_defines$'''
+	def private getMoreDefines() '''$more_defines$'''
 	
 	// includes macro
-	def getIncludes() '''$includes$'''
+	def private getIncludes() '''$includes$'''
 	
 	// class name macro
-	def getClassName() '''$class_name$'''
+	def private getClassName() '''$class_name$'''
 	
 	// inheritnace macro
-	def getInheritances(String filtertype) '''
+	def private getInheritances(String filtertype) '''
 	: public «switch(filtertype) {
 		case 'one': '''cConditionTriggeredFilter'''
 		case 'two': '''cFilter'''
@@ -76,51 +82,53 @@ class FilterHeaderTemplate {
 	'''
 	
 	// adtf declare filter version macros
-	def getFilterName() '''$filter_name$'''
+	def private getFilterName() '''$filter_name$'''
 	
-	def getVersionTerm() '''$Version$'''
+	def private getVersionTerm() '''$Version$'''
 	
-	def getVersion() '''$0, 1, 0$'''
+	def private getVersion() '''$0, 1, 0$'''
 	
-	def getOidDesignation() '''$oid_designation$'''
+	def private getOidDesignation() '''$oid_designation$'''
 	
 	// input and output pin macro, object pointer macro
-	def getInputPins() '''
+	def private getInputPins() '''
 	$cInputPin m_oInput1$;
 	$cInputPin m_oInput2$;'''
 	
-	def getOutputPins() '''
+	def private getOutputPins() '''
 	$cOutputPin m_oOutput1$;
 	$cOutputPin m_oOutput2$;'''
 	
-	def getObjectPtrs() '''
+	def private getObjectPtrs() '''
 	$cObjectPtr<IMediaTypeDescription> m_pCoderDesc1$;
 	$cObjectPtr<IMediaTypeDescription> m_pCoderDesc2$;'''
 	
 	// private member macro
-	def getMorePrivateMembers() '''
+	def private getMorePrivateMembers() '''
 	$cMember member1$;
 	$cMember member2$;
 	'''
 	
 	// private function macro
-	def getPrivateFunctions() '''
+	def private getPrivateFunctions() '''
 	tResult $function1$();
 	tResult $function2$();
 	'''
-	// comment macro
-	def getComment() '''// $comment$'''
 	
 	// public function macro
-	def getPublicFunctions() '''
-	$type function1$();
-	$type function2$();
-	$type function3$();
+	def private getPublicFunctions(String filtertype) '''
+	«IF filtertype.equals("one") || filtertype.equals("three")»
+	public: // overrides cFilter //implements IRunnable
+		tResult Run(tInt nActivationCode,
+			const tVoid* pvUserData,
+			tInt szUserDataSize,
+			ucom::IException** __exception_ptr = NULL);
+	«ENDIF»
 	'''
 	
 	// protected function macro
-	def getProtectedFunctions(String filtertype) '''
-	«IF !filtertype.equals("two")»
+	def private getProtectedFunctions(String filtertype) '''
+	«IF filtertype.equals("one") || filtertype.equals("three")»
 	tResult OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception = NULL);
 	«ENDIF»
 	tResult Evaluate(«parameter»);
@@ -132,6 +140,6 @@ class FilterHeaderTemplate {
 	void LOG(cString mes);
 	'''
 	
-	def getParameter() '''$parameter$'''
+	def private getParameter() '''$parameter$'''
 	
 }

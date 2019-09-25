@@ -37,10 +37,11 @@ class $class_name$ : public ILoadRecordsInterface, public cConditionTriggeredFil
 		tResult Stop(__exception);
 		tResult Shutdown(tInitStage eStage, __exception);
 		
-	public: // $comment$
-		$type function1$();
-		$type function2$();
-		$type function3$();
+	public: // overrides cFilter //implements IRunnable
+		tResult Run(tInt nActivationCode,
+			const tVoid* pvUserData,
+			tInt szUserDataSize,
+			ucom::IException** __exception_ptr = NULL);
 		
 	protected: 
 		tResult OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception = NULL);

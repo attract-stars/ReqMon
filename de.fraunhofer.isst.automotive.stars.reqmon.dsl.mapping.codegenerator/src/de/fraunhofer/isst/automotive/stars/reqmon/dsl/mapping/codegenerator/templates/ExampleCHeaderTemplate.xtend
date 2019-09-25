@@ -12,12 +12,15 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.AttributeNo
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.MappingModel
 
 /**
- * This class generates the header file content.
+ * This class offers an example header template. It provides an example of how the information of the given model can be used 
+ * for the template generation.
  * @author sgraf
  */
 class ExampleCHeaderTemplate {
 	
-	
+	/**
+	 * Generates an example header template and uses for it the informations of the model.
+	 */
 	def CharSequence generateExampleTemplate(MappingModel model) '''
 	#ifndef «includeGardsBegin»
 	#define «includeGardsBegin»
@@ -29,38 +32,35 @@ class ExampleCHeaderTemplate {
 	#endif
 	'''
 		
-		
-
-	def getIncludeGardsBegin() '''
+	def private getIncludeGardsBegin() '''
 	EXAMPLE.H
 	'''
 	
 	/**
-	 * Returns structures with the information given in the resource for classes.
+	 * Returns structures with the class informations given in the resources of the model.
 	 */
-	def getStructs(MappingModel model) '''
+	def private getStructs(MappingModel model) '''
 	«FOR res : model.getMappingResourceList»
 		«res.struct»
 	«ENDFOR»
 	'''
 		
-	
-	def getStruct(Resource resource) '''
+	def private getStruct(Resource resource) '''
 	«FOR elem : resource.allContents.toIterable.filter(DefinitionElememnt)»
 		«elem.def.selectClasses»
 	«ENDFOR»
 	'''
 	
-	def getSignalsAndAttributes(MappingModel model) '''
+	/**
+	 * Returns data types with the signal and attribute informations given in the resources of the model.
+	 */
+	def private getSignalsAndAttributes(MappingModel model) '''
 	«FOR res : model.getMappingResourceList»
 		«res.signalAndAttribute»
 	«ENDFOR»
 	'''
 	
-	/**
-	 * Constructs data types with the information given in the resource for signals and attributes.
-	 */
-	def getSignalAndAttribute(Resource resource) '''
+	def private getSignalAndAttribute(Resource resource) '''
 	«FOR elem : resource.allContents.toIterable.filter(DefinitionElememnt)»
 		«elem.def.selectSignalsAndAttributes»
 	«ENDFOR»
@@ -71,7 +71,7 @@ class ExampleCHeaderTemplate {
 	 * Select the correct compiler method for the given EObject: 
 	 * compileClassID for ClassID. 
 	 */
-	def selectClasses(EObject obj) '''
+	def private selectClasses(EObject obj) '''
 		«IF obj instanceof ClassID»
 		«obj.compileClassID»
 		«ENDIF»
@@ -81,7 +81,7 @@ class ExampleCHeaderTemplate {
 	 * Select the correct compiler method for the given EObject: 
 	 * compileSignalID for SignalID, compileAttributID for AttributeID. 
 	 */
-	def selectSignalsAndAttributes(EObject obj) '''
+	def private selectSignalsAndAttributes(EObject obj) '''
 		«IF obj instanceof SignalID»
 		«obj.compileSignalID»
 		«ELSEIF obj instanceof AttributeID»
@@ -92,7 +92,7 @@ class ExampleCHeaderTemplate {
 	/**
 	 * Constructs a float data type for the given Signal: float [signal_name];
 	 */
-	def compileSignalID(SignalID id) '''
+	def private compileSignalID(SignalID id) '''
 		«IF id.signal !== null»
 		/* signal */
 		float «id.signal.name.replace(" ", "_").toFirstLower»;
@@ -103,7 +103,7 @@ class ExampleCHeaderTemplate {
 	/** 
 	 * Constructs a data type for the given attribute: [attribute_type] [attribute_name];
 	 */
-	def compileAttributeID(AttributeID id) '''
+	def private compileAttributeID(AttributeID id) '''
 		«IF id.attr !== null»
 		«id.attr.compileSignalAttribute»
 		«id.attr.attrtype.type.compileType» «id.attr.compileStructAttribute»«id.attr.name.replace(" ", "_").toFirstLower»;
@@ -114,7 +114,7 @@ class ExampleCHeaderTemplate {
 	/**
 	 * Add the structure name if the attribute is a structure.
 	 */
-	def compileStructAttribute(AttributeNode attr) {
+	def private compileStructAttribute(AttributeNode attr) {
 		if(attr.attrtype.type.compileType.toString.equals("struct")) {
 			return '''«attr.name.replace(" ", "_").toFirstUpper» '''
 		}
@@ -123,7 +123,7 @@ class ExampleCHeaderTemplate {
 	/**
 	 * Add the signal comment if the attribute is a signal.
 	 */
-	def compileSignalAttribute(AttributeNode attr) {
+	def private compileSignalAttribute(AttributeNode attr) {
 		if(attr.attrtype.type.type !== null && attr.attrtype.type.type.name.equals("signal")) {
 			return '''/* signal */'''
 		}
@@ -134,7 +134,7 @@ class ExampleCHeaderTemplate {
 	 * the attributes listed in the class:
 	 * struct [class_name] : [inheritance] { [attribute_type] [attribute_name]; ... };
 	 */
-	def compileClassID(ClassID id) '''
+	def private compileClassID(ClassID id) '''
 		«IF id.cla.attribute.empty»
 		struct «id.cla.name.replace(" ", "_").toFirstUpper» «id.cla.compileInheritance»{};
 		«ELSE»
@@ -148,7 +148,7 @@ class ExampleCHeaderTemplate {
 	/**
 	 * Constructs the inheritance if it exists.
 	 */
-	def compileInheritance(ClassNode node) {
+	def private compileInheritance(ClassNode node) {
 		if (node.inheritance !== null && node.inheritance.name !== null 
 			&& node.inheritance.name.name!== null && !node.inheritance.name.name.equals("")) {
 		''': «node.inheritance.name.name.toFirstUpper» ''' 
@@ -158,7 +158,7 @@ class ExampleCHeaderTemplate {
 	/**
 	 * Constructs all attributes of the given class.
 	 */
-	def compileAttributes(ClassNode node) '''
+	def private compileAttributes(ClassNode node) '''
 		«FOR attr : node.attribute»
 		«attr.attrtype.type.compileType» «attr.name.replace(" ", "_").toFirstLower»;
 		«ENDFOR»
@@ -167,7 +167,7 @@ class ExampleCHeaderTemplate {
 	/**
 	 * Constructs the attribute type.
 	 */
-	def CharSequence compileType(Types type) {
+	def private CharSequence compileType(Types type) {
 		if (type.type !== null) {
 			return type.type.name.selectCppType
 		}
@@ -182,7 +182,7 @@ class ExampleCHeaderTemplate {
 	/**
 	 * Choose the appropriate type in c++ for the given type.
 	 */
-	def CharSequence selectCppType(String name) {
+	def private CharSequence selectCppType(String name) {
 		switch(name) {
 			case 'integer': 
 				return '''int'''
