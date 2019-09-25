@@ -2,7 +2,7 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test;
 
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IGenerator;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.MappingModel;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMappingModel;
 
 /**
  * This class implements the IGenerator interface. It is another generator to test, if the list of more than one 
@@ -21,7 +21,7 @@ public class TestOtherGenerator implements IGenerator {
 
 
 	@Override
-	public void generate(MappingModel model) {
+	public void generate(IMappingModel model) {
 		// TODO Auto-generated method stub
 		
 	}

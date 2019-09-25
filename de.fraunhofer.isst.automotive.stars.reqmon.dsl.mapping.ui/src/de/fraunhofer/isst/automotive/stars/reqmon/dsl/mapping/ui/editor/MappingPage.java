@@ -79,7 +79,7 @@ public class MappingPage {
 	private MappingEditorHelper editorHelper;
 	
 	private List<Resource> resourceList;
-	private MappingModel generationModel;
+	private MappingModel mappingModel;
 	
 	/**
 	 * Injector for the mapping parser.
@@ -166,7 +166,7 @@ public class MappingPage {
 		
 		// create resource list and model for the generators
 		this.resourceList = new ArrayList<Resource>();
-		this.generationModel = new MappingModel();
+		this.mappingModel = new MappingModel();
 		
 		// set the editor name for serialization and deserialization 
 		SerializationController.getInstance().setFilename(editorName);
@@ -771,7 +771,7 @@ public class MappingPage {
 			embed.getViewer().addVerticalRulerColumn(lineNumberRulerColumn);
 			
 			resourceList.add(editorHelper.getResource());
-			generationModel.setMappingResourceList(resourceList);
+			mappingModel.setMappingResourceList(resourceList);
 
 			// Listen to text changes to set the dirty status
 			embed.getViewer().addTextListener(new ITextListener() {
@@ -929,7 +929,19 @@ public class MappingPage {
 		genButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				genCon.executeSelectedGenerator(generationModel);
+				// add all available informations to the mapping model
+				if (sysCon.getSysModel() != null) {
+					mappingModel.setSystemModel(sysCon.getSysModel());
+				}
+				if (reqCon.getRequirements() != null) {
+					mappingModel.setRequirementList(reqCon.getRequirements());
+				}
+				else if (savedReqList != null) {
+					mappingModel.setRequirementList(savedReqList);
+				}
+				
+				// execute the selected generator
+				genCon.executeSelectedGenerator(mappingModel);
 			}
 		});
 		

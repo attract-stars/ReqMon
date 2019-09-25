@@ -16,7 +16,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.temp
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.FilterHeaderTemplate;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.StandardAndTypesTemplate;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IGenerator;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.MappingModel;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMappingModel;
 
 /**
  * This class generates a header file and a c++ file (.cpp) with the informations given in the resources.
@@ -34,7 +34,7 @@ public class FilterGenerator implements IGenerator {
 	
 
 	@Override
-	public void generate(MappingModel model) {
+	public void generate(IMappingModel model) {
 		System.out.println("FilterGenerator called!");
 		
 		// setup

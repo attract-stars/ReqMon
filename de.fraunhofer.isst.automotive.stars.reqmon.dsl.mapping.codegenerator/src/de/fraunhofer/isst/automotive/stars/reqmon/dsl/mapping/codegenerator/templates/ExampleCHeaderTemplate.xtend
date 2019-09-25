@@ -9,7 +9,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.A
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.Types
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.SignalID
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.AttributeNode
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.MappingModel
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMappingModel
 
 /**
  * This class offers an example header template. It provides an example of how the information of the given model can be used 
@@ -21,7 +21,7 @@ class ExampleCHeaderTemplate {
 	/**
 	 * Generates an example header template and uses for it the informations of the model.
 	 */
-	def CharSequence generateExampleTemplate(MappingModel model) '''
+	def CharSequence generateExampleTemplate(IMappingModel model) '''
 	#ifndef «includeGardsBegin»
 	#define «includeGardsBegin»
 	
@@ -39,7 +39,7 @@ class ExampleCHeaderTemplate {
 	/**
 	 * Returns structures with the class informations given in the resources of the model.
 	 */
-	def private getStructs(MappingModel model) '''
+	def private getStructs(IMappingModel model) '''
 	«FOR res : model.getMappingResourceList»
 		«res.struct»
 	«ENDFOR»
@@ -54,7 +54,7 @@ class ExampleCHeaderTemplate {
 	/**
 	 * Returns data types with the signal and attribute informations given in the resources of the model.
 	 */
-	def private getSignalsAndAttributes(MappingModel model) '''
+	def private getSignalsAndAttributes(IMappingModel model) '''
 	«FOR res : model.getMappingResourceList»
 		«res.signalAndAttribute»
 	«ENDFOR»

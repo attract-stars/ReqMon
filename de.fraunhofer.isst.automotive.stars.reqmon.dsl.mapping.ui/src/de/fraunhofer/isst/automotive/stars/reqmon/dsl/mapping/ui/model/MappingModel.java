@@ -2,6 +2,7 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model;
 
 import java.util.List;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMappingModel;
@@ -16,26 +17,39 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRe
 public class MappingModel implements IMappingModel {
 	
 	private List<Resource> mappingResourceList;
+	private List<IRequirementElement> requirements;
+	private EObject systemModel;
 	
 
+	@Override
 	public List<Resource> getMappingResourceList() {
 		return mappingResourceList;
 	}
 
+	@Override
 	public void setMappingResourceList(List<Resource> mappingResourceList) {
 		this.mappingResourceList = mappingResourceList;
 	}
 
 	@Override
 	public List<IRequirementElement> getRequirementList() {
-		// TODO Auto-generated method stub
-		return null;
+		return requirements;
 	}
 
 	@Override
 	public void setRequirementList(List<IRequirementElement> requirementList) {
-		// TODO Auto-generated method stub
+		this.requirements = requirementList;
 		
+	}
+
+	@Override
+	public EObject getSystemModel() {
+		return systemModel;
+	}
+
+	@Override
+	public void setSystemModel(EObject systemModel) {
+		this.systemModel = systemModel;
 	}
 	
 	
