@@ -150,8 +150,8 @@ class ExampleCHeaderTemplate {
 	 */
 	def private compileInheritance(ClassNode node) {
 		if (node.inheritance !== null && node.inheritance.name !== null 
-			&& node.inheritance.name.name!== null && !node.inheritance.name.name.equals("")) {
-		''': «node.inheritance.name.name.toFirstUpper» ''' 
+			&& node.inheritance.name!== null && !node.inheritance.name.equals("")) {
+		''': «node.inheritance.name.toFirstUpper» ''' 
 		}
 	}
 

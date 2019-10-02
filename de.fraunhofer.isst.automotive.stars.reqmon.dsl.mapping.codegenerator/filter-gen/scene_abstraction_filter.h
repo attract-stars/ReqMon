@@ -1,0 +1,41 @@
+#define OID_DADAS_SCENE_ABSTRACTION "$oid_string$"
+
+
+class cDadasSceneAbstractionFilter : public cFilter
+{
+	ADTF_DECLARE_FILTER_VERSION(OID_DADAS_SCENE_ABSTRACTION, "DADAS Scene Abstraction Filter", OBJCAT_DataFilter, "Version", 0, 1, 0, "Scene Abstraction")
+	
+	private: // private members
+		cInputPin m_oInput;
+		
+		cOutputPin m_oOutput;
+		
+		cObjectPtr<IMediaTypeDescription> m_pCoderDesc;
+		
+		
+	public:
+		cDadasSceneAbstractionFilter(const tChar* __info);
+		virtual ~cDadasSceneAbstractionFilter();
+		
+	private: // private functions
+		
+	public: // overwrites cFilter
+		tResult Init(tInitStage eStage, __exception = NULL);
+		tResult Start(__exception);
+		tResult Stop(__exception);
+		tResult Shutdown(tInitStage eStage, __exception);
+		
+	public: 
+		tResult OnPinEvent(IPin* pSource,
+			tInt nEventCode,
+			tInt nParam1,
+			tInt nParam2,
+			IMediaSample* pMediaSample);
+		
+	protected: 
+		tResult ProcessSample(IMediaSample* pSample);
+		DADAS::tCategorisation Categorize(tScene* scene);
+		tResult SendBOOSTCategories(DADAS::tCategorisation* categorisation);
+		void LOG(cString mes);
+};
+

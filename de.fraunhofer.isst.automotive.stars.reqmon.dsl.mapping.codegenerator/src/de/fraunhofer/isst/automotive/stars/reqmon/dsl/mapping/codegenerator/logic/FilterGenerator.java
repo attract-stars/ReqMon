@@ -14,7 +14,12 @@ import org.eclipse.xtext.generator.InMemoryFileSystemAccess;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.ExampleCHeaderTemplate;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.FilterCppTemplate;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.FilterHeaderTemplate;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.FilterType;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.logic.IModelInformationHelper;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.logic.ModelInformationHelperImpl;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.RequirementDataTypesTemplate;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.StandardAndTypesTemplate;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.SystemDataTypesTemplate;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IGenerator;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMappingModel;
 
@@ -29,7 +34,7 @@ public class FilterGenerator implements IGenerator {
 
 	private List<String> contentList;
 	private List<String> files;
-	private String filePath = "../stars/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator/filter-gen/";
+	private String filePath;
 	private IFileSystemAccess2 fsa;
 	
 
@@ -37,53 +42,87 @@ public class FilterGenerator implements IGenerator {
 	public void generate(IMappingModel model) {
 		System.out.println("FilterGenerator called!");
 		
-		// setup
-		fsa = new InMemoryFileSystemAccess();
-		contentList = new ArrayList<String>();
-		files = new ArrayList<String>();
-		files.add(filePath.concat("mapped-filter.h"));
-		files.add(filePath.concat("mapped-filter.cpp"));
+		setup();
 		
-		files.add(filePath.concat("dtypes.h"));
-		files.add(filePath.concat("stdafx.h"));
-		
-		files.add(filePath.concat("mapped.h"));
-		
-		files.add(filePath.concat("type-one.h"));
-		files.add(filePath.concat("type-one.cpp"));
-		files.add(filePath.concat("type-two.h"));
-		files.add(filePath.concat("type-two.cpp"));
-		files.add(filePath.concat("type-three.h"));
-		files.add(filePath.concat("type-three.cpp"));
+		IModelInformationHelper infoHelper = new ModelInformationHelperImpl();
+		infoHelper.setModel(model);
 		
 		System.out.println("\n\nGenerated content:\n");
 		
 		// generate filter header and cpp code
 		FilterHeaderTemplate filterHeaderTemp = new FilterHeaderTemplate();
+		filterHeaderTemp.setModelInformationHepler(infoHelper);
 		FilterCppTemplate filterCppTemp = new FilterCppTemplate();
-		StandardAndTypesTemplate stdTypesTemp = new StandardAndTypesTemplate();
+		filterCppTemp.setModelInformationHepler(infoHelper);
+		//StandardAndTypesTemplate stdTypesTemp = new StandardAndTypesTemplate();
 		ExampleCHeaderTemplate exampleTemp = new ExampleCHeaderTemplate();
+		SystemDataTypesTemplate sysDataTemp = new SystemDataTypesTemplate();
+		RequirementDataTypesTemplate reqDataTemp = new RequirementDataTypesTemplate();
 		
-		generateAndAddToContentList(filterHeaderTemp.generateTemplate(""));
-		generateAndAddToContentList(filterCppTemp.generateTemplate(""));
+		//generateAndAddToContentList(filterHeaderTemp.generateTemplate(""));
+		//generateAndAddToContentList(filterCppTemp.generateTemplate(""));
 		
-		generateAndAddToContentList(stdTypesTemp.generateTypesTemplate());
-		generateAndAddToContentList(stdTypesTemp.generateStdTemplate());
+		//generateAndAddToContentList(stdTypesTemp.generateTypesTemplate());
+		//generateAndAddToContentList(stdTypesTemp.generateStdTemplate());
 		
 		generateAndAddToContentList(exampleTemp.generateExampleTemplate(model));
+		generateAndAddToContentList(sysDataTemp.generateTemplate(model));
+		generateAndAddToContentList(reqDataTemp.generateTemplate(model));
 		
-		generateAndAddToContentList(filterHeaderTemp.generateTemplate("one"));
-		generateAndAddToContentList(filterCppTemp.generateTemplate("one"));
-		generateAndAddToContentList(filterHeaderTemp.generateTemplate("two"));
-		generateAndAddToContentList(filterCppTemp.generateTemplate("two"));
-		generateAndAddToContentList(filterHeaderTemp.generateTemplate("three"));
-		generateAndAddToContentList(filterCppTemp.generateTemplate("three"));
+		generateAndAddToContentList(filterHeaderTemp.generateTemplate(FilterType.ABSTRACT_FUNCTION));
+		generateAndAddToContentList(filterCppTemp.generateTemplate(FilterType.ABSTRACT_FUNCTION));
+		generateAndAddToContentList(filterHeaderTemp.generateTemplate(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE));
+		generateAndAddToContentList(filterCppTemp.generateTemplate(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE));
+		generateAndAddToContentList(filterHeaderTemp.generateTemplate(FilterType.SCENE_ABSTRACTION));
+		generateAndAddToContentList(filterCppTemp.generateTemplate(FilterType.SCENE_ABSTRACTION));
 		
 		
 		// write in files
 		write();
 	}
 	
+	private void setup() {
+		// setup
+		filePath = "../stars/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator/filter-gen/";
+		fsa = new InMemoryFileSystemAccess();
+		contentList = new ArrayList<String>();
+		files = new ArrayList<String>();
+		//files.add("mapped-filter.h");
+		//files.add("mapped-filter.cpp");
+		
+		//files.add("dtypes.h");
+		//files.add("stdafx.h");
+		
+		files.add("mapped.h");
+		files.add("system-types.h");
+		files.add("requirement_types.h");
+		
+		files.add("abstract_function_filter.h");
+		files.add("abstract_function_filter.cpp");
+		files.add("functional_correctness_oracle_filter.h");
+		files.add("functional_correctness_oracle_filter.cpp");
+		files.add("scene_abstraction_filter.h");
+		files.add("scene_abstraction_filter.cpp");
+		//files.add("test_coverage_monitor_filter.h");
+		//files.add("test_coverage_monitor_filter.cpp");
+	}
+	
+	private void setupTest() {
+		// setup
+		filePath = "filter-gen/"; //"../stars/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.test/filter-gen/";
+		fsa = new InMemoryFileSystemAccess();
+		contentList = new ArrayList<String>();
+		files = new ArrayList<String>();
+		
+		files.add("abstract_function_filter.h");
+		files.add("abstract_function_filter.cpp");
+		files.add("functional_correctness_oracle_filter.h");
+		files.add("functional_correctness_oracle_filter.cpp");
+		files.add("scene_abstraction_filter.h");
+		files.add("scene_abstraction_filter.cpp");
+		//files.add("test_coverage_monitor_filter.h");
+		//files.add("test_coverage_monitor_filter.cpp");
+	}
 	
 	
 	/**
@@ -93,7 +132,7 @@ public class FilterGenerator implements IGenerator {
 		fsa.generateFile("", generated);
 		for (Entry<String, CharSequence> file : ((InMemoryFileSystemAccess) fsa).getTextFiles().entrySet()) {
 			//System.out.println("Generated file path : "+file.getKey());
-			System.out.print("\n\nFile value:\n\n" + file.getValue());
+			//System.out.print("\n\nFile value:\n\n" + file.getValue());
 			String text = file.getValue().toString();
 			contentList.add(text);
 		}
@@ -102,7 +141,7 @@ public class FilterGenerator implements IGenerator {
 	/**
 	 * Writes the header content and the cpp content to the mapped.h and the mapped.cpp file.
 	 */
-	public void write() {
+	private void write() {
 		BufferedWriter writer = null;
 		
 		try {
@@ -113,7 +152,7 @@ public class FilterGenerator implements IGenerator {
 			}
 			
 			for (int i = 0; i < contentList.size(); i++) {
-				writer = new BufferedWriter(new FileWriter(files.get(i)));
+				writer = new BufferedWriter(new FileWriter(filePath.concat(files.get(i))));
 				String text = contentList.get(i);
 				writer.write(text);
 				writer.close();
@@ -127,6 +166,26 @@ public class FilterGenerator implements IGenerator {
 		}
 	}
 
+	public void generate(IModelInformationHelper infoHelper) {
+		System.out.println("FilterGenerator called!");
+		setupTest();
+		
+		// generate filter header and cpp code
+		FilterHeaderTemplate filterHeaderTemp = new FilterHeaderTemplate();
+		FilterCppTemplate filterCppTemp = new FilterCppTemplate();
+		filterHeaderTemp.setModelInformationHepler(infoHelper);
+		filterCppTemp.setModelInformationHepler(infoHelper);
+		
+		generateAndAddToContentList(filterHeaderTemp.generateTemplate(FilterType.ABSTRACT_FUNCTION));
+		generateAndAddToContentList(filterCppTemp.generateTemplate(FilterType.ABSTRACT_FUNCTION));
+		generateAndAddToContentList(filterHeaderTemp.generateTemplate(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE));
+		generateAndAddToContentList(filterCppTemp.generateTemplate(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE));
+		generateAndAddToContentList(filterHeaderTemp.generateTemplate(FilterType.SCENE_ABSTRACTION));
+		generateAndAddToContentList(filterCppTemp.generateTemplate(FilterType.SCENE_ABSTRACTION));
+		
+		// write in files
+		write();
+	}
 	
 
 }

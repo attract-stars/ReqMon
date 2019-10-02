@@ -4,14 +4,12 @@
 #include "dadas_mediatypes.h"
 #include "serializationhelper.h"
 
-$more includes$
-
 tBool debugOpt = tFalse;
 
-ADTF_FILTER_PLUGIN("$filter_name$", OID_DADAS_$oid_name$, $class_name$)
+ADTF_FILTER_PLUGIN("DADAS Abstract Function Filter", OID_DADAS_ABSTRACT_FUNCTION, cDadasAbstractFunctionFilter)
 
-$class_name$::$class_name$(const tChar* __info) : cConditionTriggeredFilter(tTrue,tTrue,__info), ILoadRecordsInterface(),
-				m_bTimeout(tFalse)
+cDadasAbstractFunctionFilter::cDadasAbstractFunctionFilter(const tChar* __info) : cConditionTriggeredFilter(tTrue,tTrue,__info), 
+				m_bTimeout(tFalse), $more value settings$
 {
 	kernelMutex.Create();
 	
@@ -24,17 +22,24 @@ $class_name$::$class_name$(const tChar* __info) : cConditionTriggeredFilter(tTru
 	$set more properties$
 }
 
-$class_name$::~$class_name$()
+cDadasAbstractFunctionFilter::~cDadasAbstractFunctionFilter()
 {
 	kernelMutex.Release();
 }
 
-tResult $class_name$::Init(tInitStage eStage, __exception)
+tResult cDadasAbstractFunctionFilter::Init(tInitStage eStage, __exception)
 {
 	RETURN_IF_FAILED(cConditionTriggeredFilter::Init(eStage, __exception_ptr));
 	
 	if (eStage == StageFirst)
 	{
+		//Description Manager
+		cObjectPtr<IMediaDescriptionManager> pDescManager;
+		RETURN_IF_FAILED(_runtime->GetObject(OID_ADTF_MEDIA_DESCRIPTION_MANAGER, 
+			IID_ADTF_MEDIA_DESCRIPTION_MANAGER, 
+			(tVoid**)&pDescManager, 
+			__exception_ptr));
+			
 		cObjectPtr<IMediaType> $pTypeName$ = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_$TYPE$, $more parameters$);
 		?RETURN_IF_POINTER_NULL($pTypeName$);?
 		RETURN_IF_FAILED($m_oPin.Create("$type$", $pTypeName$, this, $more parameters$));
@@ -65,29 +70,25 @@ tResult $class_name$::Init(tInitStage eStage, __exception)
 			m_bTimeout = tTrue;
 			RETURN_IF_FAILED(m_oTimeout.Create(this, nTimeout, OIGetInstanceName()));
 		}
-		
-		$more actions$
 	}
 	
 	RETURN_NOERROR;
 }
 
-tResult $class_name$::Start(__exception)
+tResult cDadasAbstractFunctionFilter::Start(__exception)
 {
 	// start the timeout
 	if (m_bTimeout)
 	{
 		m_oTimeout.Start();
 	}
-	
+		
 	RETURN_IF_FAILED(cConditionTriggeredFilter::Start(__exception_ptr));
-	
-	$if (...)$
 	
 	RETURN_NOERROR;
 }
 
-tResult $class_name$::Stop(__exception)
+tResult cDadasAbstractFunctionFilter::Stop(__exception)
 {
 	// cancel the timeout, we expect no more samples
 	if (m_bTimeout)
@@ -95,12 +96,10 @@ tResult $class_name$::Stop(__exception)
 		m_oTimeout.Cancel();
 	}
 	
-	$if (...)$
-	
 	return cConditionTriggeredFilter::Stop(__exception_ptr);
 }
 
-tResult $class_name$::Shutdown(tInitStage eStage, __exception)
+tResult cDadasAbstractFunctionFilter::Shutdown(tInitStage eStage, __exception)
 {
 	if (StageGraphReady == eStage)
 	{
@@ -110,7 +109,7 @@ tResult $class_name$::Shutdown(tInitStage eStage, __exception)
 	return cConditionTriggeredFilter::Shutdown(eStage, __exception_ptr);
 }
 
-tResult $class_name$::Run(tInt nActivationCode,
+tResult cDadasAbstractFunctionFilter::Run(tInt nActivationCode,
 	const tVoid* pvUserData,
 	tInt szUserDataSize,
 	ucom::IException** __exception_ptr)
@@ -130,7 +129,7 @@ tResult $class_name$::Run(tInt nActivationCode,
 }
 
 //Only triggers on the both targetpoints but not on the categorisation -> the catergorisation is got from the additional queue
-tResult $class_name$::OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception) {
+tResult cDadasAbstractFunctionFilter::OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception) {
 	// reset our timeout
 	if (m_bTimeout)
 	{
@@ -142,7 +141,6 @@ tResult $class_name$::OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample
 	//Get Categorisation Sample
 	cObjectPtr<IMediaSample> pCategorisationSample;
 	
-	$more actions$
 	
 	if(pCategorisationQueue) {
 		pCategorisationQueue->Get(&pCategorisationSample,
@@ -194,20 +192,16 @@ tResult $class_name$::OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample
 	
 		?RETURN_IF_FAILED(?DADAS::HELPER::DeserializeFromSample(pConcreteTargetsSample,pConcreteTargetsData)?)?;
 	
-	$more actions$
 	
 	kernelMutex.Leave();
 	
 	RETURN_NOERROR;
 }
 
-void $class_name$::LOG(cString mes) {		
+void cDadasAbstractFunctionFilter::LOG(cString mes) {		
 	if(debugOpt) {
 		LOG_INFO(mes);
 		//OutputDebugStringWrapper(mes+"\n");
 	}
 }
 
-$more protected methods$
-
-$private_methods_implementation$

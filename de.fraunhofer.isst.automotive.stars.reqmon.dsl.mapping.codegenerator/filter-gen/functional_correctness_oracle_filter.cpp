@@ -1,27 +1,45 @@
+#include "stdafx.h"
+#include "dtypes.h"
 #include "dadas_monitoring_types.h"
 #include "dadas_mediatypes.h"
 #include "serializationhelper.h"
 
-$more includes$
-
 tBool debugOpt = tFalse;
 
-ADTF_FILTER_PLUGIN("$filter_name$", OID_DADAS_$oid_name$, $class_name$)
+ADTF_FILTER_PLUGIN("DADAS Functional Correctness Oracle Filter", OID_DADAS_FUNCTIONAL_CORRECTNESS_ORACLE, cDadasFunctionalCorrectnessOracleFilter)
 
-$class_name$::$class_name$(const tChar* __info) : cFilter(__info)
+cDadasFunctionalCorrectnessOracleFilter::cDadasFunctionalCorrectnessOracleFilter(const tChar* __info) : cConditionTriggeredFilter(tTrue,tTrue,__info), 
+				m_bTimeout(tFalse), $more value settings$
 {
+	kernelMutex.Create();
+	
+	SetPropertyInt("timeout", $value$);
+	SetPropertyStr("timeout" NSSUBPROP_DESCRIPTION,
+		"Demo timeout that will issue a warning when no trigger has occurred "
+		"in the specified amount of time (microseconds). 0 disables the timeout.");
+	SetPropertyInt("timeout" NSSUBPROP_MINIMUM, 0);
+	
+	$set more properties$
 }
 
-$class_name$::~$class_name$()
+cDadasFunctionalCorrectnessOracleFilter::~cDadasFunctionalCorrectnessOracleFilter()
 {
+	kernelMutex.Release();
 }
 
-tResult $class_name$::Init(tInitStage eStage, __exception)
+tResult cDadasFunctionalCorrectnessOracleFilter::Init(tInitStage eStage, __exception)
 {
-	RETURN_IF_FAILED(cFilter::Init(eStage, __exception_ptr));
+	RETURN_IF_FAILED(cConditionTriggeredFilter::Init(eStage, __exception_ptr));
 	
 	if (eStage == StageFirst)
 	{
+		//Description Manager
+		cObjectPtr<IMediaDescriptionManager> pDescManager;
+		RETURN_IF_FAILED(_runtime->GetObject(OID_ADTF_MEDIA_DESCRIPTION_MANAGER, 
+			IID_ADTF_MEDIA_DESCRIPTION_MANAGER, 
+			(tVoid**)&pDescManager, 
+			__exception_ptr));
+			
 		cObjectPtr<IMediaType> $pTypeName$ = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_$TYPE$, $more parameters$);
 		?RETURN_IF_POINTER_NULL($pTypeName$);?
 		RETURN_IF_FAILED($m_oPin.Create("$type$", $pTypeName$, this, $more parameters$));
@@ -41,46 +59,77 @@ tResult $class_name$::Init(tInitStage eStage, __exception)
 	}
 	else if (eStage == StageGraphReady)
 	{
-		//Nothing to do
+		// create a new timeout if required
+		tTimeStamp nTimeout = GetPropertyInt("timeout");
+		if (nTimeout < 0)
+		{
+			THROW_ERROR_DESC(ERR_INVALID_ARG, "The timeout value can not be negative");
+		}
+		else if (nTimeout != 0)
+		{
+			m_bTimeout = tTrue;
+			RETURN_IF_FAILED(m_oTimeout.Create(this, nTimeout, OIGetInstanceName()));
+		}
 	}
 	
 	RETURN_NOERROR;
 }
 
-tResult $class_name$::Start(__exception)
+tResult cDadasFunctionalCorrectnessOracleFilter::Start(__exception)
 {
-	RETURN_IF_FAILED(cFilter::Start(__exception_ptr));
-	
-	RETURN_NOERROR;
-}
-
-tResult $class_name$::Stop(__exception)
-{
-	return cFilter::Stop(__exception_ptr);
-}
-
-tResult $class_name$::Shutdown(tInitStage eStage, __exception)
-{
-	switch (eStage)
+	// start the timeout
+	if (m_bTimeout)
 	{
-	case StageFirst:
-		{
-			m_pCoderDesc = NULL;
-			break;
-		}
-	default:
-		{
-			break;
-		}
+		m_oTimeout.Start();
 	}
+		
+	RETURN_IF_FAILED(cConditionTriggeredFilter::Start(__exception_ptr));
 	
-	return cFilter::Shutdown(eStage, __exception_ptr);
+	RETURN_NOERROR;
 }
 
-$public_methods_implementation$
+tResult cDadasFunctionalCorrectnessOracleFilter::Stop(__exception)
+{
+	// cancel the timeout, we expect no more samples
+	if (m_bTimeout)
+	{
+		m_oTimeout.Cancel();
+	}
+	
+	return cConditionTriggeredFilter::Stop(__exception_ptr);
+}
+
+tResult cDadasFunctionalCorrectnessOracleFilter::Shutdown(tInitStage eStage, __exception)
+{
+	if (StageGraphReady == eStage)
+	{
+		m_oTimeout.Release();
+	}
+	
+	return cConditionTriggeredFilter::Shutdown(eStage, __exception_ptr);
+}
+
+tResult cDadasFunctionalCorrectnessOracleFilter::Run(tInt nActivationCode,
+	const tVoid* pvUserData,
+	tInt szUserDataSize,
+	ucom::IException** __exception_ptr)
+{
+	RETURN_IF_FAILED(cConditionTriggeredFilter::Run(nActivationCode, pvUserData, szUserDataSize, __exception_ptr));
+	
+	if (adtf::cKernelTimeout::RUN_TIMEOUT == nActivationCode)
+	{
+		clear buffers and/or queues
+		
+		LOG_WARNING("Timeout");
+		// restart our timeout
+		m_oTimeout.Start();
+	}
+	
+	RETURN_NOERROR;
+}
 
 //Only triggers on the both targetpoints but not on the categorisation -> the catergorisation is got from the additional queue
-tResult $class_name$::OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception) {
+tResult cDadasFunctionalCorrectnessOracleFilter::OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception) {
 	// reset our timeout
 	if (m_bTimeout)
 	{
@@ -92,7 +141,6 @@ tResult $class_name$::OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample
 	//Get Categorisation Sample
 	cObjectPtr<IMediaSample> pCategorisationSample;
 	
-	$more actions$
 	
 	if(pCategorisationQueue) {
 		pCategorisationQueue->Get(&pCategorisationSample,
@@ -144,20 +192,16 @@ tResult $class_name$::OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample
 	
 		?RETURN_IF_FAILED(?DADAS::HELPER::DeserializeFromSample(pConcreteTargetsSample,pConcreteTargetsData)?)?;
 	
-	$more actions$
 	
 	kernelMutex.Leave();
 	
 	RETURN_NOERROR;
 }
 
-void $class_name$::LOG(cString mes) {		
+void cDadasFunctionalCorrectnessOracleFilter::LOG(cString mes) {		
 	if(debugOpt) {
 		LOG_INFO(mes);
 		//OutputDebugStringWrapper(mes+"\n");
 	}
 }
 
-$more protected methods$
-
-$private_methods_implementation$
