@@ -8,6 +8,8 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.Types
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.SignalNode
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.AttributeNode
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.MessageNode
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.List
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.Type
 
 class SystemDataTypesTemplate {
 	
@@ -170,7 +172,11 @@ class SystemDataTypesTemplate {
 	 */
 	def private compileAttributes(ClassNode node) '''
 		«FOR attr : node.attribute»
-		«attr.attrtype.type.compileType» «attr.attributeName»
+		«IF attr.attrtype.type.type !== null»
+		«attr.compileType» «attr.attributeName»
+		«ELSEIF attr.attrtype.type.list !== null»
+		«attr.compileType» «attr.name.replace(" ", "_").toFirstLower»;
+		«ENDIF»
 		«ENDFOR»
 	'''
 	
@@ -185,17 +191,23 @@ class SystemDataTypesTemplate {
 	/**
 	 * Constructs the attribute type.
 	 */
-	def private CharSequence compileType(Types type) {
-		if (type.type !== null) {
-			return type.type.name.selectCppType
+	def private CharSequence compileType(AttributeNode attr) {
+		if (attr.attrtype.type.type !== null) {
+			if (attr.attrtype.type.type.name.equals("class")) {
+				return '''t«attr.name.replace(" ","_").toFirstUpper»'''
+			}
+			return attr.attrtype.type.type.name.selectCppType
 		}
-		if (type.list !== null) {
-			return ''''''
+		if (attr.attrtype.type.list !== null) {
+			if (!attr.attrtype.type.list.type.empty) {
+				return '''t«attr.name.substring(0,attr.name.length-1) .replace(" ","_").toFirstUpper»*'''
+			}
 		}
-		if (type.newtype !== null) {
-			return '''«type.newtype.name»'''
+		if (attr.attrtype.type.newtype !== null) {
+			return '''«attr.attrtype.type.newtype.name»'''
 		}
 	}
+	
 	
 	/**
 	 * Choose the appropriate type in c++ for the given type.
@@ -225,9 +237,9 @@ class SystemDataTypesTemplate {
 			case 'date':
 				return '''void'''
 			case 'class':
-				return '''struct'''
-			case 'newType':
 				return ''''''
+			case 'newType':
+				return '''void'''
 			case 'signal':
 				return '''float'''
 			default:

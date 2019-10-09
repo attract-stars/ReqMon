@@ -1,6 +1,6 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.logic.IModelInformationHelper
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.IModelInformationHelper
 
 /**
  * This class offers header templates for three different filter types in c++.
