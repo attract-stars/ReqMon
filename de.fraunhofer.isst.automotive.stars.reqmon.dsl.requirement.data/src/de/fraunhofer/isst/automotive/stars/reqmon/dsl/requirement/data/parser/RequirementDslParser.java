@@ -46,6 +46,8 @@ public class RequirementDslParser implements IRequirementImporter {
 	}
 
 	protected void setupXtextParser() {
+		// TODO SHOULD THIS BE SET OUTSIDE WITH THE RIGHT INJECTOR IN ORDER TO WORK IN
+		// ECLIPSE AND IN TESTS
 		Injector injector = new RequirementDSLStandaloneSetup().createInjectorAndDoEMFRegistration();
 //		Injector injector = RequirementActivator.getInstance()
 //				.getInjector(RequirementActivator.DE_FRAUNHOFER_ISST_STARS_REQUIREMENTDSL);

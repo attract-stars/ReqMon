@@ -14,5 +14,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.xtext,
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui,
  org.eclipse.emf.ecore,
- de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui;bundle-version="1.0.0"
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui;bundle-version="1.0.0",
+ org.apache.log4j
 Bundle-ActivationPolicy: lazy

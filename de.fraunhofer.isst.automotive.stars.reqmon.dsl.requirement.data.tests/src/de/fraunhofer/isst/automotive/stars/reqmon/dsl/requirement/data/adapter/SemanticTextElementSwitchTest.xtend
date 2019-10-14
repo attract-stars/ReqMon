@@ -1692,4 +1692,112 @@ in Lookup
 		softly.assertAll();
 	}
 
+	/**
+	 * Test to verify if mutiple actors are invidually mapped for the predicates
+	 */
+	@Test
+	def package void testMutipleActorsForPredicate() {
+		val softly = new SoftAssertions();
+		// TEST 1 Predicate
+		val sent11 = RequirementDSLFactory.eINSTANCE.createPredicateSentence();
+		val actors11 = RequirementDSLFactory.eINSTANCE.createActors();
+		val actor11 = RequirementDSLFactory.eINSTANCE.createActor();
+		actor11.actor = "Barnie"
+		val actor12 = RequirementDSLFactory.eINSTANCE.createActor();
+		actor12.actor = "Damian"
+		actors11.actors.addAll(actor11, actor12)
+		sent11.actors = actors11
+		val pred11 = RequirementDSLFactory.eINSTANCE.createPredicate();
+		pred11.predicates.addAll("trinking", "tea");
+		sent11.predicate = pred11
+		sw.casePredicateSentence(sent11);
+		val resElement11 = new SemanticTextElement("<Barnie> trinking tea", RequirementType.RELATION);
+		val resElement12 = new SemanticTextElement("<Damian> trinking tea", RequirementType.RELATION);
+		softly.assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(2);
+		softly.assertThat(sw.lookup).^as("Analysis of splitting actors in prediates:").containsEntry(
+			"<Barnie> trinking tea", resElement11);
+		softly.assertThat(sw.lookup).^as("Analysis of splitting actors in prediates:").containsEntry(
+			"<Damian> trinking tea", resElement12);
+		sw.lookup.clear()
+
+		val existClause21 = RequirementDSLFactory.eINSTANCE.createExistence();
+		val relClause21 = RequirementDSLFactory.eINSTANCE.createRelativeClause();
+		val sent21 = RequirementDSLFactory.eINSTANCE.createRelativeSentence();
+		// 'which' | 'who' | 'that'
+		sent21.pronoun = "which";
+		sent21.modelity = Modality.MUST;
+		sent21.negation = false
+		val pred21 = RequirementDSLFactory.eINSTANCE.createPredicate();
+		// predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
+		pred21.predicates.addAll("is", "working");
+		sent21.predicate = pred21
+		relClause21.sentence = sent21;
+		existClause21.relativeClause = relClause21;
+		val actors21 = RequirementDSLFactory.eINSTANCE.createActors();
+		val actor21 = RequirementDSLFactory.eINSTANCE.createActor();
+		actor21.actor = "David";
+		val actor22 = RequirementDSLFactory.eINSTANCE.createActor();
+		actor22.actor = "Brain";
+		actors21.actors.addAll(actor21, actor22)
+		existClause21.actors = actors21;
+		sw.caseRelativeSentence(sent21);
+		val resElement21 = new SemanticTextElement("<David> is working", RequirementType.RELATION);
+		val resElement22 = new SemanticTextElement("<Brain> is working", RequirementType.RELATION);
+		softly.assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
+		softly.assertThat(sw.lookup).^as("Analysis of splitting actors in prediates:").containsEntry("<David> is working",
+			resElement21);
+		softly.assertThat(sw.lookup).^as("Analysis of splitting actors in prediates:").containsEntry("<Braiin> is working",
+			resElement22);
+			sw.lookup.clear()
+			
+		val sent31 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
+		val actorProp31 = RequirementDSLFactory.eINSTANCE.createActorProperties();
+		val objProp31 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val object31 = RequirementDSLFactory.eINSTANCE.createObject();
+		object31.object.addAll("Barnie")
+		objProp31.object = object31
+		val prop31 = RequirementDSLFactory.eINSTANCE.createProperty();
+//		prop31.relativ = "relative"
+		prop31.property.addAll("mum")
+		objProp31.property = prop31;
+		val objProp32 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val object32 = RequirementDSLFactory.eINSTANCE.createObject();
+		object32.object.addAll("David")
+		objProp32.object = object32
+		val prop32 = RequirementDSLFactory.eINSTANCE.createProperty();
+//		prop32.relativ = "relative"
+		prop32.property.addAll("mum")
+		objProp32.property = prop32
+		actorProp31.property.addAll(objProp31,objProp32)
+		sent31.properties = actorProp31
+		val pred31 = RequirementDSLFactory.eINSTANCE.createPredicate();
+		pred31.predicates.addAll("trinking", "tea");
+		sent31.predicate = pred31
+		sw.casePropertySentence(sent31);
+		val resElement31 = new SemanticTextElement("<Barnie's mum> trinking tea", RequirementType.RELATION);
+		val resElement32 = new SemanticTextElement("<David's mum> trinking tea", RequirementType.RELATION);
+		softly.assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
+		softly.assertThat(sw.lookup).^as("Analysis of splitting actors in prediates:").containsEntry(
+			"<Barnie's mum> trinking tea", resElement31);
+		softly.assertThat(sw.lookup).^as("Analysis of splitting actors in prediates:").containsEntry(
+			"<David's mum> trinking tea", resElement32);
+		sw.lookup.clear()
+		
+		softly.assertAll()
+	}
+
+	/**
+	 * Test to verify if mutiple actors are invidually mapped for the constraints
+	 */
+	@Test
+	def package void testMutipleActorsForConstraints() {
+		// Is on bla bla and next to bla bla
+	}
+
+	/**
+	 * Test to verify if multiple COnstraints are independently considered for the Mapping GUI
+	 */
+	@Test
+	def package void testMutipleConstraints() {
+	}
 }
