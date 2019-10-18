@@ -216,7 +216,7 @@ package class ReqAstNormalizerTest {
 		// SentenceBegin
 		val inputModel2 = parseHelper.parse(
 			"
-				Req 1:  In relation to the street and to the sky, the vehicle's position must not alter if the vehicle's velocity has not changed.\n
+				Req 1:  In relation to the street and to the sky, the vehicle must not alter if the vehicle's velocity has not changed.\n
 			"
 		)
 		validationHelper.assertNoErrors(inputModel2);
@@ -224,7 +224,7 @@ package class ReqAstNormalizerTest {
 
 		val expectedModel2 = parseHelper.parse(
 			"
-				Req 1: In relation to the street, the vehicle's position must not alter and in relation to the sky, the vehicle's position must not alter if the vehicle's velocity has not changed.\n
+				Req 1: In relation to the street, the vehicle must not alter and in relation to the sky, the vehicle must not alter if the vehicle's velocity has not changed.\n
 			"
 		)
 		validationHelper.assertNoErrors(expectedModel2);

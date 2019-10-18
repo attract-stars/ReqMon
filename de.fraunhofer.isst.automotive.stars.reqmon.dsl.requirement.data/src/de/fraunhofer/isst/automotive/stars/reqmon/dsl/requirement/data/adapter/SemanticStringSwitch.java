@@ -458,7 +458,7 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 				// TODO TAKE OUT IF only SINGLE ELEMENTS ARE
 				if (object.getConjunction() != null && !object.getConjunction().isEmpty()
 						&& i < object.getConjunction().size()) {
-					propText.add(object.getConjunction().get(i));
+					propText.add(object.getConjunction().get(i).getText());
 				}
 			}
 		}

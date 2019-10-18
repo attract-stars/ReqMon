@@ -15,6 +15,7 @@ import de.fraunhofer.isst.stars.requirementDSL.Actors;
 import de.fraunhofer.isst.stars.requirementDSL.AuxNeg;
 import de.fraunhofer.isst.stars.requirementDSL.Clause;
 import de.fraunhofer.isst.stars.requirementDSL.Clauses;
+import de.fraunhofer.isst.stars.requirementDSL.Conjunction;
 import de.fraunhofer.isst.stars.requirementDSL.Constraints;
 import de.fraunhofer.isst.stars.requirementDSL.Existence;
 import de.fraunhofer.isst.stars.requirementDSL.ModalitySentence;
@@ -26,6 +27,7 @@ import de.fraunhofer.isst.stars.requirementDSL.RelObjects;
 import de.fraunhofer.isst.stars.requirementDSL.Relation;
 import de.fraunhofer.isst.stars.requirementDSL.RelativeClause;
 import de.fraunhofer.isst.stars.requirementDSL.RelativeSentence;
+import de.fraunhofer.isst.stars.requirementDSL.RequirementDSLFactory;
 import de.fraunhofer.isst.stars.requirementDSL.RequirementModel;
 import de.fraunhofer.isst.stars.requirementDSL.SentenceBegin;
 import de.fraunhofer.isst.stars.requirementDSL.SentenceEnding;
@@ -360,7 +362,10 @@ public class ReqAstNormalizer {
 						lowerCaseRelation(copiedRelObjects);
 						if (clauses != null && clauses instanceof Clauses) {
 							((Clauses) clauses).getClauses().add((Clause) copiedSentence);
-							((Clauses) clauses).getConjunction().add(relObj.getRelConj().get(i - 1));// should
+							Conjunction clauseConj = RequirementDSLFactory.eINSTANCE.createConjunction();
+							clauseConj.setText(relObj.getRelConj().get(i - 1).getText());
+							clauseConj.setPriority(-1);// low priority
+							((Clauses) clauses).getConjunction().add(clauseConj);
 						} else {
 							logger.error("Clause has not the anticipated type 'Clause'" + clauses.toString());
 						}
@@ -383,8 +388,10 @@ public class ReqAstNormalizer {
 						lowerCaseRelation(copiedRelObjects);
 						if (clauses != null && clauses instanceof Clauses) {
 							((Clauses) clauses).getClauses().add((Clause) copiedSentence);
-							((Clauses) clauses).getConjunction().add(relObj.getRelConj().get(i - 1));// should
-																										// always
+							Conjunction clauseConj = RequirementDSLFactory.eINSTANCE.createConjunction();
+							clauseConj.setText(relObj.getRelConj().get(i - 1).getText());
+							clauseConj.setPriority(-1);// low priority
+							((Clauses) clauses).getConjunction().add(clauseConj);
 						} else {
 							logger.error("Clause has not the anticipated type 'Clause'" + clauses.toString());
 						}

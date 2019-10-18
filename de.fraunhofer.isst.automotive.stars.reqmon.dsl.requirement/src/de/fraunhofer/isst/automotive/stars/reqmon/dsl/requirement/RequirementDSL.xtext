@@ -271,13 +271,19 @@ AuxiliaryVerb:
 ;
 
 Conjunction:
+	text=ConjunctionWord priority=INT?//priority is just for internal use and should never be set!
+;
+
+ConjunctionWord:
 	('and'| 'or')
 ;
-
 RelConjunction:
-	('and' 'to' | 'or' 'to')
+	text=RelConjunctionWord priority=INT?//priority is just for internal use and should never be set!
 ;
 
+RelConjunctionWord:
+	('and' 'to' | 'or' 'to')
+;
 Comperators:
 	('than'|'as'|'to' | 'of')
 ;

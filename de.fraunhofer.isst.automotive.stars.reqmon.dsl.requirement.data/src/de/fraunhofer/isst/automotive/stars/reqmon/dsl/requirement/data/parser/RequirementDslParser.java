@@ -28,6 +28,9 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.SemanticT
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.adapter.RequirementDslResourceContentAdappter;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.adapter.SemanticTextElementSwitch;
 import de.fraunhofer.isst.stars.RequirementDSLStandaloneSetup;
+import de.fraunhofer.isst.stars.requirementDSL.Clauses;
+import de.fraunhofer.isst.stars.requirementDSL.Conjunction;
+import de.fraunhofer.isst.stars.requirementDSL.RelativeClause;
 
 /**
  * @author mmauritz
@@ -56,7 +59,6 @@ public class RequirementDslParser implements IRequirementImporter {
 
 	protected List<SemanticTextElement> analyze(EObject model) {
 		System.out.println("Analyzing Requirement DSL");
-		TreeIterator<EObject> modelIterator = model.eAllContents();
 
 		// lets lookup if an analysis of the resource exists
 		RequirementElementMappingRepository eleRepo = RequirementElementMappingRepository.getInstance();
@@ -74,12 +76,17 @@ public class RequirementDslParser implements IRequirementImporter {
 			}
 			// return new ArrayList<SemanticTextElement>(values);
 		}
-
+		// TODO SET Priority of AND
+		if (model != null) {
+			prioritizeConjunctions(model);
+		}
+		// TODO NORMALIZE Requirements
 		// STARTING THE ANALYSIS
 		System.out.println("STARTING: Analysis of AST");
 		RequirementTextElementMapping mapping = new RequirementTextElementMapping();
 
 		SemanticTextElementSwitch visitor = new SemanticTextElementSwitch();
+		TreeIterator<EObject> modelIterator = model.eAllContents();
 		while (modelIterator.hasNext()) {
 			EObject obj = modelIterator.next();
 //			System.out.println("Analyzing: " + obj.toString());
@@ -135,6 +142,28 @@ public class RequirementDslParser implements IRequirementImporter {
 			rc.updateList(new ArrayList<IRequirementElement>());
 		}
 		rc.updateList(testElements);
+	}
+
+	private void prioritizeConjunctions(EObject model) {
+		TreeIterator<EObject> modelIterator = model.eAllContents();
+		while (modelIterator.hasNext()) {
+			EObject obj = modelIterator.next();
+			if (obj != null && obj instanceof Clauses) {
+				for (Conjunction conj : ((Clauses) obj).getConjunction()) {
+					if (conj.getPriority() == 0) {
+						conj.setPriority(1);
+					}
+				}
+			} else if (obj != null && obj instanceof RelativeClause) {
+				for (Conjunction conj : ((RelativeClause) obj).getConjunction()) {
+					if (conj.getPriority() == 0) {
+						conj.setPriority(1);
+					}
+				}
+			}
+		}
+		// TODO SET Priority for Conjunction in Clauses
+		// TODO SET Priority for Conjunction in RelativeSentence
 	}
 
 }
