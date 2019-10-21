@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -27,6 +28,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.Requireme
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.SemanticTextElement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.adapter.RequirementDslResourceContentAdappter;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.adapter.SemanticTextElementSwitch;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.normalizer.ReqAstNormalizer;
 import de.fraunhofer.isst.stars.RequirementDSLStandaloneSetup;
 import de.fraunhofer.isst.stars.requirementDSL.Clauses;
 import de.fraunhofer.isst.stars.requirementDSL.Conjunction;
@@ -44,6 +46,8 @@ public class RequirementDslParser implements IRequirementImporter {
 	@Inject
 	IResourceServiceProvider resourceSetProvider;
 
+	Logger logger = Logger.getLogger(ReqAstNormalizer.class);
+
 	public RequirementDslParser() {
 		setupXtextParser();
 	}
@@ -58,13 +62,13 @@ public class RequirementDslParser implements IRequirementImporter {
 	}
 
 	protected List<SemanticTextElement> analyze(EObject model) {
-		System.out.println("Analyzing Requirement DSL");
+		logger.info("Analyzing Requirement DSL");
 
 		// lets lookup if an analysis of the resource exists
 		RequirementElementMappingRepository eleRepo = RequirementElementMappingRepository.getInstance();
 		if (eleRepo.containsKey(model.eResource().getURI())) {
 			// TODO CHECK FOR CHANGES!!! -> eContentAdpater
-			System.out.println("Resource has been analyzed. Recovering previous results");
+			logger.info("Resource has been analyzed. Recovering previous results");
 			IRequirementElementMapping<?, ? extends IRequirementElement> existingMapping = eleRepo
 					.get(model.eResource().getURI());
 			if (!existingMapping.hasDirtySource()) {
@@ -72,17 +76,17 @@ public class RequirementDslParser implements IRequirementImporter {
 				Collection<SemanticTextElement> values = (Collection<SemanticTextElement>) existingMapping.values();
 				return Lists.newArrayList(Sets.newHashSet(values));
 			} else {
-				System.out.println("Resource has been modified. Mapping not update. Re-Analyzing...");
+				logger.info("Resource has been modified. Mapping not update. Re-Analyzing...");
 			}
 			// return new ArrayList<SemanticTextElement>(values);
 		}
-		// TODO SET Priority of AND
+		// Setting Priority of original 'AND' and 'OR'
 		if (model != null) {
 			prioritizeConjunctions(model);
 		}
-		// TODO NORMALIZE Requirements
+		// NORMALIZE Requirements
 		// STARTING THE ANALYSIS
-		System.out.println("STARTING: Analysis of AST");
+		logger.debug("STARTING: Analysis of AST");
 		RequirementTextElementMapping mapping = new RequirementTextElementMapping();
 
 		SemanticTextElementSwitch visitor = new SemanticTextElementSwitch();
@@ -105,7 +109,7 @@ public class RequirementDslParser implements IRequirementImporter {
 		EContentAdapter changeModellAdapter = new RequirementDslResourceContentAdappter(mapping);
 		changeModellAdapter.setTarget(model.eResource().getResourceSet());
 		model.eResource().getResourceSet().eAdapters().add(changeModellAdapter);
-		System.out.println(model.eResource().getResourceSet().eAdapters().size());
+		logger.debug(model.eResource().getResourceSet().eAdapters().size());
 		model.eResource().eAdapters().add(changeModellAdapter);
 		model.eAdapters().add(changeModellAdapter);
 		// Return the SemanticElement from Lookup of the visitor Class
@@ -122,7 +126,7 @@ public class RequirementDslParser implements IRequirementImporter {
 		} catch (Exception e) {
 			// TODO Better Exception Handling
 			e.printStackTrace();
-			System.out.println(e.getLocalizedMessage());
+			logger.error(e.getLocalizedMessage());
 			return null;
 		}
 	}
