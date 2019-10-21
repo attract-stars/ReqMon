@@ -49,6 +49,10 @@ Workflow {
 			        methodsPerClass = "200"
 	    		}
 			}
+			
+			junitSupport= {
+				junitVersion = "5"
+			}
 		}
 	}
 }

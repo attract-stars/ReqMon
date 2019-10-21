@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="xtend-gen"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.tests"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/assertj-core-3.13.2.jar"/>
+	<classpathentry kind="lib" path="lib/mockito-core-3.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/byte-buddy-1.9.10.jar"/>
+	<classpathentry kind="lib" path="lib/byte-buddy-agent-1.9.10.jar"/>
+	<classpathentry kind="lib" path="lib/objenesis-2.6.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.6.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.tests/lib/commons-io-2.6-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

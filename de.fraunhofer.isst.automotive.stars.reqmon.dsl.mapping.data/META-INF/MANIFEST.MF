@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Data
+Bundle-SymbolicName: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.Activator
+Bundle-Vendor: Fraunhofer ISST
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui,
+ org.eclipse.emf.common
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data
+Bundle-ActivationPolicy: lazy
+Export-Package: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.analytics,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.analytics.repository
+Import-Package: org.eclipse.emf.ecore.resource
