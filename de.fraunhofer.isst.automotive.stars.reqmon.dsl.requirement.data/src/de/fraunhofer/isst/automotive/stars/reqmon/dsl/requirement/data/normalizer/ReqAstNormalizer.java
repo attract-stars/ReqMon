@@ -86,7 +86,7 @@ public class ReqAstNormalizer {
 			logger.error("Could not find the Requirement DSL Extension in resource file path.");
 			return model;
 		}
-		Resource normalizedResource = model.eResource().getResourceSet().createResource(URI.createURI(file));
+		Resource normalizedResource = model.eResource().getResourceSet().createResource(URI.createFileURI(file));
 		// COPY
 		normalizedModel = copier.copy(model);
 //		Collection results = copier.copyAll(eObjects);

@@ -20,6 +20,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.analytics.IRequirementElementMapping;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.analytics.repository.ModelMappingRepository;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.analytics.repository.RequirementElementMappingRepository;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement;
@@ -33,6 +34,7 @@ import de.fraunhofer.isst.stars.RequirementDSLStandaloneSetup;
 import de.fraunhofer.isst.stars.requirementDSL.Clauses;
 import de.fraunhofer.isst.stars.requirementDSL.Conjunction;
 import de.fraunhofer.isst.stars.requirementDSL.RelativeClause;
+import de.fraunhofer.isst.stars.requirementDSL.RequirementModel;
 
 /**
  * @author mmauritz
@@ -66,6 +68,7 @@ public class RequirementDslParser implements IRequirementImporter {
 
 		// lets lookup if an analysis of the resource exists
 		RequirementElementMappingRepository eleRepo = RequirementElementMappingRepository.getInstance();
+		ModelMappingRepository modelRepo = ModelMappingRepository.getInstance();
 		if (eleRepo.containsKey(model.eResource().getURI())) {
 			// TODO CHECK FOR CHANGES!!! -> eContentAdpater
 			logger.info("Resource has been analyzed. Recovering previous results");
@@ -82,32 +85,50 @@ public class RequirementDslParser implements IRequirementImporter {
 		}
 		// Setting Priority of original 'AND' and 'OR'
 		if (model != null) {
-			prioritizeConjunctions(model);
+			prioritizeConjunctions(model);// does not change the structure
 		}
 		// NORMALIZE Requirements
+		logger.debug("Starting: Normalization of AST");
+		RequirementModel normalizedModel = null;
+		if (model instanceof RequirementModel) {
+			ReqAstNormalizer normalizer = new ReqAstNormalizer();
+			normalizedModel = normalizer.normalize((RequirementModel) model);// chaning model!
+		}
+
 		// STARTING THE ANALYSIS
 		logger.debug("STARTING: Analysis of AST");
 		RequirementTextElementMapping mapping = new RequirementTextElementMapping();
 
 		SemanticTextElementSwitch visitor = new SemanticTextElementSwitch();
-		TreeIterator<EObject> modelIterator = model.eAllContents();
-		while (modelIterator.hasNext()) {
-			EObject obj = modelIterator.next();
-//			System.out.println("Analyzing: " + obj.toString());
-			SemanticTextElement element = visitor.doSwitch(obj);
-			if (element != null) {
-				mapping.put(obj, element);
-			} else {
-				// null object tell we not defined a semantic object for the GUI -> Skip it
-//				System.out.println("Visitor provided null Element: "+obj.toString());
+		TreeIterator<EObject> modelIterator = null;
+		if (normalizedModel == null) {
+			modelIterator = model.eAllContents();
+		} else {
+			modelIterator = normalizedModel.eAllContents();
+		}
+		if (modelIterator != null) {
+			while (modelIterator.hasNext()) {
+				EObject obj = modelIterator.next();
+				// System.out.println("Analyzing: " + obj.toString());
+				SemanticTextElement element = visitor.doSwitch(obj);
+				if (element != null) {
+					mapping.put(obj, element);
+				} else {
+					// null object tell we not defined a semantic object for the GUI -> Skip it
+					// System.out.println("Visitor provided null Element: "+obj.toString());
+				}
 			}
 		}
 		// Saving Mapping from syntactic elements to semantic elements in Repository
 		eleRepo.put(model.eResource().getURI(), mapping);
+		// Save normalized model in the model mapping
+		if (normalizedModel != null) {
+			modelRepo.put(model.eResource().getURI(), normalizedModel.eResource().getURI());
+		}
 		// Add a Adapter to see if resource is changed to not load a dirty mapping
 		// TODO FUNCKTIONIERT GAR NICHT!!!
 		EContentAdapter changeModellAdapter = new RequirementDslResourceContentAdappter(mapping);
-		changeModellAdapter.setTarget(model.eResource().getResourceSet());
+		changeModellAdapter.setTarget(model.eResource().getResourceSet());// THis has to be the original model!
 		model.eResource().getResourceSet().eAdapters().add(changeModellAdapter);
 		logger.debug(model.eResource().getResourceSet().eAdapters().size());
 		model.eResource().eAdapters().add(changeModellAdapter);
