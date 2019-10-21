@@ -2,38 +2,34 @@
  */
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.normalizer
 
-import org.eclipse.xtext.testing.InjectWith
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.runner.RunWith
-import org.junit.jupiter.api.^extension.ExtendWith
-import org.eclipse.xtext.testing.extensions.InjectionExtension
-import de.fraunhofer.isst.stars.tests.RequirementDSLInjectorProvider
 import com.google.inject.Inject
-import org.eclipse.xtext.testing.util.ParseHelper
-import de.fraunhofer.isst.stars.requirementDSL.RequirementModel
-import org.eclipse.xtext.testing.validation.ValidationTestHelper
-import com.google.inject.Injector
 import de.fraunhofer.isst.stars.RequirementDSLStandaloneSetup
-import static org.assertj.core.api.Assertions.assertThat
-import org.eclipse.emf.compare.match.eobject.IEObjectMatcher
-import org.eclipse.emf.compare.match.DefaultMatchEngine
-import org.eclipse.emf.compare.utils.UseIdentifiers
-import org.eclipse.emf.compare.match.IComparisonFactory
-import org.eclipse.emf.compare.match.DefaultComparisonFactory
-import org.eclipse.emf.compare.match.DefaultEqualityHelperFactory
-import org.eclipse.emf.compare.match.IMatchEngine
-import org.eclipse.emf.compare.match.impl.MatchEngineFactoryImpl
-import org.eclipse.emf.compare.match.impl.MatchEngineFactoryRegistryImpl
+import de.fraunhofer.isst.stars.requirementDSL.RequirementModel
+import de.fraunhofer.isst.stars.tests.RequirementDSLInjectorProvider
 import org.eclipse.emf.compare.EMFCompare
+import org.eclipse.emf.compare.Match
 import org.eclipse.emf.compare.diff.DefaultDiffEngine
 import org.eclipse.emf.compare.diff.DiffBuilder
 import org.eclipse.emf.compare.diff.FeatureFilter
-import org.eclipse.emf.compare.Match
+import org.eclipse.emf.compare.match.DefaultComparisonFactory
+import org.eclipse.emf.compare.match.DefaultEqualityHelperFactory
+import org.eclipse.emf.compare.match.DefaultMatchEngine
+import org.eclipse.emf.compare.match.impl.MatchEngineFactoryImpl
+import org.eclipse.emf.compare.match.impl.MatchEngineFactoryRegistryImpl
+import org.eclipse.emf.compare.utils.UseIdentifiers
 import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.EcorePackage
+import org.eclipse.xtext.testing.InjectWith
+import org.eclipse.xtext.testing.extensions.InjectionExtension
+import org.eclipse.xtext.testing.util.ParseHelper
+import org.eclipse.xtext.testing.validation.ValidationTestHelper
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.^extension.ExtendWith
+
+import static org.assertj.core.api.Assertions.assertThat
 
 /** 
  * @author mmauritz
@@ -207,7 +203,7 @@ package class ReqAstNormalizerTest {
 			"
 		)
 		validationHelper.assertNoErrors(expectedModel);
-		//  assertThat(normModel).^as("Model Comparison").isEqualTo(expectedModel);
+		// assertThat(normModel).^as("Model Comparison").isEqualTo(expectedModel);
 		// Compare the two models
 		val scope = EMFCompare.createDefaultScope(normModel, expectedModel);
 		val result = comparator.compare(scope);
@@ -231,7 +227,8 @@ package class ReqAstNormalizerTest {
 
 		val scope2 = EMFCompare.createDefaultScope(normModel2, expectedModel2);
 		val result2 = comparator.compare(scope2);
-		assertThat(result2.differences.size()).^as("EMF Compare Result:").isLessThanOrEqualTo(4); // for changes are -> is
+		assertThat(result2.differences.size()).^as("EMF Compare Result:").isLessThanOrEqualTo(10); // for changes are -> is
+
 		val inputModel3 = parseHelper.parse(
 			"
 				Req 1: The vehicle's position must not altered in relation to the street and to the sky if the vehicle's velocity has not changed.\n
@@ -250,5 +247,28 @@ package class ReqAstNormalizerTest {
 		val scope3 = EMFCompare.createDefaultScope(normModel3, expectedModel3);
 		val result3 = comparator.compare(scope3);
 		assertThat(result3.differences.size()).^as("EMF Compare Result:").isLessThanOrEqualTo(4); // for changes are -> is
+	}
+
+	@Test def package void testSentenceBeginNormalization() {
+
+		// SentenceBegin
+		val inputModel2 = parseHelper.parse(
+			"
+				Req 1:  In relation to the street, the vehicle must not alter if the vehicle's velocity has not changed.\n
+			"
+		)
+		validationHelper.assertNoErrors(inputModel2);
+		val normModel2 = normalizer.normalize(inputModel2);
+
+		val expectedModel2 = parseHelper.parse(
+			"
+				Req 1: The vehicle must not alter in relation to the street if the vehicle's velocity has not changed.\n
+			"
+		)
+		validationHelper.assertNoErrors(expectedModel2);
+
+		val scope2 = EMFCompare.createDefaultScope(normModel2, expectedModel2);
+		val result2 = comparator.compare(scope2);
+		assertThat(result2.differences.size()).^as("EMF Compare Result:").isLessThanOrEqualTo(4); // for changes are -> is
 	}
 }

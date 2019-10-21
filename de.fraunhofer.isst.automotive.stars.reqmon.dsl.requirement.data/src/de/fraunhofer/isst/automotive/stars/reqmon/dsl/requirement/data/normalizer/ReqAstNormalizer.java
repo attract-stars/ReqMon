@@ -3,11 +3,20 @@
  */
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.normalizer;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
+import org.eclipse.xtext.EcoreUtil2;
 
 import de.fraunhofer.isst.stars.requirementDSL.Actor;
 import de.fraunhofer.isst.stars.requirementDSL.ActorProperties;
@@ -60,13 +69,32 @@ public class ReqAstNormalizer {
 	 */
 	public RequirementModel normalize(RequirementModel model) {
 		// copy the model to change it without changing the initial one
-		// TODO think about creating an invisible Ressource
 		Copier copier = new Copier();
-		EObject normalizedModel = copier.copy(model);
+		EObject normalizedModel = null;
+		String file = model.eResource().getURI().toFileString();
+		Pattern pattern = Pattern.compile("(\\w*).reqDSL");
+		String fileExt = model.eResource().getURI().fileExtension();
+		Matcher matcher = pattern.matcher(file);
+		if (matcher.find()) {
+			String filename = matcher.group(1);
+			if (filename == "") {
+				filename = "normalizedModel";
+			}
+			filename = "." + filename + "_norm";
+			file = file.replaceFirst("(\\w*).reqDSL", filename + "." + fileExt);
+		} else {
+			logger.error("Could not find the Requirement DSL Extension in resource file path.");
+			return model;
+		}
+		Resource normalizedResource = model.eResource().getResourceSet().createResource(URI.createURI(file));
+		// COPY
+		normalizedModel = copier.copy(model);
 //		Collection results = copier.copyAll(eObjects);
 		copier.copyReferences();
-
-		if (normalizedModel == null && !(normalizedModel instanceof RequirementModel)) {
+		// add copied model to new resource
+		normalizedResource.getContents().add(normalizedModel);
+		// Analyze
+		if (normalizedModel == null || !(normalizedModel instanceof RequirementModel)) {
 			logger.error("Model provided is not instance of RequirementModel!");
 			return model;// return unmodified model
 		}
@@ -74,6 +102,18 @@ public class ReqAstNormalizer {
 		// iterate over the copied model
 		// IT is possible that we have to consider the model for each type individually
 		// in order to mitigate problems
+		// we don't resolve in the
+//		EcoreUtil.Collection<EObject> begins = EcoreUtil.getObjectsByType(normalizedModel.eContents(),
+//				RequirementDSLPackage.eINSTANCE.getSentenceBegin());
+
+		// Resolve SentenceBegin
+		// Append Relation in SentenceBegin to the End of the Clause!
+		List<SentenceBegin> begins = EcoreUtil2.getAllContentsOfType(normalizedModel, SentenceBegin.class);
+		if (begins != null && !begins.isEmpty()) {
+			resolveSentenceBegin(begins);
+		}
+
+		// reset modeliterator
 		TreeIterator<EObject> modelIterator = normalizedModel.eAllContents();
 		while (modelIterator.hasNext()) {
 			EObject obj = modelIterator.next();
@@ -98,8 +138,88 @@ public class ReqAstNormalizer {
 			}
 		}
 		logger.info("Finished normalizing model: " + model.toString());
+		// now save the content.
+		try {
+			logger.debug("Saving normalized model in resource.");
+			normalizedResource.save(Collections.EMPTY_MAP);
+		} catch (IOException e) {
+			logger.error("Can't save resource: " + normalizedResource.toString());
+			e.printStackTrace();
+		}
 		return (RequirementModel) normalizedModel;
 
+	}
+
+	/**
+	 * @param begins
+	 */
+	private void resolveSentenceBegin(List<SentenceBegin> begins) {
+		for (SentenceBegin obj : begins) {
+			Relation rela = obj.getRela();
+			EObject sentence = obj.eContainer();
+			if (sentence instanceof ModalitySentence) {
+				resolveSentenceBegin(obj, rela, (ModalitySentence) sentence);
+			} else if (sentence instanceof PredicateSentence) {
+				resolveSentenceBegin(obj, rela, (PredicateSentence) sentence);
+			} else {
+				logger.error("Parent sentence of SentenceBegin not supported!");
+			}
+		}
+	}
+
+	/**
+	 * @param obj
+	 * @param rela
+	 * @param sentence
+	 */
+	private void resolveSentenceBegin(EObject obj, Relation rela, PredicateSentence sentence) {
+		SentenceEnding ending;
+		ending = sentence.getEnding();
+		if (ending == null) {
+			ending = RequirementDSLFactory.eINSTANCE.createSentenceEnding();
+			sentence.setEnding(ending);
+		}
+		if (ending.getRela() == null) {
+			ending.setRela(rela);
+			rela.getRelDel().toLowerCase();
+			sentence.setBegin(null);// delete Sentence Begin from Tree
+			// Capitalize first actor!
+			if (sentence.getActors() != null && sentence.getActors().getActors() != null
+					&& !sentence.getActors().getActors().isEmpty()) {
+				Actor act = sentence.getActors().getActors().get(0);
+				act.setActor(act.getActor().substring(0, 1).toUpperCase() + act.getActor().substring(1));
+			}
+
+		} else {
+			logger.warn("Can't append relation of SentenceBegin to SentenEnding: " + obj.toString());
+		}
+	}
+
+	/**
+	 * @param obj
+	 * @param rela
+	 * @param sentence
+	 */
+	private void resolveSentenceBegin(EObject obj, Relation rela, ModalitySentence sentence) {
+		SentenceEnding ending;
+		ending = sentence.getEnding();
+		if (ending == null) {
+			ending = RequirementDSLFactory.eINSTANCE.createSentenceEnding();
+			sentence.setEnding(ending);
+		}
+		if (ending.getRela() == null) {
+			ending.setRela(rela);
+			rela.getRelDel().toLowerCase();
+			sentence.setBegin(null);// delete Sentence Begin from Tree
+			// Capitalize first actor!
+			if (sentence.getActors() != null && sentence.getActors().getActors() != null
+					&& !sentence.getActors().getActors().isEmpty()) {
+				Actor act = sentence.getActors().getActors().get(0);
+				act.setActor(act.getActor().substring(0, 1).toUpperCase() + act.getActor().substring(1));
+			}
+		} else {
+			logger.warn("Can't append relation of SentenceBegin to SentenEnding: " + obj.toString());
+		}
 	}
 
 	/**
@@ -335,7 +455,6 @@ public class ReqAstNormalizer {
 	 * @param the initial model for given requirements
 	 * @return the resolved model
 	 */
-	// TODO we could resolve the sentenceBegin here and add as normal relation
 	protected void resolveRelObjectConjunction(RelObjects relObj) {
 		if (relObj.getObject().size() > 1 || relObj.getProperty().size() > 1) {
 			logger.info("Normalizing Relative Objects and Object Properties " + relObj.toString());
@@ -364,7 +483,7 @@ public class ReqAstNormalizer {
 							((Clauses) clauses).getClauses().add((Clause) copiedSentence);
 							Conjunction clauseConj = RequirementDSLFactory.eINSTANCE.createConjunction();
 							clauseConj.setText(relObj.getRelConj().get(i - 1).getText());
-							clauseConj.setPriority(-1);// low priority
+							clauseConj.setPriority(1);// low priority
 							((Clauses) clauses).getConjunction().add(clauseConj);
 						} else {
 							logger.error("Clause has not the anticipated type 'Clause'" + clauses.toString());
@@ -390,7 +509,7 @@ public class ReqAstNormalizer {
 							((Clauses) clauses).getClauses().add((Clause) copiedSentence);
 							Conjunction clauseConj = RequirementDSLFactory.eINSTANCE.createConjunction();
 							clauseConj.setText(relObj.getRelConj().get(i - 1).getText());
-							clauseConj.setPriority(-1);// low priority
+							clauseConj.setPriority(1);// low priority
 							((Clauses) clauses).getConjunction().add(clauseConj);
 						} else {
 							logger.error("Clause has not the anticipated type 'Clause'" + clauses.toString());
@@ -485,6 +604,13 @@ public class ReqAstNormalizer {
 	 * @return the resolved model
 	 */
 	protected void resolveConstraints(Constraints obj) {
+		// TODO we currently omit this but include it if we introtuce conjunction of
+		// constraints
+	}
+
+	public RequirementModel reorderSenteceBegin(RequirementModel model) {
+
+		return model;
 
 	}
 

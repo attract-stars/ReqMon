@@ -151,19 +151,17 @@ public class RequirementDslParser implements IRequirementImporter {
 			if (obj != null && obj instanceof Clauses) {
 				for (Conjunction conj : ((Clauses) obj).getConjunction()) {
 					if (conj.getPriority() == 0) {
-						conj.setPriority(1);
+						conj.setPriority(100);// normal priority is 100
 					}
 				}
 			} else if (obj != null && obj instanceof RelativeClause) {
 				for (Conjunction conj : ((RelativeClause) obj).getConjunction()) {
 					if (conj.getPriority() == 0) {
-						conj.setPriority(1);
+						conj.setPriority(100);// normal priority is 100
 					}
 				}
 			}
 		}
-		// TODO SET Priority for Conjunction in Clauses
-		// TODO SET Priority for Conjunction in RelativeSentence
 	}
 
 }
