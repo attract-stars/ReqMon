@@ -22,12 +22,12 @@ class ExampleCHeaderTemplate {
 	 * Generates an example header template and uses for it the informations of the model.
 	 */
 	def CharSequence generateExampleTemplate(IMappingModel model) '''
-	#ifndef «includeGardsBegin»
-	#define «includeGardsBegin»
+	#ifndef Â«includeGardsBeginÂ»
+	#define Â«includeGardsBeginÂ»
 	
-	«model.structs»
+	Â«model.structsÂ»
 	
-	«model.signalsAndAttributes»
+	Â«model.signalsAndAttributesÂ»
 	
 	#endif
 	'''
@@ -40,30 +40,30 @@ class ExampleCHeaderTemplate {
 	 * Returns structures with the class informations given in the resources of the model.
 	 */
 	def private getStructs(IMappingModel model) '''
-	«FOR res : model.getMappingResourceList»
-		«res.struct»
-	«ENDFOR»
+	Â«FOR res : model.getMappingResourceListÂ»
+		Â«res.structÂ»
+	Â«ENDFORÂ»
 	'''
 		
 	def private getStruct(Resource resource) '''
-	«FOR elem : resource.allContents.toIterable.filter(DefinitionElememnt)»
-		«elem.def.selectClasses»
-	«ENDFOR»
+	Â«FOR elem : resource.allContents.toIterable.filter(DefinitionElememnt)Â»
+		Â«elem.def.selectClassesÂ»
+	Â«ENDFORÂ»
 	'''
 	
 	/**
 	 * Returns data types with the signal and attribute informations given in the resources of the model.
 	 */
 	def private getSignalsAndAttributes(IMappingModel model) '''
-	«FOR res : model.getMappingResourceList»
-		«res.signalAndAttribute»
-	«ENDFOR»
+	Â«FOR res : model.getMappingResourceListÂ»
+		Â«res.signalAndAttributeÂ»
+	Â«ENDFORÂ»
 	'''
 	
 	def private getSignalAndAttribute(Resource resource) '''
-	«FOR elem : resource.allContents.toIterable.filter(DefinitionElememnt)»
-		«elem.def.selectSignalsAndAttributes»
-	«ENDFOR»
+	Â«FOR elem : resource.allContents.toIterable.filter(DefinitionElememnt)Â»
+		Â«elem.def.selectSignalsAndAttributesÂ»
+	Â«ENDFORÂ»
 	'''
 
 	
@@ -72,9 +72,9 @@ class ExampleCHeaderTemplate {
 	 * compileClassID for ClassID. 
 	 */
 	def private selectClasses(EObject obj) '''
-		«IF obj instanceof ClassID»
-		«obj.compileClassID»
-		«ENDIF»
+		Â«IF obj instanceof ClassIDÂ»
+		Â«obj.compileClassIDÂ»
+		Â«ENDIFÂ»
 	'''
 	
 	/**
@@ -82,21 +82,21 @@ class ExampleCHeaderTemplate {
 	 * compileSignalID for SignalID, compileAttributID for AttributeID. 
 	 */
 	def private selectSignalsAndAttributes(EObject obj) '''
-		«IF obj instanceof SignalID»
-		«obj.compileSignalID»
-		«ELSEIF obj instanceof AttributeID»
-		«obj.compileAttributeID»
-		«ENDIF»
+		Â«IF obj instanceof SignalIDÂ»
+		Â«obj.compileSignalIDÂ»
+		Â«ELSEIF obj instanceof AttributeIDÂ»
+		Â«obj.compileAttributeIDÂ»
+		Â«ENDIFÂ»
 	'''
 	
 	/**
 	 * Constructs a float data type for the given Signal: float [signal_name];
 	 */
 	def private compileSignalID(SignalID id) '''
-		«IF id.signal !== null»
+		Â«IF id.signal !== nullÂ»
 		/* signal */
-		float «id.signal.name.replace(" ", "_").toFirstLower»;
-		«ENDIF»
+		float Â«id.signal.name.replace(" ", "_").toFirstLowerÂ»;
+		Â«ENDIFÂ»
 		
 	'''
 	
@@ -104,10 +104,10 @@ class ExampleCHeaderTemplate {
 	 * Constructs a data type for the given attribute: [attribute_type] [attribute_name];
 	 */
 	def private compileAttributeID(AttributeID id) '''
-		«IF id.attr !== null»
-		«id.attr.compileSignalAttribute»
-		«id.attr.attrtype.type.compileType» «id.attr.compileStructAttribute»«id.attr.name.replace(" ", "_").toFirstLower»;
-		«ENDIF»
+		Â«IF id.attr !== nullÂ»
+		Â«id.attr.compileSignalAttributeÂ»
+		Â«id.attr.attrtype.type.compileTypeÂ» Â«id.attr.compileStructAttributeÂ»Â«id.attr.name.replace(" ", "_").toFirstLowerÂ»;
+		Â«ENDIFÂ»
 		
 	'''
 	
@@ -116,7 +116,7 @@ class ExampleCHeaderTemplate {
 	 */
 	def private compileStructAttribute(AttributeNode attr) {
 		if(attr.attrtype.type.compileType.toString.equals("struct")) {
-			return '''«attr.name.replace(" ", "_").toFirstUpper» '''
+			return '''Â«attr.name.replace(" ", "_").toFirstUpperÂ» '''
 		}
 	}
 	
@@ -135,13 +135,13 @@ class ExampleCHeaderTemplate {
 	 * struct [class_name] : [inheritance] { [attribute_type] [attribute_name]; ... };
 	 */
 	def private compileClassID(ClassID id) '''
-		«IF id.cla.attribute.empty»
-		struct «id.cla.name.replace(" ", "_").toFirstUpper» «id.cla.compileInheritance»{};
-		«ELSE»
-		struct «id.cla.name.replace(" ", "_").toFirstUpper» «id.cla.compileInheritance»{	
-			«id.cla.compileAttributes»
+		Â«IF id.cla.attribute.emptyÂ»
+		struct Â«id.cla.name.replace(" ", "_").toFirstUpperÂ» Â«id.cla.compileInheritanceÂ»{};
+		Â«ELSEÂ»
+		struct Â«id.cla.name.replace(" ", "_").toFirstUpperÂ» Â«id.cla.compileInheritanceÂ»{	
+			Â«id.cla.compileAttributesÂ»
 		};
-		«ENDIF»
+		Â«ENDIFÂ»
 		
 	'''
 	
@@ -151,7 +151,7 @@ class ExampleCHeaderTemplate {
 	def private compileInheritance(ClassNode node) {
 		if (node.inheritance !== null && node.inheritance.name !== null 
 			&& node.inheritance.name!== null && !node.inheritance.name.equals("")) {
-		''': «node.inheritance.name.toFirstUpper» ''' 
+		''': Â«node.inheritance.name.toFirstUpperÂ» ''' 
 		}
 	}
 
@@ -159,9 +159,9 @@ class ExampleCHeaderTemplate {
 	 * Constructs all attributes of the given class.
 	 */
 	def private compileAttributes(ClassNode node) '''
-		«FOR attr : node.attribute»
-		«attr.attrtype.type.compileType» «attr.name.replace(" ", "_").toFirstLower»;
-		«ENDFOR»
+		Â«FOR attr : node.attributeÂ»
+		Â«attr.attrtype.type.compileTypeÂ» Â«attr.name.replace(" ", "_").toFirstLowerÂ»;
+		Â«ENDFORÂ»
 	'''
 	
 	/**
@@ -175,7 +175,7 @@ class ExampleCHeaderTemplate {
 			return ''''''
 		}
 		if (type.newtype !== null) {
-			return '''«type.newtype.name»'''
+			return '''Â«type.newtype.nameÂ»'''
 		}
 	}
 	

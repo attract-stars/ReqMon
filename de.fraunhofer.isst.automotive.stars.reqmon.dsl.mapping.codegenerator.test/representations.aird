@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" uid="_lJS2EONVEemn37arQrZK1g" version="14.1.0.201810161215">
+  <semanticResources>bundleentry://885.fwk1629378585/cache/www.w3.org/2001/XMLSchema-instance.xsd</semanticResources>
+  <semanticResources>bundleentry://885.fwk1629378585/cache/www.w3.org/2001/XMLSchema.xsd</semanticResources>
+  <semanticResources>src/de/fraunhofer/isst/automotive/stars/reqmon/dsl/mapping/codegenerator/test/system.xsd</semanticResources>
+</viewpoint:DAnalysis>

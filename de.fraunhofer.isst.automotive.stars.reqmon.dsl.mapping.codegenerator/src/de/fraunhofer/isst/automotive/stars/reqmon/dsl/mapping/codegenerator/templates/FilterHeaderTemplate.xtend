@@ -21,30 +21,30 @@ class FilterHeaderTemplate {
 	def CharSequence generateTemplate(FilterType filtertype) {
 	this.filtertype = filtertype
 	'''
-	#define OID_DADAS_«oidName» "«oidString»"
-	«moreDefines»
+	#define OID_DADAS_Â«oidNameÂ» "Â«oidStringÂ»"
+	Â«moreDefinesÂ»
 	
-	«includes»
+	Â«includesÂ»
 	
-	class «className» «inheritances»
+	class Â«classNameÂ» Â«inheritancesÂ»
 	{
-		ADTF_DECLARE_FILTER_VERSION(OID_DADAS_«oidName», "«filterName»", OBJCAT_DataFilter, "«versionTerm»", «version», "«oidDesignation»")
+		ADTF_DECLARE_FILTER_VERSION(OID_DADAS_Â«oidNameÂ», "Â«filterNameÂ»", OBJCAT_DataFilter, "Â«versionTermÂ»", Â«versionÂ», "Â«oidDesignationÂ»")
 		
 		private: // private members
-			«inputPins»
+			Â«inputPinsÂ»
 			
-			«outputPins»
+			Â«outputPinsÂ»
 			
-			«objectPtrs»
+			Â«objectPtrsÂ»
 			
-			«morePrivateMembers»
+			Â«morePrivateMembersÂ»
 			
 		public:
-			«className»(const tChar* __info);
-			virtual ~«className»();
+			Â«classNameÂ»(const tChar* __info);
+			virtual ~Â«classNameÂ»();
 			
 		private: // private functions
-			«privateFunctions»
+			Â«privateFunctionsÂ»
 			
 		public: // overwrites cFilter
 			tResult Init(tInitStage eStage, __exception = NULL);
@@ -52,10 +52,10 @@ class FilterHeaderTemplate {
 			tResult Stop(__exception);
 			tResult Shutdown(tInitStage eStage, __exception);
 			
-		«publicFunctions»
+		Â«publicFunctionsÂ»
 			
 		protected: 
-			«protectedFunctions»
+			Â«protectedFunctionsÂ»
 	};
 	
 	'''
@@ -63,7 +63,7 @@ class FilterHeaderTemplate {
 	
 
 	//  oid macro
-	def private getOidName() '''«filtertype»'''
+	def private getOidName() '''Â«filtertypeÂ»'''
 	
 	def private getOidString() '''$oid_string$'''
 	
@@ -88,13 +88,13 @@ class FilterHeaderTemplate {
 	
 	// inheritnace macro
 	def private getInheritances() '''
-		: public «switch(filtertype) {
+		: public Â«switch(filtertype) {
 		case ABSTRACT_FUNCTION: '''cConditionTriggeredFilter'''
 		case FUNCTIONAL_CORRECTNESS_ORACLE: '''cConditionTriggeredFilter'''
 		case SCENE_ABSTRACTION: '''cFilter'''
 		case TEST_COVERAGE_MONITOR: '''ILoadRecordsInterface, public cConditionTriggeredFilter'''
 		default: '''$class_name$''' 	
-		}»
+		}Â»
 	'''
 	
 	// adtf declare filter version macros
@@ -125,10 +125,10 @@ class FilterHeaderTemplate {
 	// input and output pin macro, object pointer macro
 	def private getInputPins() {
 		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''«AFFInputPins»'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''«FCOFInputPins»'''
-			case SCENE_ABSTRACTION: '''«SAFInputPins»'''
-			case TEST_COVERAGE_MONITOR: '''«TCMFInputPins»'''
+			case ABSTRACT_FUNCTION: '''Â«AFFInputPinsÂ»'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''Â«FCOFInputPinsÂ»'''
+			case SCENE_ABSTRACTION: '''Â«SAFInputPinsÂ»'''
+			case TEST_COVERAGE_MONITOR: '''Â«TCMFInputPinsÂ»'''
 			default: '''$input_pin$'''
 		}
 	}
@@ -158,10 +158,10 @@ class FilterHeaderTemplate {
 	
 	def private getOutputPins() {
 		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''«AFFOutputPins»'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''«FCOFOutputPins»'''
-			case SCENE_ABSTRACTION: '''«SAFOutputPins»'''
-			case TEST_COVERAGE_MONITOR: '''«TCMFOutputPins»'''
+			case ABSTRACT_FUNCTION: '''Â«AFFOutputPinsÂ»'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''Â«FCOFOutputPinsÂ»'''
+			case SCENE_ABSTRACTION: '''Â«SAFOutputPinsÂ»'''
+			case TEST_COVERAGE_MONITOR: '''Â«TCMFOutputPinsÂ»'''
 			default: '''$output_pin$'''
 		}
 	}
@@ -189,10 +189,10 @@ class FilterHeaderTemplate {
 	
 	def private getObjectPtrs() {
 		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''«AFFObjectPtrs»'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''«FCOFObjectPtrs»'''
-			case SCENE_ABSTRACTION: '''«SAFObjectPtrs»'''
-			case TEST_COVERAGE_MONITOR: '''«TCMFObjectPtrs»'''
+			case ABSTRACT_FUNCTION: '''Â«AFFObjectPtrsÂ»'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''Â«FCOFObjectPtrsÂ»'''
+			case SCENE_ABSTRACTION: '''Â«SAFObjectPtrsÂ»'''
+			case TEST_COVERAGE_MONITOR: '''Â«TCMFObjectPtrsÂ»'''
 			default: '''$object_ptrs$'''
 		}
 	}
@@ -226,34 +226,34 @@ class FilterHeaderTemplate {
 	
 	// public function macro
 	def private getPublicFunctions() '''
-	«IF filtertype.equals(FilterType.ABSTRACT_FUNCTION) || filtertype.equals(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE) 
-		|| filtertype.equals(FilterType.TEST_COVERAGE_MONITOR)»
+	Â«IF filtertype.equals(FilterType.ABSTRACT_FUNCTION) || filtertype.equals(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE) 
+		|| filtertype.equals(FilterType.TEST_COVERAGE_MONITOR)Â»
 	public: // overrides cFilter //implements IRunnable
 		tResult Run(tInt nActivationCode,
 			const tVoid* pvUserData,
 			tInt szUserDataSize,
 			ucom::IException** __exception_ptr = NULL);
-	«ELSEIF filtertype.equals(FilterType.SCENE_ABSTRACTION)»
+	Â«ELSEIF filtertype.equals(FilterType.SCENE_ABSTRACTION)Â»
 	public: 
 		tResult OnPinEvent(IPin* pSource,
 			tInt nEventCode,
 			tInt nParam1,
 			tInt nParam2,
 			IMediaSample* pMediaSample);
-	«ENDIF»
+	Â«ENDIFÂ»
 	'''
 	
 	// protected function macro
 	def private getProtectedFunctions() '''
-	«IF filtertype.equals(FilterType.ABSTRACT_FUNCTION) || filtertype.equals(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE) 
-			|| filtertype.equals(FilterType.TEST_COVERAGE_MONITOR)»
+	Â«IF filtertype.equals(FilterType.ABSTRACT_FUNCTION) || filtertype.equals(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE) 
+			|| filtertype.equals(FilterType.TEST_COVERAGE_MONITOR)Â»
 	tResult OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception = NULL);
-	tResult Evaluate(«parameter»);
-	«ELSEIF filtertype.equals(FilterType.SCENE_ABSTRACTION)»
+	tResult Evaluate(Â«parameterÂ»);
+	Â«ELSEIF filtertype.equals(FilterType.SCENE_ABSTRACTION)Â»
 	tResult ProcessSample(IMediaSample* pSample);
 	DADAS::tCategorisation Categorize(tScene* scene);
 	tResult SendBOOSTCategories(DADAS::tCategorisation* categorisation);
-	«ENDIF»
+	Â«ENDIFÂ»
 	void LOG(cString mes);
 	'''
 	

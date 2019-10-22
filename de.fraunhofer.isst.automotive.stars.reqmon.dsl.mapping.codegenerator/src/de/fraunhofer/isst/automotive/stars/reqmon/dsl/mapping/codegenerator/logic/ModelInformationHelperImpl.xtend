@@ -27,35 +27,52 @@ class ModelInformationHelperImpl implements IModelInformationHelper {
 	}
 	
 	override setFilterType(FilterType filtertype) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
 	override getIncludes() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		return new ArrayList
 	}
 	
 	override isDebugOpt() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		return false
 	}
 	
 	override getPins() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		return new ArrayList
 	}
 	
 	override getInputPins() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		return new ArrayList
 	}
 	
 	override getOutputPins() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		return new ArrayList
 	}
 	
 	override getAttributes(String objectName) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		return new ArrayList
 	}
 	
 	override getSystemAttribut(String string) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		return ""
+	}
+	
+	override getCorrespondingAttribute(String monAttr) {
+		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		return ""
+	}
+	
+	override getSignalBoundarys(String attr) {
+		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		return new ArrayList
 	}
 	
 	

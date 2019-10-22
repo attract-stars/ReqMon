@@ -12,8 +12,8 @@ public interface IPin {
 	
 	public String getMediaSubType();
 	
-	public String getObjectName();
+	public String getPinObjectName();
 	
-	public String getPinObject();
+	public String getPinObjectType();
 
 }

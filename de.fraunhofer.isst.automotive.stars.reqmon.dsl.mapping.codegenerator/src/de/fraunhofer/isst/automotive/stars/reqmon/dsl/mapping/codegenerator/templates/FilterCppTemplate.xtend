@@ -3,6 +3,8 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.tem
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.IModelInformationHelper
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.IPin
 
+
+
 /**
  * This class offers templates for three different filter types in c++.
  * @author sgraf
@@ -11,6 +13,7 @@ class FilterCppTemplate {
 	
 	FilterType filtertype
 	IModelInformationHelper helper
+	
 	
 	def void setModelInformationHepler(IModelInformationHelper helper) {
 		this.helper = helper
@@ -23,58 +26,56 @@ class FilterCppTemplate {
 	this.filtertype = filtertype
 	this.helper.setFilterType(filtertype);
 	'''
-	«includes»
+	Â«includesÂ»
 	
-	«datatypeSettings»
+	Â«datatypeSettingsÂ»
 	
-	ADTF_FILTER_PLUGIN("«filterName»", OID_DADAS_«oidName», «className»)
+	ADTF_FILTER_PLUGIN("Â«filterNameÂ»", OID_DADAS_Â«oidNameÂ», Â«classNameÂ»)
 	
-	«className»::«className»(const tChar* __info) : «memberValueSetting»
+	Â«classNameÂ»::Â«classNameÂ»(const tChar* __info) : Â«memberValueSettingÂ»
 	{
-		«constructor»
+		Â«constructorÂ»
 	}
 	
-	«className»::~«className»()
+	Â«classNameÂ»::~Â«classNameÂ»()
 	{
-		«destructor»
+		Â«destructorÂ»
 	}
 	
-	tResult «className»::Init(tInitStage eStage, __exception)
+	tResult Â«classNameÂ»::Init(tInitStage eStage, __exception)
 	{
-		«init»
+		Â«initÂ»
 	}
 	
-	tResult «className»::Start(__exception)
+	tResult Â«classNameÂ»::Start(__exception)
 	{
-		«start»
+		Â«startÂ»
 	}
 	
-	tResult «className»::Stop(__exception)
+	tResult Â«classNameÂ»::Stop(__exception)
 	{
-		«stop»
+		Â«stopÂ»
 	}
 	
-	tResult «className»::Shutdown(tInitStage eStage, __exception)
+	tResult Â«classNameÂ»::Shutdown(tInitStage eStage, __exception)
 	{
-		«shutdown»
+		Â«shutdownÂ»
 	}
 	
-	«publicMethods»
+	Â«publicMethodsÂ»
 	
-	«protectedMethods»
+	Â«protectedMethodsÂ»
 	
-	«privateMethods»
+	Â«privateMethodsÂ»
 	'''
 	}
-	
-	
-	
+		
 	def private getIncludes() {
 		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''«exampleIncludes»'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''«exampleIncludes»'''
-			case SCENE_ABSTRACTION: '''«SAFInclude»'''
-			case TEST_COVERAGE_MONITOR: '''«exampleIncludes»'''
+			case ABSTRACT_FUNCTION: '''Â«exampleIncludesÂ»'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''Â«exampleIncludesÂ»'''
+			case SCENE_ABSTRACTION: '''Â«SAFIncludesÂ»'''
+			case TEST_COVERAGE_MONITOR: '''Â«exampleIncludesÂ»'''
 			default: '''$includes$'''
 		}
 	}
@@ -86,23 +87,23 @@ class FilterCppTemplate {
 	#include "dadas_mediatypes.h"
 	'''
 	
-	def private getSAFInclude() '''
-		«FOR include : helper.includes»
-		#include «include».h
-		«ENDFOR»
+	def private getSAFIncludes() '''
+		Â«FOR include : helper.includesÂ»
+		#include Â«includeÂ».h
+		Â«ENDFORÂ»
 	'''
 	
 	def private getDatatypeSettings() {
 		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''«SAFDataTypeSettings»'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''«SAFDataTypeSettings»'''
-			case SCENE_ABSTRACTION: '''«SAFDataTypeSettings»'''
-			case TEST_COVERAGE_MONITOR: '''«SAFDataTypeSettings»'''
+			case ABSTRACT_FUNCTION: '''Â«SAFDataTypeSettingsÂ»'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''Â«SAFDataTypeSettingsÂ»'''
+			case SCENE_ABSTRACTION: '''Â«SAFDataTypeSettingsÂ»'''
+			case TEST_COVERAGE_MONITOR: '''Â«SAFDataTypeSettingsÂ»'''
 			default: '''$datatypeSettings$'''
 		}
 	}
 	
-	def private getSAFDataTypeSettings() '''tBool debugOpt = t«IF helper.isDebugOpt»True«ELSE»False«ENDIF»;'''
+	def private getSAFDataTypeSettings() '''tBool debugOpt = tÂ«IF helper.isDebugOptÂ»TrueÂ«ELSEÂ»FalseÂ«ENDIFÂ»;'''
 	
 	def private getFilterName() {
 		switch(filtertype) {
@@ -114,7 +115,7 @@ class FilterCppTemplate {
 		}
 	}
 	
-	def private getOidName() '''«filtertype»'''
+	def private getOidName() '''Â«filtertypeÂ»'''
 	
 	def private getClassName() {
 		switch(filtertype) {
@@ -130,9 +131,9 @@ class FilterCppTemplate {
 	def private getMemberValueSetting() {
 		switch(filtertype) {
 			case ABSTRACT_FUNCTION: '''cConditionTriggeredFilter(tTrue,tTrue,__info), 
-				m_bTimeout(tFalse)«moreValueSettings»'''
+				m_bTimeout(tFalse)Â«moreValueSettingsÂ»'''
 			case FUNCTIONAL_CORRECTNESS_ORACLE: '''cConditionTriggeredFilter(tTrue,tTrue,__info), 
-				m_bTimeout(tFalse)«moreValueSettings»'''
+				m_bTimeout(tFalse)Â«moreValueSettingsÂ»'''
 			case SCENE_ABSTRACTION: '''cFilter(__info)'''
 			case TEST_COVERAGE_MONITOR: '''cConditionTriggeredFilter(tTrue,tTrue,__info), ILoadRecordsInterface(),
 				m_bTimeout(tFalse)'''
@@ -144,10 +145,10 @@ class FilterCppTemplate {
 	
 	def private getConstructor() {
 		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''«exampleConstructor»'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''«exampleConstructor»'''
+			case ABSTRACT_FUNCTION: '''Â«exampleConstructorÂ»'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''Â«exampleConstructorÂ»'''
 			case SCENE_ABSTRACTION: ''''''
-			case TEST_COVERAGE_MONITOR: '''«exampleConstructor»'''
+			case TEST_COVERAGE_MONITOR: '''Â«exampleConstructorÂ»'''
 			default: '''$Constructor$'''
 		}	
 	}
@@ -161,34 +162,34 @@ class FilterCppTemplate {
 		"in the specified amount of time (microseconds). 0 disables the timeout.");
 	SetPropertyInt("timeout" NSSUBPROP_MINIMUM, 0);
 	
-	«morePropertySettings»
+	Â«morePropertySettingsÂ»
 	'''
 	
 	def private getMorePropertySettings() '''$set more properties$'''
 	
 	def private getDestructor() {
 		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''«exampleDestructor»'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''«exampleDestructor»'''
+			case ABSTRACT_FUNCTION: '''Â«exampleDestructorÂ»'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''Â«exampleDestructorÂ»'''
 			case SCENE_ABSTRACTION: ''''''
-			case TEST_COVERAGE_MONITOR: '''«exampleDestructor»'''
+			case TEST_COVERAGE_MONITOR: '''Â«exampleDestructorÂ»'''
 			default: '''$Destructor$'''
 		}	
 	}
 	
 	def private getExampleDestructor() '''
-	«IF filtertype.equals(FilterType.ABSTRACT_FUNCTION) || filtertype.equals(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE) 
-			|| filtertype.equals(FilterType.TEST_COVERAGE_MONITOR)»
+	Â«IF filtertype.equals(FilterType.ABSTRACT_FUNCTION) || filtertype.equals(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE) 
+			|| filtertype.equals(FilterType.TEST_COVERAGE_MONITOR)Â»
 	kernelMutex.Release();
-	«ENDIF»
+	Â«ENDIFÂ»
 	'''
 	
 	def private getInit() {
 		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''«getAFFInit»'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''«getFCOFInit»'''
-			case SCENE_ABSTRACTION: '''«SAFInit»'''
-			case TEST_COVERAGE_MONITOR: '''«TCMFInit»'''
+			case ABSTRACT_FUNCTION: '''Â«getAFFInitÂ»'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''Â«getFCOFInitÂ»'''
+			case SCENE_ABSTRACTION: '''Â«SAFInitÂ»'''
+			case TEST_COVERAGE_MONITOR: '''Â«TCMFInitÂ»'''
 			default: '''$init_implementation$'''
 		}
 	} 
@@ -205,7 +206,7 @@ class FilterCppTemplate {
 			(tVoid**)&pDescManager, 
 			__exception_ptr));
 			
-		«pinCreation»
+		Â«pinCreationÂ»
 	}
 	else if (eStage == StageNormal)
 	{
@@ -241,7 +242,7 @@ class FilterCppTemplate {
 			(tVoid**)&pDescManager, 
 			__exception_ptr));
 			
-		«pinCreation»
+		Â«pinCreationÂ»
 	}
 	else if (eStage == StageNormal)
 	{
@@ -270,7 +271,7 @@ class FilterCppTemplate {
 	
 	if (eStage == StageFirst)
 	{
-		«SAFPinCreation»
+		Â«SAFPinCreationÂ»
 	}
 	else if (eStage == StageNormal)
 	{
@@ -289,7 +290,7 @@ class FilterCppTemplate {
 	
 	if (eStage == StageFirst)
 	{
-		«pinCreation»
+		Â«pinCreationÂ»
 	}
 	else if (eStage == StageNormal)
 	{
@@ -309,39 +310,39 @@ class FilterCppTemplate {
 			RETURN_IF_FAILED(m_oTimeout.Create(this, nTimeout, OIGetInstanceName()));
 		}
 		
-		«moreActions»
+		Â«moreActionsÂ»
 	}
 	
 	RETURN_NOERROR;
 	'''
 	
 	def private getPinCreation() '''
-	cObjectPtr<IMediaType> «PTypeName» = new cMediaType(«mediatype», «mediaSubType»«moreMediaTypeParameters»);
-	?«pointer»?
-	«createPin»
-	«registerPin»
-	?«interface»?
+	cObjectPtr<IMediaType> Â«PTypeNameÂ» = new cMediaType(Â«mediatypeÂ», Â«mediaSubTypeÂ»Â«moreMediaTypeParametersÂ»);
+	?Â«pointerÂ»?
+	Â«createPinÂ»
+	Â«registerPinÂ»
+	?Â«interfaceÂ»?
 	
-	?cMediaType* «PTypeName»;
-	«PTypeName» = new cMediaType(«mediatype», «mediaSubType»«moreMediaTypeParameters»);
-	«pointer»
-	«createPin»
-	«registerPin»
+	?cMediaType* Â«PTypeNameÂ»;
+	Â«PTypeNameÂ» = new cMediaType(Â«mediatypeÂ», Â«mediaSubTypeÂ»Â«moreMediaTypeParametersÂ»);
+	Â«pointerÂ»
+	Â«createPinÂ»
+	Â«registerPinÂ»
 	?
 	'''
 	
 	def private getSAFPinCreation() '''
-	«FOR pin : helper.getPins»
-	cObjectPtr<IMediaType> «pin.SAFPTypeName» = new cMediaType(«pin.mediaType», «pin.mediaSubType»);
-	«pin.createSAFPin»
-	«pin.registerSAFPin»
+	Â«FOR pin : helper.getPinsÂ»
+	cObjectPtr<IMediaType> Â«pin.SAFPTypeNameÂ» = new cMediaType(Â«pin.mediaTypeÂ», Â«pin.mediaSubTypeÂ»);
+	Â«pin.createSAFPinÂ»
+	Â«pin.registerSAFPinÂ»
 	
-	«ENDFOR»
+	Â«ENDFORÂ»
 	'''
 	
 	def private getPTypeName() '''$pTypeName$'''
 	
-	def private getSAFPTypeName(IPin pin) '''p«pin.pinName.toFirstUpper»'''
+	def private getSAFPTypeName(IPin pin) '''pÂ«pin.pinName.toFirstUpperÂ»'''
 	
 	def private getMediatype() '''MEDIATYPE_DADAS'''
 	
@@ -349,34 +350,34 @@ class FilterCppTemplate {
 	
 	def private getMoreMediaTypeParameters() ''', $more parameters$'''
 	
-	def private getPointer() '''RETURN_IF_POINTER_NULL(«PTypeName»);'''
+	def private getPointer() '''RETURN_IF_POINTER_NULL(Â«PTypeNameÂ»);'''
 	
-	def private getRegisterPin() '''RETURN_IF_FAILED(Register?Trigger?Pin(&«pinName»));'''
+	def private getRegisterPin() '''RETURN_IF_FAILED(Register?Trigger?Pin(&Â«pinNameÂ»));'''
 	
-	def private getRegisterSAFPin(IPin pin) '''RETURN_IF_FAILED(RegisterPin(&«pin.SAFPinName»));'''
+	def private getRegisterSAFPin(IPin pin) '''RETURN_IF_FAILED(RegisterPin(&Â«pin.SAFPinNameÂ»));'''
 	
 	def private getPinName() '''$m_oPin'''
 	
-	def private getSAFPinName(IPin pin) '''m_o«pin.pinName.toFirstUpper»'''
+	def private getSAFPinName(IPin pin) '''m_oÂ«pin.pinName.toFirstUpperÂ»'''
 	
-	def private getCreatePin() '''RETURN_IF_FAILED(«pinName».Create("«mediaTypeName»", «PTypeName», this«moreCreatePinParameters»));'''
+	def private getCreatePin() '''RETURN_IF_FAILED(Â«pinNameÂ».Create("Â«mediaTypeNameÂ»", Â«PTypeNameÂ», thisÂ«moreCreatePinParametersÂ»));'''
 	
-	def private getCreateSAFPin(IPin pin) '''RETURN_IF_FAILED(«pin.SAFPinName».Create("«pin.objectName»", «pin.SAFPTypeName», this));'''
+	def private getCreateSAFPin(IPin pin) '''RETURN_IF_FAILED(Â«pin.SAFPinNameÂ».Create("Â«pin.pinObjectNameÂ»", Â«pin.SAFPTypeNameÂ», this));'''
 	
 	def private getMediaTypeName() '''$type$'''
 	
 	def private getMoreCreatePinParameters() ''', $more parameters$'''
 	
-	def private getInterface() '''RETURN_IF_FAILED(«PTypeName»->GetInterface(IID_ADTF_MEDIA_TYPE_DESCRIPTION_EXT, (tVoid**)&«mediaTypeDescription»));'''
+	def private getInterface() '''RETURN_IF_FAILED(Â«PTypeNameÂ»->GetInterface(IID_ADTF_MEDIA_TYPE_DESCRIPTION_EXT, (tVoid**)&Â«mediaTypeDescriptionÂ»));'''
 	
 	def private getMediaTypeDescription() '''m_pTypeDesc'''
 	
 	def private getStart() {
 		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''«startWithTypeOne»'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''«startWithTypeOne»'''
-			case SCENE_ABSTRACTION: '''«SAFStart»'''
-			case TEST_COVERAGE_MONITOR: '''«startWitTypeThree»'''
+			case ABSTRACT_FUNCTION: '''Â«startWithTypeOneÂ»'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''Â«startWithTypeOneÂ»'''
+			case SCENE_ABSTRACTION: '''Â«SAFStartÂ»'''
+			case TEST_COVERAGE_MONITOR: '''Â«startWitTypeThreeÂ»'''
 			default: '''$start_implementation$'''
 		}
 	}
@@ -408,7 +409,7 @@ class FilterCppTemplate {
 	
 	RETURN_IF_FAILED(cConditionTriggeredFilter::Start(__exception_ptr));
 	
-	«moreConditions»
+	Â«moreConditionsÂ»
 	
 	RETURN_NOERROR;
 	'''
@@ -417,10 +418,10 @@ class FilterCppTemplate {
 	
 	def private getStop() {
 		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''«stopWithTypeOne»'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''«stopWithTypeOne»'''
-			case SCENE_ABSTRACTION: '''«SAFStop»'''
-			case TEST_COVERAGE_MONITOR: '''«stopWithTypeThree»'''
+			case ABSTRACT_FUNCTION: '''Â«stopWithTypeOneÂ»'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''Â«stopWithTypeOneÂ»'''
+			case SCENE_ABSTRACTION: '''Â«SAFStopÂ»'''
+			case TEST_COVERAGE_MONITOR: '''Â«stopWithTypeThreeÂ»'''
 			default: '''$stop_implementation$'''
 		}
 	}
@@ -446,17 +447,17 @@ class FilterCppTemplate {
 		m_oTimeout.Cancel();
 	}
 	
-	«moreConditions»
+	Â«moreConditionsÂ»
 	
 	return cConditionTriggeredFilter::Stop(__exception_ptr);
 	'''
 	
 	def private getShutdown() {
 		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''«shutdownWithTypeOne»'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''«shutdownWithTypeOne»'''
-			case SCENE_ABSTRACTION: '''«SAFShutdown»'''
-			case TEST_COVERAGE_MONITOR: '''«shutdownWithTypeOne»'''
+			case ABSTRACT_FUNCTION: '''Â«shutdownWithTypeOneÂ»'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''Â«shutdownWithTypeOneÂ»'''
+			case SCENE_ABSTRACTION: '''Â«SAFShutdownÂ»'''
+			case TEST_COVERAGE_MONITOR: '''Â«shutdownWithTypeOneÂ»'''
 			default: '''$shutdown_implementation$'''
 		}
 	}
@@ -489,16 +490,16 @@ class FilterCppTemplate {
 	
 	def private getPublicMethods() {
 		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''«run»'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''«run»'''
-			case SCENE_ABSTRACTION: '''«onPinEvent»'''
-			case TEST_COVERAGE_MONITOR: '''«run»'''
+			case ABSTRACT_FUNCTION: '''Â«runÂ»'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''Â«runÂ»'''
+			case SCENE_ABSTRACTION: '''Â«onPinEventÂ»'''
+			case TEST_COVERAGE_MONITOR: '''Â«runÂ»'''
 			default: '''$public_methods$'''
 		}
 	}
 	
 	def private getRun() '''
-	tResult «className»::Run(tInt nActivationCode,
+	tResult Â«classNameÂ»::Run(tInt nActivationCode,
 		const tVoid* pvUserData,
 		tInt szUserDataSize,
 		ucom::IException** __exception_ptr)
@@ -507,7 +508,7 @@ class FilterCppTemplate {
 		
 		if (adtf::cKernelTimeout::RUN_TIMEOUT == nActivationCode)
 		{
-			«clear»
+			Â«clearÂ»
 			
 			LOG_WARNING("Timeout");
 			// restart our timeout
@@ -521,7 +522,7 @@ class FilterCppTemplate {
 	def private getClear() '''clear buffers and/or queues'''
 	
 	def private getOnPinEvent() '''
-	tResult «className»::OnPinEvent(IPin* pSource,
+	tResult Â«classNameÂ»::OnPinEvent(IPin* pSource,
 		tInt nEventCode,
 		tInt nParam1,
 		tInt nParam2,
@@ -545,30 +546,30 @@ class FilterCppTemplate {
 	def private getProtectedMethods() {
 		switch(filtertype) {
 			case ABSTRACT_FUNCTION: '''
-				«onTrigger»
+				Â«onTriggerÂ»
 				
-				«log»'''
+				Â«logÂ»'''
 			case FUNCTIONAL_CORRECTNESS_ORACLE: '''
-				«onTrigger»
+				Â«onTriggerÂ»
 				
-				«log»'''
+				Â«logÂ»'''
 			case SCENE_ABSTRACTION: '''
-				«processSample»
+				Â«processSampleÂ»
 				
-				«categorize»
+				Â«categorizeÂ»
 				
-				«log»'''
+				Â«logÂ»'''
 			case TEST_COVERAGE_MONITOR: '''
-				«onTrigger»
+				Â«onTriggerÂ»
 				
-				«log»'''
+				Â«logÂ»'''
 			default: '''$protected_methods$'''
 		}
 	}
 	
 	def private getOnTrigger() '''
 	//Only triggers on the both targetpoints but not on the categorisation -> the catergorisation is got from the additional queue
-	tResult «className»::OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception)
+	tResult Â«classNameÂ»::OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception)
 	{
 		// reset our timeout
 		if (m_bTimeout)
@@ -581,7 +582,7 @@ class FilterCppTemplate {
 		//Get Categorisation Sample
 		cObjectPtr<IMediaSample> pCategorisationSample;
 		
-		«moreActions»
+		Â«moreActionsÂ»
 		
 		if(pCategorisationQueue) {
 			pCategorisationQueue->Get(&pCategorisationSample,
@@ -591,7 +592,7 @@ class FilterCppTemplate {
 		}
 		RETURN_IF_POINTER_NULL(pCategorisationSample);
 		
-		«targetSample»
+		Â«targetSampleÂ»
 		
 		//Lock Sample
 		kernelMutex.Enter();
@@ -611,7 +612,7 @@ class FilterCppTemplate {
 		
 			?RETURN_IF_FAILED(?DADAS::HELPER::DeserializeFromSample(pConcreteTargetsSample,pConcreteTargetsData)?)?;
 		
-		«moreActions»
+		Â«moreActionsÂ»
 		
 		kernelMutex.Leave();
 		
@@ -620,7 +621,7 @@ class FilterCppTemplate {
 	'''
 	
 	def private getLog() '''
-	void «className»::LOG(cString mes)
+	void Â«classNameÂ»::LOG(cString mes)
 	{		
 		if(debugOpt) {
 			LOG_INFO(mes);
@@ -636,12 +637,12 @@ class FilterCppTemplate {
 	}
 	
 	def private getProcessSampleForOneInOutput(IPin inputPin, IPin outputPin) '''
-	tResult «className»::ProcessSample(IMediaSample* pSample)
+	tResult Â«classNameÂ»::ProcessSample(IMediaSample* pSample)
 	{
 		{
-			__sample_read_lock(pMediaSample, t«inputPin.pinObject», pData);
+			__sample_read_lock(pMediaSample, Â«inputPin.pinObjectTypeÂ», pData);
 		
-			t«outputPin.pinObject» «outputPin.objectName.toFirstLower» = Categorize(&pData);
+			Â«outputPin.pinObjectTypeÂ» Â«outputPin.pinObjectName.toFirstLowerÂ» = Categorize(&pData);
 		
 		}
 	
@@ -658,35 +659,60 @@ class FilterCppTemplate {
 	
 	def private getCategorize() {
 		if (helper.inputPins.size == 1 && helper.outputPins.size == 1) {
-			getCategorisationForOneInOutput(helper.inputPins.get(0).pinObject, helper.outputPins.get(0).pinObject)
+			getCategorisationForOneInOutput(helper.inputPins.get(0), helper.outputPins.get(0))
 		}
 	}
 	
 	
-	def private getCategorisationForOneInOutput(String inObj, String outObj) '''
-	t«outObj» «className»::Categorize(t«inObj»* «inObj.toFirstLower»)
+	def private getCategorisationForOneInOutput(IPin in, IPin out) '''
+	Â«out.pinObjectTypeÂ» Â«classNameÂ»::Categorize(Â«in.pinObjectTypeÂ»* Â«in.pinObjectName.toFirstLowerÂ»)
 	{
-		//Build t«outObj»
+		//Build Â«out.pinObjectTypeÂ»
 	
-		t«outObj» «outObj.toFirstLower»;
+		Â«out.pinObjectTypeÂ» Â«out.pinObjectName.toFirstLowerÂ»;
 
-		«getValueSettingsForAllSceneElements(inObj, outObj)»
+		Â«getValueSettingsForAllSceneElements(in, out)Â»
 	
-		return «outObj.toFirstLower»;
+		return Â«out.pinObjectName.toFirstLowerÂ»;
 	}
 	'''
 	
-	def private getValueSettingsForAllSceneElements(String inObj, String outObj) '''
-	«FOR elem : helper.getAttributes(outObj)»
-	«elem» «elem.substring(1).toFirstLower»;
-	«getCorrespondingElement(elem, inObj)»
-		«FOR attr : helper.getAttributes(elem)»
-			«IF attr.charAt(0).compareTo('e') == 0»
-			
-			«ENDIF»
-		«ENDFOR»
-	«ENDFOR»
-	''' 
+	def private getValueSettingsForAllSceneElements(IPin in, IPin out) '''
+	Â«FOR elem : helper.getAttributes(out.pinObjectType)Â»
+	Â«getValueSettingForElement(elem, in, out)Â»
+	Â«ENDFORÂ»
+	'''
+	
+	def private getValueSettingForElement(String elem, IPin in, IPin out) {
+		if (elem.charAt(0).compareTo('c') == 0) {
+			val elements = elem.split(' ')
+			if (elements.length === 3) {
+				getClassValues(elements, in, out)
+			}
+		}
+		else if (elem.charAt(0).compareTo('l') == 0) {
+			val elements = elem.split(' ')
+			if (elements.length === 3) {
+				getListValues(elements, in)
+			}
+		}
+	}
+	
+	def private getListValues(String[] elems, IPin in) '''
+	Â«getCorrespondingElement(elems.get(1), in.pinObjectName)Â»
+	'''
+	 
+	def private getClassValues(String[] elems, IPin in, IPin out) '''
+	Â«elems.get(1)Â» Â«elems.get(1)Â»;
+	Â«getCorrespondingElement(elems.get(1), in.pinObjectName)Â»
+	Â«FOR attr : helper.getAttributes(elems.get(1))Â»
+		Â«IF attr.charAt(0).compareTo('a') == 0Â»
+	Â«attr.getMonitoringAttributeÂ»
+		Â«ENDIFÂ»
+	Â«ENDFORÂ»
+	Â«out.pinObjectName.toFirstLowerÂ».Â«elems.get(2)Â» = Â«elems.get(1)Â»;
+	
+	'''
 		
 		// for (sceneObj : scene)
 		// for (attr : sceneObj)
@@ -701,22 +727,61 @@ class FilterCppTemplate {
 	
 	def private getCorrespondingElement(String elem, String inObj) {
 		val attr = helper.getSystemAttribut(elem)
-		if (attr.length > 0 && attr.charAt(0).compareTo('i') == 0) {
-			val splitted = attr.split(' ')
-			return '''t«splitted.get(0).substring(1).toFirstUpper»* «splitted.get(1)» = &(«inObj.toFirstLower»->«splitted.get(1)»);'''
+		if (attr.length === 0) return ''''''
+		val splitted = attr.split(' ')
+		if (splitted.length !== 3) return ''''''
+		
+		if (splitted.get(0).compareTo('i') == 0) {
+			return '''Â«splitted.get(1)Â»* Â«splitted.get(2)Â» = &(Â«inObj.toFirstLowerÂ»->Â«splitted.get(2)Â»);'''
+		}
+		else if (splitted.get(0).compareTo('l') == 0) {
+			return '''vector<Â«splitted.get(1)Â»>* Â«splitted.get(2)Â» = &(Â«inObj.toFirstLowerÂ»->Â«splitted.get(2)Â»);'''
 		}
 	}
 	
-	def private getEnum(String attrName, String inObj) '''
+	def private getMonitoringAttribute(String attr) {
+		val splitted = attr.split(' ')
+		if (splitted.length !== 3) {
+			return ''''''
+		}
+		return '''Â«splitted.get(1)Â» Â«splitted.get(2)Â» = Â«getCorrespondingValue(splitted.get(2))Â»();'''
+	}
 	
-	'''
+	def private getCorrespondingValue(String monAttr) {
+		val splitted = helper.getCorrespondingAttribute(monAttr).split(' ')
+		if (splitted.length != 2) {
+			return ''''''
+		}
+		return '''Â«splitted.get(0)Â»->Â«splitted.get(1)Â»'''
+	}
+	
+	/*def private getBoundaryTest(String attr) {
+		val signal = signals.get(monAttr)
+		println("Signal: " + signal)
+		if (signal === null) return ''''''
+		val bounds = helper.getSignalBoundarys(signal)
+		val splitted = attr.split(' ')
+		if (splitted.length !== 6) {
+			return ''''''
+		}
+		'''
+		if (Â«monAttr < Â«bounds.get(0)) {
+			Â«monObj.Â«splitted.get(1) = Â«splitted.get(2);
+		} else if (Â«monAttr > Â«bounds.get(1)) {
+			Â«monObj.Â«splitted.get(1) = Â«splitted.get(3);
+		} else {
+			Â«monObj.Â«splitted.get(1) = Â«splitted.get(5);
+		}
+		'''
+		
+	}*/
 	
 	def private getMoreActions() ''''''
 	
 	def private getTargetSample() '''
-	?«concreteTargetSample»?
+	?Â«concreteTargetSampleÂ»?
 	
-	?«abstractTargetSample»?
+	?Â«abstractTargetSampleÂ»?
 	'''
 	
 	def private getConcreteTargetSample() '''

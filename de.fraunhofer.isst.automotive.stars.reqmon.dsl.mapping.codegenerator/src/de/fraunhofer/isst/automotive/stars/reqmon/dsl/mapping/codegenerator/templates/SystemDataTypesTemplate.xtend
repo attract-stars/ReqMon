@@ -14,8 +14,8 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.Type
 class SystemDataTypesTemplate {
 	
 	def CharSequence generateTemplate(IMappingModel model) '''
-	#ifndef «includeGardsBegin»
-	#define «includeGardsBegin»
+	#ifndef Â«includeGardsBeginÂ»
+	#define Â«includeGardsBeginÂ»
 	
 	struct tAllocation {
 		int bit_size;
@@ -23,13 +23,13 @@ class SystemDataTypesTemplate {
 	};
 	
 	// classes
-	«model.structs»
+	Â«model.structsÂ»
 	
 	// messages
-	«model.messages»
+	Â«model.messagesÂ»
 	
 	// signals
-	«model.signals»
+	Â«model.signalsÂ»
 	
 	#endif
 	'''
@@ -42,17 +42,17 @@ class SystemDataTypesTemplate {
 	 * Returns structures with the class informations given in the resources of the model.
 	 */
 	def private getStructs(IMappingModel model) '''
-	«IF model.systemModel !== null»
-		«model.systemModel.struct»
-	«ENDIF»
+	Â«IF model.systemModel !== nullÂ»
+		Â«model.systemModel.structÂ»
+	Â«ENDIFÂ»
 	'''
 		
 	def private getStruct(EObject obj) '''
-	«IF obj instanceof Model»
-		«FOR clas : obj.classes»
-			«clas.compileClass»
-		«ENDFOR»
-	«ENDIF»
+	Â«IF obj instanceof ModelÂ»
+		Â«FOR clas : obj.classesÂ»
+			Â«clas.compileClassÂ»
+		Â«ENDFORÂ»
+	Â«ENDIFÂ»
 	'''
 	
 	def private getClasses(Model model) {
@@ -65,15 +65,15 @@ class SystemDataTypesTemplate {
 	
 	
 	def private getMessages(IMappingModel model) '''
-		«IF model.systemModel !== null»
-		«model.systemModel.message»
-		«ENDIF»
+		Â«IF model.systemModel !== nullÂ»
+		Â«model.systemModel.messageÂ»
+		Â«ENDIFÂ»
 	'''
 	
 	def private getMessage(EObject obj) '''
-	«IF obj instanceof Model»
-		«obj.message.messageComponents»
-	«ENDIF»
+	Â«IF obj instanceof ModelÂ»
+		Â«obj.message.messageComponentsÂ»
+	Â«ENDIFÂ»
 	'''
 	
 	def private getMessage(Model model) {
@@ -85,12 +85,12 @@ class SystemDataTypesTemplate {
 	}
 	
 	def private getMessageComponents(MessageNode mess) '''
-	«IF mess !== null»
-		struct t«mess.name.replace(" ", "_").toFirstUpper» {
+	Â«IF mess !== nullÂ»
+		struct tÂ«mess.name.replace(" ", "_").toFirstUpperÂ» {
 			tAllocation allocation;
 			int* sig_refs;
 		};
-	«ENDIF»
+	Â«ENDIFÂ»
 	
 	'''
 	
@@ -99,17 +99,17 @@ class SystemDataTypesTemplate {
 	 * Returns data types with the signal and attribute informations given in the resources of the model.
 	 */
  	def private getSignals(IMappingModel model) '''
-	«IF model.systemModel !== null»
-		«model.systemModel.signal»
-	«ENDIF»
+	Â«IF model.systemModel !== nullÂ»
+		Â«model.systemModel.signalÂ»
+	Â«ENDIFÂ»
 	'''
 	
 	def private getSignal(EObject obj) '''
-	«IF obj instanceof Model»
-		«FOR sig : obj.signals»
-			«sig.compileSignal»
-		«ENDFOR»
-	«ENDIF»
+	Â«IF obj instanceof ModelÂ»
+		Â«FOR sig : obj.signalsÂ»
+			Â«sig.compileSignalÂ»
+		Â«ENDFORÂ»
+	Â«ENDIFÂ»
 	'''
 	
 	def private getSignals(Model model) {
@@ -126,17 +126,17 @@ class SystemDataTypesTemplate {
 	 * Constructs a float data type for the given Signal: float [signal_name];
 	 */
 	def private compileSignal(SignalNode signal) '''
-		«IF signal !== null»
-		struct t«signal.name.replace(" ", "_").toFirstUpper» {
+		Â«IF signal !== nullÂ»
+		struct tÂ«signal.name.replace(" ", "_").toFirstUpperÂ» {
 			int sig_ref;
 			tAllocation allocation;
-			char* «signal.datatype.node.replace("<", "").replace(">", "")»;
-			float «signal.maxval.node.replace("<", "").replace(">", "")»;
-			float «signal.minval.node.replace("<", "").replace(">", "")»;
-			float «signal.prefval.node.replace("<", "").replace(">", "")»;
-			float «signal.step.node.replace("<", "").replace(">", "")»;
+			char* Â«signal.datatype.node.replace("<", "").replace(">", "")Â»;
+			float Â«signal.maxval.node.replace("<", "").replace(">", "")Â»;
+			float Â«signal.minval.node.replace("<", "").replace(">", "")Â»;
+			float Â«signal.prefval.node.replace("<", "").replace(">", "")Â»;
+			float Â«signal.step.node.replace("<", "").replace(">", "")Â»;
 		};
-		«ENDIF»
+		Â«ENDIFÂ»
 		
 	'''
 	
@@ -147,13 +147,13 @@ class SystemDataTypesTemplate {
 	 * struct [class_name] : [inheritance] { [attribute_type] [attribute_name]; ... };
 	 */
 	def private compileClass(ClassNode cla) '''
-		«IF cla.attribute.empty»
-		struct t«cla.name.replace(" ", "_").toFirstUpper» «cla.compileInheritance»{};
-		«ELSE»
-		struct t«cla.name.replace(" ", "_").toFirstUpper» «cla.compileInheritance»{	
-			«cla.compileAttributes»
+		Â«IF cla.attribute.emptyÂ»
+		struct tÂ«cla.name.replace(" ", "_").toFirstUpperÂ» Â«cla.compileInheritanceÂ»{};
+		Â«ELSEÂ»
+		struct tÂ«cla.name.replace(" ", "_").toFirstUpperÂ» Â«cla.compileInheritanceÂ»{	
+			Â«cla.compileAttributesÂ»
 		};
-		«ENDIF»
+		Â«ENDIFÂ»
 		
 	'''
 	
@@ -163,7 +163,7 @@ class SystemDataTypesTemplate {
 	def private compileInheritance(ClassNode node) {
 		if (node.inheritance !== null && node.inheritance.name !== null 
 			&& node.inheritance.name !== null && !node.inheritance.name.equals("")) {
-		''': «node.inheritance.name.toFirstUpper» ''' 
+		''': Â«node.inheritance.name.toFirstUpperÂ» ''' 
 		}
 	}
 
@@ -171,21 +171,21 @@ class SystemDataTypesTemplate {
 	 * Constructs all attributes of the given class.
 	 */
 	def private compileAttributes(ClassNode node) '''
-		«FOR attr : node.attribute»
-		«IF attr.attrtype.type.type !== null»
-		«attr.compileType» «attr.attributeName»
-		«ELSEIF attr.attrtype.type.list !== null»
-		«attr.compileType» «attr.name.replace(" ", "_").toFirstLower»;
-		«ENDIF»
-		«ENDFOR»
+		Â«FOR attr : node.attributeÂ»
+		Â«IF attr.attrtype.type.type !== nullÂ»
+		Â«attr.compileTypeÂ» Â«attr.attributeNameÂ»
+		Â«ELSEIF attr.attrtype.type.list !== nullÂ»
+		Â«attr.compileTypeÂ» Â«attr.name.replace(" ", "_").toFirstLowerÂ»;
+		Â«ENDIFÂ»
+		Â«ENDFORÂ»
 	'''
 	
 	def private getAttributeName(AttributeNode attr) '''
-		«IF attr.attrtype.type.type.name.equals("class")»
-		t«attr.name.replace(" ", "_").toFirstUpper»;
-		«ELSE»
-		«attr.name.replace(" ", "_").toFirstLower»;
-		«ENDIF»
+		Â«IF attr.attrtype.type.type.name.equals("class")Â»
+		tÂ«attr.name.replace(" ", "_").toFirstUpperÂ»;
+		Â«ELSEÂ»
+		Â«attr.name.replace(" ", "_").toFirstLowerÂ»;
+		Â«ENDIFÂ»
 	'''
 	
 	/**
@@ -194,17 +194,17 @@ class SystemDataTypesTemplate {
 	def private CharSequence compileType(AttributeNode attr) {
 		if (attr.attrtype.type.type !== null) {
 			if (attr.attrtype.type.type.name.equals("class")) {
-				return '''t«attr.name.replace(" ","_").toFirstUpper»'''
+				return '''tÂ«attr.name.replace(" ","_").toFirstUpperÂ»'''
 			}
 			return attr.attrtype.type.type.name.selectCppType
 		}
 		if (attr.attrtype.type.list !== null) {
 			if (!attr.attrtype.type.list.type.empty) {
-				return '''t«attr.name.substring(0,attr.name.length-1) .replace(" ","_").toFirstUpper»*'''
+				return '''tÂ«attr.name.substring(0,attr.name.length-1) .replace(" ","_").toFirstUpperÂ»*'''
 			}
 		}
 		if (attr.attrtype.type.newtype !== null) {
-			return '''«attr.attrtype.type.newtype.name»'''
+			return '''Â«attr.attrtype.type.newtype.nameÂ»'''
 		}
 	}
 	

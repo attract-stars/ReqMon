@@ -6,12 +6,12 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.Requirem
 class RequirementDataTypesTemplate {
 	
 	def CharSequence generateTemplate(IMappingModel model) '''
-	#ifndef «includeGardsBegin»
-	#define «includeGardsBegin»
+	#ifndef Â«includeGardsBeginÂ»
+	#define Â«includeGardsBeginÂ»
 		
-	«model.objects»
+	Â«model.objectsÂ»
 	
-	«model.functions»
+	Â«model.functionsÂ»
 		
 	#endif
 	'''
@@ -21,23 +21,23 @@ class RequirementDataTypesTemplate {
 	'''
 	
 	def private getObjects(IMappingModel model) '''
-		«IF model.requirementList !== null»
-			«FOR req : model.requirementList»
-				«IF req.elementType.equals(RequirementType.OBJECT)»
-				t«req.elementName.replace(" ", "_").toFirstUpper» «req.elementName.replace(" ", "_").toFirstLower»;
-				«ENDIF»
-			«ENDFOR»
-		«ENDIF»
+		Â«IF model.requirementList !== nullÂ»
+			Â«FOR req : model.requirementListÂ»
+				Â«IF req.elementType.equals(RequirementType.OBJECT)Â»
+				tÂ«req.elementName.replace(" ", "_").toFirstUpperÂ» Â«req.elementName.replace(" ", "_").toFirstLowerÂ»;
+				Â«ENDIFÂ»
+			Â«ENDFORÂ»
+		Â«ENDIFÂ»
 	'''
 	
 	def private getFunctions(IMappingModel model) '''
-		«IF model.requirementList !== null»
-			«FOR req : model.requirementList»
-				«IF req.elementType.equals(RequirementType.FUNCTION)»
-				tFunction «req.elementName.replace(" ", "_")»;
-				«ENDIF»
-			«ENDFOR»
-		«ENDIF»
+		Â«IF model.requirementList !== nullÂ»
+			Â«FOR req : model.requirementListÂ»
+				Â«IF req.elementType.equals(RequirementType.FUNCTION)Â»
+				tFunction Â«req.elementName.replace(" ", "_")Â»;
+				Â«ENDIFÂ»
+			Â«ENDFORÂ»
+		Â«ENDIFÂ»
 	'''
 	
 }

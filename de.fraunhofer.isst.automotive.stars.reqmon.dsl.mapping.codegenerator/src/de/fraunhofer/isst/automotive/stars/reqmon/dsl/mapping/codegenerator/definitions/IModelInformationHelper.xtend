@@ -54,6 +54,16 @@ interface IModelInformationHelper {
 	 */
 	def String getSystemAttribut(String name)
 	
+	/** 
+	 * Returns the corresponding attribute to the given monitoring attribute like this: class_name attr_name.
+	 */
+	def String getCorrespondingAttribute(String monAttr)
+	
+	/**
+	 * Returns the min, max and preffered value if the given attribute is a signal.
+	 */
+	def List<String> getSignalBoundarys(String attr)
+	
 	
 	
 }

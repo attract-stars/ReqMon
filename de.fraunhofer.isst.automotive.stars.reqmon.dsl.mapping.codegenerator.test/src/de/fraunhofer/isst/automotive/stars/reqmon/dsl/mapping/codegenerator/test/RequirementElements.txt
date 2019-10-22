@@ -1,0 +1,44 @@
+system - object
+lane change - object
+lane - object
+vehicle - object
+ego-vehicle - object
+vehicle큦 relative velocity - object
+vehicle큦 distance - object
+lane큦 markings - object
+restricted lane - object
+emergency lane - object
+highway on-ramp - object
+lane큦 curvature - object
+ego vehicle큦 velocity - object
+domain - object
+driver - object
+ego vehicle큦 lateral offset - object
+ego lane큦 center - object
+is on (4, 3) - relation
+is behind (4, 5) - relation
+is more than (6, 5 m/s) - relation
+is in front to (4, 5) - relation
+is less than (6, 5 m/s) - relation
+is in_front_of (4, 5) - relation
+is larger than (6, 10 m/s) - relation
+is next to (4, 5) - relation
+are (8, solid) - function
+is (8, unknown) - function
+is (3, unknown) - function
+is not (3, existing) - function
+is (3, 9) - function
+is (3, 10) - function
+is next to (3, 11) - relation
+is higher than (12, 25 rad/m) - relation
+is less than (13, 10 m/s) - relation
+is not (14, handled) - function
+overturns (15, 37) - function
+with more than (1, 10 nm) - relation
+is more than (39, 0.4 m) - relation
+in relation to (16, 17) - function
+is not in (2, progress) - relation
+if (44, 42) - function
+and, and (18, 19, 20) - function
+and (38, 40) - function
+must not perform (2, 3) - function
