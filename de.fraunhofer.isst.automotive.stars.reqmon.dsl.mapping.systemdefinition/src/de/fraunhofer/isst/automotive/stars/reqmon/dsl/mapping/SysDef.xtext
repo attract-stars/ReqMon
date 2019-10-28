@@ -135,7 +135,7 @@ ClassNode:
 ;
 
 InheritanceNode:
-	node='<inheritance_from>' name=[ClassNode|STRING]? '</inheritance_from>'
+	node='<inheritance_from>' name=STRING? '</inheritance_from>'
 ;
 
 AttributeNode:
