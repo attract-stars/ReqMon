@@ -58,6 +58,7 @@ public class FilterGenerator implements IGenerator {
 		ExampleCHeaderTemplate exampleTemp = new ExampleCHeaderTemplate();
 		SystemDataTypesTemplate sysDataTemp = new SystemDataTypesTemplate();
 		RequirementDataTypesTemplate reqDataTemp = new RequirementDataTypesTemplate();
+		reqDataTemp.setModelInformationHelper(infoHelper);
 		
 		//generateAndAddToContentList(filterHeaderTemp.generateTemplate(""));
 		//generateAndAddToContentList(filterCppTemp.generateTemplate(""));
@@ -67,7 +68,7 @@ public class FilterGenerator implements IGenerator {
 		
 		generateAndAddToContentList(exampleTemp.generateExampleTemplate(model));
 		generateAndAddToContentList(sysDataTemp.generateTemplate(model));
-		generateAndAddToContentList(reqDataTemp.generateTemplate(model));
+		generateAndAddToContentList(reqDataTemp.generateTemplate());
 		
 		generateAndAddToContentList(filterHeaderTemp.generateTemplate(FilterType.ABSTRACT_FUNCTION));
 		generateAndAddToContentList(filterCppTemp.generateTemplate(FilterType.ABSTRACT_FUNCTION));

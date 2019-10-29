@@ -333,7 +333,7 @@ class FilterCppTemplate {
 	
 	def private getSAFPinCreation() '''
 	«FOR pin : helper.getPins»
-	cObjectPtr<IMediaType> «pin.SAFPTypeName» = new cMediaType(«pin.mediaType», «pin.mediaSubType»);
+	cObjectPtr <IMediaType> «pin.SAFPTypeName» = new cMediaType(«pin.mediaType», «pin.mediaSubType»);
 	«pin.createSAFPin»
 	«pin.registerSAFPin»
 	

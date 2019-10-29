@@ -17,16 +17,8 @@ class SystemDataTypesTemplate {
 	#ifndef «includeGardsBegin»
 	#define «includeGardsBegin»
 	
-	struct tAllocation {
-		int bit_size;
-		char* location;
-	};
-	
 	// classes
 	«model.structs»
-	
-	// messages
-	«model.messages»
 	
 	// signals
 	«model.signals»
@@ -37,6 +29,17 @@ class SystemDataTypesTemplate {
 	def private getIncludeGardsBegin() '''
 		SYSTEM_DATA_TYPES.H
 	'''
+	
+	/**
+	 * struct tAllocation {
+		int bit_size;
+		char* location;
+	};
+	* 
+	* 
+	* // messages
+	«model.messages»
+	 */
 	
 	/**
 	 * Returns structures with the class informations given in the resources of the model.
@@ -129,7 +132,6 @@ class SystemDataTypesTemplate {
 		«IF signal !== null»
 		struct t«signal.name.replace(" ", "_").toFirstUpper» {
 			int sig_ref;
-			tAllocation allocation;
 			char* «signal.datatype.node.replace("<", "").replace(">", "")»;
 			float «signal.maxval.node.replace("<", "").replace(">", "")»;
 			float «signal.minval.node.replace("<", "").replace(">", "")»;
@@ -148,9 +150,13 @@ class SystemDataTypesTemplate {
 	 */
 	def private compileClass(ClassNode cla) '''
 		«IF cla.attribute.empty»
-		struct t«cla.name.replace(" ", "_").toFirstUpper» «cla.compileInheritance»{};
+		struct «cla.name» «cla.compileInheritance»{};
+		«ELSEIF cla.name.charAt(0).compareTo('e') === 0»
+		enum «cla.name» {
+			«cla.compileEnum»
+		};
 		«ELSE»
-		struct t«cla.name.replace(" ", "_").toFirstUpper» «cla.compileInheritance»{	
+		struct «cla.name» «cla.compileInheritance»{	
 			«cla.compileAttributes»
 		};
 		«ENDIF»
@@ -163,7 +169,7 @@ class SystemDataTypesTemplate {
 	def private compileInheritance(ClassNode node) {
 		if (node.inheritance !== null && node.inheritance.name !== null 
 			&& node.inheritance.name !== null && !node.inheritance.name.equals("")) {
-		''': «node.inheritance.name.toFirstUpper» ''' 
+		''': «node.inheritance.name» ''' 
 		}
 	}
 
@@ -173,38 +179,52 @@ class SystemDataTypesTemplate {
 	def private compileAttributes(ClassNode node) '''
 		«FOR attr : node.attribute»
 		«IF attr.attrtype.type.type !== null»
-		«attr.compileType» «attr.attributeName»
+		«attr.compileType»
 		«ELSEIF attr.attrtype.type.list !== null»
-		«attr.compileType» «attr.name.replace(" ", "_").toFirstLower»;
+		«attr.compileList»
+		«ELSEIF attr.attrtype.type.newtype !== null»
+		«attr.attrtype.type.newtype.name»
 		«ENDIF»
 		«ENDFOR»
 	'''
 	
-	def private getAttributeName(AttributeNode attr) '''
-		«IF attr.attrtype.type.type.name.equals("class")»
-		t«attr.name.replace(" ", "_").toFirstUpper»;
-		«ELSE»
-		«attr.name.replace(" ", "_").toFirstLower»;
-		«ENDIF»
-	'''
+	def private compileEnum(ClassNode node) {
+		if(node.attribute.empty) return ''''''
+		val first = node.attribute.get(0)
+		if(node.attribute.length ==2) {
+			return '''«first.name.toUpperCase» = 0, «node.attribute.get(1).name.toUpperCase»'''
+		}
+		val rest = node.attribute.subList(1,node.attribute.length-2)
+		val last = node.attribute.get(node.attribute.length-1)
+		return '''«first.name.toUpperCase» = 0, 
+		«FOR attr : rest»
+	«IF attr.attrtype.type.type.name.compareTo('integer') === 0»«attr.name.toUpperCase», 
+	«ENDIF»
+	«ENDFOR»«last.name.toUpperCase»'''
+	}
+	
+	
+	 
 	
 	/**
 	 * Constructs the attribute type.
 	 */
 	def private CharSequence compileType(AttributeNode attr) {
-		if (attr.attrtype.type.type !== null) {
-			if (attr.attrtype.type.type.name.equals("class")) {
-				return '''t«attr.name.replace(" ","_").toFirstUpper»'''
+		if (attr.attrtype.type.type.name.equals("class")) {
+			val splitted = attr.name.split(' ')
+			if (splitted.length === 2) {
+				return '''«splitted.get(0)» «splitted.get(1)»'''
 			}
-			return attr.attrtype.type.type.name.selectCppType
+			return '''«attr.name» «attr.name.substring(1).toFirstLower»'''
 		}
-		if (attr.attrtype.type.list !== null) {
-			if (!attr.attrtype.type.list.type.empty) {
-				return '''t«attr.name.substring(0,attr.name.length-1) .replace(" ","_").toFirstUpper»*'''
-			}
-		}
-		if (attr.attrtype.type.newtype !== null) {
-			return '''«attr.attrtype.type.newtype.name»'''
+		return '''«attr.attrtype.type.type.name.selectCppType» «attr.name»'''
+	}
+	
+	def private compileList(AttributeNode attr) {
+		if (!attr.attrtype.type.list.type.empty) {
+			val splitted = attr.name.split(' ')
+			if (splitted.length != 2) return ''''''
+			return '''«splitted.get(0)»* «splitted.get(1)»;'''
 		}
 	}
 	
@@ -215,25 +235,25 @@ class SystemDataTypesTemplate {
  	def private CharSequence selectCppType(String name) {
 		switch(name) {
 			case 'integer': 
-				return '''int'''
+				return '''tUInt8'''
 			case 'int':
-				return '''int'''
+				return '''tUInt8'''
 			case 'float':
-				return '''float'''
+				return '''tFloat32'''
 			case 'short':
-				return '''int'''
+				return '''tUInt8'''
 			case 'double':
-				return '''double'''
+				return '''tFloat64'''
 			case 'byte':
-				return '''int'''
+				return '''tUInt8'''
 			case 'string':
-				return '''char*'''
+				return '''tChar*'''
 			case 'char':
-				return '''char'''
+				return '''tChar'''
 			case 'boolean':
-				return '''bool'''
+				return '''tBool'''
 			case 'bool':
-				return '''bool'''
+				return '''tBool'''
 			case 'date':
 				return '''void'''
 			case 'class':

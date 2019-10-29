@@ -141,6 +141,7 @@ id='123'>
 		<step_size>'1'</step_size>
 	</signal>
 	
+	
 	<data_structure id='1'>
 		<name>'data structure'</name>
 		<description>'structure description'</description>
@@ -151,25 +152,45 @@ id='123'>
 		
 
 		<class> 
-			<name>'scene'</name>
+			<name>'tScene'</name>
 			<inheritance_from></inheritance_from>
 			<attribute>
-				<name>'ego'</name>
+				<name>'tEgo'</name>
 				<attrType>
 					<type>class</type>
 				</attrType>
 			</attribute>
 			<attribute>
-				<name>'lanes'</name>
+				<name>'tLane lanes'</name>
 				<attrType>
 					<list>
 						<type>class</type>
 					</list>
 				</attrType>
 			</attribute>
+			<attribute>
+				<name>'tObject objects'</name>
+				<attrType>
+					<list>
+						<type>class</type>
+					</list>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'eEnvironment'</name>
+				<attrType>
+					<type>class</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'eAutoboxClearance'</name>
+				<attrType>
+					<type>class</type>
+				</attrType>
+			</attribute>
 		</class>
 		<class> 
-			<name>'object'</name>
+			<name>'tObject'</name>
 			<attribute>
 				<name>'velocity'</name>
 				<attrType>
@@ -183,22 +204,199 @@ id='123'>
 				</attrType>
 			</attribute>
 			<attribute>
-				<name>'lanes'</name>
+				<name>'front_distance'</name>
 				<attrType>
 					<type>signal</type>
 				</attrType>
 			</attribute>
-		</class>
-		<class> 
-			<name>'ego'</name>
-			<inheritance_from>"object"</inheritance_from>
-		</class>
-		<class> 
-			<name>'lane'</name>
 			<attribute>
-				<name>'s'</name>
+				<name>'back_distance'</name>
 				<attrType>
 					<type>signal</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'eLocation'</name>
+				<attrType>
+					<list>
+						<type>class</type>
+					</list>
+				</attrType>
+			</attribute>
+		</class>
+		<class> 
+			<name>'tEgo'</name>
+			<inheritance_from>"tObject"</inheritance_from>
+		</class>
+		<class> 
+			<name>'tLane'</name>
+			<attribute>
+				<name>'curvature'</name>
+				<attrType>
+					<type>signal</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'eLaneType'</name>
+				<description>
+				'not_existing normal_lane forbidden_lane
+				emergency_lane split_lane_normal'
+				</description>
+				<attrType>
+					<type>class</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'eLaneMarking laneMarkingLeft'</name>
+				<attrType>
+					<type>class</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'eLaneMarking laneMarkingRight'</name>
+				<attrType>
+					<type>class</type>
+				</attrType>
+			</attribute>
+		</class>
+		<class> 
+			<name>'eLaneType'</name>
+			<attribute>
+				<name>'not_existing'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'normal_lane'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'forbidden_lane'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'emergency_lane'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'split_lane_normal'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+		</class>
+		<class> 
+			<name>'eLaneMarking'</name>
+			<attribute>
+				<name>'solid'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'unknown'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'normal'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+		</class>
+		<class> 
+			<name>'eLocation'</name>
+			<attribute>
+				<name>'frontEgo'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'frontLeft'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'frontRight'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'rearEgo'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'rearLeft'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'rearRight'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'unknown'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+		</class>
+		<class> 
+			<name>'eEnvironment'</name>
+			<attribute>
+				<name>'highway'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'unknown'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+		</class>
+		<class> 
+			<name>'eAutoboxClearance'</name>
+			<attribute>
+				<name>'driverHandsOn'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'driverSteeringLeft'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'driverSteeringRight'</name>
+				<attrType>
+					<type>integer</type>
+				</attrType>
+			</attribute>
+			<attribute>
+				<name>'noDriverAction'</name>
+				<attrType>
+					<type>integer</type>
 				</attrType>
 			</attribute>
 		</class>

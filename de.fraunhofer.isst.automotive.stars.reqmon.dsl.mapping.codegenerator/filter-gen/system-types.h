@@ -1,250 +1,75 @@
 #ifndef SYSTEM_DATA_TYPES.H
 #define SYSTEM_DATA_TYPES.H
 
-struct tAllocation {
-	int bit_size;
-	char* location;
-};
-
 // classes
-struct tTargetPointMessage {	
-	tTargetPoint* targetPoints;
-};
-
-struct tTargetPoint {	
-	char* id;
-	float s;
-	float d;
-	void ssamp;
-	void dsamp;
-	void vsamp;
-	void tssamp;
-	void tdsamp;
-	tTargetType tTargetType;
-	void preference;
-	void constraint;
-};
-
-struct tTargetType {	
-	char* id;
-	tTargetType tTargetType;
-	bool isLaneSpecific;
-	bool isStrict;
-};
-
 struct tScene {	
-	tObject* objects;
-	tSdDistanceField tSdDistanceField;
-	tEvent* events;
-	tConflictArea* conflictAreas;
-	tEgo tEgo;
+	tEgo ego
 	tLane* lanes;
-	tSkills tSkills;
-	tState tState;
-	tStateV2 tStateV2;
-	tAutobox tAutobox;
-	void timestamp;
-	void laneChangeRequest;
-	void car;
+	tObject* objects;
+	eEnvironment environment
+	eAutoboxClearance autoboxClearance
 };
-
-struct tEgo : Object {};
 
 struct tObject {	
-	char* id;
-	void type;
-	float s;
-	float s_sigma;
-	float d;
-	float d_sigma;
-	float yaw;
-	float length;
-	float width;
-	void refToFrontBumper;
-	void refToRearBumper;
-	void quality;
-	void intention;
-	void yieldProb;
-	void brakeLights;
-	bool isProjected;
-	void indicator;
+	float velocity
+	float lane_center_offset
+	float front_distance
+	float back_distance
 };
 
-struct tSDDistanceField {	
-	float value;
-	bool isValid;
-};
-
-struct tEvent {	
-	float distance;
-	float value;
-	void type;
-};
-
-struct tConflictArea {	
-	char* id;
-	float distance;
-	float angle;
-	void type;
-	void precedence;
-	void passState;
-	void conflictingLane;
-	void objectsOnConflictingLane;
-};
+struct tEgo : tObject {};
 
 struct tLane {	
-	void laneAdvice;
-	void optLaneDir;
-	void laneType;
-	tFutureLane tFutureLane;
-	tLaneMarking tLaneMarking;
-	void mergerFromLeftDist;
-	void mergerFromRightDist;
-	void distanceToSplit;
-	tAPRGDistToLaneEnd tAPRGDistToLaneEnd;
-	void aPRGCumulDist2NecLC;
-	void contLeftChangeDistAhead;
-	void contRightChangeDistAhead;
-	int laneNumber;
-	int laneNumberEstimated;
-	int totalLaneNumber;
-	int totalLaneNumberEstimated;
-	float sRGDistToLaneEnd;
-	float distanceToLaneRearEnd;
-	float width;
-	float curvature;
-	bool hasSpeedLimit;
-	int speedLimit;
-	float quality;
-	float offset;
-	int age;
+	float curvature
+	eLaneType laneType
+	eLaneMarking laneMarkingLeft
+	eLaneMarking laneMarkingRight
 };
 
-struct tFutureLane : Lane {};
-
-struct tLaneMarking {	
-	bool left;
-	bool right;
-	bool leftEstimated;
-	bool rightEstimated;
+enum eLaneType {
+	NOT_EXISTING = 0, 
+	NORMAL_LANE, 
+	FORBIDDEN_LANE, 
+	SPLIT_LANE_NORMAL
 };
 
-struct tSkills {	
-	void localizationElaMatchQuality;
-	int averageNumOfDlmLaneJumps;
-	void environment;
-	void criticalInfrastructure;
-	void averageSensorViewingRange;
-	int averageLanePerceptionAge;
-	int averageTrackPerceptionAge;
+enum eLaneMarking {
+	SOLID = 0, 
+	NORMAL
 };
 
-struct tFunctionState {	
-	void delayObjects;
-	void delayRoadGraph;
-	void delayHypothesis;
+enum eLocation {
+	FRONTEGO = 0, 
+	FRONTLEFT, 
+	FRONTRIGHT, 
+	REAREGO, 
+	REARLEFT, 
+	UNKNOWN
 };
 
-struct tFunctionStateV2 : FunctionState {};
-
-struct tAutoboxToAdtfMessage {	
-	void driverProfile;
-	void function;
-	void clearance;
-	void approval;
-	void routeSelection;
-	float targetVelocity;
-	void timeGap;
-	void timestamp;
+enum eEnvironment {
+	HIGHWAY = 0, UNKNOWN
 };
 
-struct tState {	
-	float pos;
-	float vel;
-	float acc;
-	void jerk;
-};
-
-struct tObjectIntention {	
-	float distance;
-	void intention;
-};
-
-struct tPreference {	
-	tScosts tScosts;
-	tDcosts tDcosts;
-	tSzones tSzones;
-	tDzones tDzones;
-	void targetOffset;
-	void ratioSD;
-};
-
-struct tSCosts {	
-	void time;
-	void comfort;
-	void vOffset;
-	void sOffset;
-	float negativeVelocity;
-	void strictViolation;
-	void safetyZone;
-	void ttc;
-	void relativeVelocityThreshold;
-};
-
-struct tDCosts {	
-	void time;
-	void comfort;
-	void dOffset;
-	void overshoot;
-	void objects;
-	void swing;
-	void grid;
-};
-
-struct tSZones {	
-	void desiredTG;
-	void desiredMinDist;
-	void desiredZoneCosts;
-	void comfortTG;
-	void comfortMinDist;
-	void comfortZoneCosts;
-	void criticalTG;
-	void criticalMinDist;
-	void criticalZoneCosts;
-	void comfortTTC;
-	void criticalTTC;
-};
-
-struct tDZones {	
-	void comfortMinDist;
-	void criticalMinDist;
-};
-
-struct tLinearInterpolation {	
-	void lowerValue;
-	void upperValue;
-	void lowerLimit;
-	void upperLimit;
-};
-
-struct tInterval {	
-	void min;
-	void max;
-	void incr;
-};
-
-
-// messages
-struct tAll_signals {
-	tAllocation allocation;
-	int* sig_refs;
+enum eAutoboxClearance {
+	DRIVERHANDSON = 0, 
+	DRIVERSTEERINGLEFT, 
+	NODRIVERACTION
 };
 
 
 // signals
 struct tVelocity {
 	int sig_ref;
-	tAllocation allocation;
+	char* datatype;
+	float max_value;
+	float min_value;
+	float preferred_value;
+	float step_size;
+};
+
+struct tLane_center_offset {
+	int sig_ref;
 	char* datatype;
 	float max_value;
 	float min_value;
@@ -254,7 +79,6 @@ struct tVelocity {
 
 struct tFront_distance {
 	int sig_ref;
-	tAllocation allocation;
 	char* datatype;
 	float max_value;
 	float min_value;
@@ -264,7 +88,6 @@ struct tFront_distance {
 
 struct tBack_distance {
 	int sig_ref;
-	tAllocation allocation;
 	char* datatype;
 	float max_value;
 	float min_value;
@@ -274,7 +97,6 @@ struct tBack_distance {
 
 struct tLeft_distance {
 	int sig_ref;
-	tAllocation allocation;
 	char* datatype;
 	float max_value;
 	float min_value;
@@ -284,7 +106,6 @@ struct tLeft_distance {
 
 struct tRight_distance {
 	int sig_ref;
-	tAllocation allocation;
 	char* datatype;
 	float max_value;
 	float min_value;
@@ -294,7 +115,6 @@ struct tRight_distance {
 
 struct tCurvature {
 	int sig_ref;
-	tAllocation allocation;
 	char* datatype;
 	float max_value;
 	float min_value;

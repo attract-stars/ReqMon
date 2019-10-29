@@ -1,6 +1,3 @@
-#include "dadas_monitoring_types.h"
-#include "dadas_mediatypes.h"
-#include "serializationhelper.h"
 
 tBool debugOpt = tFalse;
 
@@ -20,18 +17,6 @@ tResult cDadasSceneAbstractionFilter::Init(tInitStage eStage, __exception)
 	
 	if (eStage == StageFirst)
 	{
-		cObjectPtr<IMediaType> $pTypeName$ = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_$TYPE$, $more parameters$);
-		?RETURN_IF_POINTER_NULL($pTypeName$);?
-		RETURN_IF_FAILED($m_oPin.Create("$type$", $pTypeName$, this, $more parameters$));
-		RETURN_IF_FAILED(Register?Trigger?Pin(&$m_oPin));
-		?RETURN_IF_FAILED($pTypeName$->GetInterface(IID_ADTF_MEDIA_TYPE_DESCRIPTION_EXT, (tVoid**)&m_pTypeDesc));?
-		
-		?cMediaType* $pTypeName$;
-		$pTypeName$ = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_$TYPE$, $more parameters$);
-		RETURN_IF_POINTER_NULL($pTypeName$);
-		RETURN_IF_FAILED($m_oPin.Create("$type$", $pTypeName$, this, $more parameters$));
-		RETURN_IF_FAILED(Register?Trigger?Pin(&$m_oPin));
-		?
 	}
 	else if (eStage == StageNormal)
 	{
@@ -79,54 +64,26 @@ tResult cDadasSceneAbstractionFilter::OnPinEvent(IPin* pSource,
 	tInt nEventCode,
 	tInt nParam1,
 	tInt nParam2,
-	IMediaSample* pMediaSample) {
-		if (nEventCode == IPinEventSink::PE_MediaSampleReceived)
+	IMediaSample* pMediaSample)
+{
+	if (nEventCode == IPinEventSink::PE_MediaSampleReceived)
+	{
+		RETURN_IF_POINTER_NULL(pMediaSample);
+		
+		if (pSource == &m_oInput)
 		{
-			if (pSource == &m_oInput)
-			{
-				ProcessSample(pMediaSample);
-			}	else {
-				RETURN_ERROR(ERR_NOT_SUPPORTED);
-			}
+			ProcessSample(pMediaSample);
+		}	else {
+			RETURN_ERROR(ERR_NOT_SUPPORTED);
 		}
-		RETURN_NOERROR;
-}
-
-tResult cDadasSceneAbstractionFilter::ProcessSample(IMediaSample* pSample) {
-	tScene pData;
-
-	RETURN_IF_FAILED(DADAS::HELPER::DeserializeFromSample(pSample,pData));
-
-	DADAS::tCategorisation categorisation = Categorize(&pData);
-
-	SendBOOSTCategories(&categorisation);
-
+	}
 	RETURN_NOERROR;
 }
 
-DADAS::tCategorisation cDadasSceneAbstractionFilter::Categorize(tScene* scene) {
-	//Build tCategorisation and send it over output
-
-	DADAS::tCategorisation tCategorisation;
 
 
-	return tCategorisation;
-}
-
-tResult cDadasSceneAbstractionFilter::SendBOOSTCategories(DADAS::tCategorisation *categorisation) {
-	cObjectPtr<IMediaSample> pMediaSample;
-	RETURN_IF_FAILED(AllocMediaSample((tVoid**)&pMediaSample));
-
-	DADAS::HELPER::SerializeToSample(pMediaSample,*categorisation);
-
-	RETURN_IF_FAILED(pMediaSample->SetTime(_clock->GetStreamTime()));
-
-	RETURN_IF_FAILED(m_oOutput.Transmit(pMediaSample));
-	
-	RETURN_NOERROR;
-}
-
-void cDadasSceneAbstractionFilter::LOG(cString mes) {		
+void cDadasSceneAbstractionFilter::LOG(cString mes)
+{		
 	if(debugOpt) {
 		LOG_INFO(mes);
 		//OutputDebugStringWrapper(mes+"\n");

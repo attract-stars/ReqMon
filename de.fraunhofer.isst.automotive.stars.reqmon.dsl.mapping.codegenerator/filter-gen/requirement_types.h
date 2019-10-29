@@ -1,11 +1,30 @@
 #ifndef REQUIREMENT_DATA_TYPES.H
 #define REQUIREMENT_DATA_TYPES.H
 	
-tThe_system the_system;
-tA_lane_change a_lane_change;
-tAny_lane any_lane;
-tA_vehicle a_vehicle;
-tThat_lane that_lane;
+struct tSystem {
+};
 
+struct tLane {
+	Markings markings;
+	Curvature curvature;
+	eLaneType eLaneType;
+};
+
+struct tVehicle {
+	Relative_velocity relative_velocity;
+	Distance distance;
+	Velocity velocity;
+};
+
+struct tEgo-vehicle : tVehicle {
+};
+
+struct tDomain {
+};
+
+struct tDriver {
+};
+
+enum eLaneType { RESTRICTED = 0, EMERGENCY };
 	
 #endif

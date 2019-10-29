@@ -192,6 +192,30 @@ public class ModelInformationTestHelper implements IModelInformationHelper {
 		return model.isSignal(attr);
 	}
 
+	@Override
+	public List<String> getReqObjects() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<String> getReqAttribute(String obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<String> getInheritance(String obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<List<String>> getReqEnums() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 	

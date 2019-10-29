@@ -2,7 +2,6 @@
 #include "dtypes.h"
 #include "dadas_monitoring_types.h"
 #include "dadas_mediatypes.h"
-#include "serializationhelper.h"
 
 tBool debugOpt = tFalse;
 
@@ -129,7 +128,8 @@ tResult cDadasAbstractFunctionFilter::Run(tInt nActivationCode,
 }
 
 //Only triggers on the both targetpoints but not on the categorisation -> the catergorisation is got from the additional queue
-tResult cDadasAbstractFunctionFilter::OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception) {
+tResult cDadasAbstractFunctionFilter::OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception)
+{
 	// reset our timeout
 	if (m_bTimeout)
 	{
@@ -198,7 +198,8 @@ tResult cDadasAbstractFunctionFilter::OnTrigger(adtf::IPin* pSource, adtf::IMedi
 	RETURN_NOERROR;
 }
 
-void cDadasAbstractFunctionFilter::LOG(cString mes) {		
+void cDadasAbstractFunctionFilter::LOG(cString mes)
+{		
 	if(debugOpt) {
 		LOG_INFO(mes);
 		//OutputDebugStringWrapper(mes+"\n");

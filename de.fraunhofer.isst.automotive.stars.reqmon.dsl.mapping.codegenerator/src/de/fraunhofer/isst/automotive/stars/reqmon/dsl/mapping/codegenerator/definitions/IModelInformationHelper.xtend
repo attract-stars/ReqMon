@@ -64,6 +64,26 @@ interface IModelInformationHelper {
 	 */
 	def List<String> getSignalBoundarys(String attr)
 	
+	/**
+	 * Returns all requirement objects that are mapped to a system class.
+	 */
+	def List<String> getReqObjects()
+	
+	/**
+	 * Returns all attributes of the given object.
+	 */
+	def List<String> getReqAttribute(String obj)
+	
+	/**
+	 * Returns all super classes of the given object.
+	 */
+	def List<String> getInheritance(String obj)
+	
+	/**
+	 * Returns all enumerations.
+	 */
+	def List<List<String>> getReqEnums()
+	
 	
 	
 }
