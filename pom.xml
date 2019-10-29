@@ -26,10 +26,14 @@
 	</properties>
 	
  	<modules>
+		<module>de.fraunhofer.isst.automotive.stars.reqmon.target</module>
+		<module>de.fraunhofer.isst.automotive.stars.reqmon.feature</module>
+		<module>de.fraunhofer.isst.automotive.stars.reqmon.product</module>
+		
 		<module>de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement</module>
 		<module>de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ide</module>
 		<module>de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui</module>
-		<module>de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.target</module>
+		
 		<module>de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.tests</module>
 		<module>de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui.tests</module>
 		<module>de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data</module>
@@ -270,6 +274,7 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	
 	<repositories>
 		<repository>
 			<id>codehaus-snapshots</id>
@@ -296,6 +301,7 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
+	
 	<profiles>
 		<profile>
 			<id>macos</id>
