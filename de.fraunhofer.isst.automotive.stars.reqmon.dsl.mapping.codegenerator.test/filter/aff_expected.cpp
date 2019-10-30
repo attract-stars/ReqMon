@@ -1,29 +1,18 @@
-#include "stdafx.h"
-#include "dtypes.h"
-#include "dadas_monitoring_types.h"
-#include "dadas_mediatypes.h"
+#include system-types.h
+#include mediatypes.h
+#include abstract_function_filter.h
 
 tBool debugOpt = tFalse;
 
 ADTF_FILTER_PLUGIN("DADAS Abstract Function Filter", OID_DADAS_ABSTRACT_FUNCTION, cDadasAbstractFunctionFilter)
 
 cDadasAbstractFunctionFilter::cDadasAbstractFunctionFilter(const tChar* __info) : cConditionTriggeredFilter(tTrue,tTrue,__info), 
-				m_bTimeout(tFalse), $more value settings$
+				m_bTimeout(tFalse)
 {
-	kernelMutex.Create();
-	
-	SetPropertyInt("timeout", $value$);
-	SetPropertyStr("timeout" NSSUBPROP_DESCRIPTION,
-		"Demo timeout that will issue a warning when no trigger has occurred "
-		"in the specified amount of time (microseconds). 0 disables the timeout.");
-	SetPropertyInt("timeout" NSSUBPROP_MINIMUM, 0);
-	
-	$set more properties$
 }
 
 cDadasAbstractFunctionFilter::~cDadasAbstractFunctionFilter()
 {
-	kernelMutex.Release();
 }
 
 tResult cDadasAbstractFunctionFilter::Init(tInitStage eStage, __exception)

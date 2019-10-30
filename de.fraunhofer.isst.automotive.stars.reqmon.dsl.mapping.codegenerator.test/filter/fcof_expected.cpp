@@ -1,29 +1,18 @@
-#include "stdafx.h"
-#include "dtypes.h"
-#include "dadas_monitoring_types.h"
-#include "dadas_mediatypes.h"
+#include system-types.h
+#include mediatypes.h
+#include function_correctness_oracle_filter.h
 
 tBool debugOpt = tFalse;
 
 ADTF_FILTER_PLUGIN("DADAS Functional Correctness Oracle Filter", OID_DADAS_FUNCTIONAL_CORRECTNESS_ORACLE, cDadasFunctionalCorrectnessOracleFilter)
 
 cDadasFunctionalCorrectnessOracleFilter::cDadasFunctionalCorrectnessOracleFilter(const tChar* __info) : cConditionTriggeredFilter(tTrue,tTrue,__info), 
-				m_bTimeout(tFalse), $more value settings$
+				m_bTimeout(tFalse)
 {
-	kernelMutex.Create();
-	
-	SetPropertyInt("timeout", $value$);
-	SetPropertyStr("timeout" NSSUBPROP_DESCRIPTION,
-		"Demo timeout that will issue a warning when no trigger has occurred "
-		"in the specified amount of time (microseconds). 0 disables the timeout.");
-	SetPropertyInt("timeout" NSSUBPROP_MINIMUM, 0);
-	
-	$set more properties$
 }
 
 cDadasFunctionalCorrectnessOracleFilter::~cDadasFunctionalCorrectnessOracleFilter()
 {
-	kernelMutex.Release();
 }
 
 tResult cDadasFunctionalCorrectnessOracleFilter::Init(tInitStage eStage, __exception)

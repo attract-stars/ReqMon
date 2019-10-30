@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.logic.FilterGenerator;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMappingModel;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.IModelInformationHelper;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.AbstractModelInformationHelper;
 
 public class FilterTemplateTest {
 	
@@ -18,7 +18,7 @@ public class FilterTemplateTest {
 	public void generateFilterTest() {
 		FilterGenerator gen = new FilterGenerator();
 		
-		IModelInformationHelper infoHelper = new ModelInformationTestHelper();
+		AbstractModelInformationHelper infoHelper = new ModelInformationTestHelper();
 		MappingTestModel model = new MappingTestModel();
 		
 		infoHelper.setModel((IMappingModel)model);

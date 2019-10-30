@@ -3,37 +3,19 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.tes
 import java.util.ArrayList;
 import java.util.List;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.IModelInformationHelper;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.IPin;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.AbstractModelInformationHelper;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.Pin;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.FilterType;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMappingModel;
 
-public class ModelInformationTestHelper implements IModelInformationHelper {
+public class ModelInformationTestHelper extends AbstractModelInformationHelper {
 	
 	private MappingTestModel model;
-	private FilterType filtertype;
-	private List<IPin> inputs;
-	private List<IPin> outputs;
-	private List<IPin> pins;
 	
 	public ModelInformationTestHelper() {
-		setupPins();
+		
 	}
 	
-	private void setupPins() {
-		IPin input = new PinImpl("input", true, "MEDIATYPE_DADAS_SCENE", "scene", "tScene");
-		IPin output = new PinImpl("output", false, "MEDIATYPE_DADAS_CATEGORISATION", "categorisation", "tCategorisation");
-		
-		inputs = new ArrayList<IPin>();
-		outputs = new ArrayList<IPin>();
-		pins = new ArrayList<IPin>();
-		
-		inputs.add(input);
-		outputs.add(output);
-		pins.add(input);
-		pins.add(output);
-	}
-
 	@Override
 	public void setModel(IMappingModel model) {
 		if (model instanceof MappingTestModel) {
@@ -60,116 +42,8 @@ public class ModelInformationTestHelper implements IModelInformationHelper {
 	}
 
 	@Override
-	public void setFilterType(FilterType filtertype) {
-		this.filtertype = filtertype;
-	}
-
-	@Override
-	public List<String> getIncludes() {
-		if (filtertype.equals(FilterType.SCENE_ABSTRACTION)) {
-			return getSAFIncludes();
-		}
-		return null;
-	}
-	
-	private List<String> getSAFIncludes() {
-		List<String> list = new ArrayList<String>();
-		list.add(getSAFFilterFileName());
-		list.add("system-types");
-		list.add("mediatypes");
-		return list;
-	}
-	
-	private String getSAFFilterFileName() {
-		return "scene_abstraction_filter";
-	}
-
-	@Override
 	public boolean isDebugOpt() {
 		return false;
-	}
-
-	@Override
-	public List<IPin> getPins() {
-		if (filtertype.equals(FilterType.SCENE_ABSTRACTION)) {
-			return getSAFPins();
-		}
-		return null;
-	}
-	
-	private List<IPin> getSAFPins() {
-		return this.pins;
-	}
-
-	
-	@Override
-	public List<IPin> getInputPins() {
-		return this.inputs;
-	}
-	
-	
-	public class PinImpl implements IPin {
-		
-		private String pinName;
-		private boolean isInputPin;
-		private boolean isOutputPin;
-		private String mediaType;
-		private String mediaSubType;
-		private String objectName;
-		private String pinObject;
-
-		public PinImpl(String name, boolean isInput, String mediaSubType, String objectName, String pinObject) {
-			this.pinName = name;
-			this.isInputPin = isInput;
-			this.isOutputPin = !isInput;
-			this.mediaType = "MEDIATYPE_DADAS";
-			this.mediaSubType = mediaSubType;
-			this.objectName = objectName;
-			this.pinObject = pinObject;
-		}
-		
-		@Override
-		public String getPinName() {
-			return this.pinName;
-		}
-
-		@Override
-		public boolean isInputPin() {
-			return this.isInputPin;
-		}
-
-		@Override
-		public boolean isOutputPin() {
-			return this.isOutputPin;
-		}
-
-		@Override
-		public String getMediaType() {
-			return this.mediaType;
-		}
-
-		@Override
-		public String getMediaSubType() {
-			return this.mediaSubType;
-		}
-
-		@Override
-		public String getPinObjectName() {
-			return this.objectName;
-		}
-
-		@Override
-		public String getPinObjectType() {
-			return this.pinObject;
-		}
-
-		
-	}
-
-
-	@Override
-	public List<IPin> getOutputPins() {
-		return this.outputs;
 	}
 
 	@Override
@@ -216,6 +90,148 @@ public class ModelInformationTestHelper implements IModelInformationHelper {
 		return null;
 	}
 
+	@Override
+	public String getFilterVersion() {
+		return "0, 1, 0";
+	}
+
+	@Override
+	public List<String> getInputPinsNames() {
+		ArrayList<String> list = new ArrayList<String>();
+		switch(getFilterType()) {
+		case ABSTRACT_FUNCTION: 
+			list.add("categorization");
+			list.add("concreteTargets");
+			break;
+		case FUNCTIONAL_CORRECTNESS_ORACLE:
+			list.add("can");
+			list.add("categorization");
+			list.add("abstractTargets");
+			list.add("concreteTargets");
+			break;
+			
+		case SCENE_ABSTRACTION:
+			list.add("scene");
+			break;
+		case TEST_COVERAGE_MONITOR:
+			break;
+		}
+		
+		return list;
+	}
+
+	@Override
+	public List<String> getOutputPinsNames() {
+		ArrayList<String> list = new ArrayList<String>();
+		switch(getFilterType()) {
+		case ABSTRACT_FUNCTION: 
+			break;
+		case FUNCTIONAL_CORRECTNESS_ORACLE:
+			break;
+		case SCENE_ABSTRACTION:
+			list.add("categorization");
+			break;
+		case TEST_COVERAGE_MONITOR:
+			break;
+		}
+		
+		return list;
+	}
+
+	@Override
+	public List<String> getObjectPtrs() {
+		ArrayList<String> list = new ArrayList<String>();
+		switch(getFilterType()) {
+		case ABSTRACT_FUNCTION: 
+			break;
+		case FUNCTIONAL_CORRECTNESS_ORACLE:
+			break;
+		case SCENE_ABSTRACTION:
+			list.add("coderDesc");
+			break;
+		case TEST_COVERAGE_MONITOR:
+			break;
+		}
+		
+		return list;
+	}
+
+	@Override
+	public CharSequence getHeaderTemplateDefines() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CharSequence getHeaderTemplateIncludes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CharSequence getHeaderTemplatePrivateMembers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CharSequence getHeaderTemplatePrivateFunctions() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CharSequence getHeaderTemplateProtectedFunctions() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CharSequence getEvaluateMethod() {
+		CharSequence eval = "";
+		switch(getFilterType()) {
+		case ABSTRACT_FUNCTION:
+			break;
+		case FUNCTIONAL_CORRECTNESS_ORACLE:
+			break;
+		case SCENE_ABSTRACTION:
+			if (getInputPins().size() == 1 && getOutputPins().size() == 1) {
+				Pin in = getInputPins().get(0);
+				Pin out = getOutputPins().get(0);
+				eval = out.getPinObjectType() + " Evaluate(" + in.getPinObjectType() + " " + in.getPinObjectName() + ");";
+			}
+			break;
+		case TEST_COVERAGE_MONITOR:
+			break;
+		}
+		return eval;
+	}
+
+	@Override
+	public CharSequence getTemplateEvaluateContent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CharSequence getTemplateConstructorContent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CharSequence getTemplateDeconstructorContent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<String> getMoreConstructorValues() {
+		// TODO Auto-generated method stub
+		return new ArrayList<String>();
+	}
+
+	
 
 
 	

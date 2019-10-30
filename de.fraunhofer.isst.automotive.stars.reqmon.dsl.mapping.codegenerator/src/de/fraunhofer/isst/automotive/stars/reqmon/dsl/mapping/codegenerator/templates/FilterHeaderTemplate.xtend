@@ -1,6 +1,6 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.IModelInformationHelper
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.AbstractModelInformationHelper
 
 /**
  * This class offers header templates for three different filter types in c++.
@@ -9,9 +9,9 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.defi
 class FilterHeaderTemplate {
 	
 	FilterType filtertype
-	IModelInformationHelper helper
+	AbstractModelInformationHelper helper
 	
-	def void setModelInformationHepler(IModelInformationHelper helper) {
+	def void setModelInformationHepler(AbstractModelInformationHelper helper) {
 		this.helper = helper
 	}
 	
@@ -20,6 +20,7 @@ class FilterHeaderTemplate {
 	 */
 	def CharSequence generateTemplate(FilterType filtertype) {
 	this.filtertype = filtertype
+	this.helper.filterType = filtertype
 	'''
 	#define OID_DADAS_«oidName» "«oidString»"
 	«moreDefines»
@@ -68,10 +69,10 @@ class FilterHeaderTemplate {
 	def private getOidString() '''$oid_string$'''
 	
 	// defines macro
-	def private getMoreDefines() ''''''
+	def private getMoreDefines() '''«helper.getHeaderTemplateDefines»'''
 	
 	// includes macro
-	def private getIncludes() ''''''
+	def private getIncludes() '''«helper.getHeaderTemplateIncludes»'''
 	
 	// class name macro
 	def private getClassName() {
@@ -110,7 +111,7 @@ class FilterHeaderTemplate {
 	
 	def private getVersionTerm() '''Version'''
 	
-	def private getVersion() '''0, 1, 0'''
+	def private getVersion() '''«helper.getFilterVersion»'''
 	
 	def private getOidDesignation() {
 		switch(filtertype) {
@@ -123,106 +124,29 @@ class FilterHeaderTemplate {
 	}
 	
 	// input and output pin macro, object pointer macro
-	def private getInputPins() {
-		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''«AFFInputPins»'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''«FCOFInputPins»'''
-			case SCENE_ABSTRACTION: '''«SAFInputPins»'''
-			case TEST_COVERAGE_MONITOR: '''«TCMFInputPins»'''
-			default: '''$input_pin$'''
-		}
-	}
+	def private getInputPins() '''
+	«FOR pin : helper.inputPins»
+	cInputPin m_o«pin.getPinName.toFirstUpper»;
+	«ENDFOR»
+	'''
 	
-	def private getAFFInputPins() {
-		'''
-		'''
-	}
+	def private getOutputPins() '''
+	«FOR pin : helper.outputPins»
+	cOutputPin m_o«pin.getPinName.toFirstUpper»;
+	«ENDFOR»
+	'''
 	
-	def private getFCOFInputPins() {
-		'''
-		'''
-	}
-	
-	def private getSAFInputPins() {
-		'''
-		cInputPin m_oInput;
-		'''
-	}
-	
-	def private getTCMFInputPins() {
-		'''
-		$cInputPin m_oInput1$;
-		$cInputPin m_oInput2$;
-		'''
-	}
-	
-	def private getOutputPins() {
-		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''«AFFOutputPins»'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''«FCOFOutputPins»'''
-			case SCENE_ABSTRACTION: '''«SAFOutputPins»'''
-			case TEST_COVERAGE_MONITOR: '''«TCMFOutputPins»'''
-			default: '''$output_pin$'''
-		}
-	}
-	
-	def private getAFFOutputPins() {
-		''''''
-	}
-	
-	def private getFCOFOutputPins() {
-		''''''
-	}
-	
-	def private getSAFOutputPins() {
-		'''
-		cOutputPin m_oOutput;
-		'''
-	}
-	
-	def private getTCMFOutputPins() {
-		'''
-		$cOutputPin m_oOutput1$;
-		$cOutputPin m_oOutput2$;
-		'''
-	}
-	
-	def private getObjectPtrs() {
-		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''«AFFObjectPtrs»'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''«FCOFObjectPtrs»'''
-			case SCENE_ABSTRACTION: '''«SAFObjectPtrs»'''
-			case TEST_COVERAGE_MONITOR: '''«TCMFObjectPtrs»'''
-			default: '''$object_ptrs$'''
-		}
-	}
-	
-	def private getAFFObjectPtrs() {
-		''''''
-	}
-	
-	def private getFCOFObjectPtrs() {
-		''''''
-	}
-	
-	def private getSAFObjectPtrs() {
-		'''cObjectPtr<IMediaTypeDescription> m_pCoderDesc;'''
-	}
-	
-	def private getTCMFObjectPtrs() {
-		'''	
-		$cObjectPtr<IMediaTypeDescription> m_pCoderDesc1$;
-		$cObjectPtr<IMediaTypeDescription> m_pCoderDesc2$;
-		'''
-	}
-	
-	
+	def private getObjectPtrs() '''
+	«FOR ptr : helper.getObjectPtrs»
+	cObjectPtr<IMediaTypeDescription> m_p«ptr.toFirstUpper»;
+	«ENDFOR»
+	'''
 	
 	// private member macro
-	def private getMorePrivateMembers() ''''''
+	def private getMorePrivateMembers() '''«helper.getHeaderTemplatePrivateMembers»'''
 	
 	// private function macro
-	def private getPrivateFunctions() ''''''
+	def private getPrivateFunctions() '''«helper.getHeaderTemplatePrivateFunctions»'''
 	
 	// public function macro
 	def private getPublicFunctions() '''
@@ -248,15 +172,13 @@ class FilterHeaderTemplate {
 	«IF filtertype.equals(FilterType.ABSTRACT_FUNCTION) || filtertype.equals(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE) 
 			|| filtertype.equals(FilterType.TEST_COVERAGE_MONITOR)»
 	tResult OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception = NULL);
-	tResult Evaluate(«parameter»);
 	«ELSEIF filtertype.equals(FilterType.SCENE_ABSTRACTION)»
 	tResult ProcessSample(IMediaSample* pSample);
-	DADAS::tCategorisation Categorize(tScene* scene);
-	tResult SendBOOSTCategories(DADAS::tCategorisation* categorisation);
 	«ENDIF»
+	«helper.getEvaluateMethod»
+	«helper.getHeaderTemplateProtectedFunctions»
 	void LOG(cString mes);
 	'''
 	
-	def private getParameter() '''$parameter$'''
 	
 }

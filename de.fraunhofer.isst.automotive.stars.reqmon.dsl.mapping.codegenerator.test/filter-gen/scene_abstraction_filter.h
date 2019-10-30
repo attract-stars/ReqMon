@@ -6,9 +6,9 @@ class cDadasSceneAbstractionFilter : public cFilter
 	ADTF_DECLARE_FILTER_VERSION(OID_DADAS_SCENE_ABSTRACTION, "DADAS Scene Abstraction Filter", OBJCAT_DataFilter, "Version", 0, 1, 0, "Scene Abstraction")
 	
 	private: // private members
-		cInputPin m_oInput;
+		cInputPin m_oSceneInput;
 		
-		cOutputPin m_oOutput;
+		cOutputPin m_oCategorizationOutput;
 		
 		cObjectPtr<IMediaTypeDescription> m_pCoderDesc;
 		
@@ -34,8 +34,7 @@ class cDadasSceneAbstractionFilter : public cFilter
 		
 	protected: 
 		tResult ProcessSample(IMediaSample* pSample);
-		DADAS::tCategorisation Categorize(tScene* scene);
-		tResult SendBOOSTCategories(DADAS::tCategorisation* categorisation);
+		tCategorization Evaluate(tScene scene);
 		void LOG(cString mes);
 };
 

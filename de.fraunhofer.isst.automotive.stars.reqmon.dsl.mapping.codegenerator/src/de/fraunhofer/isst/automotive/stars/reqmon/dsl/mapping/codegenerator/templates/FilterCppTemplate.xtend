@@ -1,9 +1,7 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.IModelInformationHelper
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.IPin
-
-
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.AbstractModelInformationHelper
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.Pin
 
 /**
  * This class offers templates for three different filter types in c++.
@@ -12,10 +10,10 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.defi
 class FilterCppTemplate {
 	
 	FilterType filtertype
-	IModelInformationHelper helper
+	AbstractModelInformationHelper helper
 	
 	
-	def void setModelInformationHepler(IModelInformationHelper helper) {
+	def void setModelInformationHepler(AbstractModelInformationHelper helper) {
 		this.helper = helper
 	}
 	
@@ -32,7 +30,7 @@ class FilterCppTemplate {
 	
 	ADTF_FILTER_PLUGIN("«filterName»", OID_DADAS_«oidName», «className»)
 	
-	«className»::«className»(const tChar* __info) : «memberValueSetting»
+	«className»::«className»(const tChar* __info) : «constructorValueSetting»
 	{
 		«constructor»
 	}
@@ -70,40 +68,15 @@ class FilterCppTemplate {
 	'''
 	}
 		
-	def private getIncludes() {
-		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''«exampleIncludes»'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''«exampleIncludes»'''
-			case SCENE_ABSTRACTION: '''«SAFIncludes»'''
-			case TEST_COVERAGE_MONITOR: '''«exampleIncludes»'''
-			default: '''$includes$'''
-		}
-	}
-	
-	def private getExampleIncludes() '''
-	#include "stdafx.h"
-	#include "dtypes.h"
-	#include "dadas_monitoring_types.h"
-	#include "dadas_mediatypes.h"
+	def private getIncludes()'''
+	«FOR include : helper.includes»
+	#include «include».h
+	«ENDFOR»
 	'''
 	
-	def private getSAFIncludes() '''
-		«FOR include : helper.includes»
-		#include «include».h
-		«ENDFOR»
+	def private getDatatypeSettings() '''
+	tBool debugOpt = t«IF helper.isDebugOpt»True«ELSE»False«ENDIF»;
 	'''
-	
-	def private getDatatypeSettings() {
-		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''«SAFDataTypeSettings»'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''«SAFDataTypeSettings»'''
-			case SCENE_ABSTRACTION: '''«SAFDataTypeSettings»'''
-			case TEST_COVERAGE_MONITOR: '''«SAFDataTypeSettings»'''
-			default: '''$datatypeSettings$'''
-		}
-	}
-	
-	def private getSAFDataTypeSettings() '''tBool debugOpt = t«IF helper.isDebugOpt»True«ELSE»False«ENDIF»;'''
 	
 	def private getFilterName() {
 		switch(filtertype) {
@@ -128,12 +101,12 @@ class FilterCppTemplate {
 	}
 		
 	
-	def private getMemberValueSetting() {
+	def private getConstructorValueSetting() {
 		switch(filtertype) {
 			case ABSTRACT_FUNCTION: '''cConditionTriggeredFilter(tTrue,tTrue,__info), 
-				m_bTimeout(tFalse)«moreValueSettings»'''
+				m_bTimeout(tFalse)«moreConstructorValueSettings»'''
 			case FUNCTIONAL_CORRECTNESS_ORACLE: '''cConditionTriggeredFilter(tTrue,tTrue,__info), 
-				m_bTimeout(tFalse)«moreValueSettings»'''
+				m_bTimeout(tFalse)«moreConstructorValueSettings»'''
 			case SCENE_ABSTRACTION: '''cFilter(__info)'''
 			case TEST_COVERAGE_MONITOR: '''cConditionTriggeredFilter(tTrue,tTrue,__info), ILoadRecordsInterface(),
 				m_bTimeout(tFalse)'''
@@ -141,16 +114,19 @@ class FilterCppTemplate {
 		}
 	}
 	
-	def private getMoreValueSettings() ''', $more value settings$'''
+	def private getMoreConstructorValueSettings() '''
+	«FOR setting : helper.getMoreConstructorValues»«ENDFOR»
+	'''
 	
 	def private getConstructor() {
-		switch(filtertype) {
+		helper.getTemplateConstructorContent
+		/*switch(filtertype) {
 			case ABSTRACT_FUNCTION: '''«exampleConstructor»'''
 			case FUNCTIONAL_CORRECTNESS_ORACLE: '''«exampleConstructor»'''
 			case SCENE_ABSTRACTION: ''''''
 			case TEST_COVERAGE_MONITOR: '''«exampleConstructor»'''
 			default: '''$Constructor$'''
-		}	
+		}	*/
 	}
 	
 	def private getExampleConstructor() '''
@@ -168,13 +144,14 @@ class FilterCppTemplate {
 	def private getMorePropertySettings() '''$set more properties$'''
 	
 	def private getDestructor() {
-		switch(filtertype) {
+		helper.getTemplateDeconstructorContent
+		/*switch(filtertype) {
 			case ABSTRACT_FUNCTION: '''«exampleDestructor»'''
 			case FUNCTIONAL_CORRECTNESS_ORACLE: '''«exampleDestructor»'''
 			case SCENE_ABSTRACTION: ''''''
 			case TEST_COVERAGE_MONITOR: '''«exampleDestructor»'''
 			default: '''$Destructor$'''
-		}	
+		}*/	
 	}
 	
 	def private getExampleDestructor() '''
@@ -333,7 +310,7 @@ class FilterCppTemplate {
 	
 	def private getSAFPinCreation() '''
 	«FOR pin : helper.getPins»
-	cObjectPtr <IMediaType> «pin.SAFPTypeName» = new cMediaType(«pin.mediaType», «pin.mediaSubType»);
+	cObjectPtr<IMediaType> «pin.SAFPTypeName» = new cMediaType(«pin.getMediaType», «pin.getMediaSubType»);
 	«pin.createSAFPin»
 	«pin.registerSAFPin»
 	
@@ -342,7 +319,7 @@ class FilterCppTemplate {
 	
 	def private getPTypeName() '''$pTypeName$'''
 	
-	def private getSAFPTypeName(IPin pin) '''p«pin.pinName.toFirstUpper»'''
+	def private getSAFPTypeName(Pin pin) '''p«pin.getPinName.toFirstUpper»'''
 	
 	def private getMediatype() '''MEDIATYPE_DADAS'''
 	
@@ -354,15 +331,15 @@ class FilterCppTemplate {
 	
 	def private getRegisterPin() '''RETURN_IF_FAILED(Register?Trigger?Pin(&«pinName»));'''
 	
-	def private getRegisterSAFPin(IPin pin) '''RETURN_IF_FAILED(RegisterPin(&«pin.SAFPinName»));'''
+	def private getRegisterSAFPin(Pin pin) '''RETURN_IF_FAILED(RegisterPin(&«pin.SAFPinName»));'''
 	
 	def private getPinName() '''$m_oPin'''
 	
-	def private getSAFPinName(IPin pin) '''m_o«pin.pinName.toFirstUpper»'''
+	def private getSAFPinName(Pin pin) '''m_o«pin.getPinName.toFirstUpper»'''
 	
 	def private getCreatePin() '''RETURN_IF_FAILED(«pinName».Create("«mediaTypeName»", «PTypeName», this«moreCreatePinParameters»));'''
 	
-	def private getCreateSAFPin(IPin pin) '''RETURN_IF_FAILED(«pin.SAFPinName».Create("«pin.pinObjectName»", «pin.SAFPTypeName», this));'''
+	def private getCreateSAFPin(Pin pin) '''RETURN_IF_FAILED(«pin.SAFPinName».Create("«pin.pinObjectName»", «pin.SAFPTypeName», this));'''
 	
 	def private getMediaTypeName() '''$type$'''
 	
@@ -521,7 +498,13 @@ class FilterCppTemplate {
 	
 	def private getClear() '''clear buffers and/or queues'''
 	
-	def private getOnPinEvent() '''
+	def private getOnPinEvent() {
+		if (helper.inputPins.size == 1) {
+			getOnPinEventForOneInput(helper.inputPins.get(0))
+		}
+	}
+	
+	def private getOnPinEventForOneInput(Pin input) '''
 	tResult «className»::OnPinEvent(IPin* pSource,
 		tInt nEventCode,
 		tInt nParam1,
@@ -532,7 +515,7 @@ class FilterCppTemplate {
 		{
 			RETURN_IF_POINTER_NULL(pMediaSample);
 			
-			if (pSource == &m_oInput)
+			if (pSource == &m_o«input.pinName.toFirstUpper»)
 			{
 				ProcessSample(pMediaSample);
 			}	else {
@@ -636,13 +619,13 @@ class FilterCppTemplate {
 		}
 	}
 	
-	def private getProcessSampleForOneInOutput(IPin inputPin, IPin outputPin) '''
+	def private getProcessSampleForOneInOutput(Pin inputPin, Pin outputPin) '''
 	tResult «className»::ProcessSample(IMediaSample* pSample)
 	{
 		{
 			__sample_read_lock(pMediaSample, «inputPin.pinObjectType», pData);
 		
-			«outputPin.pinObjectType» «outputPin.pinObjectName.toFirstLower» = Categorize(&pData);
+			«outputPin.pinObjectType» «outputPin.pinObjectName.toFirstLower» = Evaluate(&pData);
 		
 		}
 	
@@ -664,117 +647,12 @@ class FilterCppTemplate {
 	}
 	
 	
-	def private getCategorisationForOneInOutput(IPin in, IPin out) '''
-	«out.pinObjectType» «className»::Categorize(«in.pinObjectType»* «in.pinObjectName.toFirstLower»)
+	def private getCategorisationForOneInOutput(Pin in, Pin out) '''
+	«out.pinObjectType» «className»::Evaluate(«in.pinObjectType»* «in.pinObjectName.toFirstLower»)
 	{
-		//Build «out.pinObjectType»
-	
-		«out.pinObjectType» «out.pinObjectName.toFirstLower»;
-
-		«getValueSettingsForAllSceneElements(in, out)»
-	
-		return «out.pinObjectName.toFirstLower»;
+		«helper.getTemplateEvaluateContent»
 	}
 	'''
-	
-	def private getValueSettingsForAllSceneElements(IPin in, IPin out) '''
-	«FOR elem : helper.getAttributes(out.pinObjectType)»
-	«getValueSettingForElement(elem, in, out)»
-	«ENDFOR»
-	'''
-	
-	def private getValueSettingForElement(String elem, IPin in, IPin out) {
-		if (elem.charAt(0).compareTo('c') == 0) {
-			val elements = elem.split(' ')
-			if (elements.length === 3) {
-				getClassValues(elements, in, out)
-			}
-		}
-		else if (elem.charAt(0).compareTo('l') == 0) {
-			val elements = elem.split(' ')
-			if (elements.length === 3) {
-				getListValues(elements, in)
-			}
-		}
-	}
-	
-	def private getListValues(String[] elems, IPin in) '''
-	«getCorrespondingElement(elems.get(1), in.pinObjectName)»
-	'''
-	 
-	def private getClassValues(String[] elems, IPin in, IPin out) '''
-	«elems.get(1)» «elems.get(1)»;
-	«getCorrespondingElement(elems.get(1), in.pinObjectName)»
-	«FOR attr : helper.getAttributes(elems.get(1))»
-		«IF attr.charAt(0).compareTo('a') == 0»
-	«attr.getMonitoringAttribute»
-		«ENDIF»
-	«ENDFOR»
-	«out.pinObjectName.toFirstLower».«elems.get(2)» = «elems.get(1)»;
-	
-	'''
-		
-		// for (sceneObj : scene)
-		// for (attr : sceneObj)
-		// systemObj.attr = attr
-		//     (boundary test and enum setting, switch cases)
-		// category examples:
-		//     ego vehicle, lanes (counter, type, curvature, ramp, marking), 
-		//     objects (count, location relative to ego, relative velocity, distance),
-		//     domain, driver overturning)
-		// Logging: LOG(cString::Format("attr: %i", attr));
-		// tCategorisation.systemObj = systemObj
-	
-	def private getCorrespondingElement(String elem, String inObj) {
-		val attr = helper.getSystemAttribut(elem)
-		if (attr.length === 0) return ''''''
-		val splitted = attr.split(' ')
-		if (splitted.length !== 3) return ''''''
-		
-		if (splitted.get(0).compareTo('i') == 0) {
-			return '''«splitted.get(1)»* «splitted.get(2)» = &(«inObj.toFirstLower»->«splitted.get(2)»);'''
-		}
-		else if (splitted.get(0).compareTo('l') == 0) {
-			return '''vector<«splitted.get(1)»>* «splitted.get(2)» = &(«inObj.toFirstLower»->«splitted.get(2)»);'''
-		}
-	}
-	
-	def private getMonitoringAttribute(String attr) {
-		val splitted = attr.split(' ')
-		if (splitted.length !== 3) {
-			return ''''''
-		}
-		return '''«splitted.get(1)» «splitted.get(2)» = «getCorrespondingValue(splitted.get(2))»();'''
-	}
-	
-	def private getCorrespondingValue(String monAttr) {
-		val splitted = helper.getCorrespondingAttribute(monAttr).split(' ')
-		if (splitted.length != 2) {
-			return ''''''
-		}
-		return '''«splitted.get(0)»->«splitted.get(1)»'''
-	}
-	
-	/*def private getBoundaryTest(String attr) {
-		val signal = signals.get(monAttr)
-		println("Signal: " + signal)
-		if (signal === null) return ''''''
-		val bounds = helper.getSignalBoundarys(signal)
-		val splitted = attr.split(' ')
-		if (splitted.length !== 6) {
-			return ''''''
-		}
-		'''
-		if («monAttr < «bounds.get(0)) {
-			«monObj.«splitted.get(1) = «splitted.get(2);
-		} else if («monAttr > «bounds.get(1)) {
-			«monObj.«splitted.get(1) = «splitted.get(3);
-		} else {
-			«monObj.«splitted.get(1) = «splitted.get(5);
-		}
-		'''
-		
-	}*/
 	
 	def private getMoreActions() ''''''
 	
@@ -811,5 +689,95 @@ class FilterCppTemplate {
 	'''
 	
 	def private getPrivateMethods() ''''''
+	
+	/*def private getValueSettingsForAllSceneElements(Pin in, Pin out) '''
+	«FOR elem : helper.getAttributes(out.pinObjectType)»
+	«getValueSettingForElement(elem, in, out)»
+	«ENDFOR»
+	'''*/
+	
+	/*def private getValueSettingForElement(String elem, Pin in, Pin out) {
+		if (elem.charAt(0).compareTo('c') == 0) {
+			val elements = elem.split(' ')
+			if (elements.length === 3) {
+				getClassValues(elements, in, out)
+			}
+		}
+		else if (elem.charAt(0).compareTo('l') == 0) {
+			val elements = elem.split(' ')
+			if (elements.length === 3) {
+				getListValues(elements, in)
+			}
+		}
+	}*/
+	
+	/*def private getListValues(String[] elems, Pin in) '''
+	«getCorrespondingElement(elems.get(1), in.pinObjectName)»
+	'''*/
+	 
+	/*def private getClassValues(String[] elems, Pin in, Pin out) '''
+	«elems.get(1)» «elems.get(1)»;
+	«getCorrespondingElement(elems.get(1), in.pinObjectName)»
+	«FOR attr : helper.getAttributes(elems.get(1))»
+		«IF attr.charAt(0).compareTo('a') == 0»
+	«attr.getMonitoringAttribute»
+		«ENDIF»
+	«ENDFOR»
+	«out.pinObjectName.toFirstLower».«elems.get(2)» = «elems.get(1)»;
+	
+	'''*/
+		
+	/*def private getCorrespondingElement(String elem, String inObj) {
+		val attr = helper.getSystemAttribut(elem)
+		if (attr.length === 0) return ''''''
+		val splitted = attr.split(' ')
+		if (splitted.length !== 3) return ''''''
+		
+		if (splitted.get(0).compareTo('i') == 0) {
+			return '''«splitted.get(1)»* «splitted.get(2)» = &(«inObj.toFirstLower»->«splitted.get(2)»);'''
+		}
+		else if (splitted.get(0).compareTo('l') == 0) {
+			return '''vector<«splitted.get(1)»>* «splitted.get(2)» = &(«inObj.toFirstLower»->«splitted.get(2)»);'''
+		}
+	}*/
+	
+	/*def private getMonitoringAttribute(String attr) {
+		val splitted = attr.split(' ')
+		if (splitted.length !== 3) {
+			return ''''''
+		}
+		return '''«splitted.get(1)» «splitted.get(2)» = «getCorrespondingValue(splitted.get(2))»();'''
+	}*/
+	
+	/*def private getCorrespondingValue(String monAttr) {
+		val splitted = helper.getCorrespondingAttribute(monAttr).split(' ')
+		if (splitted.length != 2) {
+			return ''''''
+		}
+		return '''«splitted.get(0)»->«splitted.get(1)»'''
+	}*/
+	
+	/*def private getBoundaryTest(String attr) {
+		val signal = signals.get(monAttr)
+		println("Signal: " + signal)
+		if (signal === null) return ''''''
+		val bounds = helper.getSignalBoundarys(signal)
+		val splitted = attr.split(' ')
+		if (splitted.length !== 6) {
+			return ''''''
+		}
+		'''
+		if («monAttr < «bounds.get(0)) {
+			«monObj.«splitted.get(1) = «splitted.get(2);
+		} else if («monAttr > «bounds.get(1)) {
+			«monObj.«splitted.get(1) = «splitted.get(3);
+		} else {
+			«monObj.«splitted.get(1) = «splitted.get(5);
+		}
+		'''
+		
+	}*/
+	
+	
 	
 }

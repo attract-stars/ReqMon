@@ -2,8 +2,6 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.log
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMappingModel
 import java.util.ArrayList
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.FilterType
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.IModelInformationHelper
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.RequirementType
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.DefinitionElememnt
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.ClassID
@@ -16,8 +14,9 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.ClassNode
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.AttributeNode
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.SignalNode
 import java.util.List
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.AbstractModelInformationHelper
 
-class ModelInformationHelperImpl implements IModelInformationHelper {
+class ModelInformationHelperImpl extends AbstractModelInformationHelper {
 	
 	IMappingModel model
 	ArrayList<String> objects
@@ -46,33 +45,9 @@ class ModelInformationHelperImpl implements IModelInformationHelper {
 		setup
 	}
 	
-	override setFilterType(FilterType filtertype) {
-		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
-	override getIncludes() {
-		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
-		return new ArrayList
-	}
-	
 	override isDebugOpt() {
 		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
 		return false
-	}
-	
-	override getPins() {
-		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
-		return new ArrayList
-	}
-	
-	override getInputPins() {
-		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
-		return new ArrayList
-	}
-	
-	override getOutputPins() {
-		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
-		return new ArrayList
 	}
 	
 	override getAttributes(String objectName) {
@@ -209,6 +184,118 @@ class ModelInformationHelperImpl implements IModelInformationHelper {
 	override getReqEnums() {
 		return enums
 	}
-
+	
+	override getFilterVersion() {
+		return "0, 1, 0"
+	}
+	
+	override getInputPinsNames() {
+		val list = new ArrayList
+		switch(filterType) {
+			case ABSTRACT_FUNCTION: {
+				list.add("categorization")
+				list.add("concreteTargets")}
+			case FUNCTIONAL_CORRECTNESS_ORACLE: {
+				list.add("can")
+				list.add("categorization")
+				list.add("abstractTargets")
+				list.add("concreteTargets")}
+			case SCENE_ABSTRACTION: {
+				 list.add("scene")}
+			case TEST_COVERAGE_MONITOR: {}
+		}
+		
+		return list;
+	}
+	
+	override getOutputPinsNames() {
+		val list = new ArrayList
+		switch(filterType) {
+		case ABSTRACT_FUNCTION: 
+			{list.add("targetsOutput")}
+		case FUNCTIONAL_CORRECTNESS_ORACLE:
+			{}
+		case SCENE_ABSTRACTION:
+			{list.add("categorization")}
+		case TEST_COVERAGE_MONITOR:
+			{}
+		}
+		
+		return list;
+	}
+	
+	override getObjectPtrs() {
+		val list = new ArrayList
+		switch(filterType) {
+		case ABSTRACT_FUNCTION: 
+			{}
+		case FUNCTIONAL_CORRECTNESS_ORACLE:
+			{}
+		case SCENE_ABSTRACTION:
+			{list.add("coderDesc")}
+		case TEST_COVERAGE_MONITOR:
+			{}
+		}
+		
+		return list;
+	}
+	
+	override getHeaderTemplateDefines() {
+		return ''''''
+	}
+	
+	override getHeaderTemplateIncludes() {
+		return ''''''
+	}
+	
+	override getHeaderTemplatePrivateMembers() {
+		return ''''''
+	}
+	
+	override getHeaderTemplatePrivateFunctions() {
+		return ''''''
+	}
+	
+	override getHeaderTemplateProtectedFunctions() {
+		return ''''''
+	}
+	
+	
+	override getTemplateEvaluateContent() {
+		return ''''''
+	}
+	
+	override getEvaluateMethod() {
+		switch(filterType) {
+		case ABSTRACT_FUNCTION:
+			{}
+		case FUNCTIONAL_CORRECTNESS_ORACLE:
+			{}
+		case SCENE_ABSTRACTION:
+			if (getInputPins().size() == 1 && getOutputPins().size() == 1) {
+				val in = getInputPins().get(0);
+				val out = getOutputPins().get(0);
+				return '''«out.getPinObjectType()»Evaluate("«in.getPinObjectType()» «in.getPinObjectName()»);'''
+			}
+			
+		case TEST_COVERAGE_MONITOR:
+			{}
+		}
+		return "";
+	}
+	
+	override getTemplateConstructorContent() {
+		return ''''''
+	}
+	
+	override getTemplateDeconstructorContent() {
+		return ''''''
+	}
+	
+	override getMoreConstructorValues() {
+		return new ArrayList
+	}
+	
+	
 	
 }

@@ -6,6 +6,8 @@ class cDadasAbstractFunctionFilter : public cConditionTriggeredFilter
 	ADTF_DECLARE_FILTER_VERSION(OID_DADAS_ABSTRACT_FUNCTION, "DADAS Abstract Function Filter", OBJCAT_DataFilter, "Version", 0, 1, 0, "Abstract Function")
 	
 	private: // private members
+		cInputPin m_oCategorizationInput;
+		cInputPin m_oConcreteTargetsInput;
 		
 		
 		
@@ -30,7 +32,6 @@ class cDadasAbstractFunctionFilter : public cConditionTriggeredFilter
 		
 	protected: 
 		tResult OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception = NULL);
-		tResult Evaluate($parameter$);
 		void LOG(cString mes);
 };
 

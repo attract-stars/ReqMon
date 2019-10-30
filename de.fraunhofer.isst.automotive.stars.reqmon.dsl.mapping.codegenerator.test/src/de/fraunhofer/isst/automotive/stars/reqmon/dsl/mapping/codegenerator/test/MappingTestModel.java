@@ -118,7 +118,7 @@ public class MappingTestModel implements IMappingModel {
 	public List<String> getAllAtributesOf(String objectName) {
 		List<String> attributes = new ArrayList<String>();
 		switch(objectName) {
-		case "tCategorisation":
+		case "tCategorization":
 			attributes.add("c tEgoVehicleCategory ego");
 			attributes.add("l tLaneCategory lanesCategory");
 			break;

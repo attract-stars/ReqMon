@@ -6,6 +6,10 @@ class cDadasFunctionalCorrectnessOracleFilter : public cConditionTriggeredFilter
 	ADTF_DECLARE_FILTER_VERSION(OID_DADAS_FUNCTIONAL_CORRECTNESS_ORACLE, "DADAS Functional Correctness Oracle Filter", OBJCAT_DataFilter, "Version", 0, 1, 0, "Functional Correctness Oracle")
 	
 	private: // private members
+		cInputPin m_oCanInput;
+		cInputPin m_oCategorizationInput;
+		cInputPin m_oAbstractTargetsInput;
+		cInputPin m_oConcreteTargetsInput;
 		
 		
 		
@@ -30,7 +34,6 @@ class cDadasFunctionalCorrectnessOracleFilter : public cConditionTriggeredFilter
 		
 	protected: 
 		tResult OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception = NULL);
-		tResult Evaluate($parameter$);
 		void LOG(cString mes);
 };
 

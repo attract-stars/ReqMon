@@ -1,6 +1,6 @@
-#include scene_abstraction_filter.h
 #include system-types.h
 #include mediatypes.h
+#include scene_abstraction_filter.h
 
 tBool debugOpt = tFalse;
 
@@ -20,13 +20,13 @@ tResult cDadasSceneAbstractionFilter::Init(tInitStage eStage, __exception)
 	
 	if (eStage == StageFirst)
 	{
-		cObjectPtr<IMediaType> pInput = new cMediaType(MEDIATYPE_DADAS, MEDIATYPE_DADAS_SCENE);
-		RETURN_IF_FAILED(m_oInput.Create("scene", pInput, this));
-		RETURN_IF_FAILED(RegisterPin(&m_oInput));
+		cObjectPtr<IMediaType> pSceneInput = new cMediaType(MEDIATYPE_DADAS, MEDIATYPE_DADAS_SCENE);
+		RETURN_IF_FAILED(m_oSceneInput.Create("scene", pSceneInput, this));
+		RETURN_IF_FAILED(RegisterPin(&m_oSceneInput));
 		
-		cObjectPtr<IMediaType> pOutput = new cMediaType(MEDIATYPE_DADAS, MEDIATYPE_DADAS_CATEGORISATION);
-		RETURN_IF_FAILED(m_oOutput.Create("categorisation", pOutput, this));
-		RETURN_IF_FAILED(RegisterPin(&m_oOutput));
+		cObjectPtr<IMediaType> pCategorizationOutput = new cMediaType(MEDIATYPE_DADAS, MEDIATYPE_DADAS_CATEGORIZATION);
+		RETURN_IF_FAILED(m_oCategorizationOutput.Create("categorization", pCategorizationOutput, this));
+		RETURN_IF_FAILED(RegisterPin(&m_oCategorizationOutput));
 		
 	}
 	else if (eStage == StageNormal)
@@ -81,7 +81,7 @@ tResult cDadasSceneAbstractionFilter::OnPinEvent(IPin* pSource,
 	{
 		RETURN_IF_POINTER_NULL(pMediaSample);
 		
-		if (pSource == &m_oInput)
+		if (pSource == &m_oSceneInput)
 		{
 			ProcessSample(pMediaSample);
 		}	else {
@@ -96,7 +96,7 @@ tResult cDadasSceneAbstractionFilter::ProcessSample(IMediaSample* pSample)
 	{
 		__sample_read_lock(pMediaSample, tScene, pData);
 	
-		tCategorisation categorisation = Categorize(&pData);
+		tCategorization categorization = Evaluate(&pData);
 	
 	}
 
@@ -110,21 +110,8 @@ tResult cDadasSceneAbstractionFilter::ProcessSample(IMediaSample* pSample)
 	RETURN_NOERROR;
 }
 
-tCategorisation cDadasSceneAbstractionFilter::Categorize(tScene* scene)
+tCategorization cDadasSceneAbstractionFilter::Evaluate(tScene* scene)
 {
-	//Build tCategorisation
-
-	tCategorisation categorisation;
-
-	tEgoVehicleCategory tEgoVehicleCategory;
-	tObject* ego = &(scene->ego);
-	tFloat egoVelocity = ego->velocity();
-	tFloat egoOffset = ego->offset();
-	categorisation.ego = tEgoVehicleCategory;
-	
-	vector<tLane>* lanes = &(scene->lanes);
-
-	return categorisation;
 }
 
 void cDadasSceneAbstractionFilter::LOG(cString mes)

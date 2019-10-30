@@ -1,12 +1,12 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.RequirementType
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.IModelInformationHelper
 import java.util.List
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.AbstractModelInformationHelper
 
 class RequirementDataTypesTemplate {
 	
-	IModelInformationHelper helper
+	AbstractModelInformationHelper helper
 	
 	def CharSequence generateTemplate() '''
 	#ifndef «includeGardsBegin»
@@ -18,7 +18,7 @@ class RequirementDataTypesTemplate {
 	#endif
 	'''
 	
-	def void setModelInformationHelper(IModelInformationHelper helper) {
+	def void setModelInformationHelper(AbstractModelInformationHelper helper) {
 		this.helper = helper
 	}
 			

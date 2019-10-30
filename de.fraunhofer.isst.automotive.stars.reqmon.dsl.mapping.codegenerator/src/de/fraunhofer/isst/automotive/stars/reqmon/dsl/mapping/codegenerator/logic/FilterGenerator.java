@@ -15,7 +15,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.temp
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.FilterCppTemplate;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.FilterHeaderTemplate;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.FilterType;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.IModelInformationHelper;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.AbstractModelInformationHelper;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.logic.ModelInformationHelperImpl;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.RequirementDataTypesTemplate;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.StandardAndTypesTemplate;
@@ -44,7 +44,7 @@ public class FilterGenerator implements IGenerator {
 		
 		setup();
 		
-		IModelInformationHelper infoHelper = new ModelInformationHelperImpl();
+		AbstractModelInformationHelper infoHelper = new ModelInformationHelperImpl();
 		infoHelper.setModel(model);
 		
 		System.out.println("\n\nGenerated content:\n");
@@ -167,7 +167,7 @@ public class FilterGenerator implements IGenerator {
 		}
 	}
 
-	public void generate(IModelInformationHelper infoHelper) {
+	public void generate(AbstractModelInformationHelper infoHelper) {
 		System.out.println("FilterGenerator called!");
 		setupTest();
 		
