@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>de.fraunhofer.isst.automotive.stars.reqmon.parent</artifactId>
 		<groupId>de.fraunhofer.isst.automotive.stars.reqmon</groupId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>de.fraunhofer.isst.automotive.stars.reqmon.product</artifactId>

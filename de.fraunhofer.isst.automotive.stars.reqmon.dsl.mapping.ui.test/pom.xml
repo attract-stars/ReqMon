@@ -6,21 +6,45 @@
 	<parent>
 		<groupId>de.fraunhofer.isst.automotive.stars.reqmon</groupId>
 		<artifactId> de.fraunhofer.isst.automotive.stars.reqmon.parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test</artifactId>
+	<packaging>eclipse-test-plugin</packaging>
+
 	<build>
-		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.7.0</version>
+				<groupId>org.eclipse.xtend</groupId>
+				<artifactId>xtend-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<useUIHarness>true</useUIHarness>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<configuration>
+					<dependency-resolution>
+						<extraRequirements>
+							<!-- to get the org.eclipse.osgi.compatibility.state plugin
+							if the target platform is Luna or later.
+							(backward compatible with kepler and previous versions)
+							see https://bugs.eclipse.org/bugs/show_bug.cgi?id=492149 -->
+							<requirement>
+								<type>eclipse-feature</type>
+								<id>org.eclipse.rcp</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+						</extraRequirements>
+					</dependency-resolution>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+	
 </project>

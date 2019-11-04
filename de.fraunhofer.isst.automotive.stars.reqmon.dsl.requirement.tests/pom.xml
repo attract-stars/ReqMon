@@ -6,11 +6,12 @@
 	<parent>
 		<groupId>de.fraunhofer.isst.automotive.stars.reqmon</groupId>
 		<artifactId> de.fraunhofer.isst.automotive.stars.reqmon.parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.tests</artifactId>
-	
+	<packaging>eclipse-test-plugin</packaging>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -19,5 +20,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	
 </project>

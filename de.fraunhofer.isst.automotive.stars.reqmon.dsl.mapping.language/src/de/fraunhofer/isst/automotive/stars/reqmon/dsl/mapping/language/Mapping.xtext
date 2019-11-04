@@ -45,7 +45,7 @@ SignalID:
 ;
 
 StructureID:
-	def='structure' struc=[system::DataStructureNode | STRING]?
+	def='structure' struc=[system::DataStructureNode| STRING]?
 ;
 
 ClassID:
