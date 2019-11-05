@@ -23,18 +23,4 @@
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ide"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
 </feature>

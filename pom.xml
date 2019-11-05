@@ -29,6 +29,7 @@
 		<module>de.fraunhofer.isst.automotive.stars.reqmon.target</module>
 		<module>de.fraunhofer.isst.automotive.stars.reqmon.feature</module>
 		<module>de.fraunhofer.isst.automotive.stars.reqmon.product</module>
+		<module>de.fraunhofer.isst.automotive.stars.reqmon.product.dependencies</module>
 		
 		<module>de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement</module>
 		<module>de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ide</module>
