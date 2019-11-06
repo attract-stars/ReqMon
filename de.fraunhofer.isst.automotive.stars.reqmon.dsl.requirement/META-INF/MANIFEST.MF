@@ -28,3 +28,4 @@ Export-Package: de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement,
  de.fraunhofer.isst.stars.serializer,
  de.fraunhofer.isst.stars.services,
  de.fraunhofer.isst.stars.validation
+Import-Package: org.apache.log4j
