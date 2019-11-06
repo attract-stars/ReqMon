@@ -10,6 +10,8 @@
 	</parent>
 
 	<artifactId>de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator</artifactId>
+	<packaging>eclipse-plugin</packaging>
+	
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>

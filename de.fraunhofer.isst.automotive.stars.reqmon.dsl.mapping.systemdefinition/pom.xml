@@ -10,6 +10,8 @@
 	</parent>
 
 	<artifactId>de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition</artifactId>
+	<packaging>eclipse-plugin</packaging>
+	
 	<build>
 		<plugins>
 			<plugin>

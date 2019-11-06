@@ -10,7 +10,9 @@
 	</parent>
 
 	<artifactId>de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language</artifactId>
-		<build>
+	<packaging>eclipse-plugin</packaging>
+
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -66,14 +68,14 @@
 						<groupId>de.fraunhofer.isst.automotive.stars.reqmon</groupId>
 						<artifactId> de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition</artifactId>
 						<version>1.0.0-SNAPSHOT</version>
-					</dependency> 
+					</dependency>
 				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.eclipse.xtend</groupId>
 				<artifactId>xtend-maven-plugin</artifactId>
 			</plugin>
-	
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
@@ -103,12 +105,8 @@
 								<include>**/*</include>
 							</includes>
 						</fileset>
-						<!-- <fileset>
-							<directory>${basedir}/../de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.ui.tests/src-gen/</directory>
-							<includes>
-								<include>**/*</include>
-							</includes>
-						</fileset> -->
+						<!-- <fileset> <directory>${basedir}/../de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.ui.tests/src-gen/</directory> 
+							<includes> <include>**/*</include> </includes> </fileset> -->
 						<fileset>
 							<directory>${basedir}/model/generated/</directory>
 						</fileset>

@@ -10,6 +10,7 @@
 	</parent>
 
 	<artifactId>de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.ide</artifactId>
+	<packaging>eclipse-plugin</packaging>
 	
 	<build>
 		<plugins>
