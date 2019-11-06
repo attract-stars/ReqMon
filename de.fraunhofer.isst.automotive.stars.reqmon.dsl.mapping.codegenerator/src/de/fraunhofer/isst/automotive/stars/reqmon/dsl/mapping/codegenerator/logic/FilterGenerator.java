@@ -44,8 +44,7 @@ public class FilterGenerator implements IGenerator {
 		
 		setup();
 		
-		AbstractModelInformationHelper infoHelper = new ModelInformationHelperImpl();
-		infoHelper.setModel(model);
+		AbstractModelInformationHelper infoHelper = new ModelInformationHelperImpl(model);
 		
 		System.out.println("\n\nGenerated content:\n");
 		
@@ -104,25 +103,22 @@ public class FilterGenerator implements IGenerator {
 		files.add("functional_correctness_oracle_filter.cpp");
 		files.add("scene_abstraction_filter.h");
 		files.add("scene_abstraction_filter.cpp");
+		
 		//files.add("test_coverage_monitor_filter.h");
 		//files.add("test_coverage_monitor_filter.cpp");
 	}
 	
-	private void setupTest() {
+	/**
+	 * Sets the file path to "filter/gen", creates the InMemoryFileSystemAccess 
+	 * and a new content list and sets the file array to the given files.
+	 * @param filesNames
+	 */
+	public void setup(List<String> filesNames) {
 		// setup
-		filePath = "filter-gen/"; //"../stars/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.test/filter-gen/";
+		filePath = "filter-gen/";
 		fsa = new InMemoryFileSystemAccess();
 		contentList = new ArrayList<String>();
-		files = new ArrayList<String>();
-		
-		files.add("abstract_function_filter.h");
-		files.add("abstract_function_filter.cpp");
-		files.add("functional_correctness_oracle_filter.h");
-		files.add("functional_correctness_oracle_filter.cpp");
-		files.add("scene_abstraction_filter.h");
-		files.add("scene_abstraction_filter.cpp");
-		//files.add("test_coverage_monitor_filter.h");
-		//files.add("test_coverage_monitor_filter.cpp");
+		files = filesNames;
 	}
 	
 	
@@ -168,9 +164,6 @@ public class FilterGenerator implements IGenerator {
 	}
 
 	public void generate(AbstractModelInformationHelper infoHelper) {
-		System.out.println("FilterGenerator called!");
-		setupTest();
-		
 		// generate filter header and cpp code
 		FilterHeaderTemplate filterHeaderTemp = new FilterHeaderTemplate();
 		FilterCppTemplate filterCppTemp = new FilterCppTemplate();

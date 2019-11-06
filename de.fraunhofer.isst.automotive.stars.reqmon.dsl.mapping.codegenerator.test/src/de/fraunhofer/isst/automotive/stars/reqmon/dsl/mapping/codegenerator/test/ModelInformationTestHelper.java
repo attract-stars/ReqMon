@@ -11,17 +11,66 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMa
 public class ModelInformationTestHelper extends AbstractModelInformationHelper {
 	
 	private MappingTestModel model;
+	private int inputNumber;
 	
-	public ModelInformationTestHelper() {
-		
-	}
-	
-	@Override
-	public void setModel(IMappingModel model) {
+	public ModelInformationTestHelper(IMappingModel model, int inputNumber) {
+		super(model);
 		if (model instanceof MappingTestModel) {
 			this.model = (MappingTestModel) model;
+			this.inputNumber = inputNumber;
 		}
+		createPins(FilterType.ABSTRACT_FUNCTION, createInputPinsNames(FilterType.ABSTRACT_FUNCTION), createOutputPinsNames(FilterType.ABSTRACT_FUNCTION));
+		createPins(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE, createInputPinsNames(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE), createOutputPinsNames(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE));
+		createPins(FilterType.SCENE_ABSTRACTION, createInputPinsNames(FilterType.SCENE_ABSTRACTION), createOutputPinsNames(FilterType.SCENE_ABSTRACTION));
+		createPins(FilterType.TEST_COVERAGE_MONITOR, createInputPinsNames(FilterType.TEST_COVERAGE_MONITOR), createOutputPinsNames(FilterType.TEST_COVERAGE_MONITOR));
 	}
+	
+	private List<String> createInputPinsNames(FilterType filter) {
+		ArrayList<String> list = new ArrayList<String>();
+		switch(filter) {
+		case ABSTRACT_FUNCTION: 
+			list.add("categorization");
+			list.add("concreteTargets");
+			break;
+		case FUNCTIONAL_CORRECTNESS_ORACLE:
+			list.add("can");
+			list.add("categorization");
+			list.add("abstractTargets");
+			list.add("concreteTargets");
+			break;
+			
+		case SCENE_ABSTRACTION:
+			list.add("scene");
+			if (inputNumber == 2) {
+				list.add("time");
+			}
+			break;
+		case TEST_COVERAGE_MONITOR:
+			break;
+		}
+		
+		return list;
+	}
+
+
+	private List<String> createOutputPinsNames(FilterType filter) {
+		ArrayList<String> list = new ArrayList<String>();
+		switch(filter) {
+		case ABSTRACT_FUNCTION: 
+			break;
+		case FUNCTIONAL_CORRECTNESS_ORACLE:
+			break;
+		case SCENE_ABSTRACTION:
+			list.add("categorization");
+			break;
+		case TEST_COVERAGE_MONITOR:
+			break;
+		}
+		
+		return list;
+	}
+	
+	
 
 	@Override
 	public int getSourceCount() {
@@ -48,22 +97,30 @@ public class ModelInformationTestHelper extends AbstractModelInformationHelper {
 
 	@Override
 	public List<String> getAttributes(String objectName) {
+		if (model != null)
 		return model.getAllAtributesOf(objectName);
+		else return null;
 	}
 
 	@Override
 	public String getSystemAttribut(String name) {
+		if (model != null)
 		return model.getSystemAttribute(name);
+		else return null;
 	}
 
 	@Override
 	public String getCorrespondingAttribute(String monAttr) {
+		if (model != null)
 		return model.getCorrespondingAttribute(monAttr);
+		else return null;
 	}
 
 	@Override
 	public List<String> getSignalBoundarys(String attr) {
+		if (model != null)
 		return model.isSignal(attr);
+		else return null;
 	}
 
 	@Override
@@ -89,55 +146,7 @@ public class ModelInformationTestHelper extends AbstractModelInformationHelper {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public String getFilterVersion() {
-		return "0, 1, 0";
-	}
-
-	@Override
-	public List<String> getInputPinsNames() {
-		ArrayList<String> list = new ArrayList<String>();
-		switch(getFilterType()) {
-		case ABSTRACT_FUNCTION: 
-			list.add("categorization");
-			list.add("concreteTargets");
-			break;
-		case FUNCTIONAL_CORRECTNESS_ORACLE:
-			list.add("can");
-			list.add("categorization");
-			list.add("abstractTargets");
-			list.add("concreteTargets");
-			break;
-			
-		case SCENE_ABSTRACTION:
-			list.add("scene");
-			break;
-		case TEST_COVERAGE_MONITOR:
-			break;
-		}
-		
-		return list;
-	}
-
-	@Override
-	public List<String> getOutputPinsNames() {
-		ArrayList<String> list = new ArrayList<String>();
-		switch(getFilterType()) {
-		case ABSTRACT_FUNCTION: 
-			break;
-		case FUNCTIONAL_CORRECTNESS_ORACLE:
-			break;
-		case SCENE_ABSTRACTION:
-			list.add("categorization");
-			break;
-		case TEST_COVERAGE_MONITOR:
-			break;
-		}
-		
-		return list;
-	}
-
+	
 	@Override
 	public List<String> getObjectPtrs() {
 		ArrayList<String> list = new ArrayList<String>();
@@ -180,13 +189,13 @@ public class ModelInformationTestHelper extends AbstractModelInformationHelper {
 		return null;
 	}
 
-	@Override
+	/*@Override
 	public CharSequence getHeaderTemplateProtectedFunctions() {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}*/
 
-	@Override
+	/*@Override
 	public CharSequence getEvaluateMethod() {
 		CharSequence eval = "";
 		switch(getFilterType()) {
@@ -205,7 +214,7 @@ public class ModelInformationTestHelper extends AbstractModelInformationHelper {
 			break;
 		}
 		return eval;
-	}
+	}*/
 
 	@Override
 	public CharSequence getTemplateEvaluateContent() {
@@ -213,18 +222,7 @@ public class ModelInformationTestHelper extends AbstractModelInformationHelper {
 		return null;
 	}
 
-	@Override
-	public CharSequence getTemplateConstructorContent() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public CharSequence getTemplateDeconstructorContent() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	@Override
 	public List<String> getMoreConstructorValues() {
 		// TODO Auto-generated method stub

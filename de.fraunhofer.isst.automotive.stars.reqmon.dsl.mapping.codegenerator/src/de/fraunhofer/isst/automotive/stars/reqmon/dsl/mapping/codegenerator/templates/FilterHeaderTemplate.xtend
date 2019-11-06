@@ -15,12 +15,16 @@ class FilterHeaderTemplate {
 		this.helper = helper
 	}
 	
+	def CharSequence generateTemplate(FilterType filtertype) {
+		this.filtertype = filtertype
+		this.helper.filterType = filtertype
+		getTemplate()
+	}
+	
 	/**
 	 * Generates a filter header of the given type.
 	 */
-	def CharSequence generateTemplate(FilterType filtertype) {
-	this.filtertype = filtertype
-	this.helper.filterType = filtertype
+	private def getTemplate() {
 	'''
 	#define OID_DADAS_«oidName» "«oidString»"
 	«moreDefines»
@@ -47,7 +51,7 @@ class FilterHeaderTemplate {
 		private: // private functions
 			«privateFunctions»
 			
-		public: // overwrites cFilter
+		public: // overwrites «filterSuperClass»
 			tResult Init(tInitStage eStage, __exception = NULL);
 			tResult Start(__exception);
 			tResult Stop(__exception);
@@ -88,15 +92,16 @@ class FilterHeaderTemplate {
 	
 	
 	// inheritnace macro
-	def private getInheritances() '''
-		: public «switch(filtertype) {
-		case ABSTRACT_FUNCTION: '''cConditionTriggeredFilter'''
-		case FUNCTIONAL_CORRECTNESS_ORACLE: '''cConditionTriggeredFilter'''
-		case SCENE_ABSTRACTION: '''cFilter'''
-		case TEST_COVERAGE_MONITOR: '''ILoadRecordsInterface, public cConditionTriggeredFilter'''
-		default: '''$class_name$''' 	
-		}»
-	'''
+	def private getInheritances() ''': public «filterSuperClass»«helper.getMoreSuperClasses»'''  
+	
+	def private getFilterSuperClass() {
+		if (helper.inputPins.size === 1) {
+			return '''cFilter'''
+		}
+		else if (helper.inputPins.size >= 2) {
+			return '''cConditionTriggeredFilter'''
+		}
+	}
 	
 	// adtf declare filter version macros
 	def private getFilterName() {
@@ -152,7 +157,7 @@ class FilterHeaderTemplate {
 	def private getPublicFunctions() '''
 	«IF filtertype.equals(FilterType.ABSTRACT_FUNCTION) || filtertype.equals(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE) 
 		|| filtertype.equals(FilterType.TEST_COVERAGE_MONITOR)»
-	public: // overrides cFilter //implements IRunnable
+	public: // overrides «filterSuperClass» //implements IRunnable
 		tResult Run(tInt nActivationCode,
 			const tVoid* pvUserData,
 			tInt szUserDataSize,
@@ -169,16 +174,18 @@ class FilterHeaderTemplate {
 	
 	// protected function macro
 	def private getProtectedFunctions() '''
-	«IF filtertype.equals(FilterType.ABSTRACT_FUNCTION) || filtertype.equals(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE) 
-			|| filtertype.equals(FilterType.TEST_COVERAGE_MONITOR)»
+	«IF helper.inputPins.size === 1»tResult ProcessSample(IMediaSample* pSample);
+	«ELSEIF helper.inputPins.size >= 2»
 	tResult OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception = NULL);
-	«ELSEIF filtertype.equals(FilterType.SCENE_ABSTRACTION)»
-	tResult ProcessSample(IMediaSample* pSample);
 	«ENDIF»
 	«helper.getEvaluateMethod»
 	«helper.getHeaderTemplateProtectedFunctions»
 	void LOG(cString mes);
 	'''
+		
+	 
+	
+	
 	
 	
 }

@@ -15,6 +15,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.AttributeNo
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.SignalNode
 import java.util.List
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.AbstractModelInformationHelper
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.FilterType
 
 class ModelInformationHelperImpl extends AbstractModelInformationHelper {
 	
@@ -28,6 +29,50 @@ class ModelInformationHelperImpl extends AbstractModelInformationHelper {
 	Map<String,String> mapStructs
 	boolean isEnum
 	
+	
+	new(IMappingModel model) {
+		super(model)
+		createPins(FilterType.ABSTRACT_FUNCTION, FilterType.ABSTRACT_FUNCTION.createInputPinsNames, FilterType.ABSTRACT_FUNCTION.createOutputPinsNames)
+		createPins(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE, FilterType.FUNCTIONAL_CORRECTNESS_ORACLE.createInputPinsNames, FilterType.FUNCTIONAL_CORRECTNESS_ORACLE.createOutputPinsNames)
+		createPins(FilterType.SCENE_ABSTRACTION, FilterType.SCENE_ABSTRACTION.createInputPinsNames, FilterType.SCENE_ABSTRACTION.createOutputPinsNames)
+		createPins(FilterType.TEST_COVERAGE_MONITOR, FilterType.TEST_COVERAGE_MONITOR.createInputPinsNames, FilterType.TEST_COVERAGE_MONITOR.createOutputPinsNames)
+	}
+	
+	private def createInputPinsNames(FilterType filter) {
+		val list = new ArrayList
+		switch(filter) {
+			case ABSTRACT_FUNCTION: {
+				list.add("categorization")
+				list.add("concreteTargets")}
+			case FUNCTIONAL_CORRECTNESS_ORACLE: {
+				list.add("can")
+				list.add("categorization")
+				list.add("abstractTargets")
+				list.add("concreteTargets")}
+			case SCENE_ABSTRACTION: {
+				 list.add("scene")}
+			case TEST_COVERAGE_MONITOR: {}
+		}
+		
+		return list;
+	}
+	
+	private def createOutputPinsNames(FilterType filter) {
+		val list = new ArrayList
+		switch(filter) {
+		case ABSTRACT_FUNCTION: 
+			{list.add("targetsOutput")}
+		case FUNCTIONAL_CORRECTNESS_ORACLE:
+			{}
+		case SCENE_ABSTRACTION:
+			{list.add("categorization")}
+		case TEST_COVERAGE_MONITOR:
+			{}
+		}
+		
+		return list;
+	}
+	
 	override getSourceCount() {
 		return 0
 	}
@@ -40,10 +85,6 @@ class ModelInformationHelperImpl extends AbstractModelInformationHelper {
 		return new ArrayList
 	}
 	
-	override setModel(IMappingModel model) {
-		this.model = model
-		setup
-	}
 	
 	override isDebugOpt() {
 		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
@@ -185,44 +226,7 @@ class ModelInformationHelperImpl extends AbstractModelInformationHelper {
 		return enums
 	}
 	
-	override getFilterVersion() {
-		return "0, 1, 0"
-	}
 	
-	override getInputPinsNames() {
-		val list = new ArrayList
-		switch(filterType) {
-			case ABSTRACT_FUNCTION: {
-				list.add("categorization")
-				list.add("concreteTargets")}
-			case FUNCTIONAL_CORRECTNESS_ORACLE: {
-				list.add("can")
-				list.add("categorization")
-				list.add("abstractTargets")
-				list.add("concreteTargets")}
-			case SCENE_ABSTRACTION: {
-				 list.add("scene")}
-			case TEST_COVERAGE_MONITOR: {}
-		}
-		
-		return list;
-	}
-	
-	override getOutputPinsNames() {
-		val list = new ArrayList
-		switch(filterType) {
-		case ABSTRACT_FUNCTION: 
-			{list.add("targetsOutput")}
-		case FUNCTIONAL_CORRECTNESS_ORACLE:
-			{}
-		case SCENE_ABSTRACTION:
-			{list.add("categorization")}
-		case TEST_COVERAGE_MONITOR:
-			{}
-		}
-		
-		return list;
-	}
 	
 	override getObjectPtrs() {
 		val list = new ArrayList
@@ -282,14 +286,6 @@ class ModelInformationHelperImpl extends AbstractModelInformationHelper {
 			{}
 		}
 		return "";
-	}
-	
-	override getTemplateConstructorContent() {
-		return ''''''
-	}
-	
-	override getTemplateDeconstructorContent() {
-		return ''''''
 	}
 	
 	override getMoreConstructorValues() {

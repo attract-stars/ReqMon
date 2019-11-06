@@ -1,12 +1,13 @@
 #define OID_DADAS_SCENE_ABSTRACTION "$oid_string$"
 
 
-class cDadasSceneAbstractionFilter : public cFilter
+class cDadasSceneAbstractionFilter : public cConditionTriggeredFilter
 {
 	ADTF_DECLARE_FILTER_VERSION(OID_DADAS_SCENE_ABSTRACTION, "DADAS Scene Abstraction Filter", OBJCAT_DataFilter, "Version", 0, 1, 0, "Scene Abstraction")
 	
 	private: // private members
 		cInputPin m_oSceneInput;
+		cInputPin m_oTimeInput;
 		
 		cOutputPin m_oCategorizationOutput;
 		
@@ -19,7 +20,7 @@ class cDadasSceneAbstractionFilter : public cFilter
 		
 	private: // private functions
 		
-	public: // overwrites cFilter
+	public: // overwrites cConditionTriggeredFilter
 		tResult Init(tInitStage eStage, __exception = NULL);
 		tResult Start(__exception);
 		tResult Stop(__exception);
@@ -33,8 +34,9 @@ class cDadasSceneAbstractionFilter : public cFilter
 			IMediaSample* pMediaSample);
 		
 	protected: 
-		tResult ProcessSample(IMediaSample* pSample);
-		tCategorization Evaluate(tScene scene);
+		tResult OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception = NULL);
+		tCategorization Evaluate(IMediaSample* pSceneSample, IMediaSample* pTimeSample);
+		tResult TransmitEvaluationResult(type* name);
 		void LOG(cString mes);
 };
 

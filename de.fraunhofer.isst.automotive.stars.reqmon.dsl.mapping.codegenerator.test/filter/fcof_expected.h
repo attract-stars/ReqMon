@@ -20,13 +20,13 @@ class cDadasFunctionalCorrectnessOracleFilter : public cConditionTriggeredFilter
 		
 	private: // private functions
 		
-	public: // overwrites cFilter
+	public: // overwrites cConditionTriggeredFilter
 		tResult Init(tInitStage eStage, __exception = NULL);
 		tResult Start(__exception);
 		tResult Stop(__exception);
 		tResult Shutdown(tInitStage eStage, __exception);
 		
-	public: // overrides cFilter //implements IRunnable
+	public: // overrides cConditionTriggeredFilter //implements IRunnable
 		tResult Run(tInt nActivationCode,
 			const tVoid* pvUserData,
 			tInt szUserDataSize,
@@ -34,6 +34,8 @@ class cDadasFunctionalCorrectnessOracleFilter : public cConditionTriggeredFilter
 		
 	protected: 
 		tResult OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception = NULL);
+		tBool Evaluate(IMediaSample* pCanSample, IMediaSample* pCategorizationSample);
+		tResult TransmitEvaluationResult(type* name);
 		void LOG(cString mes);
 };
 

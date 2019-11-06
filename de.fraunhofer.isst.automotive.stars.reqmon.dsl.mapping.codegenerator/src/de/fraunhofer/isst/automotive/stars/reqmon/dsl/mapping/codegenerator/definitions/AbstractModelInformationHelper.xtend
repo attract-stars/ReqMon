@@ -4,6 +4,8 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMa
 import java.util.List
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.FilterType
 import java.util.ArrayList
+import java.util.Map
+import java.util.HashMap
 
 /**
  * The implementation of this interface should help to extract the informations of the IMappingModel.
@@ -11,8 +13,46 @@ import java.util.ArrayList
 abstract class AbstractModelInformationHelper {
 	
 	FilterType filtertype
+	IMappingModel model
+	Map<FilterType,List<Pin>> inputPins
+	Map<FilterType,List<Pin>> outputPins
+	Map<FilterType,List<Pin>> allPins
 	
-	def void setModel(IMappingModel model)
+	new(IMappingModel model) {
+		this.model = model
+		inputPins = new HashMap
+		outputPins = new HashMap
+		allPins = new HashMap
+	}
+	
+	
+	/**
+	 * Creates the pins and uses therefore the given pin name lists.
+	 */
+	def void createPins(FilterType filter, List<String> inputs, List<String> outputs) {
+		val numIn = inputs.size
+		val inputList = new ArrayList
+		val outputList = new ArrayList
+		val allList = new ArrayList
+		for(i: 0..< numIn) {
+			val input = new Pin(inputs.get(i) + "Input", true, "MEDIATYPE_DADAS_" + inputs.get(i).toUpperCase, inputs.get(i), "t" + inputs.get(i).toFirstUpper);
+			inputList.add(input)
+			allList.add(input)
+		}
+		inputPins.put(filter,inputList);
+		val numOut = outputs.size
+		for(i: 0..< numOut) {
+			val output = new Pin(outputs.get(i) + "Output", true, "MEDIATYPE_DADAS_" + outputs.get(i).toUpperCase, outputs.get(i), "t" + outputs.get(i).toFirstUpper);
+			outputList.add(output);
+			allList.add(output)
+		}
+		outputPins.put(filter, outputList)
+		allPins.put(filter, allList)
+	}
+	
+	def IMappingModel getModel() {
+		return this.model
+	}
 	
 	def void setFilterType(FilterType filtertype) {
 		this.filtertype = filtertype
@@ -68,21 +108,21 @@ abstract class AbstractModelInformationHelper {
 	 * Returns a list of all input and output pins.
 	 */
 	def List<Pin> getPins() {
-		return getPins(inputPinsNames, outputPinsNames)
+		return allPins.get(filtertype)
 	}
 	
 	/**
 	 * Returns a list of all input pins.
 	 */
 	def List<Pin> getInputPins() {
-		return getInputPins(inputPinsNames)
+		return this.inputPins.get(filtertype)
 	}
 	
 	/**
 	 * Returns a list of all output pins.
 	 */
 	def List<Pin> getOutputPins() {
-		return getOutputPins(outputPinsNames)
+		return this.outputPins.get(filtertype)
 	}
 	
 	/**
@@ -126,47 +166,10 @@ abstract class AbstractModelInformationHelper {
 	def List<List<String>> getReqEnums()
 	
 	/**
-	 * Returns the version of the filter like "0, 0, 0".
+	 * Returns the version of the filter. The default value is "0, 1, 0".
 	 */
-	def String getFilterVersion()
-	
-	/**
-	 * Returns a name list of the input pins.
-	 */
-	def List<String> getInputPinsNames()
-	
-	/**
-	 * Returns a name list of the output pins.
-	 */
-	def List<String> getOutputPinsNames()
-	
-	def private List<Pin> getInputPins(List<String> inputs) {
-		val list = new ArrayList
-		val num = inputs.size
-		for(i: 0..< num) {
-			val input = new Pin(inputs.get(i) + "Input", true, "MEDIATYPE_DADAS_" + inputs.get(i).toUpperCase, inputs.get(i), "t" + inputs.get(i).toFirstUpper);
-			list.add(input);
-		}
-		
-		return list;
-	}
-	
-	def private List<Pin> getOutputPins(List<String> outputs) {
-		val list = new ArrayList
-		val num = outputs.size
-		for(i: 0..< num) {
-			val input = new Pin(outputs.get(i) + "Output", true, "MEDIATYPE_DADAS_" + outputs.get(i).toUpperCase, outputs.get(i), "t" + outputs.get(i).toFirstUpper);
-			list.add(input);
-		}
-		
-		return list;
-	}
-	
-	def private List<Pin> getPins(List<String> inputs, List<String> outputs) {
-		val list = getInputPins(inputs)
-		list.addAll(getOutputPins(outputs))
-		
-		return list;
+	def String getFilterVersion() {
+		'''0, 1, 0'''
 	}
 	
 	/**
@@ -197,12 +200,33 @@ abstract class AbstractModelInformationHelper {
 	/**
 	 * Returns a template for the protected functions of the header.
 	 */
-	def CharSequence getHeaderTemplateProtectedFunctions()
+	def CharSequence getHeaderTemplateProtectedFunctions() '''tResult TransmitEvaluationResult(type* name);'''
 	
 	/**
 	 * Returns an evaluate method declaration. For example: "tReturnType Evaluate(paramType paramName, ..);"
 	 */
-	def CharSequence getEvaluateMethod()
+	def CharSequence getEvaluateMethod() '''«getEvaluateReturnType» Evaluate(«true.getEvaluateParameters»);'''
+	
+	/**
+	 * Returns default evaluate parameters with type when isTyped is true.
+	 */
+	def CharSequence getEvaluateParameters(boolean isTyped) {
+		val inputs = getInputPins
+		val num = getInputPins.size
+		val type = '''«IF isTyped»«IF num === 1»«inputs.get(0).pinObjectType» «ELSE»IMediaSample* «ENDIF»«ELSE»&«ENDIF»'''
+		
+		if (num == 1) {
+			return '''«type»«inputs.get(0).pinObjectName»'''
+		}
+		if (num >= 2) {
+			return '''«type»«inputs.get(0).sampleName», «type»«inputs.get(1).sampleName»'''
+		}
+		else if (num >= 3) {
+			return '''«FOR i : 0..< num-1»«type»«inputs.get(i).sampleName», «ENDFOR»«type»«inputs.get(num-1).sampleName»'''
+		}
+	}
+	
+	def private getSampleName(Pin input) '''p«input.pinObjectName.toFirstUpper»Sample'''
 	
 	/**
 	 * Returns a template for the content of the evaluate method.
@@ -212,17 +236,235 @@ abstract class AbstractModelInformationHelper {
 	/**
 	 * Returns a template for the Constructor content.
 	 */
-	def CharSequence getTemplateConstructorContent()
+	def CharSequence getTemplateConstructorContent() {
+		switch(filtertype) {
+			case ABSTRACT_FUNCTION:
+			{
+				templateConstructorDefault
+			}
+			case FUNCTIONAL_CORRECTNESS_ORACLE:
+			{
+				templateConstructorDefault
+			}
+			case SCENE_ABSTRACTION:
+			{ 
+				
+			}
+			case TEST_COVERAGE_MONITOR:
+			{
+				templateConstructorDefault
+			}
+		}
+	}
+	
+	def private getTemplateConstructorDefault() {
+		'''
+		kernelMutex.Create();
+		
+		SetPropertyInt("timeout", $timeout_value$);
+		SetPropertyStr("timeout" NSSUBPROP_DESCRIPTION,
+			"Demo timeout that will issue a warning when no trigger has occurred "
+			"in the specified amount of time (microseconds). 0 disables the timeout.");
+		SetPropertyInt("timeout" NSSUBPROP_MINIMUM, 0);
+		'''
+	}
+	
+	def private getTemplateDestructorDefault() {
+		'''kernelMutex.Release();'''
+	}
 	
 	/**
 	 * Returns a template for the Deconstructor content.
 	 */
-	def CharSequence getTemplateDeconstructorContent()
+	def CharSequence getTemplateDeconstructorContent() {
+		switch(filtertype) {
+			case ABSTRACT_FUNCTION:
+			{
+				templateDestructorDefault
+			}
+			case FUNCTIONAL_CORRECTNESS_ORACLE:
+			{
+				templateDestructorDefault
+			}
+			case SCENE_ABSTRACTION:
+			{ 
+				
+			}
+			case TEST_COVERAGE_MONITOR:
+			{
+				templateDestructorDefault
+			}
+		}
+	}
 	
 	/**
 	 * Returns a list of constructor value settings.
 	 */
 	def List<String> getMoreConstructorValues()
+	
+	/**
+	 * Returns true if the class extends cConditionTriggeredFilter otherwise false.
+	 */
+	def boolean isTriggeredFilter() {
+		if (inputPins.get(filtertype) !== null && inputPins.get(filtertype).size > 1) {
+			return true;
+		}
+		return false
+	}
+	
+	/**
+	 * Returns true if the class extends cFilter otherwise false.
+	 */
+	def boolean isCFilter() {
+		if (inputPins.get(filtertype) !== null && inputPins.get(filtertype).size === 1) {
+			return true;
+		}
+		return false
+	}
+	
+	/**
+	 * Returns a template for the init normal stage. The default value is "//Nothing to do".
+	 */
+	def CharSequence getInitNormalTemplate() {
+		'''//Nothing to do'''
+	}
+	
+	/**
+	 * Returns a template for the init graph ready stage. The default value is a timeout creation if the cConditionTriggeredFilter
+	 * is extended and otherwise "//Nothing to do".
+	 */
+	def CharSequence getInitGraphReadyTemplate() {
+		switch(filtertype) {
+			case ABSTRACT_FUNCTION: AFFInitGraphReady
+			case FUNCTIONAL_CORRECTNESS_ORACLE: FCOFInitGraphReady
+			case SCENE_ABSTRACTION: SAFInitGraphReady
+			case TEST_COVERAGE_MONITOR: TCMFInitGraphReady
+			default: '''$init_graphReady$'''
+		}
+	}
+	
+	def private getTCMFInitGraphReady() {
+		'''«timeoutCreation»'''
+	}	
+	
+	def private getSAFInitGraphReady() {
+		if (isTriggeredFilter) {
+			'''«timeoutCreation»'''
+		}
+		else {
+			'''//Nothing to do'''
+		}
+	}
+	
+	def private getFCOFInitGraphReady() {
+		'''«timeoutCreation»'''
+	}
+	
+	def private getAFFInitGraphReady() {
+		'''«timeoutCreation»'''
+	}
+	
+	def private getTimeoutCreation() '''
+	// create a new timeout if required
+	tTimeStamp nTimeout = GetPropertyInt("timeout");
+	if (nTimeout < 0)
+	{
+		THROW_ERROR_DESC(ERR_INVALID_ARG, "The timeout value can not be negative");
+	}
+	else if (nTimeout != 0)
+	{
+		m_bTimeout = tTrue;
+		RETURN_IF_FAILED(m_oTimeout.Create(this, nTimeout, OIGetInstanceName()));
+	}
+	'''
+	
+	def boolean isDescriptionManager() {
+		switch(filtertype) {
+			case ABSTRACT_FUNCTION: true
+			case FUNCTIONAL_CORRECTNESS_ORACLE: true
+			case SCENE_ABSTRACTION: false
+			case TEST_COVERAGE_MONITOR: true
+			default: false
+		}
+	}
+	
+	/**
+	 * Returns more conditions for the start method. The default value is null.
+	 */
+	def CharSequence getMoreStartConditions() {
+		return null
+	}
+	
+	/**
+	 * Returns more conditions for the stop method. The default value is null.
+	 */
+	def CharSequence getMoreStopConditions() {
+		return null
+	}
+	
+	/**
+	 * Returns a template for the clear section in the run method. The default value is an empty String.
+	 */
+	def CharSequence getRunClearTemplate() {
+		''''''
+	}
+	
+	/**
+	 * Returns the return type of the evaluate method. 
+	 * The default value is tBool or the pin output object type for the scene abstraction filter with one output pin.
+	 */
+	def CharSequence getGetEvaluateReturnType() {
+		switch(filtertype) {
+			case ABSTRACT_FUNCTION: '''tBool'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''tBool'''
+			case SCENE_ABSTRACTION: '''«IF getOutputPins.size === 1»«getOutputPins.get(0).pinObjectType»«ENDIF»'''
+			case TEST_COVERAGE_MONITOR: '''tBool'''
+			default: '''tBool'''
+		}
+	}
+	
+	/**
+	 * Returns a template for more actions in the OnTrigger method. The default value is an empty String.
+	 */
+	def CharSequence getMoreOnTriggerActionsTemplate() {
+		''''''
+	}
+	
+	/**
+	 * Returns the return type of the evaluate method call in the onTrigger method. The default value is an empty String.
+	 */
+	def CharSequence getOnTriggerEvaluateReturnType() {
+		''''''
+	}
+	
+	/**
+	 * Returns a template for the Log method. The default Value is null which leads to a default Log method.
+	 */
+	def CharSequence getLogTemplate() {
+		return null
+	}
+	
+	/**
+	 * Returns a template for more protected methods implementations. 
+	 * The template should end with an empty line to keep distance to the Log method. 
+	 * The default value is an empty String.
+	 */
+	def CharSequence getMoreProtectedMethodsTemplate() {
+		''''''
+	}
+	
+	/**
+	 * Returns more super classes like ", public superclass_name". The default value is an empty string.
+	 */
+	def CharSequence getMoreSuperClasses() {
+		''''''
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 	
