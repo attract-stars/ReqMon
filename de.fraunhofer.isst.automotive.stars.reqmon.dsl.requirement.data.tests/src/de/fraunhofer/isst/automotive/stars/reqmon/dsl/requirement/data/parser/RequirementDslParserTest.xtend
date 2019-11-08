@@ -147,7 +147,7 @@ package class RequirementDslParserTest {
 		req6Ele.add(new SemanticTextElement("<system> perform lane change to lane",RequirementType.RELATION));
 		req6Ele.add(new SemanticTextElement("lane",RequirementType.OBJECT));
 		req6Ele.add(new SemanticTextElement("ego-vehicle",RequirementType.OBJECT));
-		req6Ele.add(new SemanticTextElement("<ego-vehicle's lateral-offset in relation to ego-lane's center> is more than 0.4 m.",RequirementType.RELATION));
+		req6Ele.add(new SemanticTextElement("<ego-vehicle's lateral-offset in relation to ego-lane's center> is more than 0.4 m",RequirementType.RELATION));
 		req6Ele.add(new SemanticTextElement("ego-vehicle's lateral-offset in relation to ego-lane's center",RequirementType.FUNCTION));
 		req6Ele.add(new SemanticTextElement("ego-lane's center",RequirementType.FUNCTION));
 		req6Ele.add(new SemanticTextElement("ego-lane",RequirementType.OBJECT));
