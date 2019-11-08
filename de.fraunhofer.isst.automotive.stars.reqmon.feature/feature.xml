@@ -23,4 +23,102 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.ide"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.parser"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition.ide"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemimporter"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ide"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
