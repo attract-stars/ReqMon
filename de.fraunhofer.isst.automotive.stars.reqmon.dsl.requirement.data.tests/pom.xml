@@ -55,13 +55,13 @@
 						</execution>
 					</executions>
 				</plugin>
-				<!-- <plugin>
+				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-surefire-plugin</artifactId>
 					<configuration>
 						<useUIHarness>false</useUIHarness>
 					</configuration>
-				</plugin>-->
+				</plugin>
 			</plugins>
 			</pluginManagement>
 	</build>

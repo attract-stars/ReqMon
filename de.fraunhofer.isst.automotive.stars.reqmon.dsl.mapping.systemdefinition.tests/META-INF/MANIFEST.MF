@@ -5,9 +5,9 @@ Bundle-Name: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefini
 Bundle-Vendor: My Company
 Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition.tests; singleton:=true
+Fragment-Host: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition
 Bundle-ActivationPolicy: lazy
-Require-Bundle: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition,
- org.junit.jupiter.api;bundle-version="[5.0.0,6.0.0)",
+Require-Bundle: org.junit.jupiter.api;bundle-version="[5.0.0,6.0.0)",
  org.eclipse.xtext.testing,
  org.eclipse.xtext.xbase.testing,
  org.eclipse.xtext.xbase.lib;bundle-version="2.14.0"
