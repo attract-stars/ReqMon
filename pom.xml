@@ -53,6 +53,7 @@
 		<module>de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test</module>
 		
 		<module>de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator</module>
+		<module>de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.test</module>
 		
 		<module>de.fraunhofer.isst.automotive.stars.reqmon.target</module>
 		<module>de.fraunhofer.isst.automotive.stars.reqmon.feature</module>

@@ -14,12 +14,12 @@ Require-Bundle: org.eclipse.xtext;bundle-version="2.14.0",
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement,
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui,
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui,
-  de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.tests,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.tests,
  org.eclipse.emf.compare,
  org.junit.jupiter.api,
  org.junit,
  org.apache.commons.io,
  org.junit.jupiter.params,
  org.mockito,
- org.assertj.core;bundle-version="3.12.2"
+ org.assertj.core;bundle-version="3.12.0"
 Bundle-Vendor: Fraunhofer ISST.
