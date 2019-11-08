@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.text.ITextListener;
 import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.source.LineNumberRulerColumn;
@@ -43,6 +44,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.ProposalC
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.RequirementController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.SerializationController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.SystemController;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.MappingModel;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.SaveModel;
 
 /**
@@ -75,6 +77,10 @@ public class MappingPage {
 	 * Helps to create the embedded xtext editor.
 	 */
 	private MappingEditorHelper editorHelper;
+	
+	private List<Resource> resourceList;
+	private MappingModel mappingModel;
+	
 	/**
 	 * Injector for the mapping parser.
 	 */
@@ -158,6 +164,10 @@ public class MappingPage {
 		// create the helper for the embedded xtext editor
 		this.editorHelper = new MappingEditorHelper();
 		
+		// create resource list and model for the generators
+		this.resourceList = new ArrayList<Resource>();
+		this.mappingModel = new MappingModel();
+		
 		// set the editor name for serialization and deserialization 
 		SerializationController.getInstance().setFilename(editorName);
 				
@@ -173,7 +183,7 @@ public class MappingPage {
 		else {
 			setupSavedData();
 		}
-		
+	
 		// select the appropriate mapping parser 
 		String lang = "map";  // TODO: get the appropriate language
 		System.out.println("Select the mapping parser for lang = " + lang);
@@ -760,6 +770,9 @@ public class MappingPage {
 			LineNumberRulerColumn lineNumberRulerColumn = new LineNumberRulerColumn();
 			embed.getViewer().addVerticalRulerColumn(lineNumberRulerColumn);
 			
+			resourceList.add(editorHelper.getResource());
+			mappingModel.setMappingResourceList(resourceList);
+
 			// Listen to text changes to set the dirty status
 			embed.getViewer().addTextListener(new ITextListener() {
 							
@@ -785,6 +798,7 @@ public class MappingPage {
 			if (savedContent != null) {
 				modelAccess.updateModel(savedContent);
 			}
+
 		}
 		
 		
@@ -888,24 +902,54 @@ public class MappingPage {
 		Combo comboDropDown = new Combo(box, SWT.DROP_DOWN | SWT.BORDER | SWT.READ_ONLY);
 		Button genButton = new Button(box, SWT.PUSH);
 		
-		// take the labels of the generators in the generator list for the combo items 
+		// take the labels of the generators in the generator list for the combo items and
+		// take the label for the generate button 
 		List<String> genList = genCon.getGenerators();
 	    for (String name : genList) {
 	      comboDropDown.add(" " + name);
 	    }
-	    comboDropDown.select(0);
-		
-		// take the label of the first generator in the generator list for the generate button 
-		genButton.setText(genCon.getGenerateLabels().get(0));
+	    
+	    if (isModelLoading && savedModel.getGenLabel() != null) {
+	    	comboDropDown.select(savedModel.getGeneratorIndex());
+		    genCon.setIndex(savedModel.getGeneratorIndex());
+	    	genButton.setText(savedModel.getGenLabel());
+	    }
+	    else {
+	    	comboDropDown.select(0);
+	    	savedModel.setGeneratorIndex(0);
+	    	
+			String firstGenLabel = genCon.getGenerateLabels().get(0);
+		    genButton.setText(firstGenLabel);
+			savedModel.setGenLabel(firstGenLabel);
+	    }
+	    
 		genButton.setAlignment(SWT.CENTER);
 		
 		// execute the generator that is actual selected in the combo 
 		genButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				genCon.executeSelectedGenerator();
+				// add all available informations to the mapping model
+				if (sysCon.getSysModel() != null) {
+					mappingModel.setSystemModel(sysCon.getSysModel());
+				}
+				if (reqCon.getRequirements() != null) {
+					mappingModel.setRequirementList(reqCon.getRequirements());
+				}
+				else if (savedReqList != null) {
+					mappingModel.setRequirementList(savedReqList);
+				}
+				
+				// execute the selected generator
+				genCon.executeSelectedGenerator(mappingModel);
 			}
 		});
+		
+		// update the selected generator in the combo and the name of the generate button during loading
+		if (isModelLoading) {
+			genButton.setText(savedModel.getGenLabel());
+			comboDropDown.select(savedModel.getGeneratorIndex());
+		}
 		
 		// update the selected generator in the combo and the name of the generate button 
 	    comboDropDown.addSelectionListener(new SelectionListener() {
@@ -914,6 +958,9 @@ public class MappingPage {
 				System.out.println("Selected: " + comboDropDown.getText().substring(1));	
 				String genLabel = genCon.getLabel(comboDropDown.getText().substring(1));
 				genButton.setText(genLabel);
+				savedModel.setGenLabel(genLabel);
+				savedModel.setGeneratorIndex(genCon.getIndex());
+				langMapEditor.setDirty(true);
 				box.layout(true);
 			}
 			

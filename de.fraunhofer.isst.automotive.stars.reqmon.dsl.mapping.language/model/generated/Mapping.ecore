@@ -39,7 +39,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ClassID">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="def" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="clas" eType="ecore:EClass platform:/resource/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition/model/generated/SysDef.ecore#//ClassNode"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cla" eType="ecore:EClass platform:/resource/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition/model/generated/SysDef.ecore#//ClassNode"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AttributeID">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="def" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

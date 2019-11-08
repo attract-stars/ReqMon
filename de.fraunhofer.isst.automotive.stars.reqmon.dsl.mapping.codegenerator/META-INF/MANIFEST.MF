@@ -5,4 +5,16 @@ Bundle-SymbolicName: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.code
 Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui;bundle-version="1.0.0"
+Require-Bundle: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui;bundle-version="1.0.0",
+ org.eclipse.xtext;bundle-version="2.17.1",
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language;bundle-version="1.0.0",
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.ui,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition;bundle-version="1.0.0",
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition.ui;bundle-version="1.0.0"
+Export-Package: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.logic,
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates

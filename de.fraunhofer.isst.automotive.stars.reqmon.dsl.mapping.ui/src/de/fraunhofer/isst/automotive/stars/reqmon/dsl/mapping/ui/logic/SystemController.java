@@ -12,6 +12,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.ecore.EObject;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.ISystemImporter;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.MappingPage;
@@ -31,6 +32,7 @@ public class SystemController {
 	private IConfigurationElement[] configSys;
 	private boolean isRegistry;
 	private ISystemImporter sysImporter;
+	private EObject sysModel;
 	
 	
 	/**
@@ -108,6 +110,10 @@ public class SystemController {
 					if (sysImporter != null) {
 						boolean isValid = sysImporter.check(path);
 						
+						if (isValid) {
+							sysModel = sysImporter.getSystemModel();
+						}
+						
 						mp.getDisplay().asyncExec(new Runnable() {
 							
 							@Override
@@ -154,6 +160,10 @@ public class SystemController {
 		};
 		SafeRunner.run(runnable);
 		
+	}
+
+	public EObject getSysModel() {
+		return sysModel;
 	}
 
 	
