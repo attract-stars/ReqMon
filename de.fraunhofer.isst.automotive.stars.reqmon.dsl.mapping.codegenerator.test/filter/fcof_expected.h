@@ -1,4 +1,4 @@
-#define OID_DADAS_FUNCTIONAL_CORRECTNESS_ORACLE "$oid_string$"
+#define OID_DADAS_FUNCTIONAL_CORRECTNESS_ORACLE "de.fraunhofer.isst.automotive.stars.reqmon.dsl.data.monitoring.functional.correctness.oracle"
 
 
 class cDadasFunctionalCorrectnessOracleFilter : public cConditionTriggeredFilter
@@ -35,7 +35,7 @@ class cDadasFunctionalCorrectnessOracleFilter : public cConditionTriggeredFilter
 	protected: 
 		tResult OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception = NULL);
 		tBool Evaluate(IMediaSample* pCanSample, IMediaSample* pCategorizationSample);
-		tResult TransmitEvaluationResult(type* name);
+		tResult TransmitEvaluationResult(tBool* evaluationResult);
 		void LOG(cString mes);
 };
 

@@ -6,7 +6,7 @@ tBool debugOpt = tFalse;
 
 ADTF_FILTER_PLUGIN("DADAS Functional Correctness Oracle Filter", OID_DADAS_FUNCTIONAL_CORRECTNESS_ORACLE, cDadasFunctionalCorrectnessOracleFilter)
 
-cDadasFunctionalCorrectnessOracleFilter::cDadasFunctionalCorrectnessOracleFilter(const tChar* __info) : cConditionTriggeredFilter(tTrue,tTrue,__info), 
+cDadasFunctionalCorrectnessOracleFilter::cDadasFunctionalCorrectnessOracleFilter(const tChar* __info) : cConditionTriggeredFilter(tTrue,tTrue,__info),
 				m_bTimeout(tFalse)
 {
 	kernelMutex.Create();
@@ -194,14 +194,20 @@ tResult cDadasFunctionalCorrectnessOracleFilter::OnTrigger(adtf::IPin* pSource, 
 	//Lock Sample
 	kernelMutex.Enter();
 	
-	Evaluate(&pCanSample, &pCategorizationSample);
+	tBool evaluationResult = Evaluate(&pCanSample, &pCategorizationSample);
 	
 	kernelMutex.Leave();
+	
+	TransmitEvaluationResult(&evaluationResult);
 	
 	RETURN_NOERROR;
 }
 
 tBool cDadasFunctionalCorrectnessOracleFilter::Evaluate(IMediaSample* pCanSample, IMediaSample* pCategorizationSample)
+{
+}
+
+tResult cDadasFunctionalCorrectnessOracleFilter::TransmitEvaluationResult(tBool* evaluationResult)
 {
 }
 

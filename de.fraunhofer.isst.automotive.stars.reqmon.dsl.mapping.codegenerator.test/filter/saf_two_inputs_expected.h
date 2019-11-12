@@ -1,4 +1,4 @@
-#define OID_DADAS_SCENE_ABSTRACTION "$oid_string$"
+#define OID_DADAS_SCENE_ABSTRACTION "de.fraunhofer.isst.automotive.stars.reqmon.dsl.data.monitoring.scene.abstraction"
 
 
 class cDadasSceneAbstractionFilter : public cConditionTriggeredFilter
@@ -36,7 +36,7 @@ class cDadasSceneAbstractionFilter : public cConditionTriggeredFilter
 	protected: 
 		tResult OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception = NULL);
 		tCategorization Evaluate(IMediaSample* pSceneSample, IMediaSample* pTimeSample);
-		tResult TransmitEvaluationResult(type* name);
+		tResult TransmitEvaluationResult(tCategorization* evaluationResult);
 		void LOG(cString mes);
 };
 

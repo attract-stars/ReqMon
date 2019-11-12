@@ -6,7 +6,7 @@ tBool debugOpt = tFalse;
 
 ADTF_FILTER_PLUGIN("DADAS Abstract Function Filter", OID_DADAS_ABSTRACT_FUNCTION, cDadasAbstractFunctionFilter)
 
-cDadasAbstractFunctionFilter::cDadasAbstractFunctionFilter(const tChar* __info) : cConditionTriggeredFilter(tTrue,tTrue,__info), 
+cDadasAbstractFunctionFilter::cDadasAbstractFunctionFilter(const tChar* __info) : cConditionTriggeredFilter(tTrue,tTrue,__info),
 				m_bTimeout(tFalse)
 {
 	kernelMutex.Create();
@@ -164,14 +164,20 @@ tResult cDadasAbstractFunctionFilter::OnTrigger(adtf::IPin* pSource, adtf::IMedi
 	//Lock Sample
 	kernelMutex.Enter();
 	
-	Evaluate(&pCategorizationSample, &pConcreteTargetsSample);
+	tBool evaluationResult = Evaluate(&pCategorizationSample, &pConcreteTargetsSample);
 	
 	kernelMutex.Leave();
+	
+	TransmitEvaluationResult(&evaluationResult);
 	
 	RETURN_NOERROR;
 }
 
 tBool cDadasAbstractFunctionFilter::Evaluate(IMediaSample* pCategorizationSample, IMediaSample* pConcreteTargetsSample)
+{
+}
+
+tResult cDadasAbstractFunctionFilter::TransmitEvaluationResult(tBool* evaluationResult)
 {
 }
 

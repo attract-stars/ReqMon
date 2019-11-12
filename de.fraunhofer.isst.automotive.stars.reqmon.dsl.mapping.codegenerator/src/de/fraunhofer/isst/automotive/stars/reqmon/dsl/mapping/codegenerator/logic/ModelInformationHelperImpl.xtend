@@ -2,24 +2,23 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.log
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMappingModel
 import java.util.ArrayList
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.RequirementType
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.DefinitionElememnt
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.ClassID
-import org.eclipse.emf.ecore.resource.Resource
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.AttributeID
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.SignalID
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.AbstractModelInformationHelper
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.FilterType
+import java.util.List
 import java.util.Map
-import java.util.HashMap
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.ClassNode
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.AttributeNode
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.SignalNode
-import java.util.List
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.AbstractModelInformationHelper
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.FilterType
+import java.util.HashMap
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.ClassID
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.AttributeID
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.SignalID
+import org.eclipse.emf.ecore.resource.Resource
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.mapping.DefinitionElememnt
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.RequirementType
 
 class ModelInformationHelperImpl extends AbstractModelInformationHelper {
 	
-	IMappingModel model
 	ArrayList<String> objects
 	ArrayList<String> attributes
 	List<List<String>> enums
@@ -29,13 +28,13 @@ class ModelInformationHelperImpl extends AbstractModelInformationHelper {
 	Map<String,String> mapStructs
 	boolean isEnum
 	
-	
 	new(IMappingModel model) {
 		super(model)
 		createPins(FilterType.ABSTRACT_FUNCTION, FilterType.ABSTRACT_FUNCTION.createInputPinsNames, FilterType.ABSTRACT_FUNCTION.createOutputPinsNames)
 		createPins(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE, FilterType.FUNCTIONAL_CORRECTNESS_ORACLE.createInputPinsNames, FilterType.FUNCTIONAL_CORRECTNESS_ORACLE.createOutputPinsNames)
 		createPins(FilterType.SCENE_ABSTRACTION, FilterType.SCENE_ABSTRACTION.createInputPinsNames, FilterType.SCENE_ABSTRACTION.createOutputPinsNames)
 		createPins(FilterType.TEST_COVERAGE_MONITOR, FilterType.TEST_COVERAGE_MONITOR.createInputPinsNames, FilterType.TEST_COVERAGE_MONITOR.createOutputPinsNames)
+		setup
 	}
 	
 	private def createInputPinsNames(FilterType filter) {
@@ -73,43 +72,21 @@ class ModelInformationHelperImpl extends AbstractModelInformationHelper {
 		return list;
 	}
 	
-	override getSourceCount() {
-		return 0
+	override getTemplateEvaluateContent() {
+		return ''''''
 	}
-	
-	override getClasses() {
-		return new ArrayList
-	}
-	
-	override getSignals() {
-		return new ArrayList
-	}
-	
 	
 	override isDebugOpt() {
-		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
 		return false
 	}
 	
-	override getAttributes(String objectName) {
-		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
-		return new ArrayList
+	override getTemplateTransmitContent() {
+		return ''''''
 	}
 	
-	override getSystemAttribut(String string) {
-		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
-		return ""
-	}
 	
-	override getCorrespondingAttribute(String monAttr) {
-		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
-		return ""
-	}
 	
-	override getSignalBoundarys(String attr) {
-		//throw new UnsupportedOperationException("TODO: auto-generated method stub")
-		return new ArrayList
-	}
+	// Methods for the Requirement Data Types
 	
 	override getReqObjects() {
 		return objects
@@ -154,6 +131,10 @@ class ModelInformationHelperImpl extends AbstractModelInformationHelper {
 		return array
 	}
 	
+	override getReqEnums() {
+		return enums
+	}
+	
 	
 	def private void setup() {
 		mapObjects = new HashMap
@@ -191,8 +172,7 @@ class ModelInformationHelperImpl extends AbstractModelInformationHelper {
 		}
 	}
 	
-	
-	def private ClassID getClassID(Resource resource) {
+ 	def private ClassID getClassID(Resource resource) {
 		if (resource === null) return null 
 		if (resource.allContents.toIterable.filter(DefinitionElememnt) === null) return null 
 		for (def : resource.allContents.toIterable.filter(DefinitionElememnt)) {
@@ -222,75 +202,13 @@ class ModelInformationHelperImpl extends AbstractModelInformationHelper {
 		}
 	}
 	
-	override getReqEnums() {
-		return enums
-	}
 	
 	
 	
-	override getObjectPtrs() {
-		val list = new ArrayList
-		switch(filterType) {
-		case ABSTRACT_FUNCTION: 
-			{}
-		case FUNCTIONAL_CORRECTNESS_ORACLE:
-			{}
-		case SCENE_ABSTRACTION:
-			{list.add("coderDesc")}
-		case TEST_COVERAGE_MONITOR:
-			{}
-		}
-		
-		return list;
-	}
-	
-	override getHeaderTemplateDefines() {
-		return ''''''
-	}
-	
-	override getHeaderTemplateIncludes() {
-		return ''''''
-	}
-	
-	override getHeaderTemplatePrivateMembers() {
-		return ''''''
-	}
-	
-	override getHeaderTemplatePrivateFunctions() {
-		return ''''''
-	}
-	
-	override getHeaderTemplateProtectedFunctions() {
-		return ''''''
-	}
 	
 	
-	override getTemplateEvaluateContent() {
-		return ''''''
-	}
+
 	
-	override getEvaluateMethod() {
-		switch(filterType) {
-		case ABSTRACT_FUNCTION:
-			{}
-		case FUNCTIONAL_CORRECTNESS_ORACLE:
-			{}
-		case SCENE_ABSTRACTION:
-			if (getInputPins().size() == 1 && getOutputPins().size() == 1) {
-				val in = getInputPins().get(0);
-				val out = getOutputPins().get(0);
-				return '''«out.getPinObjectType()»Evaluate("«in.getPinObjectType()» «in.getPinObjectName()»);'''
-			}
-			
-		case TEST_COVERAGE_MONITOR:
-			{}
-		}
-		return "";
-	}
-	
-	override getMoreConstructorValues() {
-		return new ArrayList
-	}
 	
 	
 	

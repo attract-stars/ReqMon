@@ -1,3 +1,6 @@
+#include system-types.h
+#include mediatypes.h
+#include scene_abstraction_filter.h
 
 tBool debugOpt = tFalse;
 
@@ -56,7 +59,14 @@ tResult cDadasSceneAbstractionFilter::Shutdown(tInitStage eStage, __exception)
 	{
 	case StageFirst:
 		{
-			m_pCoderDesc = NULL;
+			break;
+		}
+	case StageNormal:
+		{
+			break;
+		}
+	case StageGraphReady:
+		{
 			break;
 		}
 	default:
@@ -93,16 +103,11 @@ tResult cDadasSceneAbstractionFilter::ProcessSample(IMediaSample* pSample)
 	{
 		__sample_read_lock(pMediaSample, tScene, pData);
 	
-		tCategorization categorization = Evaluate(&pData);
+		tCategorization evaluationResult = Evaluate(&pData);
 	
 	}
 
-	cObjectPtr<IMediaSample> pMediaSample;
-	RETURN_IF_FAILED(AllocMediaSample((tVoid**)&pMediaSample));
-	
-	RETURN_IF_FAILED(pMediaSample->SetTime(_clock->GetStreamTime()));
-	
-	RETURN_IF_FAILED(m_oOutput.Transmit(pMediaSample));
+	TransmitEvaluationResult(&evaluationResult);
 
 	RETURN_NOERROR;
 }
@@ -111,11 +116,14 @@ tCategorization cDadasSceneAbstractionFilter::Evaluate(tScene* scene)
 {
 }
 
+tResult cDadasSceneAbstractionFilter::TransmitEvaluationResult(tCategorization* evaluationResult)
+{
+}
+
 void cDadasSceneAbstractionFilter::LOG(cString mes)
 {		
 	if(debugOpt) {
 		LOG_INFO(mes);
-		//OutputDebugStringWrapper(mes+"\n");
 	}
 }
 

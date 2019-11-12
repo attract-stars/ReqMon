@@ -103,22 +103,27 @@ tResult cDadasSceneAbstractionFilter::ProcessSample(IMediaSample* pSample)
 	{
 		__sample_read_lock(pMediaSample, tScene, pData);
 	
-		tCategorization categorization = Evaluate(&pData);
+		tCategorization evaluationResult = Evaluate(&pData);
 	
 	}
 
-	cObjectPtr<IMediaSample> pMediaSample;
-	RETURN_IF_FAILED(AllocMediaSample((tVoid**)&pMediaSample));
-	
-	RETURN_IF_FAILED(pMediaSample->SetTime(_clock->GetStreamTime()));
-	
-	RETURN_IF_FAILED(m_oOutput.Transmit(pMediaSample));
+	TransmitEvaluationResult(&evaluationResult);
 
 	RETURN_NOERROR;
 }
 
 tCategorization cDadasSceneAbstractionFilter::Evaluate(tScene* scene)
 {
+}
+
+tResult cDadasSceneAbstractionFilter::TransmitEvaluationResult(tCategorization* evaluationResult)
+{
+	cObjectPtr<IMediaSample> pMediaSample;
+	RETURN_IF_FAILED(AllocMediaSample((tVoid**)&pMediaSample));
+	
+	RETURN_IF_FAILED(pNewSample->Update(_clock->GetStreamTime(), &evaluationResult, sizeof(tCategorization), 0));
+	
+	RETURN_IF_FAILED(m_oCategorizationOutput.Transmit(pMediaSample));
 }
 
 void cDadasSceneAbstractionFilter::LOG(cString mes)
