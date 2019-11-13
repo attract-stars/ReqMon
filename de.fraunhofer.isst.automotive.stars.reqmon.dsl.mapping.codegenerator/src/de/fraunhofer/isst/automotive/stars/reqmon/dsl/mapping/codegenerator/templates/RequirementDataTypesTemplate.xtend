@@ -7,6 +7,10 @@ class RequirementDataTypesTemplate {
 	
 	AbstractModelInformationHelper helper
 	
+	new(AbstractModelInformationHelper helper) {
+		this.helper = helper
+	}
+	
 	def CharSequence generateTemplate() '''
 	#ifndef «includeGardsBegin»
 	#define «includeGardsBegin»
@@ -38,7 +42,7 @@ class RequirementDataTypesTemplate {
 	'''
 	
 	def private getReqInheritance(String obj) {
-		val inheritances = helper.getInheritance(obj)
+		val inheritances = helper.getReqInheritance(obj)
 		if(!inheritances.empty) {
 			inheritances.getInheritances
 		}

@@ -10,10 +10,10 @@ id='123'>
 	<version>'1.0'</version>
 	<description>'my car is the main vehicle'</description>
 	<message>
-		<name>'all signals'</name>
+		<name>'scene'</name>
 		<allocation>
 			<bit_size>'1024'</bit_size>
-			<location>'1000'</location>
+			<location>'0010'</location>
 		</allocation>
 		<data_objects>
 			<signal_object>

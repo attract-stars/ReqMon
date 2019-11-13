@@ -4,7 +4,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.defi
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.Pin
 
 /**
- * This class offers templates for three different filter types in c++.
+ * This class offers templates for the structure of the different filter types in c++.
  * @author sgraf
  */
 class FilterCppTemplate {
@@ -12,6 +12,9 @@ class FilterCppTemplate {
 	FilterType filtertype
 	AbstractModelInformationHelper helper
 	
+	new(AbstractModelInformationHelper helper) {
+		this.helper = helper
+	}
 	
 	def void setModelInformationHepler(AbstractModelInformationHelper helper) {
 		this.helper = helper
@@ -454,7 +457,8 @@ class FilterCppTemplate {
 	'''
 	
 	def private getTransmitContent() {
-		if (helper.getTemplateTransmitContent === null && helper.outputPins.size === 1) {
+		val temp = helper.templateTransmitContent
+		if ((temp === null || temp.toString.compareTo("") === 0) && helper.outputPins.size === 1) {
 			'''
 			cObjectPtr<IMediaSample> pMediaSample;
 			RETURN_IF_FAILED(AllocMediaSample((tVoid**)&pMediaSample));

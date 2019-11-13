@@ -67,7 +67,7 @@ public class Pin {
 		this.isInputPin = isInput;
 		this.isOutputPin = !isInput;
 		this.mediaType = "MEDIATYPE_DADAS";
-		this.mediaSubType = mediaType + "_" + name.toUpperCase();
+		this.mediaSubType = "MEDIASUBTYPE_DADAS" + "_" + name.toUpperCase();
 		this.pinObjectName = name;
 		this.isTrigger = false;
 		

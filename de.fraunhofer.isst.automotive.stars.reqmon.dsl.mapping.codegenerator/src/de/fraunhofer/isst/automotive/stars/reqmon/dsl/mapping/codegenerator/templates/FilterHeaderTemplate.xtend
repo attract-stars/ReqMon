@@ -3,13 +3,17 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.tem
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.AbstractModelInformationHelper
 
 /**
- * This class offers header templates for three different filter types in c++.
+ * This class offers an header structure template for the different filter types.
  * @author sgraf
  */
 class FilterHeaderTemplate {
 	
 	FilterType filtertype
 	AbstractModelInformationHelper helper
+	
+	new(AbstractModelInformationHelper helper) {
+		this.helper = helper
+	}
 	
 	def void setModelInformationHepler(AbstractModelInformationHelper helper) {
 		this.helper = helper

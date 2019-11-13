@@ -1,10 +1,18 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates
 
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.AbstractModelInformationHelper
+
 /**
  * This class offers templates for the stdafx.h file and the dtypes.h file. 
  * @author sgraf
  */
 class StandardAndTypesTemplate {
+	
+	AbstractModelInformationHelper helper
+	
+	new (AbstractModelInformationHelper helper) {
+		this.helper = helper
+	}
 	
 	def CharSequence generateStdTemplate() '''
 	#ifndef __STD_INCLUDES_HEADER
@@ -33,16 +41,14 @@ class StandardAndTypesTemplate {
 	#ifndef __TYPES_HEADER_
 	#define __TYPES_HEADER_
 	
-	#define MEDIATYPE_PATH_PLANING (MEDIA_TYPE_USER + 0x5555)
-	#define MEDIASUBTYPE_SCENE 0x0010
-	#define MEDIASUBTYPE_SCENE_PREDICTED 0x0012
-	#define MEDIASUBTYPE_TARGETPOINT      0x0030
-	#define MEDIASUBTYPE_TARGETPOINT_MESSAGE 0x0031
-	#define MEDIASUBTYPE_TARGETPOINT_MESSAGE_PREDICTED 0x0032
-	
-	#include <driving/types/dataTypes.h>
+	#define MEDIATYPE_DADAS (MEDIA_TYPE_USER + «helper.getMediaTypeOffset»)
+	«FOR type : helper.getMediaSubTypes»
+	#define MEDIASUBTYPE_«type»
+	«ENDFOR»
 	
 	#endif //__TYPES_HEADER_
 	'''
+	
+	
 	
 }

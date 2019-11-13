@@ -31,37 +31,15 @@ public class FilterTemplateTest {
 		//files.add("test_coverage_monitor_filter.h");
 		//files.add("test_coverage_monitor_filter.cpp");
 		
+		files.add("data_types.h");
+		
 		gen.setup(files);
 		gen.generate(infoHelper);
 		
-		try {
-			assertTrue("The files differ!", FileUtils.contentEquals(
-					new File("filter/aff_expected.h"),
-					new File("filter-gen/aff.h")
-				));	
-			assertTrue("The files differ!", FileUtils.contentEquals(
-					new File("filter/aff_expected.cpp"),
-					new File("filter-gen/aff.cpp")
-				));
-			assertTrue("The files differ!", FileUtils.contentEquals(
-					new File("filter/fcof_expected.h"),
-					new File("filter-gen/fcof.h")
-				));
-			assertTrue("The files differ!", FileUtils.contentEquals(
-					new File("filter/fcof_expected.cpp"),
-					new File("filter-gen/fcof.cpp")
-				));
-			assertTrue("The files differ!", FileUtils.contentEquals(
-					new File("filter/saf_expected.h"),
-					new File("filter-gen/saf.h")
-				));
-			assertTrue("The files differ!", FileUtils.contentEquals(
-					new File("filter/saf_expected.cpp"),
-					new File("filter-gen/saf.cpp")
-				));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		checkEquality("aff", true);
+		checkEquality("fcof", true);
+		checkEquality("saf", true);
+		checkEquality("data_types", false);
 		
 		files = new ArrayList<String>();
 		files.add("aff.h");
@@ -70,19 +48,28 @@ public class FilterTemplateTest {
 		files.add("fcof.cpp");
 		files.add("saf_two_inputs.h");
 		files.add("saf_two_inputs.cpp");
+		files.add("data_types.h");
 		infoHelper = new ModelInformationTestHelper(model, 2);
 		gen.setup(files);
 		gen.generate(infoHelper);
 		
+		checkEquality("saf_two_inputs", true);
+		
+	}
+	
+	
+	private void checkEquality(String filename, boolean isCpp) {
 		try {
 			assertTrue("The files differ!", FileUtils.contentEquals(
-					new File("filter/saf_two_inputs_expected.h"),
-					new File("filter-gen/saf_two_inputs.h")
+					new File("filter/" + filename + "_expected.h"),
+					new File("filter-gen/" + filename + ".h")
 				));
-			assertTrue("The files differ!", FileUtils.contentEquals(
-					new File("filter/saf_two_inputs_expected.cpp"),
-					new File("filter-gen/saf_two_inputs.cpp")
-				));
+			if (isCpp) {
+				assertTrue("The files differ!", FileUtils.contentEquals(
+						new File("filter/" + filename + "_expected.cpp"),
+						new File("filter-gen/" + filename + ".cpp")
+					));
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

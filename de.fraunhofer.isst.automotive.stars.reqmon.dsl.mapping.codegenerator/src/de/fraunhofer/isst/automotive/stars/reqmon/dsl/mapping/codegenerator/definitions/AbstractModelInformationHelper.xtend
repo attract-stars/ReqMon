@@ -6,10 +6,12 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.temp
 import java.util.ArrayList
 import java.util.Map
 import java.util.HashMap
-import org.eclipse.emf.ecore.EObject
 
 /**
- * The implementation of this interface should help to extract the informations of the IMappingModel.
+ * The implementation of this interface should help to extract the informations of the IMappingModel 
+ * for the generation of the adtf filter structures, the standard Types file, the MediaTypes and SubTypes file, 
+ * and the Requirement and System Types files.
+ * @author sgraf
  */
 abstract class AbstractModelInformationHelper {
 	
@@ -439,7 +441,8 @@ abstract class AbstractModelInformationHelper {
 	}
 	
 	/**
-	 * Returns a template for the content if the transmit method. 
+	 * Returns a template for the content of the transmit method. 
+	 * Returns a default content if the size of the output pins is equal one.
 	 */
 	def CharSequence getTemplateTransmitContent() 
 	
@@ -519,12 +522,30 @@ abstract class AbstractModelInformationHelper {
 	/**
 	 * Returns all super classes of the given object.
 	 */
-	def List<String> getInheritance(String obj)
+	def List<String> getReqInheritance(String obj)
 	
 	/**
 	 * Returns all enumerations.
 	 */
 	def List<List<String>> getReqEnums()
+	
+	
+	
+	
+	/**
+	 * Returns an address offset for the MediaType.
+	 * The default value is 0xC350.
+	 */
+	def CharSequence getMediaTypeOffset() {
+		'''0xC350'''
+	}
+	
+	/**
+	 * Returns a list of MediaSubTypes and its location. The default value is an empty list.
+	 */
+	def List<String> getMediaSubTypes() {
+		new ArrayList
+	}
 	
 	
 	

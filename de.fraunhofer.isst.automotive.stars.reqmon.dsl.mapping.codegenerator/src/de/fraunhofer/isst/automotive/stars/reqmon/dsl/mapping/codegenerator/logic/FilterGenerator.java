@@ -49,20 +49,17 @@ public class FilterGenerator implements IGenerator {
 		System.out.println("\n\nGenerated content:\n");
 		
 		// generate filter header and cpp code
-		FilterHeaderTemplate filterHeaderTemp = new FilterHeaderTemplate();
-		filterHeaderTemp.setModelInformationHepler(infoHelper);
-		FilterCppTemplate filterCppTemp = new FilterCppTemplate();
-		filterCppTemp.setModelInformationHepler(infoHelper);
-		//StandardAndTypesTemplate stdTypesTemp = new StandardAndTypesTemplate();
+		FilterHeaderTemplate filterHeaderTemp = new FilterHeaderTemplate(infoHelper);
+		FilterCppTemplate filterCppTemp = new FilterCppTemplate(infoHelper);
+		StandardAndTypesTemplate stdTypesTemp = new StandardAndTypesTemplate(infoHelper);
 		ExampleCHeaderTemplate exampleTemp = new ExampleCHeaderTemplate();
 		SystemDataTypesTemplate sysDataTemp = new SystemDataTypesTemplate();
-		RequirementDataTypesTemplate reqDataTemp = new RequirementDataTypesTemplate();
-		reqDataTemp.setModelInformationHelper(infoHelper);
+		RequirementDataTypesTemplate reqDataTemp = new RequirementDataTypesTemplate(infoHelper);
 		
 		//generateAndAddToContentList(filterHeaderTemp.generateTemplate(""));
 		//generateAndAddToContentList(filterCppTemp.generateTemplate(""));
 		
-		//generateAndAddToContentList(stdTypesTemp.generateTypesTemplate());
+		generateAndAddToContentList(stdTypesTemp.generateTypesTemplate());
 		//generateAndAddToContentList(stdTypesTemp.generateStdTemplate());
 		
 		generateAndAddToContentList(exampleTemp.generateExampleTemplate(model));
@@ -90,7 +87,7 @@ public class FilterGenerator implements IGenerator {
 		//files.add("mapped-filter.h");
 		//files.add("mapped-filter.cpp");
 		
-		//files.add("dtypes.h");
+		files.add("dtypes.h");
 		//files.add("stdafx.h");
 		
 		files.add("mapped.h");
@@ -165,10 +162,9 @@ public class FilterGenerator implements IGenerator {
 
 	public void generate(AbstractModelInformationHelper infoHelper) {
 		// generate filter header and cpp code
-		FilterHeaderTemplate filterHeaderTemp = new FilterHeaderTemplate();
-		FilterCppTemplate filterCppTemp = new FilterCppTemplate();
-		filterHeaderTemp.setModelInformationHepler(infoHelper);
-		filterCppTemp.setModelInformationHepler(infoHelper);
+		FilterHeaderTemplate filterHeaderTemp = new FilterHeaderTemplate(infoHelper);
+		FilterCppTemplate filterCppTemp = new FilterCppTemplate(infoHelper);
+		StandardAndTypesTemplate stdTypesTemp = new StandardAndTypesTemplate(infoHelper);
 		
 		generateAndAddToContentList(filterHeaderTemp.generateTemplate(FilterType.ABSTRACT_FUNCTION));
 		generateAndAddToContentList(filterCppTemp.generateTemplate(FilterType.ABSTRACT_FUNCTION));
@@ -176,6 +172,8 @@ public class FilterGenerator implements IGenerator {
 		generateAndAddToContentList(filterCppTemp.generateTemplate(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE));
 		generateAndAddToContentList(filterHeaderTemp.generateTemplate(FilterType.SCENE_ABSTRACTION));
 		generateAndAddToContentList(filterCppTemp.generateTemplate(FilterType.SCENE_ABSTRACTION));
+		
+		generateAndAddToContentList(stdTypesTemp.generateTypesTemplate());
 		
 		// write in files
 		write();

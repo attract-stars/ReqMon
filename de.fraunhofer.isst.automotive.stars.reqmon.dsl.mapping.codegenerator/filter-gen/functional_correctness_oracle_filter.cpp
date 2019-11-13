@@ -29,19 +29,19 @@ tResult cDadasFunctionalCorrectnessOracleFilter::Init(tInitStage eStage, __excep
 	
 	if (eStage == StageFirst)
 	{
-		cObjectPtr<IMediaType> pCanInput = new cMediaType(MEDIATYPE_DADAS, MEDIATYPE_DADAS_CAN);
+		cObjectPtr<IMediaType> pCanInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_CAN);
 		RETURN_IF_FAILED(m_oCanInput.Create("can", pCanInput, this));
 		RETURN_IF_FAILED(RegisterPin(&m_oCanInput));
 		
-		cObjectPtr<IMediaType> pCategorizationInput = new cMediaType(MEDIATYPE_DADAS, MEDIATYPE_DADAS_CATEGORIZATION);
+		cObjectPtr<IMediaType> pCategorizationInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_CATEGORIZATION);
 		RETURN_IF_FAILED(m_oCategorizationInput.Create("categorization", pCategorizationInput, this));
 		RETURN_IF_FAILED(RegisterPin(&m_oCategorizationInput));
 		
-		cObjectPtr<IMediaType> pAbstractTargetsInput = new cMediaType(MEDIATYPE_DADAS, MEDIATYPE_DADAS_ABSTRACTTARGETS);
+		cObjectPtr<IMediaType> pAbstractTargetsInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_ABSTRACTTARGETS);
 		RETURN_IF_FAILED(m_oAbstractTargetsInput.Create("abstractTargets", pAbstractTargetsInput, this));
 		RETURN_IF_FAILED(RegisterPin(&m_oAbstractTargetsInput));
 		
-		cObjectPtr<IMediaType> pConcreteTargetsInput = new cMediaType(MEDIATYPE_DADAS, MEDIATYPE_DADAS_CONCRETETARGETS);
+		cObjectPtr<IMediaType> pConcreteTargetsInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_CONCRETETARGETS);
 		RETURN_IF_FAILED(m_oConcreteTargetsInput.Create("concreteTargets", pConcreteTargetsInput, this));
 		RETURN_IF_FAILED(RegisterPin(&m_oConcreteTargetsInput));
 		

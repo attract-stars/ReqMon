@@ -12,6 +12,7 @@ public class ModelInformationTestHelper extends AbstractModelInformationHelper {
 	
 	//private MappingTestModel model;
 	private int inputNumber;
+	private List<String> messages;
 	
 	public ModelInformationTestHelper(IMappingModel model, int inputNumber) {
 		super(model);
@@ -72,6 +73,22 @@ public class ModelInformationTestHelper extends AbstractModelInformationHelper {
 		return list;
 	}
 	
+	
+	@Override
+	public List<String> getMediaSubTypes() {
+		messages = new ArrayList<String>();		
+		messages.add("SCENE 0x0010");
+		messages.add("TIME 0x0020");
+		messages.add("CATEGORIZATION 0x0030");
+		messages.add("ABSTRACT_TARGETS 0x0040");
+		messages.add("CONCRETE_TARGETS 0x0050");
+		messages.add("CAN 0x0060");
+		
+		return messages;
+	}
+	
+	
+	
 	@Override
 	public boolean isDebugOpt() {
 		return false;
@@ -102,7 +119,7 @@ public class ModelInformationTestHelper extends AbstractModelInformationHelper {
 	}
 
 	@Override
-	public List<String> getInheritance(String obj) {
+	public List<String> getReqInheritance(String obj) {
 		// TODO Auto-generated method stub
 		return null;
 	}
