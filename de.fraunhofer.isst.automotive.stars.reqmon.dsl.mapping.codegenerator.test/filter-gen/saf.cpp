@@ -1,5 +1,7 @@
+#include dtypes.h
+#include stdafx.h
+#include requirement_types.h
 #include system-types.h
-#include mediatypes.h
 #include scene_abstraction_filter.h
 
 tBool debugOpt = tFalse;

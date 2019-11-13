@@ -81,8 +81,10 @@ abstract class AbstractModelInformationHelper {
 	 */
 	def List<String> getIncludes() {
 		val list = new ArrayList
+		list.add("dtypes")
+		list.add("stdafx")
+		list.add("requirement_types")
 		list.add("system-types")
-		list.add("mediatypes")
 		switch(filtertype) {
 			case ABSTRACT_FUNCTION:
 			{

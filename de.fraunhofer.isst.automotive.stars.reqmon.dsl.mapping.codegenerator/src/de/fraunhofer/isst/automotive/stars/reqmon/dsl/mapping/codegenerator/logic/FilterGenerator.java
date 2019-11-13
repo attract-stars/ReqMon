@@ -56,11 +56,8 @@ public class FilterGenerator implements IGenerator {
 		SystemDataTypesTemplate sysDataTemp = new SystemDataTypesTemplate();
 		RequirementDataTypesTemplate reqDataTemp = new RequirementDataTypesTemplate(infoHelper);
 		
-		//generateAndAddToContentList(filterHeaderTemp.generateTemplate(""));
-		//generateAndAddToContentList(filterCppTemp.generateTemplate(""));
-		
 		generateAndAddToContentList(stdTypesTemp.generateTypesTemplate());
-		//generateAndAddToContentList(stdTypesTemp.generateStdTemplate());
+		generateAndAddToContentList(stdTypesTemp.generateStdTemplate());
 		
 		generateAndAddToContentList(exampleTemp.generateExampleTemplate(model));
 		generateAndAddToContentList(sysDataTemp.generateTemplate(model));
@@ -84,11 +81,9 @@ public class FilterGenerator implements IGenerator {
 		fsa = new InMemoryFileSystemAccess();
 		contentList = new ArrayList<String>();
 		files = new ArrayList<String>();
-		//files.add("mapped-filter.h");
-		//files.add("mapped-filter.cpp");
 		
 		files.add("dtypes.h");
-		//files.add("stdafx.h");
+		files.add("stdafx.h");
 		
 		files.add("mapped.h");
 		files.add("system-types.h");
@@ -161,7 +156,6 @@ public class FilterGenerator implements IGenerator {
 	}
 
 	public void generate(AbstractModelInformationHelper infoHelper) {
-		// generate filter header and cpp code
 		FilterHeaderTemplate filterHeaderTemp = new FilterHeaderTemplate(infoHelper);
 		FilterCppTemplate filterCppTemp = new FilterCppTemplate(infoHelper);
 		StandardAndTypesTemplate stdTypesTemp = new StandardAndTypesTemplate(infoHelper);
