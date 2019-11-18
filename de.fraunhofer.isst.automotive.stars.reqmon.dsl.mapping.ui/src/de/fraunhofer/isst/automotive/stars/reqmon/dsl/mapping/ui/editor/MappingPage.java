@@ -941,7 +941,7 @@ public class MappingPage {
 				}
 				
 				// execute the selected generator
-				genCon.executeSelectedGenerator(mappingModel);
+				genCon.executeSelectedGenerator(mappingModel, editorName);
 			}
 		});
 		
