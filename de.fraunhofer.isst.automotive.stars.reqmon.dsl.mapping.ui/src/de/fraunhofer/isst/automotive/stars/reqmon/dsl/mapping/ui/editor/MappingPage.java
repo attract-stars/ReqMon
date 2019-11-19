@@ -2,6 +2,8 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.regex.Pattern;
 
 import org.eclipse.emf.common.util.URI;
@@ -37,6 +39,7 @@ import org.eclipse.xtext.ui.editor.embedded.EmbeddedEditorModelAccess;
 import com.google.inject.Injector;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.ValidateListener;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.GeneratorController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.MappingParserController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.ProposalController;
@@ -44,6 +47,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.Requireme
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.SerializationController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.SystemController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.SaveModel;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.ValidateEvent;
 
 /**
  * This class creates the GUI of the language mapping editor. 
@@ -53,7 +57,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.SaveModel
  *
  */
 @SuppressWarnings("restriction")
-public class MappingPage {
+public class MappingPage implements Observer, ValidateListener {
 	
 	// SWT components
 	private Display display;
@@ -62,6 +66,7 @@ public class MappingPage {
 	private Composite compositeInScroll;
 	private Composite maincomp;
 	private ScrolledComposite scrolledComposite;
+	private Text sysPath;
 	
 	
 	// Controllers
@@ -103,7 +108,7 @@ public class MappingPage {
 		// for access of the save and dirty method and part name 
 		private LanguageMappingEditor langMapEditor;
 	
-	private MappingPage mp;
+	
 	
 	/**
 	 * The Constructor creates controllers for all parts of the GUI that can be extended.
@@ -115,7 +120,6 @@ public class MappingPage {
 		this.parentComposite = parentComposite;
 		this.display = display;
 		this.shell = shell;
-		this.mp = this;
 		this.langMapEditor = langMapEditor;
 		this.editorName = langMapEditor.getPartName(); 
 		
@@ -131,7 +135,6 @@ public class MappingPage {
 		this.parentComposite = parentComposite;
 		this.display = display;
 		this.shell = shell;
-		this.mp = this;
 		
 		setup();
 	}
@@ -146,11 +149,17 @@ public class MappingPage {
 		this.compositeInScroll = new Composite(scrolledComposite, SWT.NONE);
 		
 		// create the controllers 
-		this.reqCon = new RequirementController(this);
+		this.reqCon = new RequirementController(display);
 		this.sysCon = new SystemController();
 		this.propCon = new ProposalController();
 		this.parserCon = new MappingParserController();
 		this.genCon = new GeneratorController();
+		
+		// add this to observable controllers
+		observe(parserCon);
+		observe(reqCon);
+		// use the listener pattern
+		sysCon.addValidateListener(this);
 		
 		// set the value for isReqElements 
 		this.isReqElems = false;
@@ -176,7 +185,7 @@ public class MappingPage {
 		
 		// select the appropriate mapping parser 
 		String lang = "map";  // TODO: get the appropriate language
-		System.out.println("Select the mapping parser for lang = " + lang);
+		//System.out.println("Select the mapping parser for lang = " + lang);
 		parserCon.selectMappingParser(lang);
 	}
 	
@@ -239,7 +248,7 @@ public class MappingPage {
 		}
 		
 		int elemSize = 0;
-		List<IRequirementElement> reqList = null;
+		List<? extends IRequirementElement> reqList = null;
 		
 		// take the requirement elements which are new selected by the user
 		if (reqCon.getRequirements() != null) {
@@ -312,23 +321,22 @@ public class MappingPage {
 	}
 	
 	/**
-	 * Creates the injector for the mapping language and calls updateList if requirements exists 
-	 * and shows the system model path if the system model is valid. 
-	 * @param isValidSystemModel if this value is true, the injector is created, otherwise not
+	 * Creates the injector for the mapping language, if the system model is valid. 
+	 * The requirement list will be updated if requirements exist. 
+	 * The system model path will be shown if the system model is valid. 
+	 * @param isValidSystemModel the injector is created if this value is true, otherwise not
 	 */
-	public void createDslInjectorAndUpdateList(boolean isValidSystemModel) {
-		if (isValidSystemModel) {
-			// look first if a new system model file path is given
-			if (systemPath != null) {
-				parserCon.createDslInjectorAndUpdateList(mp, URI.createFileURI(systemPath));
-			}
-			// otherwise take the saved path, if it exist
-			else if (savedSystemPath != null) {
-				parserCon.createDslInjectorAndUpdateList(mp, URI.createFileURI(savedSystemPath));
-				// set modelLoading to false after injector creation if no requirements are saved
-				if (savedReqList == null || savedReqList.isEmpty()) {
-					isModelLoading = false;
-				}
+	public void createDslInjectorAndUpdateList() {
+		// look first if a new system model file path is given
+		if (systemPath != null) {
+			parserCon.createDslInjector(URI.createFileURI(systemPath), display);
+		}
+		// otherwise take the saved path, if it exist
+		else if (savedSystemPath != null) {
+			parserCon.createDslInjector(URI.createFileURI(savedSystemPath), display);
+			// set modelLoading to false after injector creation if no requirements are saved
+			if (savedReqList == null || savedReqList.isEmpty()) {
+				isModelLoading = false;
 			}
 		}
 	}
@@ -359,14 +367,14 @@ public class MappingPage {
 		if (modelAccessList != null) {
 			for (EmbeddedEditorModelAccess modelAccess : modelAccessList) {
 				if (modelAccess != null) {
-					System.out.println("Save with content");
+					//System.out.println("Save with content");
 					String content = modelAccess.getEditablePart();
-					System.out.println("Mapping content: " + content);
+					//System.out.println("Mapping content: " + content);
 					savedEditorContent.add(content);
 				}
 				// if there is no content save only the requirement elements and the paths
 				else {
-					System.out.println("Save without content");
+					//System.out.println("Save without content");
 					savedEditorContent.add(null);
 				}
 			}
@@ -426,6 +434,8 @@ public class MappingPage {
         
         
 	}
+	
+	
 	
 	protected Composite getParentComposite() {
 		return parentComposite;
@@ -534,7 +544,7 @@ public class MappingPage {
 		
 		// create the path labels as non editable Text 
 		Text reqPath = new Text(reqComp, SWT.BORDER);
-		Text sysPath = new Text(sysComp, SWT.BORDER);
+		sysPath = new Text(sysComp, SWT.BORDER);
 		reqPath.setEditable(false);
 		sysPath.setEditable(false);
 		
@@ -637,15 +647,12 @@ public class MappingPage {
 		        systemPath = fd.open();
 		        if (systemPath != null) {
 		        	System.out.println(systemPath);
-		        	/// show the selected file path 
-			        sysPath.setText(systemPath);
-			        // add the selected path to the SaveModel for the serialization 
-		        	savedModel.setSysPath(systemPath);
-		        	langMapEditor.setDirty(true);
-			        /* validate the selected file, create the injector for the mapping parser,
-			         * show the selected file path 
-					 * and update the item list if the validation is correct */
-			        sysCon.checkFileAndCreateInjectorAndUpdateList(systemPath, mp);
+			        /* validate the selected file.
+			         * If the validation is correct 
+			         * the injector for the mapping parser is created,
+			         * the selected file path is shown
+					 * and the item list is updated */
+			        sysCon.checkFile(systemPath, display);
 		        }
 			}
 		});
@@ -944,10 +951,45 @@ public class MappingPage {
 		}
 		
 		if (savedSystemPath != null && !savedSystemPath.equals("")) {
-			sysCon.checkFileAndCreateInjectorAndUpdateList(savedSystemPath, this);
+			sysCon.checkFile(savedSystemPath, display);
 		}
 		else {
 			updateList();
+		}
+	}
+	
+	public void observe(Observable obs) {
+		obs.addObserver(this);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if (o instanceof MappingParserController) {
+			setDslInjector(parserCon.getDslInjector());
+			if (dslInjector == null) {
+				return;
+			}
+			//System.out.println("DslInjector: " + dslInjector.getClass().getName());
+			if (isReqElems) {
+				updateList();
+			}
+		}
+		else if (o instanceof RequirementController) {
+			updateList();
+		}
+	}
+	
+	@Override
+	public void advertisment(ValidateEvent e) {
+		if (e.isValid()) {
+			if (!isModelLoading) {
+				/// show the selected file path 
+		        sysPath.setText(systemPath);
+		        // add the selected path to the SaveModel for the serialization 
+	        	savedModel.setSysPath(systemPath);
+	        	langMapEditor.setDirty(true);
+			}
+			createDslInjectorAndUpdateList();
 		}
 	}
 	
