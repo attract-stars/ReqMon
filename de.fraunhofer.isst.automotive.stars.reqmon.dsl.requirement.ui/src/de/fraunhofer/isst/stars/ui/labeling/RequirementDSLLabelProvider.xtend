@@ -38,11 +38,10 @@ import de.fraunhofer.isst.stars.requirementDSL.Constraints
 import de.fraunhofer.isst.stars.requirementDSL.Modifier
 import de.fraunhofer.isst.stars.requirementDSL.Modality
 import de.fraunhofer.isst.stars.requirementDSL.Property
-import de.fraunhofer.isst.stars.requirementDSL.SentenceBegin
-import de.fraunhofer.isst.stars.requirementDSL.SentenceEnding
 import de.fraunhofer.isst.stars.requirementDSL.RelObjects
 import de.fraunhofer.isst.stars.requirementDSL.AuxNeg
 import de.fraunhofer.isst.stars.requirementDSL.Relation
+import de.fraunhofer.isst.stars.requirementDSL.RelationConstraint
 
 /**
  * Provides labels for EObjects.
@@ -319,12 +318,8 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 		}
 	}
 	
-	def text(SentenceBegin ele) {
-		"SentenceBegin"
-	}
-	
-	def text(SentenceEnding ele) {
-		"SentenceEnding"
+	def text(RelationConstraint ele) {
+		"RelationConstraint"
 	}
 	
 	def text(Relation ele) {

@@ -35,8 +35,6 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Clause"/>
   <eClassifiers xsi:type="ecore:EClass" name="ModalitySentence" eSuperTypes="#//Clause">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="begin" eType="#//SentenceBegin"
-        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="actors" eType="#//Actors"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="modelity" eType="#//Modality"/>
@@ -44,12 +42,10 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="auxiliarVerb" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="predicate" eType="#//Predicate"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ending" eType="#//SentenceEnding"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ending" eType="#//RelationConstraint"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PredicateSentence" eSuperTypes="#//Clause">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="begin" eType="#//SentenceBegin"
-        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="actors" eType="#//Actors"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="auxNeg" eType="#//AuxNeg"
@@ -57,25 +53,21 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="auxiliarVerb" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="predicate" eType="#//Predicate"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ending" eType="#//SentenceEnding"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ending" eType="#//RelationConstraint"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ExistenceSentence" eSuperTypes="#//Clause"/>
   <eClassifiers xsi:type="ecore:EClass" name="PropertySentence" eSuperTypes="#//Clause">
     <eStructuralFeatures xsi:type="ecore:EReference" name="properties" eType="#//ActorProperties"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="rela" eType="#//Relation"
-        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="modality" eType="#//Modality"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="negation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="auxiliarVerb" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="predicate" eType="#//Predicate"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="ending" eType="#//SentenceEnding"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ending" eType="#//RelationConstraint"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="auxNeg" eType="#//AuxNeg"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="constraints" eType="#//Constraints"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ActorProperties">
@@ -83,12 +75,10 @@
         eType="#//ObjectProperty" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conjunction" upperBound="-1"
         eType="#//Conjunction" containment="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SentenceBegin">
     <eStructuralFeatures xsi:type="ecore:EReference" name="rela" eType="#//Relation"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="SentenceEnding">
+  <eClassifiers xsi:type="ecore:EClass" name="RelationConstraint">
     <eStructuralFeatures xsi:type="ecore:EReference" name="const" upperBound="-1"
         eType="#//Constraints" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="rela" eType="#//Relation"
@@ -116,6 +106,8 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Actors">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rela" eType="#//Relation"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="actors" upperBound="-1"
         eType="#//Actor" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conjunction" upperBound="-1"
