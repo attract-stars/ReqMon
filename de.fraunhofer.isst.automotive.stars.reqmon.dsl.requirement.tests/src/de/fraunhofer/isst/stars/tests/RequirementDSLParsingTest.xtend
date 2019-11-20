@@ -305,17 +305,24 @@ class RequirementDSLParsingTest {
 		/*
 		 * Test of the ExistenceSentence rule
 		 * 
-		 * Req 1: ExistencePreface Actors, relativeClause,
+		 * Req 1: ExistencePreface Actors, relativeClause
 		 * Req 2: ExistencePreface Actors, relativeClause, Conjunction MainClause
-		 * Req 3: MainClause Conjunction ExistencePreface Actors, relativeClause, Conjunction MainClause
+		 * Req 3: Modifier ExistencePreface Actors, relativeClause, Conjunction MainClause
+		 * Req 4: ExistencePreface Actors, relativeClause ConditionalClause.
+		 * Req 5: ExistencePreface Actors, relativeClause ConditionalClause, Conjunction ExistencePreface Actors relativeClause
+		 * Req 6: Modifier ExistencePreface Actors, relativeClause ConditionalClause, Conjunction MainClause
+		 * Req 7: Modifier ExistencePreface Actors, relativeClause ConditionalClause, Conjunction Modifier ExistencePreface Actors relativeClause
+		 * Req 7: Modifier ExistencePreface Actors, relativeClause ConditionalClause, Conjunction Modifier MainClause
 		 */
 		testSequence('''
-			Req 1: There exist x, who must x,.
-			Req 1: There exists x, who must x,.
-			Req 2: There exist x, who must x, and x x.
+			Req 1: There exist x, who must x.
 			Req 2: There exists x, who must x, and x x.
-			Req 3: x x and there exist x, who must x, and x x.
-			Req 3: x x and there exists x, who must x, and x x.
+			Req 3: Globally there exist x, who must x, and x x.
+			Req 4: There exists x, who must x and who shall x if x x, and x x.
+			Req 5: There exist x, who must x or who shall x when x x, and there exist x, who shall x.
+			Req 6: Globally there exists x, who must x and who shall x or who shall x, and x x.
+			Req 7: There exist x, who must x or who shall x, and globally there exist x, who shall x.
+			Req 7: Globally there exists x, who must x and who shall x or who shall x, and globally x x.
 			
 		''')
 		
@@ -378,11 +385,11 @@ class RequirementDSLParsingTest {
 		/*
 		 * Test of the relativeClause rule
 		 * 
-		 * Req 1: ExistencePreface Actors, relativeSentence Conjunction ConditionalClause,
+		 * Req 1: ExistencePreface Actors, relativeSentence Conjunction relativeSentence
 		 */ 
 		testSequence('''
-			Req 1: There exists x, who must x and when x x,.
-			Req 1: There exists x, who must x or when x x,.
+			Req 1: There exists x, who must x and who must x.
+			Req 1: There exists x, who must x or who shall x.
 			
 		''')
 		
@@ -401,23 +408,23 @@ class RequirementDSLParsingTest {
 		 * Req 10: ExistencePreface Actors, RelativePronounsObject PredicateSentence,
 		 */ 
 		testSequence('''
-			Req 1: There exists x, which must x,.
-			Req 1: There exists x, who must x,.
-			Req 1: There exists x, that must x,.
-			Req 2: There exists x, which must not x,.
-			Req 3: There exists x, who must x in x,.
-			Req 4: There exists x, that must not x in x,.
-			Req 5: There exists x, which x,.
-			Req 6: There exists x, who is not x,.
-			Req 7: There exists x, that x in x,.
-			Req 8: There exists x, who are not x in x,.
-			Req 9: There exists x, whose x must x,.
-			Req 9: There exists x, whom x must x,.
-			Req 10: There exists x, whose x x,.
-			Req 11: There exists x, whom x x,.
-			Req 12: There exists x, who be not x,.
-			Req 13: There exists x, who does not x,.
-			Req 14: There exists x, who has not x,.
+			Req 1: There exists x, which must x.
+			Req 1: There exists x, who must x.
+			Req 1: There exists x, that must x.
+			Req 2: There exists x, which must not x.
+			Req 3: There exists x, who must x in x.
+			Req 4: There exists x, that must not x in x.
+			Req 5: There exists x, which x.
+			Req 6: There exists x, who is not x.
+			Req 7: There exists x, that x in x.
+			Req 8: There exists x, who are not x in x.
+			Req 9: There exists x, whose x must x.
+			Req 9: There exists x, whom x must x.
+			Req 10: There exists x, whose x x.
+			Req 11: There exists x, whom x x.
+			Req 12: There exists x, who be not x.
+			Req 13: There exists x, who does not x.
+			Req 14: There exists x, who has not x.
 			
 		''')
 		
@@ -601,21 +608,21 @@ class RequirementDSLParsingTest {
 		/*
 		 * Test of the ExistencePreface rule
 		 * 
-		 * Req 1: 'There' 'exist' Actors, relativeClause,
-		 * Req 2: 'there' 'exist' Actors, relativeClause,
-		 * Req 3: 'There' 'exists' Actors, relativeClause,
-		 * Req 4: 'there' 'exists' Actors, relativeClause,
-		 * Req 5: 'T/there' Modifier 'exist/s' Actors, relativeClause,
+		 * Req 1: 'There' 'exist' Actors, relativeClause
+		 * Req 2: 'there' 'exist' Actors, relativeClause
+		 * Req 3: 'There' 'exists' Actors, relativeClause
+		 * Req 4: 'there' 'exists' Actors, relativeClause
+		 * Req 5: 'T/there' Modifier 'exist/s' Actors, relativeClause
 		 */ 
 		testSequence('''
-			Req 1: There exist x, who x,.
-			Req 2: there exist x, who x,.
-			Req 3: There exists x, who x,.
-			Req 4: there exists x, who x,.
-			Req 5: There always exist x, who x,.
-			Req 5: there always exist x, who x,.
-			Req 5: There always exists x, who x,.
-			Req 5: there always exists x, who x,.
+			Req 1: There exist x, who x.
+			Req 2: there exist x, who x.
+			Req 3: There exists x, who x.
+			Req 4: there exists x, who x.
+			Req 5: There always exist x, who x.
+			Req 5: there always exist x, who x.
+			Req 5: There always exists x, who x.
+			Req 5: there always exists x, who x.
 			
 		''')
 		
