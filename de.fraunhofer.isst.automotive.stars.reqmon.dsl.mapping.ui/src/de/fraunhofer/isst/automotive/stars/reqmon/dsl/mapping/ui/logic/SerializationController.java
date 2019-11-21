@@ -9,7 +9,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.regex.Pattern;
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.SaveModel;
 
 /**
@@ -128,10 +127,10 @@ public class SerializationController {
 			in.close();
 			fileStream.close();
 			
-			System.out.println("Model has been deserialized");
-			System.out.println("Syspath = " + saveModel.getSysPath());
-			System.out.println("ReqPath = " + saveModel.getReqPath());
-			if (saveModel.getEditorContentList() != null) {
+		//	System.out.println("Model has been deserialized");
+		//	System.out.println("Syspath = " + saveModel.getSysPath());
+		//	System.out.println("ReqPath = " + saveModel.getReqPath());
+		/*	if (saveModel.getEditorContentList() != null) {
 				for(String content : saveModel.getEditorContentList()) {
 					System.out.println("Editor content: " + content);
 				}
@@ -142,7 +141,7 @@ public class SerializationController {
 					//System.out.println("ReqType: " + req.getElementType());
 				}
 			}
-			
+		*/	
 		} catch (FileNotFoundException e) {
 			System.out.println("No saved model!");
 			//e.printStackTrace();
