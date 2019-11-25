@@ -255,9 +255,8 @@ terminal STRING:
 
 terminal WS_HYPHEN : ' - '; 
 
-//TODO hier müsste auch ' ohne s hin für Wörter die auf 's' enden 
 terminal PROPERTY_TERM returns ecore::EBoolean:
-	'\'s' |	'`s' | '´s'
+	'\'s' |	'`s' | '´s' | '\'' | '`' | '´'
 ;
 /* =========== BASIC SYNTAX =========== */
 
