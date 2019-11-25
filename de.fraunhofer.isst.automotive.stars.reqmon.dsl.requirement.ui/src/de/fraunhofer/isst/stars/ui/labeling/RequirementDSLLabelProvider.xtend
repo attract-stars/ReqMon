@@ -43,6 +43,7 @@ import de.fraunhofer.isst.stars.requirementDSL.SentenceEnding
 import de.fraunhofer.isst.stars.requirementDSL.RelObjects
 import de.fraunhofer.isst.stars.requirementDSL.AuxNeg
 import de.fraunhofer.isst.stars.requirementDSL.Relation
+import de.fraunhofer.isst.stars.requirementDSL.ExistenceClause
 
 /**
  * Provides labels for EObjects.
@@ -162,6 +163,10 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	
 	def text(ExistenceSentence ele) {
 		"ExistenceSentence"
+	}
+	
+	def text(ExistenceClause ele) {
+		"ExistenceClause"
 	}
 	
 	def text(PropertySentence ele) {

@@ -16,8 +16,8 @@ Requirement:
 
 RequirementText:
 //	 ExistencePreface actors=Actors ','?   relativeClause=relativeClause  ','?  |
-    (condClauses+=ConditionalClause ','? 'then' )?  (mainclauses=MainClause) (','? condClauses+=ConditionalClause)?  |
-    modifier+=Modifier? sentence=ExistenceSentence (',' conjunction+=Conjunction modifier+=Modifier? (exist+=ExistenceSentence | clause+=Clause))*
+    (condClauses+=ConditionalClause ','? 'then' )?  (mainclauses=MainClause) (','? condClauses+=ConditionalClause)? |
+    existClause=ExistenceClause
     //If mainclause is the second part then 'then' has to be added. IF maincluase is first part then 'then' is not necessary
 ;
 
@@ -27,13 +27,16 @@ ConditionalClause:
 	ordinator=ClauseOrdinator clauses=Clauses
 ;
 
+ExistenceClause:
+	modifier+=Modifier? exist+=ExistenceSentence (',' conjunction+=Conjunction modifier+=Modifier? (exist+=ExistenceSentence | clause+=Clause))*
+;
+
 MainClause:
 	modifier=Modifier? clauses+=Clauses //(conjunction+=Conjunction clauses+=MainClause)*
 ;
 
-
 Clauses:
-	clauses+= Clause (conjunction+=Conjunction clauses+=Clause)*
+	clauses+= Clause  (conjunction+=Conjunction clauses+=Clause)*
 ;
 
 Clause:

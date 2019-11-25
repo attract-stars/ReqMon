@@ -16,21 +16,23 @@
         eType="#//ConditionalClause" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="mainclauses" eType="#//MainClause"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modifier" unique="false"
-        upperBound="-1" eType="#//Modifier"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="sentence" eType="#//ExistenceSentence"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="existClause" eType="#//ExistenceClause"
         containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="conjunction" upperBound="-1"
-        eType="#//Conjunction" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="exist" upperBound="-1"
-        eType="#//ExistenceSentence" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="clause" upperBound="-1"
-        eType="#//Clause" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConditionalClause">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="ordinator" eType="#//ClauseOrdinator"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="clauses" eType="#//Clauses"
         containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExistenceClause">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modifier" unique="false"
+        upperBound="-1" eType="#//Modifier"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="exist" upperBound="-1"
+        eType="#//ExistenceSentence" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conjunction" upperBound="-1"
+        eType="#//Conjunction" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="clause" upperBound="-1"
+        eType="#//Clause" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MainClause">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="modifier" eType="#//Modifier"/>
