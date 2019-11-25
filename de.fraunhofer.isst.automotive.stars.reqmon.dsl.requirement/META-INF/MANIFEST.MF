@@ -5,7 +5,6 @@ Bundle-Name: de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement
 Bundle-Vendor: Fraunhofer ISST
 Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement; singleton:=true
-Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.xbase,
  org.eclipse.equinox.common;bundle-version="3.5.0",
@@ -15,15 +14,16 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.emf.common,
  org.eclipse.xtend.lib;bundle-version="2.14.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: de.fraunhofer.isst.stars.serializer,
- de.fraunhofer.isst.stars.requirementDSL,
- de.fraunhofer.isst.stars.parser.antlr,
- de.fraunhofer.isst.stars.services,
- de.fraunhofer.isst.stars.requirementDSL.impl,
- de.fraunhofer.isst.stars.parser.antlr.internal,
+Export-Package: de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement,
  de.fraunhofer.isst.stars,
+ de.fraunhofer.isst.stars.generator,
+ de.fraunhofer.isst.stars.parser.antlr,
+ de.fraunhofer.isst.stars.parser.antlr.internal;x-internal:=true,
+ de.fraunhofer.isst.stars.requirementDSL,
+ de.fraunhofer.isst.stars.requirementDSL.impl,
  de.fraunhofer.isst.stars.requirementDSL.util,
- de.fraunhofer.isst.stars.validation,
  de.fraunhofer.isst.stars.scoping,
- de.fraunhofer.isst.stars.generator
+ de.fraunhofer.isst.stars.serializer,
+ de.fraunhofer.isst.stars.services,
+ de.fraunhofer.isst.stars.validation
 Import-Package: org.apache.log4j

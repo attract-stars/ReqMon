@@ -1,8 +1,11 @@
-#ifndef �includeGardsBegin�
-#define �includeGardsBegin�
+#ifndef EXAMPLE.H
+#define EXAMPLE.H
 
-�model.structs�
+struct Back_vehicle : Vehicle {};
 
-�model.signalsAndAttributes�
+
+/* signal */
+float back_distance;
+
 
 #endif

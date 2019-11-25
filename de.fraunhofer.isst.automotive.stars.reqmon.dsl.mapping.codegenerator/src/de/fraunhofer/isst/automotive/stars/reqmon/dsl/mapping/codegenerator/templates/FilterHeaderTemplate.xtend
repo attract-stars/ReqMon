@@ -1,145 +1,208 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates
 
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.AbstractModelInformationHelper
+
 /**
- * This class offers header templates for three different filter types in c++.
+ * This class offers an header structure template for the different filter types.
  * @author sgraf
  */
 class FilterHeaderTemplate {
 	
+	FilterType filtertype
+	AbstractModelInformationHelper helper
+	
+	new(AbstractModelInformationHelper helper) {
+		this.helper = helper
+	}
+	
+	def void setModelInformationHepler(AbstractModelInformationHelper helper) {
+		this.helper = helper
+	}
+	
+	def CharSequence generateTemplate(FilterType filtertype) {
+		this.filtertype = filtertype
+		this.helper.filterType = filtertype
+		getTemplate()
+	}
+	
 	/**
 	 * Generates a filter header of the given type.
 	 */
-	def CharSequence generateTemplate(String filtertype) '''
-	#ifndef �filename�
-	#define �filename�
+	private def getTemplate() {
+	'''
+	#define «helper.oidName» "«oidString»"
+	«moreDefines»
 	
-	#define OID_DADAS_�oidName� "�oidString�"
-	�moreDefines�
+	«includes»
 	
-	�includes�
-	
-	class �className� �filtertype.inheritances�
+	class «className» «inheritances»
 	{
-		ADTF_DECLARE_FILTER_VERSION(OID_DADAS_�oidName�, "�filterName�", OBJCAT_DataFilter, "�versionTerm�", �version�, "�oidDesignation�")
+		ADTF_DECLARE_FILTER_VERSION(«helper.oidName», "«filterName»", OBJCAT_DataFilter, "«versionTerm»", «version», "«oidDesignation»")
 		
 		private: // private members
-			�inputPins�
+			«inputPins»
 			
-			�outputPins�
+			«outputPins»
 			
-			�objectPtrs�
+			«objectPtrs»
 			
-			�morePrivateMembers�
+			«morePrivateMembers»
 			
 		public:
-			�className�(const tChar* __info);
-			virtual ~�className�();
+			«className»(const tChar* __info);
+			virtual ~«className»();
 			
 		private: // private functions
-			�privateFunctions�
+			«privateFunctions»
 			
-		public: // overwrites cFilter
+		public: // overwrites «filterSuperClass»
 			tResult Init(tInitStage eStage, __exception = NULL);
 			tResult Start(__exception);
 			tResult Stop(__exception);
 			tResult Shutdown(tInitStage eStage, __exception);
 			
-		�filtertype.publicFunctions�
+		«publicFunctions»
 			
 		protected: 
-			�filtertype.protectedFunctions�
+			«protectedFunctions»
+	};
+	
+	'''
 	}
 	
-	#endif
-	'''
-	
 
-	// filename for the include guard macro
-	def private getFilename() '''$name$'''
+	def private getOidString() '''«IF helper.getHeaderOidString !== null»«helper.getHeaderOidString»«ELSE»de.fraunhofer.isst.automotive.stars.reqmon.dsl.data.monitoring.«oidStringEnd»«ENDIF»'''
 	
-	//  oid macro
-	def private getOidName() '''$oid_name$'''
-	
-	def private getOidString() '''$oid_string$'''
+	def private getOidStringEnd() {
+		switch(filtertype) {
+			case ABSTRACT_FUNCTION: '''abstract.function'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''functional.correctness.oracle'''
+			case SCENE_ABSTRACTION: '''scene.abstraction'''
+			case TEST_COVERAGE_MONITOR: '''test.coverage.monitor'''
+			default: '''filter.type'''
+		}
+	}
 	
 	// defines macro
-	def private getMoreDefines() '''$more_defines$'''
+	def private getMoreDefines() {
+		helper.getHeaderTemplateDefines
+	}
 	
 	// includes macro
-	def private getIncludes() '''$includes$'''
+	def private getIncludes() {
+		helper.getHeaderTemplateIncludes
+	}
 	
 	// class name macro
-	def private getClassName() '''$class_name$'''
+	def private getClassName() {
+		helper.getClassName
+	}
 	
 	// inheritnace macro
-	def private getInheritances(String filtertype) '''
-	: public «switch(filtertype) {
-		case 'one': '''cConditionTriggeredFilter'''
-		case 'two': '''cFilter'''
-		case 'three': '''ILoadRecordsInterface, public cConditionTriggeredFilter'''
-		default: '''$class_name$''' 	
-		}» 
-	'''
+	def private getInheritances() ''': public «filterSuperClass»«helper.getMoreSuperClasses»'''  
+	
+	def private getFilterSuperClass() {
+		if (helper.inputPins.size === 1) {
+			return '''cFilter'''
+		}
+		else if (helper.inputPins.size >= 2) {
+			return '''cConditionTriggeredFilter'''
+		}
+	}
 	
 	// adtf declare filter version macros
-	def private getFilterName() '''$filter_name$'''
+	def private getFilterName() {
+		helper.getAdtfDeclareFilterVersionName
+	}
 	
-	def private getVersionTerm() '''$Version$'''
+	def private getVersionTerm() '''Version'''
 	
-	def private getVersion() '''$0, 1, 0$'''
+	def private getVersion() '''«helper.getFilterVersion»'''
 	
-	def private getOidDesignation() '''$oid_designation$'''
+	def private getOidDesignation() {
+		helper.getAdtfDeclareFilterVersionDesignation
+	}
 	
 	// input and output pin macro, object pointer macro
 	def private getInputPins() '''
-	$cInputPin m_oInput1$;
-	$cInputPin m_oInput2$;'''
+	«FOR pin : helper.inputPins»
+	cInputPin «pin.getPinName»;
+	«ENDFOR»
+	'''
 	
 	def private getOutputPins() '''
-	$cOutputPin m_oOutput1$;
-	$cOutputPin m_oOutput2$;'''
+	«FOR pin : helper.outputPins»
+	cOutputPin «pin.getPinName»;
+	«ENDFOR»
+	'''
 	
 	def private getObjectPtrs() '''
-	$cObjectPtr<IMediaTypeDescription> m_pCoderDesc1$;
-	$cObjectPtr<IMediaTypeDescription> m_pCoderDesc2$;'''
+	«FOR pin : helper.pins»
+	«IF pin.isCoderDesc»cObjectPtr<IMediaTypeDescription> «pin.coderDescName»;«ENDIF»
+	«ENDFOR»
+	'''
 	
 	// private member macro
-	def private getMorePrivateMembers() '''
-	$cMember member1$;
-	$cMember member2$;
-	'''
+	def private getMorePrivateMembers() '''«helper.getHeaderTemplatePrivateMembers»'''
 	
 	// private function macro
-	def private getPrivateFunctions() '''
-	tResult $function1$();
-	tResult $function2$();
-	'''
+	def private getPrivateFunctions() '''«helper.getHeaderTemplatePrivateFunctions»'''
 	
 	// public function macro
-	def private getPublicFunctions(String filtertype) '''
-	�IF filtertype.equals("one") || filtertype.equals("three")�
-	public: // overrides cFilter //implements IRunnable
+	def private getPublicFunctions() '''
+	«IF filtertype.equals(FilterType.ABSTRACT_FUNCTION) || filtertype.equals(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE) 
+		|| filtertype.equals(FilterType.TEST_COVERAGE_MONITOR)»
+	public: // overrides «filterSuperClass» //implements IRunnable
 		tResult Run(tInt nActivationCode,
 			const tVoid* pvUserData,
 			tInt szUserDataSize,
 			ucom::IException** __exception_ptr = NULL);
-	�ENDIF�
+	«ELSEIF filtertype.equals(FilterType.SCENE_ABSTRACTION)»
+	public: 
+		tResult OnPinEvent(IPin* pSource,
+			tInt nEventCode,
+			tInt nParam1,
+			tInt nParam2,
+			IMediaSample* pMediaSample);
+	«ENDIF»
 	'''
 	
 	// protected function macro
-	def private getProtectedFunctions(String filtertype) '''
-	�IF filtertype.equals("one") || filtertype.equals("three")�
+	def private getProtectedFunctions() '''
+	«IF helper.inputPins.size === 1»tResult ProcessSample(IMediaSample* pSample);
+	«ELSEIF helper.inputPins.size >= 2»
 	tResult OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception = NULL);
-	�ENDIF�
-	tResult Evaluate(�parameter�);
-	
-	$type function1$();
-	$type function2$();
-	$type function3$();
-	
+	«ENDIF»
+	«helper.getEvaluateMethod»
+	tResult TransmitEvaluationResult(«transmitEvaluationResultParameters»«moreTransmitEvaluationResultParameters»);
+	«helper.getHeaderTemplateProtectedFunctions»
 	void LOG(cString mes);
 	'''
 	
-	def private getParameter() '''$parameter$'''
+	def private getTransmitEvaluationResultParameters() {
+		if (isEvaluationReturnType) {
+			'''«helper.getEvaluateReturnType»* evaluationResult'''
+		}
+	}
+	
+	def private getMoreTransmitEvaluationResultParameters() {
+		val temp = helper.moreTransmitParameters
+		if (temp !== null) {
+			if (isEvaluationReturnType) {
+				''', temp'''
+			}
+			else {
+				'''temp'''
+			}
+		}
+	}
+	
+	def private isEvaluationReturnType() {
+		return helper.getEvaluateReturnType.toString.compareTo("") !== 0
+	}
+	 
+	
+	
+	
 	
 }

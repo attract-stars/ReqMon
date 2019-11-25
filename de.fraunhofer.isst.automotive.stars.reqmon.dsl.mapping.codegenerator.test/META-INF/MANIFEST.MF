@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Test
+Bundle-SymbolicName: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.test
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: de.fraunhofer.isst.automative.stars.reqmon.dsl.mapping.codegenerator.test
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator;bundle-version="1.0.0",
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui;bundle-version="1.0.0",
+ org.junit;bundle-version="4.12.0",
+ org.apache.commons.io;bundle-version="2.6.0",
+ org.eclipse.emf.ecore

@@ -1,6 +1,8 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic;
 
 
+import java.util.Observable;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -10,11 +12,11 @@ import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.swt.widgets.Display;
 
 import com.google.inject.Injector;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMappingParser;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.MappingPage;
 
 
 /**
@@ -24,7 +26,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.MappingP
  * @author sgraf
  *
  */
-public class MappingParserController {
+public class MappingParserController extends Observable {
 	
 	private static final String IPARSER_ID =
 			"de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.mappingparser";
@@ -109,16 +111,23 @@ public class MappingParserController {
 	 * Returns the mapping language injector.
 	 * @return the mapping language injector
 	 */
-	public Injector getDslInjector() {
+	public synchronized Injector getDslInjector() {
 		return this.dslInjector;
 	}
 	
+	public void setDslInjector(Injector dslInjector) {
+		synchronized (dslInjector) {
+			this.dslInjector = dslInjector;
+		}
+		setChanged();
+		notifyObservers();
+	}
+	
 	/**
-	 * Creates the mapping language injector and gives it back with the setDslInjector method of the MappingPage.
-	 * @param mp the MappingPage
+	 * Creates the mapping language injector.
 	 * @param systemModelUri the URI of the selected system model
 	 */
-	public void createDslInjectorAndUpdateList(MappingPage mp, URI systemModelUri) {
+	public void createDslInjector(URI systemModelUri, Display display) {
 		if (!isPars) {
 			return;
 		}
@@ -128,24 +137,15 @@ public class MappingParserController {
 			SubMonitor subMonitor = SubMonitor.convert(monitor, 10);
 			
 			try {
-				Injector dslInjector = parser.getDslInjector(systemModelUri);
-				mp.setDslInjector(dslInjector);
-				System.out.println("DslInjector: " + dslInjector.getClass().getName());
-				subMonitor.split(7);
-				
-				if (mp.isReqElements()) {
+				display.asyncExec(new Runnable() {
 					
-					// asynchrony list update
-					mp.getDisplay().asyncExec(new Runnable() {
-						
-						@Override
-						public void run() {
-							System.out.println("Update List");
-							mp.updateList();
-						}
-						
-					});
-				}
+					@Override
+					public void run() {
+						setDslInjector(parser.getDslInjector(systemModelUri));
+					}
+					
+				});
+				
 				
 			} catch (Exception ex) {
 				System.out.println("Exception in parser client:");
@@ -159,7 +159,6 @@ public class MappingParserController {
 		job.setPriority(Job.SHORT);
 		job.schedule();
 	}
-	
 	
 		/*Job job = new Job("Parse input") { 
 			protected IStatus run(IProgressMonitor monitor) {

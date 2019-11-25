@@ -1,6 +1,10 @@
 
 # Exlude bin files
 bin/
+test-bin/
+
+# Exclude testing files
+testing/
 
 # Exclude gen files
 xtend-gen
@@ -13,87 +17,72 @@ src-gen
 # Exclude ser files
 *.ser
 
-
-# Created by https://www.gitignore.io/api/eclipse
-# Edit at https://www.gitignore.io/?templates=eclipse
 ### Eclipse ###
-
-#*target*
+*target*
 #*.jar
-#*.war
-#*.ear
-#*.class
+*.war
+*.ear
+*.class
 
 # eclipse specific git ignore
-#*.pydevproject
+*.pydevproject
 #.project
-#.metadata
-#bin/**
-#tmp/**
-#tmp/**/*
-#*.tmp
-#*.bak
-#*.swp
-#*~.nib
-#local.properties
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
 #.classpath
-#.settings/
-#.loadpath
+.settings/
+.loadpath
 
 # External tool builders
-#.externalToolBuilders/
+.externalToolBuilders/
 
 # Locally stored "Eclipse launch configurations"
-#*.launch
+*.launch
 
 # PyDev specific (Python IDE for Eclipse)
-#*.pydevproject
+*.pydevproject
 
 # CDT-specific (C/C++ Development Tooling)
-#.cproject
+.cproject
 
 # CDT- autotools
-#.autotools
+.autotools
 
 # Java annotation processor (APT)
-#.factorypath
+.factorypath
 
 # PDT-specific (PHP Development Tools)
-#.buildpath
+.buildpath
 
 # sbteclipse plugin
-#.target
+.target
 
 # Tern plugin
-#.tern-project
+.tern-project
 
 # TeXlipse plugin
-#.texlipse
+.texlipse
 
 # STS (Spring Tool Suite)
-#.springBeans
+.springBeans
 
 # Code Recommenders
-#.recommenders/
+.recommenders/
 
 # Annotation Processing
-#.apt_generated/
+.apt_generated/
 
 # Scala IDE specific (Scala & Java development for Eclipse)
-#.cache-main
-#.scala_dependencies
-#.worksheet
+.cache-main
+.scala_dependencies
+.worksheet
 
-### Eclipse Patch ###
-# Eclipse Core
-#.project
-
-# JDT-specific (Eclipse Java Development Tools)
-#.classpath
-
-# Annotation Processing
-#.apt_generated
-
-#.sts4-cache/
-
-# End of https://www.gitignore.io/api/eclipse
+*.orig
+de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.tests/.__synthetic0_norm.reqDSL

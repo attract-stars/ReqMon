@@ -17,7 +17,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRe
 public class MappingModel implements IMappingModel {
 	
 	private List<Resource> mappingResourceList;
-	private List<IRequirementElement> requirements;
+	private List<? extends IRequirementElement> requirements;
 	private EObject systemModel;
 	
 
@@ -32,12 +32,12 @@ public class MappingModel implements IMappingModel {
 	}
 
 	@Override
-	public List<IRequirementElement> getRequirementList() {
+	public List<? extends IRequirementElement> getRequirementList() {
 		return requirements;
 	}
 
 	@Override
-	public void setRequirementList(List<IRequirementElement> requirementList) {
+	public void setRequirementList(List<? extends IRequirementElement> requirementList) {
 		this.requirements = requirementList;
 		
 	}
@@ -51,7 +51,6 @@ public class MappingModel implements IMappingModel {
 	public void setSystemModel(EObject systemModel) {
 		this.systemModel = systemModel;
 	}
-	
-	
+
 
 }

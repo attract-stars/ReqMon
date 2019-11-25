@@ -2,6 +2,8 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic;
 
 import java.util.regex.Pattern;
 
+import javax.swing.event.EventListenerList;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -13,9 +15,11 @@ import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.swt.widgets.Display;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.ISystemImporter;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.MappingPage;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.ValidateListener;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.ValidateEvent;
 
 /**
  * This class manages the SystemImporter extensions.
@@ -33,7 +37,8 @@ public class SystemController {
 	private boolean isRegistry;
 	private ISystemImporter sysImporter;
 	private EObject sysModel;
-	
+	private EventListenerList listeners = new EventListenerList();
+
 	
 	/**
 	 * This constructor checks if a registry exists and if SystemImporters are registered.
@@ -53,6 +58,32 @@ public class SystemController {
 				System.out.println("No SystemImporter registered!");
 			}
 			
+		}
+	}
+	
+	/**
+	 * Adds the given listener to the listener list.
+	 * @param listener a ValidateListener
+	 */
+	public void addValidateListener(ValidateListener listener) {
+		listeners.add(ValidateListener.class, listener);
+	}
+	
+	/**
+	 * Removes the given listener from the listener list.
+	 * @param listener a ValidateListener
+	 */
+	public void removeValidateListener(ValidateListener listener) {
+		listeners.remove(ValidateListener.class, listener);
+	}
+	
+	/**
+	 * Notifies the ValidateListener.
+	 * @param event a ValidateEvent
+	 */
+	protected synchronized void notifyAdvertisment(ValidateEvent event) {
+		for (ValidateListener lis : listeners.getListeners(ValidateListener.class)) {
+			lis.advertisment(event);
 		}
 	}
 	
@@ -77,15 +108,15 @@ public class SystemController {
 	}
 	
 	
+
 	/**
 	 * Selects the SystemImporter in dependence of the file extension.
 	 * If an appropriate SystemImporter exists it
 	 * checks if the system model of the given path has syntax errors. 
-	 * After the validation it calls the createDslInjector method of the MappingPage.
 	 * @param path the path of the system file
-	 * @param mp the MappingPage
+	 * @param display the Display of the MappingPage
 	 */
-	public void checkFileAndCreateInjectorAndUpdateList(String path, MappingPage mp) {
+	public void checkFile(String path, Display display) {
 		Job job = new Job("Check file") { 
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
@@ -95,7 +126,7 @@ public class SystemController {
 					for (IConfigurationElement e : configSys) {
 						final Object o = e.createExecutableExtension("class");
 						if (o instanceof ISystemImporter) {
-							System.out.println("Filter: " + e.getAttribute("filter"));
+							//System.out.println("Filter: " + e.getAttribute("filter"));
 							String filter = e.getAttribute("filter");
 							String[] words = path.split(Pattern.quote("."));
 							if (words.length > 0 && filter.contains(words[words.length-1])) {
@@ -105,20 +136,20 @@ public class SystemController {
 						}
 					}
 					
-					// validate the system model, create Injector, show the system model path 
-					// and update the mapping list
+					// validate the system model
 					if (sysImporter != null) {
-						boolean isValid = sysImporter.check(path);
-						
-						if (isValid) {
-							sysModel = sysImporter.getSystemModel();
-						}
-						
-						mp.getDisplay().asyncExec(new Runnable() {
+							
+						display.asyncExec(new Runnable() {
 							
 							@Override
 							public void run() {
-								mp.createDslInjectorAndUpdateList(isValid);
+								boolean isValid = sysImporter.check(path);
+								
+								if (isValid) {
+									sysModel = sysImporter.getSystemModel();
+								}
+								
+								notifyAdvertisment(new ValidateEvent(this, isValid));
 							}
 							
 						});
