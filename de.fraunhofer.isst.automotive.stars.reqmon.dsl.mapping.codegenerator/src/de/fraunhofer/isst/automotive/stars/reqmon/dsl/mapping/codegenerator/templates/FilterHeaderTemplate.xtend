@@ -10,33 +10,33 @@ class FilterHeaderTemplate {
 	 * Generates a filter header of the given type.
 	 */
 	def CharSequence generateTemplate(String filtertype) '''
-	#ifndef «filename»
-	#define «filename»
+	#ifndef ï¿½filenameï¿½
+	#define ï¿½filenameï¿½
 	
-	#define OID_DADAS_«oidName» "«oidString»"
-	«moreDefines»
+	#define OID_DADAS_ï¿½oidNameï¿½ "ï¿½oidStringï¿½"
+	ï¿½moreDefinesï¿½
 	
-	«includes»
+	ï¿½includesï¿½
 	
-	class «className» «filtertype.inheritances»
+	class ï¿½classNameï¿½ ï¿½filtertype.inheritancesï¿½
 	{
-		ADTF_DECLARE_FILTER_VERSION(OID_DADAS_«oidName», "«filterName»", OBJCAT_DataFilter, "«versionTerm»", «version», "«oidDesignation»")
+		ADTF_DECLARE_FILTER_VERSION(OID_DADAS_ï¿½oidNameï¿½, "ï¿½filterNameï¿½", OBJCAT_DataFilter, "ï¿½versionTermï¿½", ï¿½versionï¿½, "ï¿½oidDesignationï¿½")
 		
 		private: // private members
-			«inputPins»
+			ï¿½inputPinsï¿½
 			
-			«outputPins»
+			ï¿½outputPinsï¿½
 			
-			«objectPtrs»
+			ï¿½objectPtrsï¿½
 			
-			«morePrivateMembers»
+			ï¿½morePrivateMembersï¿½
 			
 		public:
-			«className»(const tChar* __info);
-			virtual ~«className»();
+			ï¿½classNameï¿½(const tChar* __info);
+			virtual ~ï¿½classNameï¿½();
 			
 		private: // private functions
-			«privateFunctions»
+			ï¿½privateFunctionsï¿½
 			
 		public: // overwrites cFilter
 			tResult Init(tInitStage eStage, __exception = NULL);
@@ -44,10 +44,10 @@ class FilterHeaderTemplate {
 			tResult Stop(__exception);
 			tResult Shutdown(tInitStage eStage, __exception);
 			
-		«filtertype.publicFunctions»
+		ï¿½filtertype.publicFunctionsï¿½
 			
 		protected: 
-			«filtertype.protectedFunctions»
+			ï¿½filtertype.protectedFunctionsï¿½
 	}
 	
 	#endif
@@ -73,12 +73,12 @@ class FilterHeaderTemplate {
 	
 	// inheritnace macro
 	def private getInheritances(String filtertype) '''
-	: public «switch(filtertype) {
+	: public Â«switch(filtertype) {
 		case 'one': '''cConditionTriggeredFilter'''
 		case 'two': '''cFilter'''
 		case 'three': '''ILoadRecordsInterface, public cConditionTriggeredFilter'''
 		default: '''$class_name$''' 	
-		}»
+		}Â» 
 	'''
 	
 	// adtf declare filter version macros
@@ -117,21 +117,21 @@ class FilterHeaderTemplate {
 	
 	// public function macro
 	def private getPublicFunctions(String filtertype) '''
-	«IF filtertype.equals("one") || filtertype.equals("three")»
+	ï¿½IF filtertype.equals("one") || filtertype.equals("three")ï¿½
 	public: // overrides cFilter //implements IRunnable
 		tResult Run(tInt nActivationCode,
 			const tVoid* pvUserData,
 			tInt szUserDataSize,
 			ucom::IException** __exception_ptr = NULL);
-	«ENDIF»
+	ï¿½ENDIFï¿½
 	'''
 	
 	// protected function macro
 	def private getProtectedFunctions(String filtertype) '''
-	«IF filtertype.equals("one") || filtertype.equals("three")»
+	ï¿½IF filtertype.equals("one") || filtertype.equals("three")ï¿½
 	tResult OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception = NULL);
-	«ENDIF»
-	tResult Evaluate(«parameter»);
+	ï¿½ENDIFï¿½
+	tResult Evaluate(ï¿½parameterï¿½);
 	
 	$type function1$();
 	$type function2$();
