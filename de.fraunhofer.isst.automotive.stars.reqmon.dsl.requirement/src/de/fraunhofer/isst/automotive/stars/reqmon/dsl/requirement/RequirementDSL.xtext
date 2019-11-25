@@ -36,7 +36,7 @@ Clauses:
 ;
 
 Clause:
-	mod=ModalitySentence | pred=PredicateSentence | exist=ExistenceSentence | prop=PropertySentence
+	ModalitySentence | PredicateSentence | ExistenceSentence | PropertySentence
 ;
 
 
@@ -57,7 +57,7 @@ PredicateSentence :
 
 ExistenceSentence :
 	//TODO WAS IST WENN REQUIREMENT NACHT RELATIVE CLAUSE ENDED?
-	ex=Existence actors=Actors ','   relativeClause=RelativeClause  ','
+	Existence actors=Actors ','   relativeClause=RelativeClause  ','
 ;
 
 PropertySentence:
