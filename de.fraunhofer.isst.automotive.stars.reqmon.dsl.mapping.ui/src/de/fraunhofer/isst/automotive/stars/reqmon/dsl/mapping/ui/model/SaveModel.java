@@ -56,7 +56,7 @@ public class SaveModel implements Serializable {
 	 * Set the requirement list.
 	 * @param reqList the requirement list
 	 */
-	public void setReqList(List<IRequirementElement> reqList) {
+	public void setReqList(List<? extends IRequirementElement> reqList) {
 		/* create for each requirement element a new MappingObject,
 		 * add it to the MappingObject list
 		 * and pass the requirements on to the MappingObject list */

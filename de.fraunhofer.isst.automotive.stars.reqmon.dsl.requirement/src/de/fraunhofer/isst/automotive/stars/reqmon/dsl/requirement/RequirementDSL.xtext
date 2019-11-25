@@ -62,6 +62,7 @@ ExistenceSentence :
 
 PropertySentence:
 	//TODO Warum haben wir hier constraints im ODER und nohcmal im SentenceEnding
+	//TODO SOLLTE RELATION MIT IN ACTOR PROPERTIES?
 //	(actors=Actors| properties=Properties) rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predObj=PredOrObject  ending=SentenceEnding? |
 //	(actors=Actors| properties=Properties) rela=Relation? auxNeg=AuxNeg (predObj=PredOrObject | constraints=Constraints) ending=SentenceEnding?
 	properties=ActorProperties rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  ending=SentenceEnding? |
@@ -254,6 +255,7 @@ terminal STRING:
 
 terminal WS_HYPHEN : ' - '; 
 
+//TODO hier müsste auch ' ohne s hin für Wörter die auf 's' enden 
 terminal PROPERTY_TERM returns ecore::EBoolean:
 	'\'s' |	'`s' | '´s'
 ;
@@ -269,13 +271,19 @@ AuxiliaryVerb:
 ;
 
 Conjunction:
+	text=ConjunctionWord priority=INT?//priority is just for internal use and should never be set!
+;
+
+ConjunctionWord:
 	('and'| 'or')
 ;
-
 RelConjunction:
-	('and' 'to' | 'or' 'to')
+	text=RelConjunctionWord priority=INT?//priority is just for internal use and should never be set!
 ;
 
+RelConjunctionWord:
+	('and' 'to' | 'or' 'to')
+;
 Comperators:
 	('than'|'as'|'to' | 'of')
 ;
