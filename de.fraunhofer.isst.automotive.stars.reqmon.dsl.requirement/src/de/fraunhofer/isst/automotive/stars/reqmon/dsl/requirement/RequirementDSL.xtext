@@ -36,7 +36,7 @@ Clauses:
 ;
 
 Clause:
-	ModalitySentence |  PredicateSentence | ExistenceSentence | PropertySentence
+	ModalitySentence | PredicateSentence | ExistenceSentence | PropertySentence
 ;
 
 
@@ -316,17 +316,17 @@ AuxiliaryVerbNegation:
 	'doesn\'t' | 'don\'t' | 'isn\'t' | 'aren\'t')
 ;
 
-enum Modality:
-	  SHALL = 'shall' | SHOULD = 'should' | WILL = 'will' | WOULD='would' | CAN='can' | COULD='could' | MUST='must'
+Modality:
+	 ('shall' | 'should' | 'will' | 'would' | 'can' | 'could' | 'must')
 ;
 
-enum Modifier:
-	GLOBALLY='Globally' | GLOBALLY_L='globally' | ALWAYS='Always' | ALWAYS_L='always' | SOMETIMES='Sometimes' | SOMETIMES_L='sometimes' | EVENTUALLY='Eventually' | EVENTUALLY_L='eventually'
+Modifier:
+	('Globally' | 'globally' | 'Always' | 'always' | 'Sometimes' | 'sometimes' | 'Eventually' | 'eventually')
 ;
 
-enum ClauseOrdinator:
-	IF_L='if' | AFTER_L='after' | ONCE_L='once' | WHEN_L='when' | WHENEVER_L='whenever' | WHILE_L='while' | BEFORE_L='before' | UNTIL_L='until' |
-	IF='If' | AFTER='After' | ONCE='Once' | WHEN='When' | WHENEVER='Whenever' | WHILE='While' | BEFORE='Before' | UNTIL='Until'
+ClauseOrdinator:
+	('if' | 'after' | 'once' | 'when' | 'whenever' | 'while' | 'before' | 'until' |
+	'If' | 'After' | 'Once' | 'When' | 'Whenever' | 'While' | 'Before' | 'Until')
 ;
 
 Articles:
