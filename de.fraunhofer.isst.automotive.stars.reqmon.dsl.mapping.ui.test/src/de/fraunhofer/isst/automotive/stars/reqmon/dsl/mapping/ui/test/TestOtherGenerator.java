@@ -21,7 +21,7 @@ public class TestOtherGenerator implements IGenerator {
 
 
 	@Override
-	public void generate(IMappingModel model) {
+	public void generate(IMappingModel model, String projectName) {
 		// TODO Auto-generated method stub
 		
 	}
