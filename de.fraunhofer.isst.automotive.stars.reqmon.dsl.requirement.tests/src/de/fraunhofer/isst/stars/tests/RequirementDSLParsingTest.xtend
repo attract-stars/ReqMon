@@ -558,7 +558,13 @@ class RequirementDSLParsingTest {
 		 */ 
 		testSequence('''
 			Req 1: x´s x x must x.
+			Req 1: x´ x x must x.
+			Req 1: x' x x must x.
+			Req 1: x`x x must x.
 			Req 2: x´s "x" must x.
+			Req 2: x´ "x" must x.
+			Req 2: x' "x" must x.
+			Req 2: x`"x" must x.
 			//Req 2: x´s 'x' must x.
 			
 		''')

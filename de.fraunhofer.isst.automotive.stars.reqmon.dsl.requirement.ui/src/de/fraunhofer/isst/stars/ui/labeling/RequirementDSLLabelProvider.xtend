@@ -35,14 +35,16 @@ import de.fraunhofer.isst.stars.requirementDSL.ObjectSet
 import de.fraunhofer.isst.stars.requirementDSL.IntValue
 import de.fraunhofer.isst.stars.requirementDSL.FloatValue
 import de.fraunhofer.isst.stars.requirementDSL.Constraints
-import de.fraunhofer.isst.stars.requirementDSL.Modifier
-import de.fraunhofer.isst.stars.requirementDSL.Modality
 import de.fraunhofer.isst.stars.requirementDSL.Property
 import de.fraunhofer.isst.stars.requirementDSL.SentenceBegin
 import de.fraunhofer.isst.stars.requirementDSL.SentenceEnding
 import de.fraunhofer.isst.stars.requirementDSL.RelObjects
 import de.fraunhofer.isst.stars.requirementDSL.AuxNeg
 import de.fraunhofer.isst.stars.requirementDSL.Relation
+import org.eclipse.emf.common.util.EList
+import de.fraunhofer.isst.stars.requirementDSL.Conjunction
+import de.fraunhofer.isst.stars.requirementDSL.ActorProperties
+import de.fraunhofer.isst.stars.requirementDSL.ObjectProperty
 import de.fraunhofer.isst.stars.requirementDSL.ExistenceClause
 
 /**
@@ -99,9 +101,8 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	}
 	
 	def text(MainClause ele) {
-		// the modifier is never null and as default "globally"
-		if (ele.modifier !== null && !ele.modifier.equals(Modifier.GLOBALLY)) {  
-			"MainClause: " + ele.modifier.toString
+		if (ele.modifier !== null) {  
+			"MainClause: " + ele.modifier
 		}
 		else {
 			"MainClause"
@@ -110,10 +111,23 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	
 	def text(Clauses ele) {
 		if (!ele.conjunction.empty) {
-			"Clauses: " + ele.conjunction
+			"Clauses: " + ele.conjunction.getConjunctionString.toString
 		}
 		else {
 			"Clauses"
+		}
+		
+	}
+	
+	def String getGetConjunctionString(EList<Conjunction> list) {
+		if (list.size === 1) {
+			return '''«list.get(0).text»'''
+		}
+		else if (list.size === 2) {
+			return '''«list.get(0).text», «list.get(1).text»'''
+		}
+		else {
+			return '''«list.get(0).text», «FOR i : 1..< list.size-1»«list.get(i).text», «ENDFOR»«list.get(list.size-1).text»'''
 		}
 		
 	}
@@ -126,18 +140,18 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 		if (ele.modelity !== null) {
 			if (ele.negation) {
 				if (ele.auxiliarVerb !== null) {
-					"ModalitySentence: " + ele.modelity.getName.toLowerCase + " not " + ele.auxiliarVerb
+					"ModalitySentence: " + ele.modelity + " not " + ele.auxiliarVerb
 				}
 				else {
-					"ModalitySentence: " + ele.modelity.getName.toLowerCase + " not"
+					"ModalitySentence: " + ele.modelity + " not"
 				}
 			}
 			else {
 				if (ele.auxiliarVerb !== null) {
-					"ModalitySentence: " + ele.modelity.getName.toLowerCase + " " + ele.auxiliarVerb
+					"ModalitySentence: " + ele.modelity + " " + ele.auxiliarVerb
 				}
 				else {
-					"ModalitySentence: " + ele.modelity.getName.toLowerCase
+					"ModalitySentence: " + ele.modelity
 				}
 			}
 		}
@@ -162,8 +176,8 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	}
 	
 	def text(PredicateSentence ele) {
-		if (!ele.auxiliarVerb.empty) {
-			"PredicateSentence: " + String.join(" ",ele.auxiliarVerb)
+		if (ele.auxiliarVerb !== null) {
+			"PredicateSentence: " + ele.auxiliarVerb
 		}
 		else {
 			"PredicateSentence"
@@ -175,8 +189,7 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	}
 	
 	def text(PropertySentence ele) {
-		// the modifier is never null and as default "shall"
-		if (ele.modality !== null && !ele.modality.equals(Modality.SHALL)) {
+		if (ele.modality !== null) {
 			"PropertySentence: " + ele.modality
 		}
 		else if (ele.modality !== null && ele.negation) {
@@ -193,6 +206,14 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 		}
 	}
 	
+	def text(ActorProperties ap) {
+		"ActorProperties"
+	}
+	
+	def text(ObjectProperty op) {
+		"ObjectProperty"
+	}
+	
 	def text(Property ele) {
 		if (!ele.property.empty) {
 			"Property: " + ele.property.join(" ")
@@ -204,7 +225,7 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	
 	def text(Actors ele) {
 		if (!ele.conjunction.empty) {
-			"Actors: " + ele.conjunction // + ele.actors.map[a | return a.actor]
+			"Actors: " + ele.conjunction.getConjunctionString // + ele.actors.map[a | return a.actor]
 		}
 		else {
 			"Actors" //+ ele.actors.get(0).actor
@@ -212,7 +233,19 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 	}
 	
 	def text(Actor ele) {
-		"Actor: " + ele.preNominative +" "+ ele.actor
+		"Actor: " + ele.preNominative.getPreNominativeString +" "+ ele.actor
+	}
+	
+	def String getPreNominativeString(PreNominative nominative) {
+		if (nominative.article !== null) {
+			nominative.article
+		}
+		else if (nominative.determiner !== null) {
+			nominative.determiner
+		}
+		else {
+			""
+		}
 	}
 	
 	def text(Predicate ele) {
@@ -232,8 +265,8 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 		if (ele.article !== null) {
 			"Article: " + ele.article
 		}
-		else if (ele.article !== null) {
-			"Determiner: " + ele.article
+		else if (ele.determiner !== null) {
+			"Determiner: " + ele.determiner
 		}
 		else {
 			"PreNominative"
