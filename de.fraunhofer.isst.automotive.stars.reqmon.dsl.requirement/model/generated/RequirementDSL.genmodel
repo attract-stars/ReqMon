@@ -16,10 +16,18 @@
     <genClasses ecoreClass="RequirementDSL.ecore#//RequirementText">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//RequirementText/condClauses"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//RequirementText/mainclauses"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//RequirementText/existClause"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//ConditionalClause">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//ConditionalClause/ordinator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ConditionalClause/exist"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ConditionalClause/clauses"/>
+    </genClasses>
+    <genClasses ecoreClass="RequirementDSL.ecore#//ExistenceClause">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//ExistenceClause/modifier"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ExistenceClause/exist"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ExistenceClause/conjunction"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ExistenceClause/clause"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//MainClause">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//MainClause/modifier"/>
@@ -29,32 +37,27 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//Clauses/clauses"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//Clauses/conjunction"/>
     </genClasses>
-    <genClasses ecoreClass="RequirementDSL.ecore#//Clause"/>
+    <genClasses ecoreClass="RequirementDSL.ecore#//Clause">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//Clause/auxiliarVerb"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//Clause/predicate"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//Clause/ending"/>
+    </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//ModalitySentence">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ModalitySentence/begin"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ModalitySentence/actors"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//ModalitySentence/modelity"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//ModalitySentence/negation"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//ModalitySentence/auxiliarVerb"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ModalitySentence/predicate"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ModalitySentence/ending"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//PredicateSentence">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//PredicateSentence/begin"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//PredicateSentence/actors"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//PredicateSentence/auxNeg"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//PredicateSentence/auxiliarVerb"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//PredicateSentence/predicate"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//PredicateSentence/ending"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//ExistenceSentence"/>
     <genClasses ecoreClass="RequirementDSL.ecore#//PropertySentence">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//PropertySentence/properties"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//PropertySentence/modality"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//PropertySentence/negation"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//PropertySentence/auxiliarVerb"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//PropertySentence/predicate"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//PropertySentence/ending"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//PropertySentence/auxNeg"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//ActorProperties">
@@ -72,7 +75,6 @@
     <genClasses ecoreClass="RequirementDSL.ecore#//RelativeClause">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//RelativeClause/sentence"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//RelativeClause/conjunction"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//RelativeClause/condClauses"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//RelativeSentence">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//RelativeSentence/pronoun"/>

@@ -43,6 +43,7 @@ import org.eclipse.emf.common.util.EList
 import de.fraunhofer.isst.stars.requirementDSL.Conjunction
 import de.fraunhofer.isst.stars.requirementDSL.ActorProperties
 import de.fraunhofer.isst.stars.requirementDSL.ObjectProperty
+import de.fraunhofer.isst.stars.requirementDSL.ExistenceClause
 
 
 /**
@@ -86,6 +87,15 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 		}
 		else {
 			"ConditionalClause"
+		}
+	}
+	
+	def text(ExistenceClause ele) {
+		if (ele.modifier !== null) {
+			"ExistenceClause: " + ele.modifier.toString 
+		}
+		else {
+			"ExistenceClause"
 		}
 	}
 	
