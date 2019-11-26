@@ -60,15 +60,15 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ConditionalClause/exist"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ConditionalClause/clauses"/>
     </genClasses>
-    <genClasses ecoreClass="RequirementDSL.ecore#//MainClause">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//MainClause/modifier"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//MainClause/clauses"/>
-    </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//ExistenceClause">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//ExistenceClause/modifier"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ExistenceClause/exist"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ExistenceClause/conjunction"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ExistenceClause/clause"/>
+    </genClasses>
+    <genClasses ecoreClass="RequirementDSL.ecore#//MainClause">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//MainClause/modifier"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//MainClause/clauses"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//Clauses">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//Clauses/clauses"/>

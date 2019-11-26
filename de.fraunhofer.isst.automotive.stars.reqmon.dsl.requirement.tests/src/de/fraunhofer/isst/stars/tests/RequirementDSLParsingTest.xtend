@@ -349,8 +349,7 @@ class RequirementDSLParsingTest {
 			Req 1: There exist x, who must x.
 			Req 1: There exists x, who must x.
 			Req 2: There exist x, who must x, and x x.
-			Req 2: There exists x, who must x, and x x.
-			
+			Req 2: There exists x, who must x, and x x.	
 		''')
 		
 		/*
@@ -641,11 +640,11 @@ class RequirementDSLParsingTest {
 		/*
 		 * Test of the ExistencePreface rule
 		 * 
-		 * Req 1: 'There' 'exist' Actors, relativeClause,
-		 * Req 2: 'there' 'exist' Actors, relativeClause,
-		 * Req 3: 'There' 'exists' Actors, relativeClause,
-		 * Req 4: 'there' 'exists' Actors, relativeClause,
-		 * Req 5: 'T/there' Modifier 'exist/s' Actors, relativeClause,
+		 * Req 1: 'There' 'exist' Actors, relativeClause
+		 * Req 2: 'there' 'exist' Actors, relativeClause
+		 * Req 3: 'There' 'exists' Actors, relativeClause
+		 * Req 4: 'there' 'exists' Actors, relativeClause
+		 * Req 5: 'T/there' Modifier 'exist/s' Actors, relativeClause
 		 */ 
 		testSequence('''
 			Req 1: There exist x, who x.

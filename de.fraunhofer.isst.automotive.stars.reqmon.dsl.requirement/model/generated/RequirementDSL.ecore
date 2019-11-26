@@ -26,11 +26,6 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="clauses" eType="#//Clauses"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MainClause">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modifier" eType="#//Modifier"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="clauses" upperBound="-1"
-        eType="#//Clauses" containment="true"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ExistenceClause">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="modifier" unique="false"
         upperBound="-1" eType="#//Modifier"/>
@@ -40,6 +35,11 @@
         eType="#//Conjunction" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="clause" upperBound="-1"
         eType="#//Clause" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MainClause">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modifier" eType="#//Modifier"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="clauses" upperBound="-1"
+        eType="#//Clauses" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Clauses">
     <eStructuralFeatures xsi:type="ecore:EReference" name="clauses" upperBound="-1"
