@@ -36,18 +36,18 @@ Clauses:
 ;
 
 Clause:
-	ModalitySentence |  PredicateSentence | ExistenceSentence | PropertySentence
+	ModalitySentence | PredicateSentence | ExistenceSentence | PropertySentence
 ;
 
 
 ModalitySentence :
-	actors=Actors modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  ending=RelationConstraint?
+	begin=SentenceBegin? actors=Actors modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  ending=SentenceEnding?
 	//actors=Actors modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  constraints+=Constraints* 
 ;
 
 PredicateSentence :
-	actors=Actors  auxNeg=AuxNeg auxiliarVerb=AuxiliaryVerb? predicate=Predicate?  ending=RelationConstraint? |
-	actors=Actors  predicate=Predicate  ending=RelationConstraint? 
+	begin=SentenceBegin? actors=Actors  auxNeg=AuxNeg auxiliarVerb=AuxiliaryVerb? predicate=Predicate?  ending=SentenceEnding? |
+	begin=SentenceBegin? actors=Actors  predicate=Predicate  ending=SentenceEnding? 
 	
 	//actors=Actors  (auxiliarVerb+=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
 	//actors=Actors  predicate=Predicate constraints+=Constraints* |	
@@ -63,8 +63,8 @@ ExistenceSentence :
 PropertySentence:
 //	(actors=Actors| properties=Properties) rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predObj=PredOrObject  ending=SentenceEnding? |
 //	(actors=Actors| properties=Properties) rela=Relation? auxNeg=AuxNeg (predObj=PredOrObject | constraints=Constraints) ending=SentenceEnding?
-	properties=ActorProperties modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  ending=RelationConstraint? |
-	properties=ActorProperties auxNeg=AuxNeg predicate=Predicate? ending=RelationConstraint?
+	properties=ActorProperties modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  ending=SentenceEnding? |
+	properties=ActorProperties auxNeg=AuxNeg predicate=Predicate? ending=SentenceEnding?
 	
 	//property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  constraints+=Constraints* |
 	//property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb object=PredicateObject?  constraints+=Constraints* |
@@ -76,12 +76,16 @@ ActorProperties:
 	property+=ObjectProperty (conjunction+=Conjunction property+=ObjectProperty)* rela=Relation?
 ;
 
-RelationConstraint:
-	//TODO FEHLT HIER NICHT EINE Conjunction?! -> conjunctions between constraints is difficult
-	// SOLLTE nicht Relation in CONTRAINTS drin sein -> then the parser is confused (by 'to')
+
+SentenceBegin:
+	(rela=Relation ',')
+;
+
+SentenceEnding:
+	//TODO SOLLTE nicht Relation in CONTRAINTS drin sein
 	const+=Constraints+ |
 	const+=Constraints* rela=Relation |
-	rela=Relation ('and' 'also')? const+=Constraints+
+	rela=Relation const+=Constraints+
 ;
 
 /* =========== RELATIVE CLAUSE =========== */
@@ -104,7 +108,7 @@ RelativeSentence :
 
 
 Actors:
-	(rela=Relation ',')? actors+=Actor (conjunction+=Conjunction actors+=Actor)* 
+	actors+=Actor (conjunction+=Conjunction actors+=Actor)* 
 ;
 
 Actor:
@@ -249,9 +253,8 @@ terminal STRING:
 
 terminal WS_HYPHEN : ' - '; 
 
-//TODO hier müsste auch ' ohne s hin für Wörter die auf 's' enden 
 terminal PROPERTY_TERM returns ecore::EBoolean:
-	'\'s' |	'`s' | '´s'
+	'\'s' |	'`s' | '´s' | '\'' | '`' | '´'
 ;
 /* =========== BASIC SYNTAX =========== */
 
@@ -310,17 +313,17 @@ AuxiliaryVerbNegation:
 	'doesn\'t' | 'don\'t' | 'isn\'t' | 'aren\'t')
 ;
 
-enum Modality:
-	  SHALL = 'shall' | SHOULD = 'should' | WILL = 'will' | WOULD='would' | CAN='can' | COULD='could' | MUST='must'
+Modality:
+	 ('shall' | 'should' | 'will' | 'would' | 'can' | 'could' | 'must')
 ;
 
-enum Modifier:
-	GLOBALLY='Globally' | GLOBALLY_L='globally' | ALWAYS='Always' | ALWAYS_L='always' | SOMETIMES='Sometimes' | SOMETIMES_L='sometimes' | EVENTUALLY='Eventually' | EVENTUALLY_L='eventually'
+Modifier:
+	('Globally' | 'globally' | 'Always' | 'always' | 'Sometimes' | 'sometimes' | 'Eventually' | 'eventually')
 ;
 
-enum ClauseOrdinator:
-	IF_L='if' | AFTER_L='after' | ONCE_L='once' | WHEN_L='when' | WHENEVER_L='whenever' | WHILE_L='while' | BEFORE_L='before' | UNTIL_L='until' |
-	IF='If' | AFTER='After' | ONCE='Once' | WHEN='When' | WHENEVER='Whenever' | WHILE='While' | BEFORE='Before' | UNTIL='Until'
+ClauseOrdinator:
+	('if' | 'after' | 'once' | 'when' | 'whenever' | 'while' | 'before' | 'until' |
+	'If' | 'After' | 'Once' | 'When' | 'Whenever' | 'While' | 'Before' | 'Until')
 ;
 
 Articles:

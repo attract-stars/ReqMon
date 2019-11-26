@@ -519,7 +519,13 @@ class RequirementDSLParsingTest {
 		 */ 
 		testSequence('''
 			Req 1: x´s x x must x.
+			Req 1: x´ x x must x.
+			Req 1: x' x x must x.
+			Req 1: x`x x must x.
 			Req 2: x´s "x" must x.
+			Req 2: x´ "x" must x.
+			Req 2: x' "x" must x.
+			Req 2: x`"x" must x.
 			//Req 2: x´s 'x' must x.
 			
 		''')
@@ -531,7 +537,6 @@ class RequirementDSLParsingTest {
 		 * Req 2: Actors Predicate Constraints Relation
 		 * Req 3: Actors Predicate Constraints Constraints Relation
 		 * Req 4: Actors Predicate Relation
-		 * Req 5: Actors Predicate Relation and also Constraints
 		 * Req 6: Actors Predicate Relation Constraints Constraints
 		 */ 
 		testSequence('''
@@ -539,7 +544,6 @@ class RequirementDSLParsingTest {
 			Req 2: x x in x in relation to x.
 			Req 3: x x in x to x in relation to x.
 			Req 4: x x in relation to x.
-			Req 5: x x in relation to x and also in x.
 			Req 6: x x in relation to x in x to x.
 			
 		''')
