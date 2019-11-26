@@ -1,6 +1,7 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic;
 
 import java.util.List;
+import java.util.Observable;
 //import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -19,7 +20,6 @@ import org.eclipse.swt.widgets.Display;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementImporter;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.MappingPage;
 
 /**
  * This class implements the IRequirementController interface.
@@ -28,7 +28,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.MappingP
  * @author sgraf
  *
  */
-public class RequirementController implements IRequirementController {
+public class RequirementController extends Observable implements IRequirementController {
 	
 	private static final String IREQUIREMENT_ID =
 			"de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.requirementimporter";
@@ -36,15 +36,15 @@ public class RequirementController implements IRequirementController {
 	private IConfigurationElement[] configReq;
 	private boolean isRegistry;
 	private IRequirementImporter reqImp;
-	private List<IRequirementElement> requirements;
-	private MappingPage mp;
+	private List<? extends IRequirementElement> requirements;
+	private Display display;
 	
 	/**
 	 * This constructor checks if a registry exists and if RequirementImporters are registered.
 	 */
-	public RequirementController(MappingPage mp) {
+	public RequirementController(Display display) {
 		registry = Platform.getExtensionRegistry();
-		this.mp = mp;
+		this.display = display;
 		if (registry == null) {
 			System.out.println("No registry!");
 			isRegistry = false;
@@ -63,8 +63,16 @@ public class RequirementController implements IRequirementController {
 	 * Returns the list of requirement elements.
 	 * @return the list of requirement elements
 	 */
-	public List<IRequirementElement> getRequirements() {
+	public synchronized List<? extends IRequirementElement> getRequirements() {
 		return requirements;
+	}
+	
+	public void setRequirements(List<? extends IRequirementElement> requirements) {
+		synchronized (requirements) {
+			this.requirements = requirements;
+		}
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -96,11 +104,16 @@ public class RequirementController implements IRequirementController {
 		exectuteRequirementImporter(this, display, path);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void updateList(List<? extends IRequirementElement> requirements) {
-		this.requirements = (List<IRequirementElement>) requirements;
-		mp.updateList();
+		display.asyncExec(new Runnable() {
+			
+			@Override
+			public void run() {
+				setRequirements(requirements);
+			}
+			
+		});
 		
 	}
 	
