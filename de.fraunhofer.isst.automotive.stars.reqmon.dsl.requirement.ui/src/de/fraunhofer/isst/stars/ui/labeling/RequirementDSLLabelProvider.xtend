@@ -36,8 +36,6 @@ import de.fraunhofer.isst.stars.requirementDSL.IntValue
 import de.fraunhofer.isst.stars.requirementDSL.FloatValue
 import de.fraunhofer.isst.stars.requirementDSL.Constraints
 import de.fraunhofer.isst.stars.requirementDSL.Property
-import de.fraunhofer.isst.stars.requirementDSL.SentenceBegin
-import de.fraunhofer.isst.stars.requirementDSL.SentenceEnding
 import de.fraunhofer.isst.stars.requirementDSL.RelObjects
 import de.fraunhofer.isst.stars.requirementDSL.AuxNeg
 import de.fraunhofer.isst.stars.requirementDSL.Relation
@@ -45,6 +43,7 @@ import org.eclipse.emf.common.util.EList
 import de.fraunhofer.isst.stars.requirementDSL.Conjunction
 import de.fraunhofer.isst.stars.requirementDSL.ActorProperties
 import de.fraunhofer.isst.stars.requirementDSL.ObjectProperty
+
 
 /**
  * Provides labels for EObjects.
@@ -352,13 +351,6 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 		}
 	}
 	
-	def text(SentenceBegin ele) {
-		"SentenceBegin"
-	}
-	
-	def text(SentenceEnding ele) {
-		"SentenceEnding"
-	}
 	
 	def text(Relation ele) {
 		if (ele.relDel !== null) {
