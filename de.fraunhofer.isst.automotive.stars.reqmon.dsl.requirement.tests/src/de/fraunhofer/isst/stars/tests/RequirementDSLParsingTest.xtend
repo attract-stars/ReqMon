@@ -355,30 +355,30 @@ class RequirementDSLParsingTest {
 		/*
 		 * Test of the PropertySentence rule
 		 * 
-		 * Req 1: Actors Property Modality PredOrObject
-		 * Req 2: Actors Property Relation Modality PredOrObject
-		 * Req 3: Actors Property Modality Negation PredOrObject
-		 * Req 4: Actors Property Relation Modality Negation PredOrObject
-		 * Req 5: Actors Property Modality AuxiliaryVerb PredOrObject
-		 * Req 6: Actors Property Relation Modality AuxiliaryVerb PredOrObject
-		 * Req 7: Actors Property Modality Negation AuxiliaryVerb PredOrObject
-		 * Req 8: Actors Property Relation Modality Negation AuxiliaryVerb PredOrObject
-		 * Req 9: Actors Property Modality PredOrObject SentenceEnding
-		 * Req 10: Actors Property Relation Modality PredOrObject SentenceEnding
-		 * Req 11: Actors Property Modality Negation PredOrObject SentenceEnding
-		 * Req 12: Actors Property Relation Modality Negation PredOrObject SentenceEnding
-		 * Req 13: Actors Property Modality AuxiliaryVerb PredOrObject SentenceEnding
-		 * Req 14: Actors Property Relation Modality AuxiliaryVerb PredOrObject SentenceEnding
-		 * Req 15: Actors Property Modality Negation AuxiliaryVerb PredOrObject SentenceEnding
-		 * Req 16: Actors Property Relation Modality Negation AuxiliaryVerb PredOrObject SentenceEnding
-		 * Req 17: Actors Property AuxNeg PredOrObject
-		 * Req 18: Actors Property AuxNeg Constraints
-		 * Req 19: Actors Property Relation AuxNeg PredOrObject
-		 * Req 20: Actors Property Relation AuxNeg constraints
-		 * Req 21: Actors Property AuxNeg PredOrObject SentenceEnding
-		 * Req 22: Actors Property AuxNeg Constraints SentenceEnding
-		 * Req 23: Actors Property Relation AuxNeg PredOrObject SentenceEnding
-		 * Req 24: Actors Property Relation AuxNeg constraints SentenceEnding
+		 * Req 1: ActorProperties Modality PredOrObject
+		 * Req 2: ActorProperties Relation Modality PredOrObject
+		 * Req 3: ActorProperties Modality Negation PredOrObject
+		 * Req 4: ActorProperties Relation Modality Negation PredOrObject
+		 * Req 5: ActorProperties Modality AuxiliaryVerb PredOrObject
+		 * Req 6: ActorProperties Relation Modality AuxiliaryVerb PredOrObject
+		 * Req 7: ActorProperties Modality Negation AuxiliaryVerb PredOrObject
+		 * Req 8: ActorProperties Relation Modality Negation AuxiliaryVerb PredOrObject
+		 * Req 9: ActorProperties Modality PredOrObject SentenceEnding
+		 * Req 10: ActorProperties Relation Modality PredOrObject SentenceEnding
+		 * Req 11: ActorProperties Modality Negation PredOrObject SentenceEnding
+		 * Req 12: ActorProperties Relation Modality Negation PredOrObject SentenceEnding
+		 * Req 13: ActorProperties Modality AuxiliaryVerb PredOrObject SentenceEnding
+		 * Req 14: ActorProperties Relation Modality AuxiliaryVerb PredOrObject SentenceEnding
+		 * Req 15: ActorProperties Modality Negation AuxiliaryVerb PredOrObject SentenceEnding
+		 * Req 16: ActorProperties Relation Modality Negation AuxiliaryVerb PredOrObject SentenceEnding
+		 * Req 17: ActorProperties AuxNeg PredOrObject
+		 * Req 18: ActorProperties AuxNeg Constraints
+		 * Req 19: ActorProperties Relation AuxNeg PredOrObject
+		 * Req 20: ActorProperties Relation AuxNeg constraints
+		 * Req 21: ActorProperties AuxNeg PredOrObject SentenceEnding
+		 * Req 22: ActorProperties AuxNeg Constraints SentenceEnding
+		 * Req 23: ActorProperties Relation AuxNeg PredOrObject SentenceEnding
+		 * Req 24: ActorProperties Relation AuxNeg constraints SentenceEnding
 		 */ 
 		testSequence('''
 			Req 1: x's x shall x.
@@ -551,6 +551,25 @@ class RequirementDSLParsingTest {
 		''')
 		
 		/*
+		 * Test of the ActorProperties rule
+		 * property+=ObjectProperty rela+=Relation? (conjunction+=Conjunction property+=ObjectProperty rela+=Relation?)* 
+		 * Req 1: ObjectProperty 
+		 * Req 2: ObjectProperty Relation
+		 * Req 3: ObjectProperty Conjunction ObjectProperty
+		 * Req 3: ObjectProperty Relation Conjunction ObjectProperty
+		 * Req 4: ObjectProperty Conjunction ObjectProperty Relation
+		 * Req 4: ObjectProperty Relation Conjunction ObjectProperty Relation
+		 */ 
+		testSequence('''
+			Req 1: x´s x must x.
+			Req 2: x´s x in relation to x must x.
+			Req 3: x´s x and x´s x must x.
+			Req 3: x´s x in relation to x or x´s x must x.
+			Req 4: x´s x and x´s x in relation to x must x.
+			Req 4: x´s x in relation to x or x´s x in relation to x must x.
+		''')
+		
+		/*
 		 * Test of the Property rule
 		 * 
 		 * Req 1: Actors PROPERTY_TERM WORD WORD Modality Predicate
@@ -576,7 +595,6 @@ class RequirementDSLParsingTest {
 		 * Req 2: Actors Predicate Constraints Relation
 		 * Req 3: Actors Predicate Constraints Constraints Relation
 		 * Req 4: Actors Predicate Relation
-		 * Req 5: Actors Predicate Relation Constraints
 		 * Req 6: Actors Predicate Relation Constraints Constraints
 		 */ 
 		testSequence('''
@@ -584,7 +602,6 @@ class RequirementDSLParsingTest {
 			Req 2: x x in x in relation to x.
 			Req 3: x x in x to x in relation to x.
 			Req 4: x x in relation to x.
-			Req 5: x x in relation to x in x.
 			Req 6: x x in relation to x in x to x.
 			
 		''')
@@ -719,6 +736,22 @@ class RequirementDSLParsingTest {
 			Req 6: x x in relation to x´s x and to x´s x.
 			Req 6: x x in relation to x´s x or to x´s x.
 			Req 7: x x in relation to x and to x or to x.
+			
+		''')
+		
+		/*
+		 * Test of the Constraints rule
+		 * 
+		 * Req 1: ObjectConstraint and ObjectConstraint
+		 * Req 2: UnitConstraints and ObjectConstraint
+		 * Req 3: SetConstraint and ObjectConstraint
+		 * Req 3: TimeConstraint and ObjectConstraint
+		 */ 
+		testSequence('''
+			Req 1: x x in x and in x.
+			Req 2: x x in 1.0 and in x.
+			Req 3: x x in {x} and in x.
+			Req 4: x x in 1 sec and in x to x.
 			
 		''')
 		

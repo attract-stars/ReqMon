@@ -56,14 +56,13 @@
     <genClasses ecoreClass="RequirementDSL.ecore#//ExistenceSentence"/>
     <genClasses ecoreClass="RequirementDSL.ecore#//PropertySentence">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//PropertySentence/properties"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//PropertySentence/rela"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//PropertySentence/modality"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute RequirementDSL.ecore#//PropertySentence/negation"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//PropertySentence/auxNeg"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//PropertySentence/constraints"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//ActorProperties">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ActorProperties/property"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ActorProperties/rela"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ActorProperties/conjunction"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//SentenceBegin">
@@ -143,6 +142,7 @@
     <genClasses ecoreClass="RequirementDSL.ecore#//Constraints">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//Constraints/timeConstraint"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//Constraints/constraint"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//Constraints/conjunction"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//Constraint">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//Constraint/ordinator"/>

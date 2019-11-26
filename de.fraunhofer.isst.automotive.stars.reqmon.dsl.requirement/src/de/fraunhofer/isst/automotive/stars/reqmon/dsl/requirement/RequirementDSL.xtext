@@ -65,12 +65,10 @@ ExistenceSentence :
 
 
 PropertySentence:
-	//TODO Warum haben wir hier constraints im ODER und nohcmal im SentenceEnding
-	//TODO SOLLTE RELATION MIT IN ACTOR PROPERTIES?
 //	(actors=Actors| properties=Properties) rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predObj=PredOrObject  ending=SentenceEnding? |
 //	(actors=Actors| properties=Properties) rela=Relation? auxNeg=AuxNeg (predObj=PredOrObject | constraints=Constraints) ending=SentenceEnding?
-	properties=ActorProperties rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  ending=SentenceEnding? |
-	properties=ActorProperties rela=Relation? auxNeg=AuxNeg (predicate=Predicate | constraints=Constraints) ending=SentenceEnding?
+	properties=ActorProperties modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  ending=SentenceEnding? |
+	properties=ActorProperties auxNeg=AuxNeg predicate=Predicate? ending=SentenceEnding?
 	
 	//property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  constraints+=Constraints* |
 	//property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb object=PredicateObject?  constraints+=Constraints* |
@@ -79,16 +77,16 @@ PropertySentence:
 ;
 
 ActorProperties:
-	property+=ObjectProperty (conjunction+=Conjunction property+=ObjectProperty)* 
+	property+=ObjectProperty rela+=Relation? (conjunction+=Conjunction property+=ObjectProperty rela+=Relation?)* 
 ;
+
 
 SentenceBegin:
 	(rela=Relation ',')
 ;
 
 SentenceEnding:
-	//TODO FEHLT HIER NICHT EINE Conjunction?!
-	//TODO SOLLTE nicht Relation in CONTRAINTS drin sein
+	//SOLLTE nicht Relation in CONTRAINTS drin sein -> seems not to work
 	(const+=Constraints+ | const+=Constraints* rela=Relation |rela=Relation const+=Constraints+)
 ;
 
@@ -172,7 +170,7 @@ Property:
 /* =========== CONSTRAINTS =========== */
 
 Constraints:
-	timeConstraint=TimeConstraint | constraint=Constraint
+	(timeConstraint+=TimeConstraint | constraint+=Constraint) (conjunction+= Conjunction (timeConstraint+=TimeConstraint | constraint+=Constraint))*
 ;
 
 Constraint:
