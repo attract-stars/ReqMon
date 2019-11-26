@@ -77,10 +77,10 @@
   <eClassifiers xsi:type="ecore:EClass" name="ActorProperties">
     <eStructuralFeatures xsi:type="ecore:EReference" name="property" upperBound="-1"
         eType="#//ObjectProperty" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rela" upperBound="-1" eType="#//Relation"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conjunction" upperBound="-1"
         eType="#//Conjunction" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="rela" eType="#//Relation"
-        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SentenceBegin">
     <eStructuralFeatures xsi:type="ecore:EReference" name="rela" eType="#//Relation"
@@ -185,10 +185,12 @@
         upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Constraints">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="timeConstraint" eType="#//TimeConstraint"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="constraint" eType="#//Constraint"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="timeConstraint" upperBound="-1"
+        eType="#//TimeConstraint" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="constraint" upperBound="-1"
+        eType="#//Constraint" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conjunction" upperBound="-1"
+        eType="#//Conjunction" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Constraint">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ordinator" eType="#//ConstraintOrdinators"

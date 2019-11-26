@@ -59,8 +59,8 @@
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//ActorProperties">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ActorProperties/property"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ActorProperties/conjunction"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ActorProperties/rela"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//ActorProperties/conjunction"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//SentenceBegin">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//SentenceBegin/rela"/>
@@ -140,6 +140,7 @@
     <genClasses ecoreClass="RequirementDSL.ecore#//Constraints">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//Constraints/timeConstraint"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//Constraints/constraint"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//Constraints/conjunction"/>
     </genClasses>
     <genClasses ecoreClass="RequirementDSL.ecore#//Constraint">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference RequirementDSL.ecore#//Constraint/ordinator"/>

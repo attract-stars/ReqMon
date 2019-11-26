@@ -73,7 +73,7 @@ PropertySentence:
 ;
 
 ActorProperties:
-	property+=ObjectProperty (conjunction+=Conjunction property+=ObjectProperty)* rela=Relation?
+	property+=ObjectProperty rela+=Relation? (conjunction+=Conjunction property+=ObjectProperty rela+=Relation?)* 
 ;
 
 
@@ -82,7 +82,7 @@ SentenceBegin:
 ;
 
 SentenceEnding:
-	//TODO SOLLTE nicht Relation in CONTRAINTS drin sein
+	//SOLLTE nicht Relation in CONTRAINTS drin sein -> seems not to work
 	const+=Constraints+ |
 	const+=Constraints* rela=Relation |
 	rela=Relation const+=Constraints+
@@ -169,7 +169,7 @@ Property:
 /* =========== CONSTRAINTS =========== */
 
 Constraints:
-	(timeConstraint=TimeConstraint | constraint=Constraint) 
+	(timeConstraint+=TimeConstraint | constraint+=Constraint) (conjunction+= Conjunction (timeConstraint+=TimeConstraint | constraint+=Constraint))*
 ;
 
 Constraint:
