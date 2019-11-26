@@ -15,8 +15,8 @@ Require-Bundle: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui;bundle
  org.eclipse.xtend.lib.macro,
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition;bundle-version="1.0.0",
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition.ui;bundle-version="1.0.0",
- org.eclipse.core.resources;bundle-version="3.13.300",
- org.eclipse.core.runtime;bundle-version="3.15.200"
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime
 Export-Package: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions,
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.logic,
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates
