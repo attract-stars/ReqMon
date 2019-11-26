@@ -1,4 +1,4 @@
-#define OID_DADAS_SCENE_ABSTRACTION "$oid_string$"
+#define OID_DADAS_SCENE_ABSTRACTION "de.fraunhofer.isst.automotive.stars.reqmon.dsl.data.monitoring.scene.abstraction"
 
 
 class cDadasSceneAbstractionFilter : public cFilter
@@ -35,7 +35,7 @@ class cDadasSceneAbstractionFilter : public cFilter
 	protected: 
 		tResult ProcessSample(IMediaSample* pSample);
 		tCategorization Evaluate(tScene scene);
-		tResult TransmitEvaluationResult(type* name);
+		tResult TransmitEvaluationResult(tCategorization* evaluationResult);
 		void LOG(cString mes);
 };
 

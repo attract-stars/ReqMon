@@ -948,7 +948,7 @@ public class MappingPage implements Observer, ValidateListener {
 				}
 				
 				// execute the selected generator
-				genCon.executeSelectedGenerator(mappingModel);
+				genCon.executeSelectedGenerator(mappingModel, editorName);
 			}
 		});
 		

@@ -8,7 +8,10 @@ import java.util.Map
 import java.util.HashMap
 
 /**
- * The implementation of this interface should help to extract the informations of the IMappingModel.
+ * The implementation of this interface should help to extract the informations of the IMappingModel 
+ * for the generation of the adtf filter structures, the standard Types file, the MediaTypes and SubTypes file, 
+ * and the Requirement and System Types files.
+ * @author sgraf
  */
 abstract class AbstractModelInformationHelper {
 	
@@ -35,14 +38,16 @@ abstract class AbstractModelInformationHelper {
 		val outputList = new ArrayList
 		val allList = new ArrayList
 		for(i: 0..< numIn) {
-			val input = new Pin(inputs.get(i) + "Input", true, "MEDIATYPE_DADAS_" + inputs.get(i).toUpperCase, inputs.get(i), "t" + inputs.get(i).toFirstUpper);
+			//val input = new Pin(inputs.get(i) + "Input", true, "MEDIATYPE_DADAS_" + inputs.get(i).toUpperCase, inputs.get(i), "t" + inputs.get(i).toFirstUpper);
+			val input = new Pin(inputs.get(i), true);
 			inputList.add(input)
 			allList.add(input)
 		}
 		inputPins.put(filter,inputList);
 		val numOut = outputs.size
 		for(i: 0..< numOut) {
-			val output = new Pin(outputs.get(i) + "Output", true, "MEDIATYPE_DADAS_" + outputs.get(i).toUpperCase, outputs.get(i), "t" + outputs.get(i).toFirstUpper);
+			//val output = new Pin(outputs.get(i) + "Output", true, "MEDIATYPE_DADAS_" + outputs.get(i).toUpperCase, outputs.get(i), "t" + outputs.get(i).toFirstUpper);
+			val output = new Pin(outputs.get(i), false);
 			outputList.add(output);
 			allList.add(output)
 		}
@@ -50,31 +55,36 @@ abstract class AbstractModelInformationHelper {
 		allPins.put(filter, allList)
 	}
 	
+	/**
+	 * Returns the instance of the IMappingModel.
+	 */
 	def IMappingModel getModel() {
 		return this.model
 	}
 	
+	/**
+	 * Sets the filter type to the given value.
+	 */
 	def void setFilterType(FilterType filtertype) {
 		this.filtertype = filtertype
 	}
 	
+	/**
+	 * Returns the filter type.
+	 */
 	def FilterType getFilterType() {
 		return this.filtertype
 	}
-	
-	def int getSourceCount()
-	
-	def List<String> getClasses()
-	
-	def List<String> getSignals()
 	
 	/**
 	 * Returns a list of header file names.
 	 */
 	def List<String> getIncludes() {
 		val list = new ArrayList
+		list.add("dtypes")
+		list.add("stdafx")
+		list.add("requirement_types")
 		list.add("system-types")
-		list.add("mediatypes")
 		switch(filtertype) {
 			case ABSTRACT_FUNCTION:
 			{
@@ -112,6 +122,18 @@ abstract class AbstractModelInformationHelper {
 	}
 	
 	/**
+	 * Returns the pin of the given name and filter type.
+	 */
+	def Pin getPin(String name, FilterType filter) {
+		for (pin : allPins.get(filter)) {
+			if (pin.pinName.equals(name)) {
+				return pin;
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Returns a list of all input pins.
 	 */
 	def List<Pin> getInputPins() {
@@ -126,46 +148,6 @@ abstract class AbstractModelInformationHelper {
 	}
 	
 	/**
-	 * Returns a list of all attribute names of the given object name.
-	 */
-	def List<String> getAttributes(String objectName)
-	
-	/**
-	 * Returns the name of the corresponding system attribute.
-	 */
-	def String getSystemAttribut(String name)
-	
-	/** 
-	 * Returns the corresponding attribute to the given monitoring attribute like this: class_name attr_name.
-	 */
-	def String getCorrespondingAttribute(String monAttr)
-	
-	/**
-	 * Returns the min, max and preffered value if the given attribute is a signal.
-	 */
-	def List<String> getSignalBoundarys(String attr)
-	
-	/**
-	 * Returns all requirement objects that are mapped to a system class.
-	 */
-	def List<String> getReqObjects()
-	
-	/**
-	 * Returns all attributes of the given object.
-	 */
-	def List<String> getReqAttribute(String obj)
-	
-	/**
-	 * Returns all super classes of the given object.
-	 */
-	def List<String> getInheritance(String obj)
-	
-	/**
-	 * Returns all enumerations.
-	 */
-	def List<List<String>> getReqEnums()
-	
-	/**
 	 * Returns the version of the filter. The default value is "0, 1, 0".
 	 */
 	def String getFilterVersion() {
@@ -173,34 +155,34 @@ abstract class AbstractModelInformationHelper {
 	}
 	
 	/**
-	 * Returns a name list of object pointers
+	 * Returns a template for the defines of the header. For example: "#define name value".
+	 * The default value is an empty String.
 	 */
-	def List<String> getObjectPtrs()
-	
-	/**
-	 * Returns a template for the defines of the header. For example: "#define name value"
-	 */
-	def CharSequence getHeaderTemplateDefines()
+	def CharSequence getHeaderTemplateDefines() ''''''
 	
 	/**
 	 * Returns a template for the includes of the header.
+	 * The default value is an empty String.
 	 */
-	def CharSequence getHeaderTemplateIncludes()
+	def CharSequence getHeaderTemplateIncludes() ''''''
 	
 	/**
 	 * Returns a template for the private members of the header.
+	 * The default value is an empty String.
 	 */
-	def CharSequence getHeaderTemplatePrivateMembers()
+	def CharSequence getHeaderTemplatePrivateMembers() ''''''
 	
 	/**
 	 * Returns a template for the private functions of the header.
+	 * The default value is an empty String.
 	 */
-	def CharSequence getHeaderTemplatePrivateFunctions()
+	def CharSequence getHeaderTemplatePrivateFunctions() ''''''
 	
 	/**
 	 * Returns a template for the protected functions of the header.
+	 * The default value is an empty String.
 	 */
-	def CharSequence getHeaderTemplateProtectedFunctions() '''tResult TransmitEvaluationResult(type* name);'''
+	def CharSequence getHeaderTemplateProtectedFunctions() ''''''
 	
 	/**
 	 * Returns an evaluate method declaration. For example: "tReturnType Evaluate(paramType paramName, ..);"
@@ -248,7 +230,9 @@ abstract class AbstractModelInformationHelper {
 			}
 			case SCENE_ABSTRACTION:
 			{ 
-				
+				if (getInputPins.size > 1) {
+					templateConstructorDefault
+				}
 			}
 			case TEST_COVERAGE_MONITOR:
 			{
@@ -288,7 +272,9 @@ abstract class AbstractModelInformationHelper {
 			}
 			case SCENE_ABSTRACTION:
 			{ 
-				
+				if (getInputPins.size > 1) {
+					templateDestructorDefault
+				}
 			}
 			case TEST_COVERAGE_MONITOR:
 			{
@@ -299,8 +285,11 @@ abstract class AbstractModelInformationHelper {
 	
 	/**
 	 * Returns a list of constructor value settings.
+	 * The default value is an empty list.
 	 */
-	def List<String> getMoreConstructorValues()
+	def List<String> getMoreConstructorValues() {
+		return new ArrayList
+	}
 	
 	/**
 	 * Returns true if the class extends cConditionTriggeredFilter otherwise false.
@@ -325,7 +314,7 @@ abstract class AbstractModelInformationHelper {
 	/**
 	 * Returns a template for the init normal stage. The default value is "//Nothing to do".
 	 */
-	def CharSequence getInitNormalTemplate() {
+	def CharSequence getTemplateInitNormal() {
 		'''//Nothing to do'''
 	}
 	
@@ -333,7 +322,7 @@ abstract class AbstractModelInformationHelper {
 	 * Returns a template for the init graph ready stage. The default value is a timeout creation if the cConditionTriggeredFilter
 	 * is extended and otherwise "//Nothing to do".
 	 */
-	def CharSequence getInitGraphReadyTemplate() {
+	def CharSequence getTemplateInitGraphReady() {
 		switch(filtertype) {
 			case ABSTRACT_FUNCTION: AFFInitGraphReady
 			case FUNCTIONAL_CORRECTNESS_ORACLE: FCOFInitGraphReady
@@ -405,13 +394,11 @@ abstract class AbstractModelInformationHelper {
 	/**
 	 * Returns a template for the clear section in the run method. The default value is an empty String.
 	 */
-	def CharSequence getRunClearTemplate() {
-		''''''
-	}
+	def CharSequence getTemplateRunClear() ''''''
 	
 	/**
 	 * Returns the return type of the evaluate method. 
-	 * The default value is tBool or the pin output object type for the scene abstraction filter with one output pin.
+	 * The default value is tBool or the output pin object type for the scene abstraction filter with one output pin.
 	 */
 	def CharSequence getGetEvaluateReturnType() {
 		switch(filtertype) {
@@ -426,21 +413,12 @@ abstract class AbstractModelInformationHelper {
 	/**
 	 * Returns a template for more actions in the OnTrigger method. The default value is an empty String.
 	 */
-	def CharSequence getMoreOnTriggerActionsTemplate() {
-		''''''
-	}
-	
-	/**
-	 * Returns the return type of the evaluate method call in the onTrigger method. The default value is an empty String.
-	 */
-	def CharSequence getOnTriggerEvaluateReturnType() {
-		''''''
-	}
+	def CharSequence getMoreOnTriggerActionsTemplate() ''''''
 	
 	/**
 	 * Returns a template for the Log method. The default Value is null which leads to a default Log method.
 	 */
-	def CharSequence getLogTemplate() {
+	def CharSequence getTemplateLog() {
 		return null
 	}
 	
@@ -449,22 +427,127 @@ abstract class AbstractModelInformationHelper {
 	 * The template should end with an empty line to keep distance to the Log method. 
 	 * The default value is an empty String.
 	 */
-	def CharSequence getMoreProtectedMethodsTemplate() {
-		''''''
-	}
+	def CharSequence getTemplateMoreProtectedMethods() ''''''
 	
 	/**
 	 * Returns more super classes like ", public superclass_name". The default value is an empty string.
 	 */
-	def CharSequence getMoreSuperClasses() {
-		''''''
+	def CharSequence getMoreSuperClasses() ''''''
+	
+	/**
+	 * Returns a template for more parameters of the transmit method like "type1 name1, type2 name2".
+	 * The default value is null.
+	 */
+	def CharSequence getMoreTransmitParameters() {
+		return null
 	}
 	
+	/**
+	 * Returns a template for the content of the transmit method. 
+	 * Returns a default content if the size of the output pins is equal one.
+	 */
+	def CharSequence getTemplateTransmitContent() 
+	
+	/** 
+	 * Returns an defined oidName for the header. The default string is "OID_DADAS_[filtertype]".  
+	 */
+	def CharSequence getOidName() {
+		'''OID_DADAS_«filtertype»'''
+	}
+	
+	/**
+	 * Returns an oidString for the header. 
+	 * The default string is "de.fraunhofer.isst.automotive.stars.reqmon.dsl.data.monitoring.[filter.type]"
+	 */
+	def CharSequence getHeaderOidString() {
+		return null
+	}
+	
+	/**
+	 * Returns the class name. 
+	 */
+	def CharSequence getGetClassName() {
+		switch(filtertype) {
+			case ABSTRACT_FUNCTION: '''cDadasAbstractFunctionFilter'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''cDadasFunctionalCorrectnessOracleFilter'''
+			case SCENE_ABSTRACTION: '''cDadasSceneAbstractionFilter'''
+			case TEST_COVERAGE_MONITOR: '''cDadasTestCoverageMonitorFilter'''
+			default: '''$class_name$'''
+		}
+	}
+	
+	/**
+	 * Returns a name for the adtf declare filter version.
+	 */
+	def CharSequence getGetAdtfDeclareFilterVersionName() {
+		switch(filtertype) {
+			case ABSTRACT_FUNCTION: '''DADAS Abstract Function Filter'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''DADAS Functional Correctness Oracle Filter'''
+			case SCENE_ABSTRACTION: '''DADAS Scene Abstraction Filter'''
+			case TEST_COVERAGE_MONITOR: '''DADAS Test Coverage Monitor Filter'''
+			default: '''$filter_name$'''
+		}
+	}
+	
+	/**
+	 * Returns a designation for the adtf declare filter version.
+	 */
+	def CharSequence getGetAdtfDeclareFilterVersionDesignation() {
+		switch(filtertype) {
+			case ABSTRACT_FUNCTION: '''Abstract Function'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''Functional Correctness Oracle'''
+			case SCENE_ABSTRACTION: '''Scene Abstraction'''
+			case TEST_COVERAGE_MONITOR: '''Test Coverage Monitor'''
+			default: '''$oid_designation$'''
+		}
+	}
+	
+	/**
+	 * Returns a template for the private methods implementation.
+	 * The default value is an empty String.
+	 */
+	def CharSequence getTemplatePrivateMethods() ''''''
 	
 	
 	
 	
+	/**
+	 * Returns all requirement objects that are mapped to a system class.
+	 */
+	def List<String> getReqObjects()
 	
+	/**
+	 * Returns all attributes of the given object.
+	 */
+	def List<String> getReqAttribute(String obj)
+	
+	/**
+	 * Returns all super classes of the given object.
+	 */
+	def List<String> getReqInheritance(String obj)
+	
+	/**
+	 * Returns all enumerations.
+	 */
+	def List<List<String>> getReqEnums()
+	
+	
+	
+	
+	/**
+	 * Returns an address offset for the MediaType.
+	 * The default value is 0xC350.
+	 */
+	def CharSequence getMediaTypeOffset() {
+		'''0xC350'''
+	}
+	
+	/**
+	 * Returns a list of MediaSubTypes and its location. The default value is an empty list.
+	 */
+	def List<String> getMediaSubTypes() {
+		new ArrayList
+	}
 	
 	
 	

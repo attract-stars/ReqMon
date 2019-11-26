@@ -12,9 +12,9 @@ public interface IMappingModel {
 
 	public void setMappingResourceList(List<Resource> mappingResourceList);
 	
-	public List<IRequirementElement> getRequirementList();
+	public List<? extends IRequirementElement> getRequirementList();
 	
-	public void setRequirementList(List<IRequirementElement> requirementList);
+	public void setRequirementList(List<? extends IRequirementElement> requirementList);
 	
 	public EObject getSystemModel();
 	

@@ -1,12 +1,14 @@
+#include dtypes.h
+#include stdafx.h
+#include requirement_types.h
 #include system-types.h
-#include mediatypes.h
 #include abstract_function_filter.h
 
 tBool debugOpt = tFalse;
 
 ADTF_FILTER_PLUGIN("DADAS Abstract Function Filter", OID_DADAS_ABSTRACT_FUNCTION, cDadasAbstractFunctionFilter)
 
-cDadasAbstractFunctionFilter::cDadasAbstractFunctionFilter(const tChar* __info) : cConditionTriggeredFilter(tTrue,tTrue,__info), 
+cDadasAbstractFunctionFilter::cDadasAbstractFunctionFilter(const tChar* __info) : cConditionTriggeredFilter(tTrue,tTrue,__info),
 				m_bTimeout(tFalse)
 {
 	kernelMutex.Create();
@@ -29,11 +31,11 @@ tResult cDadasAbstractFunctionFilter::Init(tInitStage eStage, __exception)
 	
 	if (eStage == StageFirst)
 	{
-		cObjectPtr<IMediaType> pCategorizationInput = new cMediaType(MEDIATYPE_DADAS, MEDIATYPE_DADAS_CATEGORIZATION);
+		cObjectPtr<IMediaType> pCategorizationInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_CATEGORIZATION);
 		RETURN_IF_FAILED(m_oCategorizationInput.Create("categorization", pCategorizationInput, this));
 		RETURN_IF_FAILED(RegisterPin(&m_oCategorizationInput));
 		
-		cObjectPtr<IMediaType> pConcreteTargetsInput = new cMediaType(MEDIATYPE_DADAS, MEDIATYPE_DADAS_CONCRETETARGETS);
+		cObjectPtr<IMediaType> pConcreteTargetsInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_CONCRETETARGETS);
 		RETURN_IF_FAILED(m_oConcreteTargetsInput.Create("concreteTargets", pConcreteTargetsInput, this));
 		RETURN_IF_FAILED(RegisterPin(&m_oConcreteTargetsInput));
 		
@@ -164,14 +166,20 @@ tResult cDadasAbstractFunctionFilter::OnTrigger(adtf::IPin* pSource, adtf::IMedi
 	//Lock Sample
 	kernelMutex.Enter();
 	
-	Evaluate(&pCategorizationSample, &pConcreteTargetsSample);
+	tBool evaluationResult = Evaluate(&pCategorizationSample, &pConcreteTargetsSample);
 	
 	kernelMutex.Leave();
+	
+	TransmitEvaluationResult(&evaluationResult);
 	
 	RETURN_NOERROR;
 }
 
 tBool cDadasAbstractFunctionFilter::Evaluate(IMediaSample* pCategorizationSample, IMediaSample* pConcreteTargetsSample)
+{
+}
+
+tResult cDadasAbstractFunctionFilter::TransmitEvaluationResult(tBool* evaluationResult)
 {
 }
 

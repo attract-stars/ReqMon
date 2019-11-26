@@ -1,3 +1,8 @@
+#include dtypes.h
+#include stdafx.h
+#include requirement_types.h
+#include system-types.h
+#include scene_abstraction_filter.h
 
 tBool debugOpt = tFalse;
 
@@ -17,11 +22,11 @@ tResult cDadasSceneAbstractionFilter::Init(tInitStage eStage, __exception)
 	
 	if (eStage == StageFirst)
 	{
-		cObjectPtr<IMediaType> pSceneInput = new cMediaType(MEDIATYPE_DADAS, MEDIATYPE_DADAS_SCENE);
+		cObjectPtr<IMediaType> pSceneInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_SCENE);
 		RETURN_IF_FAILED(m_oSceneInput.Create("scene", pSceneInput, this));
 		RETURN_IF_FAILED(RegisterPin(&m_oSceneInput));
 		
-		cObjectPtr<IMediaType> pCategorizationOutput = new cMediaType(MEDIATYPE_DADAS, MEDIATYPE_DADAS_CATEGORIZATION);
+		cObjectPtr<IMediaType> pCategorizationOutput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_CATEGORIZATION);
 		RETURN_IF_FAILED(m_oCategorizationOutput.Create("categorization", pCategorizationOutput, this));
 		RETURN_IF_FAILED(RegisterPin(&m_oCategorizationOutput));
 		
@@ -56,7 +61,14 @@ tResult cDadasSceneAbstractionFilter::Shutdown(tInitStage eStage, __exception)
 	{
 	case StageFirst:
 		{
-			m_pCoderDesc = NULL;
+			break;
+		}
+	case StageNormal:
+		{
+			break;
+		}
+	case StageGraphReady:
+		{
 			break;
 		}
 	default:
@@ -93,16 +105,11 @@ tResult cDadasSceneAbstractionFilter::ProcessSample(IMediaSample* pSample)
 	{
 		__sample_read_lock(pMediaSample, tScene, pData);
 	
-		tCategorization categorization = Evaluate(&pData);
+		tCategorization evaluationResult = Evaluate(&pData);
 	
 	}
 
-	cObjectPtr<IMediaSample> pMediaSample;
-	RETURN_IF_FAILED(AllocMediaSample((tVoid**)&pMediaSample));
-	
-	RETURN_IF_FAILED(pMediaSample->SetTime(_clock->GetStreamTime()));
-	
-	RETURN_IF_FAILED(m_oOutput.Transmit(pMediaSample));
+	TransmitEvaluationResult(&evaluationResult);
 
 	RETURN_NOERROR;
 }
@@ -111,11 +118,20 @@ tCategorization cDadasSceneAbstractionFilter::Evaluate(tScene* scene)
 {
 }
 
+tResult cDadasSceneAbstractionFilter::TransmitEvaluationResult(tCategorization* evaluationResult)
+{
+	cObjectPtr<IMediaSample> pMediaSample;
+	RETURN_IF_FAILED(AllocMediaSample((tVoid**)&pMediaSample));
+	
+	RETURN_IF_FAILED(pNewSample->Update(_clock->GetStreamTime(), &evaluationResult, sizeof(tCategorization), 0));
+	
+	RETURN_IF_FAILED(m_oCategorizationOutput.Transmit(pMediaSample));
+}
+
 void cDadasSceneAbstractionFilter::LOG(cString mes)
 {		
 	if(debugOpt) {
 		LOG_INFO(mes);
-		//OutputDebugStringWrapper(mes+"\n");
 	}
 }
 

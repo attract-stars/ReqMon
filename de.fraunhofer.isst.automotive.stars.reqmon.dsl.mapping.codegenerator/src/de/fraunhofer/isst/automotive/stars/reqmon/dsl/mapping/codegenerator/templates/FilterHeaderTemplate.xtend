@@ -3,13 +3,17 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.tem
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.AbstractModelInformationHelper
 
 /**
- * This class offers header templates for three different filter types in c++.
+ * This class offers an header structure template for the different filter types.
  * @author sgraf
  */
 class FilterHeaderTemplate {
 	
 	FilterType filtertype
 	AbstractModelInformationHelper helper
+	
+	new(AbstractModelInformationHelper helper) {
+		this.helper = helper
+	}
 	
 	def void setModelInformationHepler(AbstractModelInformationHelper helper) {
 		this.helper = helper
@@ -26,14 +30,14 @@ class FilterHeaderTemplate {
 	 */
 	private def getTemplate() {
 	'''
-	#define OID_DADAS_«oidName» "«oidString»"
+	#define «helper.oidName» "«oidString»"
 	«moreDefines»
 	
 	«includes»
 	
 	class «className» «inheritances»
 	{
-		ADTF_DECLARE_FILTER_VERSION(OID_DADAS_«oidName», "«filterName»", OBJCAT_DataFilter, "«versionTerm»", «version», "«oidDesignation»")
+		ADTF_DECLARE_FILTER_VERSION(«helper.oidName», "«filterName»", OBJCAT_DataFilter, "«versionTerm»", «version», "«oidDesignation»")
 		
 		private: // private members
 			«inputPins»
@@ -67,29 +71,32 @@ class FilterHeaderTemplate {
 	}
 	
 
-	//  oid macro
-	def private getOidName() '''«filtertype»'''
+	def private getOidString() '''«IF helper.getHeaderOidString !== null»«helper.getHeaderOidString»«ELSE»de.fraunhofer.isst.automotive.stars.reqmon.dsl.data.monitoring.«oidStringEnd»«ENDIF»'''
 	
-	def private getOidString() '''$oid_string$'''
-	
-	// defines macro
-	def private getMoreDefines() '''«helper.getHeaderTemplateDefines»'''
-	
-	// includes macro
-	def private getIncludes() '''«helper.getHeaderTemplateIncludes»'''
-	
-	// class name macro
-	def private getClassName() {
+	def private getOidStringEnd() {
 		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''cDadasAbstractFunctionFilter'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''cDadasFunctionalCorrectnessOracleFilter'''
-			case SCENE_ABSTRACTION: '''cDadasSceneAbstractionFilter'''
-			case TEST_COVERAGE_MONITOR: '''cDadasTestCoverageMonitorFilter'''
-			default: '''$class_name$'''
+			case ABSTRACT_FUNCTION: '''abstract.function'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''functional.correctness.oracle'''
+			case SCENE_ABSTRACTION: '''scene.abstraction'''
+			case TEST_COVERAGE_MONITOR: '''test.coverage.monitor'''
+			default: '''filter.type'''
 		}
 	}
 	
+	// defines macro
+	def private getMoreDefines() {
+		helper.getHeaderTemplateDefines
+	}
 	
+	// includes macro
+	def private getIncludes() {
+		helper.getHeaderTemplateIncludes
+	}
+	
+	// class name macro
+	def private getClassName() {
+		helper.getClassName
+	}
 	
 	// inheritnace macro
 	def private getInheritances() ''': public «filterSuperClass»«helper.getMoreSuperClasses»'''  
@@ -105,13 +112,7 @@ class FilterHeaderTemplate {
 	
 	// adtf declare filter version macros
 	def private getFilterName() {
-		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''DADAS Abstract Function Filter'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''DADAS Functional Correctness Oracle Filter'''
-			case SCENE_ABSTRACTION: '''DADAS Scene Abstraction Filter'''
-			case TEST_COVERAGE_MONITOR: '''DADAS Test Coverage Monitor Filter'''
-			default: '''$filter_name$'''
-		}
+		helper.getAdtfDeclareFilterVersionName
 	}
 	
 	def private getVersionTerm() '''Version'''
@@ -119,31 +120,25 @@ class FilterHeaderTemplate {
 	def private getVersion() '''«helper.getFilterVersion»'''
 	
 	def private getOidDesignation() {
-		switch(filtertype) {
-			case ABSTRACT_FUNCTION: '''Abstract Function'''
-			case FUNCTIONAL_CORRECTNESS_ORACLE: '''Functional Correctness Oracle'''
-			case SCENE_ABSTRACTION: '''Scene Abstraction'''
-			case TEST_COVERAGE_MONITOR: '''Test Coverage Monitor'''
-			default: '''$oid_designation$'''
-		}
+		helper.getAdtfDeclareFilterVersionDesignation
 	}
 	
 	// input and output pin macro, object pointer macro
 	def private getInputPins() '''
 	«FOR pin : helper.inputPins»
-	cInputPin m_o«pin.getPinName.toFirstUpper»;
+	cInputPin «pin.getPinName»;
 	«ENDFOR»
 	'''
 	
 	def private getOutputPins() '''
 	«FOR pin : helper.outputPins»
-	cOutputPin m_o«pin.getPinName.toFirstUpper»;
+	cOutputPin «pin.getPinName»;
 	«ENDFOR»
 	'''
 	
 	def private getObjectPtrs() '''
-	«FOR ptr : helper.getObjectPtrs»
-	cObjectPtr<IMediaTypeDescription> m_p«ptr.toFirstUpper»;
+	«FOR pin : helper.pins»
+	«IF pin.isCoderDesc»cObjectPtr<IMediaTypeDescription> «pin.coderDescName»;«ENDIF»
 	«ENDFOR»
 	'''
 	
@@ -179,10 +174,32 @@ class FilterHeaderTemplate {
 	tResult OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception = NULL);
 	«ENDIF»
 	«helper.getEvaluateMethod»
+	tResult TransmitEvaluationResult(«transmitEvaluationResultParameters»«moreTransmitEvaluationResultParameters»);
 	«helper.getHeaderTemplateProtectedFunctions»
 	void LOG(cString mes);
 	'''
-		
+	
+	def private getTransmitEvaluationResultParameters() {
+		if (isEvaluationReturnType) {
+			'''«helper.getEvaluateReturnType»* evaluationResult'''
+		}
+	}
+	
+	def private getMoreTransmitEvaluationResultParameters() {
+		val temp = helper.moreTransmitParameters
+		if (temp !== null) {
+			if (isEvaluationReturnType) {
+				''', temp'''
+			}
+			else {
+				'''temp'''
+			}
+		}
+	}
+	
+	def private isEvaluationReturnType() {
+		return helper.getEvaluateReturnType.toString.compareTo("") !== 0
+	}
 	 
 	
 	

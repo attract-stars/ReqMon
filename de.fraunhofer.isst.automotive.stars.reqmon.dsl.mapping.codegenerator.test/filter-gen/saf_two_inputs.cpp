@@ -1,17 +1,28 @@
+#include dtypes.h
+#include stdafx.h
+#include requirement_types.h
 #include system-types.h
-#include mediatypes.h
 #include scene_abstraction_filter.h
 
 tBool debugOpt = tFalse;
 
 ADTF_FILTER_PLUGIN("DADAS Scene Abstraction Filter", OID_DADAS_SCENE_ABSTRACTION, cDadasSceneAbstractionFilter)
 
-cDadasSceneAbstractionFilter::cDadasSceneAbstractionFilter(const tChar* __info) : cFilter(__info)
+cDadasSceneAbstractionFilter::cDadasSceneAbstractionFilter(const tChar* __info) : cConditionTriggeredFilter(tTrue,tTrue,__info),
+				m_bTimeout(tFalse)
 {
+	kernelMutex.Create();
+	
+	SetPropertyInt("timeout", $timeout_value$);
+	SetPropertyStr("timeout" NSSUBPROP_DESCRIPTION,
+		"Demo timeout that will issue a warning when no trigger has occurred "
+		"in the specified amount of time (microseconds). 0 disables the timeout.");
+	SetPropertyInt("timeout" NSSUBPROP_MINIMUM, 0);
 }
 
 cDadasSceneAbstractionFilter::~cDadasSceneAbstractionFilter()
 {
+	kernelMutex.Release();
 }
 
 tResult cDadasSceneAbstractionFilter::Init(tInitStage eStage, __exception)
@@ -20,15 +31,15 @@ tResult cDadasSceneAbstractionFilter::Init(tInitStage eStage, __exception)
 	
 	if (eStage == StageFirst)
 	{
-		cObjectPtr<IMediaType> pSceneInput = new cMediaType(MEDIATYPE_DADAS, MEDIATYPE_DADAS_SCENE);
+		cObjectPtr<IMediaType> pSceneInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_SCENE);
 		RETURN_IF_FAILED(m_oSceneInput.Create("scene", pSceneInput, this));
 		RETURN_IF_FAILED(RegisterPin(&m_oSceneInput));
 		
-		cObjectPtr<IMediaType> pTimeInput = new cMediaType(MEDIATYPE_DADAS, MEDIATYPE_DADAS_TIME);
+		cObjectPtr<IMediaType> pTimeInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_TIME);
 		RETURN_IF_FAILED(m_oTimeInput.Create("time", pTimeInput, this));
 		RETURN_IF_FAILED(RegisterPin(&m_oTimeInput));
 		
-		cObjectPtr<IMediaType> pCategorizationOutput = new cMediaType(MEDIATYPE_DADAS, MEDIATYPE_DADAS_CATEGORIZATION);
+		cObjectPtr<IMediaType> pCategorizationOutput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_CATEGORIZATION);
 		RETURN_IF_FAILED(m_oCategorizationOutput.Create("categorization", pCategorizationOutput, this));
 		RETURN_IF_FAILED(RegisterPin(&m_oCategorizationOutput));
 		
@@ -142,15 +153,27 @@ tResult cDadasSceneAbstractionFilter::OnTrigger(adtf::IPin* pSource, adtf::IMedi
 	//Lock Sample
 	kernelMutex.Enter();
 	
-	Evaluate(&pSceneSample, &pTimeSample);
+	tCategorization evaluationResult = Evaluate(&pSceneSample, &pTimeSample);
 	
 	kernelMutex.Leave();
+	
+	TransmitEvaluationResult(&evaluationResult);
 	
 	RETURN_NOERROR;
 }
 
 tCategorization cDadasSceneAbstractionFilter::Evaluate(IMediaSample* pSceneSample, IMediaSample* pTimeSample)
 {
+}
+
+tResult cDadasSceneAbstractionFilter::TransmitEvaluationResult(tCategorization* evaluationResult)
+{
+	cObjectPtr<IMediaSample> pMediaSample;
+	RETURN_IF_FAILED(AllocMediaSample((tVoid**)&pMediaSample));
+	
+	RETURN_IF_FAILED(pNewSample->Update(_clock->GetStreamTime(), &evaluationResult, sizeof(tCategorization), 0));
+	
+	RETURN_IF_FAILED(m_oCategorizationOutput.Transmit(pMediaSample));
 }
 
 void cDadasSceneAbstractionFilter::LOG(cString mes)

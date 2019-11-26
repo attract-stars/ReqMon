@@ -1,24 +1,23 @@
-#include "stdafx.h"
-#include "dtypes.h"
-#include "dadas_monitoring_types.h"
-#include "dadas_mediatypes.h"
+#include dtypes.h
+#include stdafx.h
+#include requirement_types.h
+#include system-types.h
+#include function_correctness_oracle_filter.h
 
 tBool debugOpt = tFalse;
 
 ADTF_FILTER_PLUGIN("DADAS Functional Correctness Oracle Filter", OID_DADAS_FUNCTIONAL_CORRECTNESS_ORACLE, cDadasFunctionalCorrectnessOracleFilter)
 
-cDadasFunctionalCorrectnessOracleFilter::cDadasFunctionalCorrectnessOracleFilter(const tChar* __info) : cConditionTriggeredFilter(tTrue,tTrue,__info), 
-				m_bTimeout(tFalse), $more value settings$
+cDadasFunctionalCorrectnessOracleFilter::cDadasFunctionalCorrectnessOracleFilter(const tChar* __info) : cConditionTriggeredFilter(tTrue,tTrue,__info),
+				m_bTimeout(tFalse)
 {
 	kernelMutex.Create();
 	
-	SetPropertyInt("timeout", $value$);
+	SetPropertyInt("timeout", $timeout_value$);
 	SetPropertyStr("timeout" NSSUBPROP_DESCRIPTION,
 		"Demo timeout that will issue a warning when no trigger has occurred "
 		"in the specified amount of time (microseconds). 0 disables the timeout.");
 	SetPropertyInt("timeout" NSSUBPROP_MINIMUM, 0);
-	
-	$set more properties$
 }
 
 cDadasFunctionalCorrectnessOracleFilter::~cDadasFunctionalCorrectnessOracleFilter()
@@ -32,25 +31,22 @@ tResult cDadasFunctionalCorrectnessOracleFilter::Init(tInitStage eStage, __excep
 	
 	if (eStage == StageFirst)
 	{
-		//Description Manager
-		cObjectPtr<IMediaDescriptionManager> pDescManager;
-		RETURN_IF_FAILED(_runtime->GetObject(OID_ADTF_MEDIA_DESCRIPTION_MANAGER, 
-			IID_ADTF_MEDIA_DESCRIPTION_MANAGER, 
-			(tVoid**)&pDescManager, 
-			__exception_ptr));
-			
-		cObjectPtr<IMediaType> $pTypeName$ = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_$TYPE$, $more parameters$);
-		?RETURN_IF_POINTER_NULL($pTypeName$);?
-		RETURN_IF_FAILED($m_oPin.Create("$type$", $pTypeName$, this, $more parameters$));
-		RETURN_IF_FAILED(Register?Trigger?Pin(&$m_oPin));
-		?RETURN_IF_FAILED($pTypeName$->GetInterface(IID_ADTF_MEDIA_TYPE_DESCRIPTION_EXT, (tVoid**)&m_pTypeDesc));?
+		cObjectPtr<IMediaType> pCanInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_CAN);
+		RETURN_IF_FAILED(m_oCanInput.Create("can", pCanInput, this));
+		RETURN_IF_FAILED(RegisterPin(&m_oCanInput));
 		
-		?cMediaType* $pTypeName$;
-		$pTypeName$ = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_$TYPE$, $more parameters$);
-		RETURN_IF_POINTER_NULL($pTypeName$);
-		RETURN_IF_FAILED($m_oPin.Create("$type$", $pTypeName$, this, $more parameters$));
-		RETURN_IF_FAILED(Register?Trigger?Pin(&$m_oPin));
-		?
+		cObjectPtr<IMediaType> pCategorizationInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_CATEGORIZATION);
+		RETURN_IF_FAILED(m_oCategorizationInput.Create("categorization", pCategorizationInput, this));
+		RETURN_IF_FAILED(RegisterPin(&m_oCategorizationInput));
+		
+		cObjectPtr<IMediaType> pAbstractTargetsInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_ABSTRACTTARGETS);
+		RETURN_IF_FAILED(m_oAbstractTargetsInput.Create("abstractTargets", pAbstractTargetsInput, this));
+		RETURN_IF_FAILED(RegisterPin(&m_oAbstractTargetsInput));
+		
+		cObjectPtr<IMediaType> pConcreteTargetsInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_CONCRETETARGETS);
+		RETURN_IF_FAILED(m_oConcreteTargetsInput.Create("concreteTargets", pConcreteTargetsInput, this));
+		RETURN_IF_FAILED(RegisterPin(&m_oConcreteTargetsInput));
+		
 	}
 	else if (eStage == StageNormal)
 	{
@@ -81,7 +77,7 @@ tResult cDadasFunctionalCorrectnessOracleFilter::Start(__exception)
 	{
 		m_oTimeout.Start();
 	}
-		
+	
 	RETURN_IF_FAILED(cConditionTriggeredFilter::Start(__exception_ptr));
 	
 	RETURN_NOERROR;
@@ -100,9 +96,25 @@ tResult cDadasFunctionalCorrectnessOracleFilter::Stop(__exception)
 
 tResult cDadasFunctionalCorrectnessOracleFilter::Shutdown(tInitStage eStage, __exception)
 {
-	if (StageGraphReady == eStage)
+	switch (eStage)
 	{
-		m_oTimeout.Release();
+	case StageFirst:
+		{
+			m_oTimeout.Release();
+			break;
+		}
+	case StageNormal:
+		{
+			break;
+		}
+	case StageGraphReady:
+		{
+			break;
+		}
+	default:
+		{
+			break;
+		}
 	}
 	
 	return cConditionTriggeredFilter::Shutdown(eStage, __exception_ptr);
@@ -117,7 +129,6 @@ tResult cDadasFunctionalCorrectnessOracleFilter::Run(tInt nActivationCode,
 	
 	if (adtf::cKernelTimeout::RUN_TIMEOUT == nActivationCode)
 	{
-		clear buffers and/or queues
 		
 		LOG_WARNING("Timeout");
 		// restart our timeout
@@ -127,7 +138,6 @@ tResult cDadasFunctionalCorrectnessOracleFilter::Run(tInt nActivationCode,
 	RETURN_NOERROR;
 }
 
-//Only triggers on the both targetpoints but not on the categorisation -> the catergorisation is got from the additional queue
 tResult cDadasFunctionalCorrectnessOracleFilter::OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception)
 {
 	// reset our timeout
@@ -138,71 +148,75 @@ tResult cDadasFunctionalCorrectnessOracleFilter::OnTrigger(adtf::IPin* pSource, 
 	
 	tTimeStamp nTriggerTime = pSample->GetTime();
 	
-	//Get Categorisation Sample
-	cObjectPtr<IMediaSample> pCategorisationSample;
-	
-	
-	if(pCategorisationQueue) {
-		pCategorisationQueue->Get(&pCategorisationSample,
+	//Get Can Sample
+	cObjectPtr<IMediaSample> pCanSample;
+	ISampleQueue* pCanQueue = GetQueue(&m_oCanInput);
+	if(pCanQueue) {
+		pCanQueue->Get(&pCanSample,
 			nTriggerTime,
 			1000000,
-			adtf::ISampleQueue::SQG_GetNearest); //Thinking that the categorisation is send first before the targets
+			adtf::ISampleQueue::SQG_GetNearest);
 	}
-	RETURN_IF_POINTER_NULL(pCategorisationSample);
+	RETURN_IF_POINTER_NULL(pCanSample);
 	
-	?//Get Concrete Targets Sample
+	//Get Categorization Sample
+	cObjectPtr<IMediaSample> pCategorizationSample;
+	ISampleQueue* pCategorizationQueue = GetQueue(&m_oCategorizationInput);
+	if(pCategorizationQueue) {
+		pCategorizationQueue->Get(&pCategorizationSample,
+			nTriggerTime,
+			1000000,
+			adtf::ISampleQueue::SQG_GetNearest);
+	}
+	RETURN_IF_POINTER_NULL(pCategorizationSample);
+	
+	//Get AbstractTargets Sample
+	cObjectPtr<IMediaSample> pAbstractTargetsSample;
+	ISampleQueue* pAbstractTargetsQueue = GetQueue(&m_oAbstractTargetsInput);
+	if(pAbstractTargetsQueue) {
+		pAbstractTargetsQueue->Get(&pAbstractTargetsSample,
+			nTriggerTime,
+			1000000,
+			adtf::ISampleQueue::SQG_GetNearest);
+	}
+	RETURN_IF_POINTER_NULL(pAbstractTargetsSample);
+	
+	//Get ConcreteTargets Sample
 	cObjectPtr<IMediaSample> pConcreteTargetsSample;
 	ISampleQueue* pConcreteTargetsQueue = GetQueue(&m_oConcreteTargetsInput);
 	if(pConcreteTargetsQueue) {
 		pConcreteTargetsQueue->Get(&pConcreteTargetsSample,
 			nTriggerTime,
 			1000000,
-			adtf::ISampleQueue::SQG_GetNearest); 
+			adtf::ISampleQueue::SQG_GetNearest);
 	}
 	RETURN_IF_POINTER_NULL(pConcreteTargetsSample);
-	?
 	
-	?//Get Abstract Targets Sample
-	cObjectPtr<IMediaSample> pAbstrTargetsSample;
-	ISampleQueue* pAbstrTargetsQueue = GetQueue(&m_oAbstractTargetsInput);
-	if(pAbstrTargetsQueue) {
-		pAbstrTargetsQueue->Get(&pAbstrTargetsSample,
-			nTriggerTime,
-			1000000,
-			adtf::ISampleQueue::SQG_GetNearest); 
-	}
-	RETURN_IF_POINTER_NULL(pAbstrTargetsSample);
-	?
 	
 	//Lock Sample
 	kernelMutex.Enter();
 	
-	//Get Categorisation
-	DADAS::tCategorisation pCategorisationData;
-	
-		?RETURN_IF_FAILED(?DADAS::HELPER::DeserializeFromSample(pCategorisationSample,pCategorisationData)?)?;
-	
-		?//Get Abstract Targets
-		vector<DADAS::tAbstractTarget> pAbstrTargetsData;
-		
-		RETURN_IF_FAILED(DADAS::HELPER::DeserializeFromSample(pAbstrTargetsSample,pAbstrTargetsData));?
-	
-		?//Get Concrete Targets
-		vector<DADAS::tAbstractTarget> pConcreteTargetsData;?
-	
-		?RETURN_IF_FAILED(?DADAS::HELPER::DeserializeFromSample(pConcreteTargetsSample,pConcreteTargetsData)?)?;
-	
+	tBool evaluationResult = Evaluate(&pCanSample, &pCategorizationSample);
 	
 	kernelMutex.Leave();
 	
+	TransmitEvaluationResult(&evaluationResult);
+	
 	RETURN_NOERROR;
+}
+
+tBool cDadasFunctionalCorrectnessOracleFilter::Evaluate(IMediaSample* pCanSample, IMediaSample* pCategorizationSample)
+{
+}
+
+tResult cDadasFunctionalCorrectnessOracleFilter::TransmitEvaluationResult(tBool* evaluationResult)
+{
 }
 
 void cDadasFunctionalCorrectnessOracleFilter::LOG(cString mes)
 {		
 	if(debugOpt) {
 		LOG_INFO(mes);
-		//OutputDebugStringWrapper(mes+"\n");
 	}
 }
 

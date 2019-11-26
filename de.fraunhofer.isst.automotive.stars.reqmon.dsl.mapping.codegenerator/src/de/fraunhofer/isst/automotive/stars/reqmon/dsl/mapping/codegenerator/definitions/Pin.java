@@ -9,12 +9,15 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.def
 public class Pin {
 	
 	private String pinName;
+	private String pinObjectPointerName;
 	private boolean isInputPin;
 	private boolean isOutputPin;
 	private String mediaType;
 	private String mediaSubType;
 	private String pinObjectName;
 	private String pinObjectType;
+	private String samplePointerName;
+	private String sampleQueueName;
 	
 	private boolean isPointerTest;
 	private boolean isInterface;
@@ -24,8 +27,69 @@ public class Pin {
 	private String createParameters;
 	private String mediaTypeDescription;
 	
+	private boolean isCoderDesc;
+	private String coderDescName;
+	
 	
 	private boolean isTrigger;
+	
+	/**
+	 * Creates a new Pin with the given parameters. Attention: some parameters can only set with setter methods.
+	 * @param name the name of the pin.
+	 * @param isInput true if the pin is an input pin otherwise false (then it is an output pin).
+	 * @param coderDescName name of the corresponding decoder description.
+	 */
+	public Pin(String name, boolean isInput, String coderDescName) {
+		if (name != null && name.length() >= 1) {
+			this.pinName = "m_o" + firstUpper(name);
+		}
+		else {
+			name = "data";
+			this.pinName = "m_oData";
+		}
+		if (isInput) {
+			pinName = pinName + "Input";
+		}
+		else {
+			pinName = pinName + "Output";
+		}
+		if (coderDescName != null && coderDescName.length() >= 1) {
+			this.coderDescName = "m_p" + firstUpper(coderDescName);
+			this.isCoderDesc = true;
+		}
+		else {
+			this.isCoderDesc = false;
+		}
+		this.pinObjectPointerName = pinName.replaceFirst("m_o", "p");
+		this.pinObjectType = "t" + name.substring(0, 1).toUpperCase() + name.substring(1);
+		this.samplePointerName = "p" + firstUpper(name) + "Sample";
+		this.sampleQueueName = "p" + firstUpper(name) + "Queue";
+		this.isInputPin = isInput;
+		this.isOutputPin = !isInput;
+		this.mediaType = "MEDIATYPE_DADAS";
+		this.mediaSubType = "MEDIASUBTYPE_DADAS" + "_" + name.toUpperCase();
+		this.pinObjectName = name;
+		this.isTrigger = false;
+		
+		this.isPointerTest = false;
+		this.isInterface = false;
+		this.isOwnQueue = false;
+		this.isNearestOlderInQueue = false;
+		this.createParameters = "";
+	}
+	
+	/**
+	 * Creates a new Pin with the given parameters. Attention: some parameters can only set with setter methods.
+	 * @param name the name of the pin.
+	 * @param isInput true if the pin is an input pin otherwise false (then it is an output pin).
+	 */
+	public Pin(String name, boolean isInput) {
+		this(name,isInput, "");
+	}
+	
+	private String firstUpper(String name) {
+		return name.substring(0, 1).toUpperCase() + name.substring(1);
+	}
 
 	/**
 	 * Creates a new Pin with the given parameters. Attention: some parameters can only set with setter methods.
@@ -200,6 +264,45 @@ public class Pin {
 
 	public void setNearestOlderInQueue(boolean isNearestOlderInQueue) {
 		this.isNearestOlderInQueue = isNearestOlderInQueue;
+	}
+
+	public String getPinObjectPointerName() {
+		return pinObjectPointerName;
+	}
+
+	public void setPinObjectPointerName(String pinObjectPointerName) {
+		this.pinObjectPointerName = pinObjectPointerName;
+	}
+
+	public String getSamplePointerName() {
+		return samplePointerName;
+	}
+
+	public void setSamplePointerName(String samplePointerName) {
+		this.samplePointerName = samplePointerName;
+	}
+
+	public String getSampleQueueName() {
+		return sampleQueueName;
+	}
+
+	public void setSampleQueueName(String sampleQueueName) {
+		this.sampleQueueName = sampleQueueName;
+	}
+
+	public boolean isCoderDesc() {
+		return isCoderDesc;
+	}
+
+	public String getCoderDescName() {
+		return coderDescName;
+	}
+
+	public void setCoderDescName(String coderDescName) {
+		this.coderDescName = coderDescName;
+		if (coderDescName != null && coderDescName.length() >= 1) {
+			this.isCoderDesc = true;
+		}
 	}
 
 	

@@ -36,65 +36,56 @@ public class FilterGenerator implements IGenerator {
 	private List<String> files;
 	private String filePath;
 	private IFileSystemAccess2 fsa;
-	
+	private FileDirectoryCreator creator;
 
 	@Override
-	public void generate(IMappingModel model) {
+	public void generate(IMappingModel model, String projectName) {
 		System.out.println("FilterGenerator called!");
-		
-		setup();
-		
 		AbstractModelInformationHelper infoHelper = new ModelInformationHelperImpl(model);
+		setup(projectName);
 		
 		System.out.println("\n\nGenerated content:\n");
 		
 		// generate filter header and cpp code
-		FilterHeaderTemplate filterHeaderTemp = new FilterHeaderTemplate();
-		filterHeaderTemp.setModelInformationHepler(infoHelper);
-		FilterCppTemplate filterCppTemp = new FilterCppTemplate();
-		filterCppTemp.setModelInformationHepler(infoHelper);
-		//StandardAndTypesTemplate stdTypesTemp = new StandardAndTypesTemplate();
+		FilterHeaderTemplate filterHeaderTemp = new FilterHeaderTemplate(infoHelper);
+		FilterCppTemplate filterCppTemp = new FilterCppTemplate(infoHelper);
+		StandardAndTypesTemplate stdTypesTemp = new StandardAndTypesTemplate(infoHelper);
 		ExampleCHeaderTemplate exampleTemp = new ExampleCHeaderTemplate();
+		
 		SystemDataTypesTemplate sysDataTemp = new SystemDataTypesTemplate();
-		RequirementDataTypesTemplate reqDataTemp = new RequirementDataTypesTemplate();
-		reqDataTemp.setModelInformationHelper(infoHelper);
+		RequirementDataTypesTemplate reqDataTemp = new RequirementDataTypesTemplate(infoHelper);
 		
-		//generateAndAddToContentList(filterHeaderTemp.generateTemplate(""));
-		//generateAndAddToContentList(filterCppTemp.generateTemplate(""));
-		
-		//generateAndAddToContentList(stdTypesTemp.generateTypesTemplate());
-		//generateAndAddToContentList(stdTypesTemp.generateStdTemplate());
+		generateFile(stdTypesTemp.generateTypesTemplate(), "dtypes");
+		generateFile(stdTypesTemp.generateStdTemplate(), "stdafx");
 		
 		generateAndAddToContentList(exampleTemp.generateExampleTemplate(model));
-		generateAndAddToContentList(sysDataTemp.generateTemplate(model));
-		generateAndAddToContentList(reqDataTemp.generateTemplate());
+		generateFile(sysDataTemp.generateTemplate(model), "system_types");
+		generateFile(reqDataTemp.generateTemplate(), "requirement_types");
 		
-		generateAndAddToContentList(filterHeaderTemp.generateTemplate(FilterType.ABSTRACT_FUNCTION));
-		generateAndAddToContentList(filterCppTemp.generateTemplate(FilterType.ABSTRACT_FUNCTION));
-		generateAndAddToContentList(filterHeaderTemp.generateTemplate(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE));
-		generateAndAddToContentList(filterCppTemp.generateTemplate(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE));
-		generateAndAddToContentList(filterHeaderTemp.generateTemplate(FilterType.SCENE_ABSTRACTION));
-		generateAndAddToContentList(filterCppTemp.generateTemplate(FilterType.SCENE_ABSTRACTION));
-		
+		generateFile(filterHeaderTemp.generateTemplate(FilterType.ABSTRACT_FUNCTION), FilterType.ABSTRACT_FUNCTION);
+		generateFile(filterCppTemp.generateTemplate(FilterType.ABSTRACT_FUNCTION), FilterType.ABSTRACT_FUNCTION);
+		generateFile(filterHeaderTemp.generateTemplate(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE), FilterType.FUNCTIONAL_CORRECTNESS_ORACLE);
+		generateFile(filterCppTemp.generateTemplate(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE), FilterType.FUNCTIONAL_CORRECTNESS_ORACLE);
+		generateFile(filterHeaderTemp.generateTemplate(FilterType.SCENE_ABSTRACTION), FilterType.SCENE_ABSTRACTION);
+		generateFile(filterCppTemp.generateTemplate(FilterType.SCENE_ABSTRACTION), FilterType.SCENE_ABSTRACTION);
 		
 		// write in files
 		write();
 	}
 	
-	private void setup() {
+	private void setup(String projectName) {
 		// setup
 		filePath = "../stars/de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator/filter-gen/";
 		fsa = new InMemoryFileSystemAccess();
+		
 		contentList = new ArrayList<String>();
 		files = new ArrayList<String>();
-		//files.add("mapped-filter.h");
-		//files.add("mapped-filter.cpp");
 		
 		//files.add("dtypes.h");
 		//files.add("stdafx.h");
 		
 		files.add("mapped.h");
-		files.add("system-types.h");
+		/*files.add("system-types.h");
 		files.add("requirement_types.h");
 		
 		files.add("abstract_function_filter.h");
@@ -102,10 +93,13 @@ public class FilterGenerator implements IGenerator {
 		files.add("functional_correctness_oracle_filter.h");
 		files.add("functional_correctness_oracle_filter.cpp");
 		files.add("scene_abstraction_filter.h");
-		files.add("scene_abstraction_filter.cpp");
+		files.add("scene_abstraction_filter.cpp");*/
 		
 		//files.add("test_coverage_monitor_filter.h");
 		//files.add("test_coverage_monitor_filter.cpp");
+		
+		creator = new FileDirectoryCreator(projectName);
+		creator.createFileStructure();
 	}
 	
 	/**
@@ -132,6 +126,22 @@ public class FilterGenerator implements IGenerator {
 			//System.out.print("\n\nFile value:\n\n" + file.getValue());
 			String text = file.getValue().toString();
 			contentList.add(text);
+		}
+	}
+	
+	private void generateFile(CharSequence generated, FilterType type) {
+		fsa.generateFile("", generated);
+		for (Entry<String, CharSequence> file : ((InMemoryFileSystemAccess) fsa).getTextFiles().entrySet()) {
+			String text = file.getValue().toString();
+			creator.writeInFolder(type, text);
+		}
+	}
+	
+	private void generateFile(CharSequence generated, String name) {
+		fsa.generateFile("", generated);
+		for (Entry<String, CharSequence> file : ((InMemoryFileSystemAccess) fsa).getTextFiles().entrySet()) {
+			String text = file.getValue().toString();
+			creator.writeInFolder(name, text);
 		}
 	}
 	
@@ -164,11 +174,9 @@ public class FilterGenerator implements IGenerator {
 	}
 
 	public void generate(AbstractModelInformationHelper infoHelper) {
-		// generate filter header and cpp code
-		FilterHeaderTemplate filterHeaderTemp = new FilterHeaderTemplate();
-		FilterCppTemplate filterCppTemp = new FilterCppTemplate();
-		filterHeaderTemp.setModelInformationHepler(infoHelper);
-		filterCppTemp.setModelInformationHepler(infoHelper);
+		FilterHeaderTemplate filterHeaderTemp = new FilterHeaderTemplate(infoHelper);
+		FilterCppTemplate filterCppTemp = new FilterCppTemplate(infoHelper);
+		StandardAndTypesTemplate stdTypesTemp = new StandardAndTypesTemplate(infoHelper);
 		
 		generateAndAddToContentList(filterHeaderTemp.generateTemplate(FilterType.ABSTRACT_FUNCTION));
 		generateAndAddToContentList(filterCppTemp.generateTemplate(FilterType.ABSTRACT_FUNCTION));
@@ -176,6 +184,8 @@ public class FilterGenerator implements IGenerator {
 		generateAndAddToContentList(filterCppTemp.generateTemplate(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE));
 		generateAndAddToContentList(filterHeaderTemp.generateTemplate(FilterType.SCENE_ABSTRACTION));
 		generateAndAddToContentList(filterCppTemp.generateTemplate(FilterType.SCENE_ABSTRACTION));
+		
+		generateAndAddToContentList(stdTypesTemp.generateTypesTemplate());
 		
 		// write in files
 		write();

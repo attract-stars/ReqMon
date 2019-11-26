@@ -1,12 +1,15 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates
 
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.RequirementType
 import java.util.List
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.AbstractModelInformationHelper
 
 class RequirementDataTypesTemplate {
 	
 	AbstractModelInformationHelper helper
+	
+	new(AbstractModelInformationHelper helper) {
+		this.helper = helper
+	}
 	
 	def CharSequence generateTemplate() '''
 	#ifndef «includeGardsBegin»
@@ -39,7 +42,7 @@ class RequirementDataTypesTemplate {
 	'''
 	
 	def private getReqInheritance(String obj) {
-		val inheritances = helper.getInheritance(obj)
+		val inheritances = helper.getReqInheritance(obj)
 		if(!inheritances.empty) {
 			inheritances.getInheritances
 		}

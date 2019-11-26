@@ -44,7 +44,7 @@ public class MappingTestModel implements IMappingModel {
 	}
 
 	@Override
-	public void setRequirementList(List<IRequirementElement> requirementList) {
+	public void setRequirementList(List<? extends IRequirementElement> requirementList) {
 		// TODO Auto-generated method stub
 		
 	}

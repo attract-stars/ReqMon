@@ -1,4 +1,4 @@
-#define OID_DADAS_ABSTRACT_FUNCTION "$oid_string$"
+#define OID_DADAS_ABSTRACT_FUNCTION "de.fraunhofer.isst.automotive.stars.reqmon.dsl.data.monitoring.abstract.function"
 
 
 class cDadasAbstractFunctionFilter : public cConditionTriggeredFilter
@@ -19,13 +19,13 @@ class cDadasAbstractFunctionFilter : public cConditionTriggeredFilter
 		
 	private: // private functions
 		
-	public: // overwrites cFilter
+	public: // overwrites cConditionTriggeredFilter
 		tResult Init(tInitStage eStage, __exception = NULL);
 		tResult Start(__exception);
 		tResult Stop(__exception);
 		tResult Shutdown(tInitStage eStage, __exception);
 		
-	public: // overrides cFilter //implements IRunnable
+	public: // overrides cConditionTriggeredFilter //implements IRunnable
 		tResult Run(tInt nActivationCode,
 			const tVoid* pvUserData,
 			tInt szUserDataSize,
@@ -33,6 +33,8 @@ class cDadasAbstractFunctionFilter : public cConditionTriggeredFilter
 		
 	protected: 
 		tResult OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception = NULL);
+		tBool Evaluate(IMediaSample* pCategorizationSample, IMediaSample* pConcreteTargetsSample);
+		tResult TransmitEvaluationResult(tBool* evaluationResult);
 		void LOG(cString mes);
 };
 

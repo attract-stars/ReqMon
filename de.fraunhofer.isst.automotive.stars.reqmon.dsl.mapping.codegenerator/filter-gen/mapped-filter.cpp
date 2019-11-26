@@ -1,122 +1,41 @@
-#include "dadas_monitoring_types.h"
-#include "dadas_mediatypes.h"
-#include "serializationhelper.h"
+�filtertype.includes�
 
-$more includes$
+�datatypeSettings�
 
-tBool debugOpt = tFalse;
+ADTF_FILTER_PLUGIN("�filterName�", OID_DADAS_�oidName�, �className�)
 
-ADTF_FILTER_PLUGIN("$filter_name$", OID_DADAS_$oid_name$, $class_name$)
-
-$class_name$::$class_name$(const tChar* __info) : $value settings$
+�className�::�className�(const tChar* __info) : �filtertype.memberValueSetting�
 {
+	�filtertype.constructor�
 }
 
-$class_name$::~$class_name$()
+�className�::~�className�()
 {
+	�filtertype.destructor�
 }
 
-tResult $class_name$::Init(tInitStage eStage, __exception)
+tResult �className�::Init(tInitStage eStage, __exception)
 {
-	$init_implementation$
+	�filtertype.init�
 }
 
-tResult $class_name$::Start(__exception)
+tResult �className�::Start(__exception)
 {
-	$start_implementation$
+	�filtertype.start�
 }
 
-tResult $class_name$::Stop(__exception)
+tResult �className�::Stop(__exception)
 {
-	$stop_implementation$
+	�filtertype.stop�
 }
 
-tResult $class_name$::Shutdown(tInitStage eStage, __exception)
+tResult �className�::Shutdown(tInitStage eStage, __exception)
 {
-	$shutdown_implementation$
+	�filtertype.shutdown�
 }
 
-$public_methods_implementation$
+�filtertype.publicMethods�
 
-//Only triggers on the both targetpoints but not on the categorisation -> the catergorisation is got from the additional queue
-tResult $class_name$::OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception) {
-	// reset our timeout
-	if (m_bTimeout)
-	{
-		m_oTimeout.Start();
-	}
-	
-	tTimeStamp nTriggerTime = pSample->GetTime();
-	
-	//Get Categorisation Sample
-	cObjectPtr<IMediaSample> pCategorisationSample;
-	
-	$more actions$
-	
-	if(pCategorisationQueue) {
-		pCategorisationQueue->Get(&pCategorisationSample,
-			nTriggerTime,
-			1000000,
-			adtf::ISampleQueue::SQG_GetNearest); //Thinking that the categorisation is send first before the targets
-	}
-	RETURN_IF_POINTER_NULL(pCategorisationSample);
-	
-	?//Get Concrete Targets Sample
-	cObjectPtr<IMediaSample> pConcreteTargetsSample;
-	ISampleQueue* pConcreteTargetsQueue = GetQueue(&m_oConcreteTargetsInput);
-	if(pConcreteTargetsQueue) {
-		pConcreteTargetsQueue->Get(&pConcreteTargetsSample,
-			nTriggerTime,
-			1000000,
-			adtf::ISampleQueue::SQG_GetNearest); 
-	}
-	RETURN_IF_POINTER_NULL(pConcreteTargetsSample);
-	?
-	
-	?//Get Abstract Targets Sample
-	cObjectPtr<IMediaSample> pAbstrTargetsSample;
-	ISampleQueue* pAbstrTargetsQueue = GetQueue(&m_oAbstractTargetsInput);
-	if(pAbstrTargetsQueue) {
-		pAbstrTargetsQueue->Get(&pAbstrTargetsSample,
-			nTriggerTime,
-			1000000,
-			adtf::ISampleQueue::SQG_GetNearest); 
-	}
-	RETURN_IF_POINTER_NULL(pAbstrTargetsSample);
-	?
-	
-	//Lock Sample
-	kernelMutex.Enter();
-	
-	//Get Categorisation
-	DADAS::tCategorisation pCategorisationData;
-	
-		?RETURN_IF_FAILED(?DADAS::HELPER::DeserializeFromSample(pCategorisationSample,pCategorisationData)?)?;
-	
-		?//Get Abstract Targets
-		vector<DADAS::tAbstractTarget> pAbstrTargetsData;
-		
-		RETURN_IF_FAILED(DADAS::HELPER::DeserializeFromSample(pAbstrTargetsSample,pAbstrTargetsData));?
-	
-		?//Get Concrete Targets
-		vector<DADAS::tAbstractTarget> pConcreteTargetsData;?
-	
-		?RETURN_IF_FAILED(?DADAS::HELPER::DeserializeFromSample(pConcreteTargetsSample,pConcreteTargetsData)?)?;
-	
-	$more actions$
-	
-	kernelMutex.Leave();
-	
-	RETURN_NOERROR;
-}
+�protectedMethods�
 
-void $class_name$::LOG(cString mes) {		
-	if(debugOpt) {
-		LOG_INFO(mes);
-		//OutputDebugStringWrapper(mes+"\n");
-	}
-}
-
-$more protected methods$
-
-$private_methods_implementation$
+�privateMethods�
