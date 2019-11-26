@@ -16,27 +16,31 @@ Requirement:
 
 RequirementText:
 //	 ExistencePreface actors=Actors ','?   relativeClause=relativeClause  ','?  |
-    (condClauses+=ConditionalClause ','? 'then' )?  (mainclauses=MainClause) (','? condClauses+=ConditionalClause)?
+    (condClauses+=ConditionalClause ','? 'then' )?  (mainclauses=MainClause | existClause=ExistenceClause) (','? condClauses+=ConditionalClause)?
     //If mainclause is the second part then 'then' has to be added. IF maincluase is first part then 'then' is not necessary
+    
 ;
 
 /* =========== Clauses =========== */
 
 ConditionalClause:
-	ordinator=ClauseOrdinator clauses=Clauses
+	ordinator=ClauseOrdinator (exist=ExistenceSentence | clauses=Clauses)
 ;
 
 MainClause:
 	modifier=Modifier? clauses+=Clauses //(conjunction+=Conjunction clauses+=MainClause)*
 ;
 
+ExistenceClause:
+	modifier+=Modifier? exist+=ExistenceSentence (',' conjunction+=Conjunction modifier+=Modifier? (exist+=ExistenceSentence | clause+=Clause))*
+;
 
 Clauses:
 	clauses+= Clause (conjunction+=Conjunction clauses+=Clause)*	
 ;
 
 Clause:
-	ModalitySentence |  PredicateSentence | ExistenceSentence | PropertySentence
+	ModalitySentence |  PredicateSentence | PropertySentence //| ExistenceSentence 
 ;
 
 
@@ -47,7 +51,7 @@ ModalitySentence :
 
 PredicateSentence :
 	begin=SentenceBegin? actors=Actors  auxNeg=AuxNeg auxiliarVerb=AuxiliaryVerb? predicate=Predicate?  ending=SentenceEnding? |
-	begin=SentenceBegin? actors=Actors  predicate=Predicate  ending=SentenceEnding? 
+	begin=SentenceBegin? actors=Actors  predicate=Predicate  ending=SentenceEnding?
 	
 	//actors=Actors  (auxiliarVerb+=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
 	//actors=Actors  predicate=Predicate constraints+=Constraints* |	
@@ -57,7 +61,7 @@ PredicateSentence :
 
 ExistenceSentence :
 	//TODO WAS IST WENN REQUIREMENT NACHT RELATIVE CLAUSE ENDED?
-	Existence actors=Actors ','   relativeClause=RelativeClause  ','
+	Existence actors=Actors ','   relativeClause=RelativeClause
 ;
 
 PropertySentence:
@@ -85,9 +89,7 @@ SentenceBegin:
 SentenceEnding:
 	//TODO FEHLT HIER NICHT EINE Conjunction?!
 	//TODO SOLLTE nicht Relation in CONTRAINTS drin sein
-	const+=Constraints+ |
-	const+=Constraints* rela=Relation |
-	rela=Relation const+=Constraints+
+	(const+=Constraints+ | const+=Constraints* rela=Relation |rela=Relation const+=Constraints+)
 ;
 
 /* =========== RELATIVE CLAUSE =========== */
@@ -97,7 +99,8 @@ RelativeClause:
 	//TODO WARUM WIRD HIER DER CONTITIONAL CLAUSE RAUFGERUFEN UND NICHT IN EXISTING CLAUSE
 	//TODO Sollte hier nicht die conjunction weg sein? Alla: ... which is done if ...
 //  pronoun=RelativePronouns actors=Actors? modelity=Modality? negation?=Negation? predicate=Predicate constraints+=Constraints*
-	sentence=RelativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*	
+//	sentence=RelativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*
+	sentence+=RelativeSentence (conjunction+=Conjunction sentence+=RelativeSentence)*	
 ;
 RelativeSentence :
 	pronoun=RelativePronounsSubject modelity=Modality negation?=Negation? predicate=Predicate  constraints+=Constraints*  |
