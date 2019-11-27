@@ -12,6 +12,8 @@ class RequirementDataTypesTemplate {
 	}
 	
 	def CharSequence generateTemplate() '''
+	«helper.getComment»
+	
 	#ifndef «includeGardsBegin»
 	#define «includeGardsBegin»
 		

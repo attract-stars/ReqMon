@@ -19,5 +19,9 @@ public interface IMappingModel {
 	public EObject getSystemModel();
 	
 	public void setSystemModel(EObject systemModel);
+	
+	public String getProjectName();
+	
+	public void setProjectName(String projectName);
 
 }

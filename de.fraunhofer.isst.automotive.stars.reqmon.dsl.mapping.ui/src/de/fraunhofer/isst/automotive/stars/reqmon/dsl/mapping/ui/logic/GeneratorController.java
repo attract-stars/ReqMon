@@ -175,7 +175,7 @@ public class GeneratorController {
 	 * Executes the generator which name is selected in the Combo.
 	 * @param resource the resource of the mapping input
 	 */
-	public void executeSelectedGenerator(MappingModel model, String projectName) {
+	public void executeSelectedGenerator(MappingModel model) {
 		if (!isRegistry) {
 			return;
 		}
@@ -184,7 +184,7 @@ public class GeneratorController {
 			for (IConfigurationElement e : configGen) {
 				final Object o = e.createExecutableExtension("class");
 				if (o instanceof IGenerator && name.contains(e.getAttribute("name"))) {
-					executeGenerator(o, model, projectName);
+					executeGenerator(o, model);
 					break;
 				}
 			}
@@ -245,11 +245,11 @@ public class GeneratorController {
 	 * @param o an Object of the type of an IGenerator
 	 * @param resource the resource of the mapping input 
 	 */
-	private void executeGenerator(Object o, MappingModel model, String projectName) {
+	private void executeGenerator(Object o, MappingModel model) {
 		Job job = new Job("Execute Generator") { 
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
-					((IGenerator) o).generate(model, projectName);
+					((IGenerator) o).generate(model);
 				} 
 				catch (Exception ex) {
 					System.out.println("Exception in generator client:");

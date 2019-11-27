@@ -29,6 +29,8 @@ class FilterCppTemplate {
 	
 	val clas = helper.getClassName
 	'''
+	«helper.getComment»
+	
 	«includes»
 	
 	«datatypeSettings»

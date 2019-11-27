@@ -30,6 +30,8 @@ class FilterHeaderTemplate {
 	 */
 	private def getTemplate() {
 	'''
+	«helper.getComment»
+	
 	#define «helper.oidName» "«oidString»"
 	«moreDefines»
 	
@@ -70,7 +72,7 @@ class FilterHeaderTemplate {
 	'''
 	}
 	
-
+	
 	def private getOidString() '''«IF helper.getHeaderOidString !== null»«helper.getHeaderOidString»«ELSE»de.fraunhofer.isst.automotive.stars.reqmon.dsl.data.monitoring.«oidStringEnd»«ENDIF»'''
 	
 	def private getOidStringEnd() {

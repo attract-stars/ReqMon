@@ -12,8 +12,7 @@ public interface IGenerator {
 	/**
 	 * Generates code based on the informations of the given model.
 	 * @param model all informations that can be used for the code generation
-	 * @param projectName the name of the mapping project
 	 */
-	public void generate(IMappingModel model, String projectName); 
+	public void generate(IMappingModel model); 
 
 }

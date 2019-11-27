@@ -15,6 +15,8 @@ class StandardAndTypesTemplate {
 	}
 	
 	def CharSequence generateStdTemplate() '''
+	«helper.getComment»
+	
 	#ifndef __STD_INCLUDES_HEADER
 	#define __STD_INCLUDES_HEADER
 	
@@ -38,6 +40,8 @@ class StandardAndTypesTemplate {
 	'''
 	
 	def CharSequence generateTypesTemplate() '''
+	«helper.getComment»
+	
 	#ifndef __TYPES_HEADER_
 	#define __TYPES_HEADER_
 	
