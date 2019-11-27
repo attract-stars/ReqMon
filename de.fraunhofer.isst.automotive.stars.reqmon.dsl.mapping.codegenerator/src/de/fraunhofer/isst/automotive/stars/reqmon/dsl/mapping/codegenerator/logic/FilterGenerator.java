@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.InMemoryFileSystemAccess;
 
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.CMakeListsTemplate;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.ExampleCHeaderTemplate;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.FilterCppTemplate;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.templates.FilterHeaderTemplate;
@@ -51,12 +52,18 @@ public class FilterGenerator implements IGenerator {
 		FilterCppTemplate filterCppTemp = new FilterCppTemplate(infoHelper);
 		StandardAndTypesTemplate stdTypesTemp = new StandardAndTypesTemplate(infoHelper);
 		ExampleCHeaderTemplate exampleTemp = new ExampleCHeaderTemplate();
+		CMakeListsTemplate cMakeTemp = new CMakeListsTemplate();
 		
 		SystemDataTypesTemplate sysDataTemp = new SystemDataTypesTemplate();
 		RequirementDataTypesTemplate reqDataTemp = new RequirementDataTypesTemplate(infoHelper);
 		
 		generateFile(stdTypesTemp.generateTypesTemplate(), "dtypes");
 		generateFile(stdTypesTemp.generateStdTemplate(), "stdafx");
+		
+		generateFile(cMakeTemp.generateCMakeListForProject(), "CMakeLists", null);
+		generateFile(cMakeTemp.generateCMakeListForFilterFolder(FilterType.ABSTRACT_FUNCTION), "CMakeLists", FilterType.ABSTRACT_FUNCTION);
+		generateFile(cMakeTemp.generateCMakeListForFilterFolder(FilterType.FUNCTIONAL_CORRECTNESS_ORACLE), "CMakeLists", FilterType.FUNCTIONAL_CORRECTNESS_ORACLE);
+		generateFile(cMakeTemp.generateCMakeListForFilterFolder(FilterType.SCENE_ABSTRACTION), "CMakeLists", FilterType.SCENE_ABSTRACTION);
 		
 		generateAndAddToContentList(exampleTemp.generateExampleTemplate(model));
 		generateFile(sysDataTemp.generateTemplate(model), "system_types");
@@ -142,6 +149,14 @@ public class FilterGenerator implements IGenerator {
 		for (Entry<String, CharSequence> file : ((InMemoryFileSystemAccess) fsa).getTextFiles().entrySet()) {
 			String text = file.getValue().toString();
 			creator.writeInFolder(name, text);
+		}
+	}
+	
+	private void generateFile(CharSequence generated, String name, FilterType type) {
+		fsa.generateFile("", generated);
+		for (Entry<String, CharSequence> file : ((InMemoryFileSystemAccess) fsa).getTextFiles().entrySet()) {
+			String text = file.getValue().toString();
+			creator.writeCMakeListsInFolder(name, type, text);
 		}
 	}
 	

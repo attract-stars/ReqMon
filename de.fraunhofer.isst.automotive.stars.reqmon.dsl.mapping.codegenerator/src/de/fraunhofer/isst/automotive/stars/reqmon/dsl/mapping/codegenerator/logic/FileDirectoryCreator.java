@@ -149,6 +149,37 @@ public class FileDirectoryCreator {
 	}
 	
 	/**
+	 * Writes the given data type content into the file with the given name.
+	 * @param name the name of the data type file
+	 * @param type filter type
+	 * @param content the generated data types
+	 */
+	public void writeCMakeListsInFolder(String name, FilterType type, String content) {
+		String path = "";
+		if (type != null) {
+			path = rootPath + projectName + "/" + selectType(type) +  "/" + name + ".txt";
+		}
+		else {
+			path = rootPath + projectName + "/" + name + ".txt";
+		}
+		write(content,new File(path));
+	}
+	
+	private String selectType(FilterType type) {
+		switch(type) {
+		case ABSTRACT_FUNCTION:
+			return aff;
+		case FUNCTIONAL_CORRECTNESS_ORACLE:
+			return fcof;
+		case SCENE_ABSTRACTION:
+			return saf;
+		case TEST_COVERAGE_MONITOR:
+			return "";
+		default: return "";
+		}
+	}
+	
+	/**
 	 * Writes the given text into the given file.
 	 * @param text a text
 	 * @param file a file
