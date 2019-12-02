@@ -47,7 +47,6 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.ProposalC
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.RequirementController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.SerializationController;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.SystemController;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.MappingModel;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.SaveModel;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.ValidateEvent;
 
@@ -84,8 +83,7 @@ public class MappingPage implements Observer, ValidateListener {
 	private MappingEditorHelper editorHelper;
 	
 	private List<Resource> resourceList;
-	private MappingModel mappingModel;
-	
+		
 	/**
 	 * Injector for the mapping parser.
 	 */
@@ -175,7 +173,6 @@ public class MappingPage implements Observer, ValidateListener {
 		
 		// create resource list and model for the generators
 		this.resourceList = new ArrayList<Resource>();
-		this.mappingModel = new MappingModel();
 		
 		// set the editor name for serialization and deserialization 
 		SerializationController.getInstance().setFilename(editorName);
@@ -778,7 +775,7 @@ public class MappingPage implements Observer, ValidateListener {
 			embed.getViewer().addVerticalRulerColumn(lineNumberRulerColumn);
 			
 			resourceList.add(editorHelper.getResource());
-			mappingModel.setMappingResourceList(resourceList);
+			savedModel.setMappingResourceList(resourceList);
 
 			// Listen to text changes to set the dirty status
 			embed.getViewer().addTextListener(new ITextListener() {
@@ -938,17 +935,17 @@ public class MappingPage implements Observer, ValidateListener {
 			public void widgetSelected(SelectionEvent e) {
 				// add all available informations to the mapping model
 				if (sysCon.getSysModel() != null) {
-					mappingModel.setSystemModel(sysCon.getSysModel());
+					savedModel.setSystemModel(sysCon.getSysModel());
 				}
 				if (reqCon.getRequirements() != null) {
-					mappingModel.setRequirementList(reqCon.getRequirements());
+					savedModel.setRequirementList(reqCon.getRequirements());
 				}
 				else if (savedReqList != null) {
-					mappingModel.setRequirementList(savedReqList);
+					savedModel.setRequirementList(savedReqList);
 				}
 				
 				// execute the selected generator
-				genCon.executeSelectedGenerator(mappingModel, editorName);
+				genCon.executeSelectedGenerator(savedModel, editorName);
 			}
 		});
 		

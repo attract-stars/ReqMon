@@ -12,10 +12,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.emf.ecore.resource.Resource;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IGenerator;
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.model.MappingModel;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMappingModel;
 
 /**
  * This class manages the generator extensions. All registered generators want to be listed with their names in the Combo of the GUI.
@@ -175,7 +174,7 @@ public class GeneratorController {
 	 * Executes the generator which name is selected in the Combo.
 	 * @param resource the resource of the mapping input
 	 */
-	public void executeSelectedGenerator(MappingModel model, String projectName) {
+	public void executeSelectedGenerator(IMappingModel model, String projectName) {
 		if (!isRegistry) {
 			return;
 		}
@@ -245,7 +244,7 @@ public class GeneratorController {
 	 * @param o an Object of the type of an IGenerator
 	 * @param resource the resource of the mapping input 
 	 */
-	private void executeGenerator(Object o, MappingModel model, String projectName) {
+	private void executeGenerator(Object o, IMappingModel model, String projectName) {
 		Job job = new Job("Execute Generator") { 
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
