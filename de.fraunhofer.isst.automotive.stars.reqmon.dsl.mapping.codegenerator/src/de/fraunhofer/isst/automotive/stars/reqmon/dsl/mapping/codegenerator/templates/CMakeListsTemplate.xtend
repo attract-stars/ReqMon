@@ -9,9 +9,6 @@ class CMakeListsTemplate {
 	CMAKE_MINIMUM_REQUIRED( VERSION 2.8.4 FATAL_ERROR)
 	SET(CMAKE_USE_RELATIVE_PATHS true)
 	
-	#set(VW_HEADER_INC_DIR "/home/dadas/monitoring/include")
-	#message(STATUS "VW HEADER in ${VW_HEADER_INC_DIR}")
-	
 	#####################################################################
 	## Makro definitions for path handling
 	#####################################################################
@@ -105,12 +102,6 @@ class CMakeListsTemplate {
 	set(ENV{PATH} "$ENV{QTDIR}/bin:$ENV{PATH}")
 	set(ENV{LD_LIBRARY_PATH} "$ENV{QTDIR}/lib")
 	find_package(Qt 4.7.1 EXACT QUIET COMPONENTS QtCore QtGui QtOpenGL HINT $ENV{QTDIR})
-	#if(NOT QT_FOUND)
-	#    message(STATUS "-- Did not find native QT 4.7.1")
-	#    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/QT4")
-	#    find_package(Qt4 4.7.1 EXACT COMPONENTS QtCore QtGui QtOpenGL)
-	#    message(STATUS "-- Did ${QT_FOUND} find ADTF QT 4.7.1")
-	#endif()
 	
 	
 	#####################################################################
@@ -179,19 +170,15 @@ class CMakeListsTemplate {
 	## Global build options
 	#####################################################################
 	
-	option(BUILD_TESTENVIRONMENT		"Build complete environment: Test" true)
 	option(BUILD_MONITOR 				"Build complete environment: Monitor" true)
-	
-	###### Perception ######
-	if(BUILD_TESTENVIRONMENT)
-		message(STATUS "Build complete environment: Test")
-		add_subdirectory(ts)
-	endif(BUILD_TESTENVIRONMENT)
 	
 	###### Perception ######
 	if(BUILD_MONITOR)
 		message(STATUS "Build complete environment: Monitor")
-		add_subdirectory(rt)
+		add_subdirectory(abstract_function_filter)
+		add_subdirectory(functional_correctness_oracle_filter)
+		add_subdirectory(scene_abstraction_filter)
+		add_subdirectory(types)
 	endif(BUILD_MONITOR)
 	'''
 	
