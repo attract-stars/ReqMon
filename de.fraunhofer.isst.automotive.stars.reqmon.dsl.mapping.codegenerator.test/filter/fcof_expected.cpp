@@ -1,8 +1,8 @@
-#include dtypes.h
-#include stdafx.h
-#include requirement_types.h
-#include system-types.h
-#include function_correctness_oracle_filter.h
+#include "dtypes.h"
+#include "stdafx.h"
+#include "requirement_types.h"
+#include "system_types.h"
+#include "functional_correctness_oracle_filter.h"
 
 tBool debugOpt = tFalse;
 
@@ -13,7 +13,7 @@ cDadasFunctionalCorrectnessOracleFilter::cDadasFunctionalCorrectnessOracleFilter
 {
 	kernelMutex.Create();
 	
-	SetPropertyInt("timeout", $timeout_value$);
+	SetPropertyInt("timeout", 500000000);
 	SetPropertyStr("timeout" NSSUBPROP_DESCRIPTION,
 		"Demo timeout that will issue a warning when no trigger has occurred "
 		"in the specified amount of time (microseconds). 0 disables the timeout.");
@@ -31,19 +31,19 @@ tResult cDadasFunctionalCorrectnessOracleFilter::Init(tInitStage eStage, __excep
 	
 	if (eStage == StageFirst)
 	{
-		cObjectPtr<IMediaType> pCanInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_CAN);
+		cObjectPtr<IMediaType> pCanInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_CAN);
 		RETURN_IF_FAILED(m_oCanInput.Create("can", pCanInput, this));
 		RETURN_IF_FAILED(RegisterPin(&m_oCanInput));
 		
-		cObjectPtr<IMediaType> pCategorizationInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_CATEGORIZATION);
+		cObjectPtr<IMediaType> pCategorizationInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_CATEGORIZATION);
 		RETURN_IF_FAILED(m_oCategorizationInput.Create("categorization", pCategorizationInput, this));
 		RETURN_IF_FAILED(RegisterPin(&m_oCategorizationInput));
 		
-		cObjectPtr<IMediaType> pAbstractTargetsInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_ABSTRACTTARGETS);
+		cObjectPtr<IMediaType> pAbstractTargetsInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_ABSTRACT_TARGETS);
 		RETURN_IF_FAILED(m_oAbstractTargetsInput.Create("abstractTargets", pAbstractTargetsInput, this));
 		RETURN_IF_FAILED(RegisterPin(&m_oAbstractTargetsInput));
 		
-		cObjectPtr<IMediaType> pConcreteTargetsInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_CONCRETETARGETS);
+		cObjectPtr<IMediaType> pConcreteTargetsInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_CONCRETE_TARGETS);
 		RETURN_IF_FAILED(m_oConcreteTargetsInput.Create("concreteTargets", pConcreteTargetsInput, this));
 		RETURN_IF_FAILED(RegisterPin(&m_oConcreteTargetsInput));
 		
@@ -196,7 +196,7 @@ tResult cDadasFunctionalCorrectnessOracleFilter::OnTrigger(adtf::IPin* pSource, 
 	//Lock Sample
 	kernelMutex.Enter();
 	
-	tBool evaluationResult = Evaluate(&pCanSample, &pCategorizationSample);
+	tBool evaluationResult = Evaluate(pCanSample, pCategorizationSample);
 	
 	kernelMutex.Leave();
 	
@@ -207,10 +207,12 @@ tResult cDadasFunctionalCorrectnessOracleFilter::OnTrigger(adtf::IPin* pSource, 
 
 tBool cDadasFunctionalCorrectnessOracleFilter::Evaluate(IMediaSample* pCanSample, IMediaSample* pCategorizationSample)
 {
+	return false;
 }
 
 tResult cDadasFunctionalCorrectnessOracleFilter::TransmitEvaluationResult(tBool* evaluationResult)
 {
+	RETURN_NOERROR;
 }
 
 void cDadasFunctionalCorrectnessOracleFilter::LOG(cString mes)

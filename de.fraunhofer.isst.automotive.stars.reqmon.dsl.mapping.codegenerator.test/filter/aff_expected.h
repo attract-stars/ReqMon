@@ -9,8 +9,12 @@ class cDadasAbstractFunctionFilter : public cConditionTriggeredFilter
 		cInputPin m_oCategorizationInput;
 		cInputPin m_oConcreteTargetsInput;
 		
+		cOutputPin m_oTargetsOutput;
 		
 		
+		cKernelMutex kernelMutex;
+		cKernelTimeout m_oTimeout;
+		tBool m_bTimeout;
 		
 	public:
 		cDadasAbstractFunctionFilter(const tChar* __info);

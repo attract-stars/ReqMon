@@ -13,6 +13,9 @@ class cDadasFunctionalCorrectnessOracleFilter : public cConditionTriggeredFilter
 		
 		
 		
+		cKernelMutex kernelMutex;
+		cKernelTimeout m_oTimeout;
+		tBool m_bTimeout;
 		
 	public:
 		cDadasFunctionalCorrectnessOracleFilter(const tChar* __info);

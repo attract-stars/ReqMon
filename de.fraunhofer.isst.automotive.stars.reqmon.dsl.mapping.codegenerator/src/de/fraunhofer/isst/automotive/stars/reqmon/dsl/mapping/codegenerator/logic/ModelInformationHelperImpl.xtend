@@ -93,12 +93,12 @@ class ModelInformationHelperImpl extends AbstractModelInformationHelper {
 		switch(filter) {
 			case ABSTRACT_FUNCTION: {
 				list.add("categorization")
-				list.add("concreteTargets")}
+				list.add("concrete targets")}
 			case FUNCTIONAL_CORRECTNESS_ORACLE: {
 				list.add("can")
 				list.add("categorization")
-				list.add("abstractTargets")
-				list.add("concreteTargets")}
+				list.add("abstract targets")
+				list.add("concrete targets")}
 			case SCENE_ABSTRACTION: {
 				for (name : messageNames) {
 					list.add(name)
@@ -114,7 +114,7 @@ class ModelInformationHelperImpl extends AbstractModelInformationHelper {
 		val list = new ArrayList
 		switch(filter) {
 		case ABSTRACT_FUNCTION: 
-			{list.add("targetsOutput")}
+			{list.add("targets")}
 		case FUNCTIONAL_CORRECTNESS_ORACLE:
 			{}
 		case SCENE_ABSTRACTION:
@@ -131,7 +131,10 @@ class ModelInformationHelperImpl extends AbstractModelInformationHelper {
 	//---- Methods for the Filters -----------------------
 	
 	override getTemplateEvaluateContent() {
-		return ''''''
+		return 
+	'''
+	return false;
+	'''
 	}
 	
 	override isDebugOpt() {
@@ -171,8 +174,8 @@ class ModelInformationHelperImpl extends AbstractModelInformationHelper {
 			}
 		}
 		if (isEnum) {
-			enumTypes.set(0, "e" + obj.toFirstUpper + "Type")
-			array.add("e" + obj.toFirstUpper + "Type")
+			enumTypes.set(0, "eReq" + obj.toFirstUpper + "Type")
+			array.add("eReq" + obj.toFirstUpper + "Type")
 		}
 		enums.add(enumTypes)
 		return array
@@ -240,7 +243,8 @@ class ModelInformationHelperImpl extends AbstractModelInformationHelper {
 		mediaSubTypes.add("CATEGORIZATION 0x0030");
 		mediaSubTypes.add("ABSTRACT_TARGETS 0x0040");
 		mediaSubTypes.add("CONCRETE_TARGETS 0x0050");
-		mediaSubTypes.add("CAN 0x0060");
+		mediaSubTypes.add("TARGETS 0x0060");
+		mediaSubTypes.add("CAN 0x0070");
 	}
 	
 	def private List<MessageNode> getMessages() {

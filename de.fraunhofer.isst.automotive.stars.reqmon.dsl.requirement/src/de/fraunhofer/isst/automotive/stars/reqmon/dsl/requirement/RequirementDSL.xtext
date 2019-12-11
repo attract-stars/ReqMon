@@ -16,27 +16,31 @@ Requirement:
 
 RequirementText:
 //	 ExistencePreface actors=Actors ','?   relativeClause=relativeClause  ','?  |
-    (condClauses+=ConditionalClause ','? 'then' )?  (mainclauses=MainClause) (','? condClauses+=ConditionalClause)?
+    (condClauses+=ConditionalClause ','? 'then' )?  (mainclauses=MainClause | existClause=ExistenceClause) (','? condClauses+=ConditionalClause)?
     //If mainclause is the second part then 'then' has to be added. IF maincluase is first part then 'then' is not necessary
+    
 ;
 
 /* =========== Clauses =========== */
 
 ConditionalClause:
-	ordinator=ClauseOrdinator clauses=Clauses
+	ordinator=ClauseOrdinator (exist=ExistenceSentence | clauses=Clauses)
+;
+
+ExistenceClause:
+	modifier+=Modifier? exist+=ExistenceSentence (',' conjunction+=Conjunction modifier+=Modifier? (exist+=ExistenceSentence | clause+=Clause))*
 ;
 
 MainClause:
 	modifier=Modifier? clauses+=Clauses //(conjunction+=Conjunction clauses+=MainClause)*
 ;
 
-
 Clauses:
-	clauses+= Clause (conjunction+=Conjunction clauses+=Clause)*	
+	clauses+= Clause  (conjunction+=Conjunction clauses+=Clause)*
 ;
 
 Clause:
-	ModalitySentence |  PredicateSentence | ExistenceSentence | PropertySentence
+	ModalitySentence |  PredicateSentence | PropertySentence //| ExistenceSentence 
 ;
 
 
@@ -47,7 +51,7 @@ ModalitySentence :
 
 PredicateSentence :
 	begin=SentenceBegin? actors=Actors  auxNeg=AuxNeg auxiliarVerb=AuxiliaryVerb? predicate=Predicate?  ending=SentenceEnding? |
-	begin=SentenceBegin? actors=Actors  predicate=Predicate  ending=SentenceEnding? 
+	begin=SentenceBegin? actors=Actors  predicate=Predicate  ending=SentenceEnding?
 	
 	//actors=Actors  (auxiliarVerb+=WORD negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
 	//actors=Actors  predicate=Predicate constraints+=Constraints* |	
@@ -56,17 +60,15 @@ PredicateSentence :
 ;
 
 ExistenceSentence :
-	//TODO WAS IST WENN REQUIREMENT NACHT RELATIVE CLAUSE ENDED?
-	Existence actors=Actors ','   relativeClause=RelativeClause  ','
+	Existence actors=Actors ','   relativeClause=RelativeClause
 ;
 
+
 PropertySentence:
-	//TODO Warum haben wir hier constraints im ODER und nohcmal im SentenceEnding
-	//TODO SOLLTE RELATION MIT IN ACTOR PROPERTIES?
 //	(actors=Actors| properties=Properties) rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predObj=PredOrObject  ending=SentenceEnding? |
 //	(actors=Actors| properties=Properties) rela=Relation? auxNeg=AuxNeg (predObj=PredOrObject | constraints=Constraints) ending=SentenceEnding?
-	properties=ActorProperties rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  ending=SentenceEnding? |
-	properties=ActorProperties rela=Relation? auxNeg=AuxNeg (predicate=Predicate | constraints=Constraints) ending=SentenceEnding?
+	properties=ActorProperties modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  ending=SentenceEnding? |
+	properties=ActorProperties auxNeg=AuxNeg predicate=Predicate? ending=SentenceEnding?
 	
 	//property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predicate=Predicate  constraints+=Constraints* |
 	//property=Property modelity=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb object=PredicateObject?  constraints+=Constraints* |
@@ -75,29 +77,26 @@ PropertySentence:
 ;
 
 ActorProperties:
-	property+=ObjectProperty (conjunction+=Conjunction property+=ObjectProperty)* 
+	property+=ObjectProperty rela+=Relation? (conjunction+=Conjunction property+=ObjectProperty rela+=Relation?)* 
 ;
+
 
 SentenceBegin:
 	(rela=Relation ',')
 ;
 
 SentenceEnding:
-	//TODO FEHLT HIER NICHT EINE Conjunction?!
-	//TODO SOLLTE nicht Relation in CONTRAINTS drin sein
-	const+=Constraints+ |
-	const+=Constraints* rela=Relation |
-	rela=Relation const+=Constraints+
+	//SOLLTE nicht Relation in CONTRAINTS drin sein -> seems not to work
+	(const+=Constraints+ | const+=Constraints* rela=Relation |rela=Relation const+=Constraints+)
 ;
 
 /* =========== RELATIVE CLAUSE =========== */
 
 
 RelativeClause:
-	//TODO WARUM WIRD HIER DER CONTITIONAL CLAUSE RAUFGERUFEN UND NICHT IN EXISTING CLAUSE
-	//TODO Sollte hier nicht die conjunction weg sein? Alla: ... which is done if ...
 //  pronoun=RelativePronouns actors=Actors? modelity=Modality? negation?=Negation? predicate=Predicate constraints+=Constraints*
-	sentence=RelativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*	
+//	sentence=RelativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*
+	sentence+=RelativeSentence (conjunction+=Conjunction sentence+=RelativeSentence)*	
 ;
 RelativeSentence :
 	pronoun=RelativePronounsSubject modelity=Modality negation?=Negation? predicate=Predicate  constraints+=Constraints*  |
@@ -171,7 +170,7 @@ Property:
 /* =========== CONSTRAINTS =========== */
 
 Constraints:
-	timeConstraint=TimeConstraint | constraint=Constraint
+	(timeConstraint+=TimeConstraint | constraint+=Constraint) (conjunction+= Conjunction (timeConstraint+=TimeConstraint | constraint+=Constraint))*
 ;
 
 Constraint:
@@ -255,9 +254,8 @@ terminal STRING:
 
 terminal WS_HYPHEN : ' - '; 
 
-//TODO hier müsste auch ' ohne s hin für Wörter die auf 's' enden 
 terminal PROPERTY_TERM returns ecore::EBoolean:
-	'\'s' |	'`s' | '´s'
+	'\'s' |	'`s' | '´s' | '\'' | '`' | '´'
 ;
 /* =========== BASIC SYNTAX =========== */
 
@@ -316,17 +314,17 @@ AuxiliaryVerbNegation:
 	'doesn\'t' | 'don\'t' | 'isn\'t' | 'aren\'t')
 ;
 
-enum Modality:
-	  SHALL = 'shall' | SHOULD = 'should' | WILL = 'will' | WOULD='would' | CAN='can' | COULD='could' | MUST='must'
+Modality:
+	 ('shall' | 'should' | 'will' | 'would' | 'can' | 'could' | 'must')
 ;
 
-enum Modifier:
-	GLOBALLY='Globally' | GLOBALLY_L='globally' | ALWAYS='Always' | ALWAYS_L='always' | SOMETIMES='Sometimes' | SOMETIMES_L='sometimes' | EVENTUALLY='Eventually' | EVENTUALLY_L='eventually'
+Modifier:
+	('Globally' | 'globally' | 'Always' | 'always' | 'Sometimes' | 'sometimes' | 'Eventually' | 'eventually')
 ;
 
-enum ClauseOrdinator:
-	IF_L='if' | AFTER_L='after' | ONCE_L='once' | WHEN_L='when' | WHENEVER_L='whenever' | WHILE_L='while' | BEFORE_L='before' | UNTIL_L='until' |
-	IF='If' | AFTER='After' | ONCE='Once' | WHEN='When' | WHENEVER='Whenever' | WHILE='While' | BEFORE='Before' | UNTIL='Until'
+ClauseOrdinator:
+	('if' | 'after' | 'once' | 'when' | 'whenever' | 'while' | 'before' | 'until' |
+	'If' | 'After' | 'Once' | 'When' | 'Whenever' | 'While' | 'Before' | 'Until')
 ;
 
 Articles:

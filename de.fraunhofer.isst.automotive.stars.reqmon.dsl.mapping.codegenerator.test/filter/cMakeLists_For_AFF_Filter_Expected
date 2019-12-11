@@ -1,0 +1,27 @@
+SET(_FILTER_VERS_ 1.0)
+SET(_FILTER_NAME_ Abstract_Function_Filter)
+
+
+PROJECT(${_FILTER_NAME_})
+
+SET(_FILTER_HEADERS_
+	"abstract_function_filter.h"
+	"stdafx.h"
+	"dtypes.h"
+	"system_types.h"
+	"requirement_types.h"
+	)
+
+SET(_FILTER_SOURCES_
+	"abstract_function_filter.cpp"
+	)
+
+# Specify the filter module target
+adtf_add_filter(${_FILTER_NAME_} ${_FILTER_HEADERS_} ${_FILTER_SOURCES_})
+
+# Specify where it should be installed to
+adtf_install_plugin(${_FILTER_NAME_} bin)
+
+get_filename_component(PARENT_DIR ${CMAKE_CURRENT_SOURCE_DIR} PATH)
+FILE(RELATIVE_PATH SOLUTION_FOLDER_DIR ${CMAKE_SOURCE_DIR} ${PARENT_DIR})
+
