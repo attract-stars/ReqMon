@@ -493,16 +493,6 @@ class RequirementDSLProposalProvider extends AbstractRequirementDSLProposalProvi
 		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
 	}
 	
-	override void complete_SentenceBegin(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-		super.complete_SentenceBegin(model, ruleCall, context, acceptor)
-		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
-	}
-	
-	override void complete_SentenceEnding(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-		super.complete_SentenceEnding(model, ruleCall, context, acceptor)
-		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
-	}
-	
 	override complete_RelativeClause(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
 		super.complete_RelativeClause(model, ruleCall, context, acceptor)
 		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)

@@ -1,5 +1,7 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions;
 
+import java.util.regex.Pattern;
+
 /**
  * This class saves all informations that are needed to create and handle an adtf pin in the filter templates.
  * 
@@ -41,7 +43,7 @@ public class Pin {
 	 */
 	public Pin(String name, boolean isInput, String coderDescName) {
 		if (name != null && name.length() >= 1) {
-			this.pinName = "m_o" + firstUpper(name);
+			this.pinName = "m_o" + firstUpper(changeName(name));
 		}
 		else {
 			name = "data";
@@ -61,14 +63,14 @@ public class Pin {
 			this.isCoderDesc = false;
 		}
 		this.pinObjectPointerName = pinName.replaceFirst("m_o", "p");
-		this.pinObjectType = "t" + name.substring(0, 1).toUpperCase() + name.substring(1);
-		this.samplePointerName = "p" + firstUpper(name) + "Sample";
-		this.sampleQueueName = "p" + firstUpper(name) + "Queue";
+		this.pinObjectType = "t" + firstUpper(changeName(name));
+		this.samplePointerName = "p" + firstUpper(changeName(name)) + "Sample";
+		this.sampleQueueName = "p" + firstUpper(changeName(name)) + "Queue";
 		this.isInputPin = isInput;
 		this.isOutputPin = !isInput;
-		this.mediaType = "MEDIATYPE_DADAS";
-		this.mediaSubType = "MEDIASUBTYPE_DADAS" + "_" + name.toUpperCase();
-		this.pinObjectName = name;
+		this.mediaType = "MEDIATYPE_DADAS";		
+		this.mediaSubType = "MEDIASUBTYPE_" + name.replace(' ', '_').toUpperCase();
+		this.pinObjectName = changeName(name);
 		this.isTrigger = false;
 		
 		this.isPointerTest = false;
@@ -89,6 +91,28 @@ public class Pin {
 	
 	private String firstUpper(String name) {
 		return name.substring(0, 1).toUpperCase() + name.substring(1);
+	}
+	
+	/**
+	 * If the name contains to words, it returns one word: "two words" gets to "twoWords"
+	 * @param name
+	 * @return
+	 */
+	private String changeName(String name) {
+		String conv = "";
+		String[] split = name.split(Pattern.quote(" "));
+		if (split.length > 1) {
+			conv = split[0];
+			for(int i = 1; i < split.length; i++) {
+				conv += firstUpper(split[i]);
+			}
+		}
+		if (conv.length() > 1) {
+			return conv;
+		}
+		else {
+			return name;
+		}
 	}
 
 	/**

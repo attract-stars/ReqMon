@@ -77,6 +77,7 @@ class RequirementDSLParsingTest {
 		 * Req 5: ConditionalClause, then MainClause, ConditionalClause
 		 * Req 6: MainClause ConditionalClause
 		 * Req 7: MainClause ConditionalClause
+		 * Req 8: ConditionalClause, then ExistenceClause
 		 */ 
 		testSequence('''
 			Req 1: When x x then x x.
@@ -86,6 +87,8 @@ class RequirementDSLParsingTest {
 			Req 5: When x x, then x x, if x x.
 			Req 6: x x if x x.
 			Req 7: x x, if x x.
+			
+			Req 8: If x x, then there exist x, who must x.
 			
 			Req: When the precondition is correct then the test must be successful.
 			Req: When the precondition is correct, then the test must be successful.
@@ -102,6 +105,8 @@ class RequirementDSLParsingTest {
 		 * 
 		 * Req 1: ClauseOrdinator Clauses MainClause
 		 * Req 2: MainClause ClauseOrdinator Clauses
+		 * Req 3: ClauseOrdinator ExistenceClause MainClause
+		 * Req 3: MainClause ClauseOrdinator ExistenceClause 
 		 */ 
 		testSequence('''
 			Req 1: If x x then x x.
@@ -120,6 +125,9 @@ class RequirementDSLParsingTest {
 			Req 2: x x while x x.
 			Req 2: x x before x x.
 			Req 2: x x until x x.
+			
+			Req 3: If there exist x, who must x then x x.
+			Req 3: x x if there exist x, who must x.
 			
 			Req: The test must be successful If the precondition is correct.
 			Req: The test must be successful if the precondition is correct.
@@ -167,6 +175,35 @@ class RequirementDSLParsingTest {
 			Req: Eventually the test must be successful.
 			Req: eventually the test must be successful.
 			
+		''')
+		
+		/*
+		 * Test of the ExistenceClause rule
+		 * modifier+=Modifier? exist+=ExistenceSentence (',' conjunction+=Conjunction modifier+=Modifier? (exist+=ExistenceSentence | clause+=Clause))*
+		 * Req 1: ExistenceSentence.
+		 * Req 2: Modifier ExistenceSentence.
+		 * Req 3: ExistenceSentence, Conjunction ExistenceSentence.
+		 * Req 3: Modifier ExistenceSentence, Conjunction ExistenceSentence.
+		 * Req 4: ExistenceSentence, Conjunction Modifier ExistenceSentence.
+		 * Req 4: Modifier ExistenceSentence, Conjunction Modifier ExistenceSentence.
+		 * Req 5: ExistenceSentence, Conjunction Clause.
+		 * Req 5: Modifier ExistenceSentence, Conjunction Clause.
+		 * Req 5: ExistenceSentence, Conjunction Modifier Clause.
+		 * Req 5: Modifier ExistenceSentence, Conjunction Modifier Clause.
+		 * Req 6: Modifier ExistenceSentence, Conjunction Modifier Clause, Conjunction Modifier ExistenceSentence.
+		 */
+		testSequence('''
+			Req 1: There exist x, who must x.
+			Req 2: Always there exist x, who must x.
+			Req 3: There exist x, who must x, and there exist x, who must x.
+			Req 3: Sometimes there exist x, who must x, and there exist x, who must x.
+			Req 4: There exist x, who must x, and globally there exist x, who must x.
+			Req 4: Sometimes there exist x, who must x, and globally there exist x, who must x.
+			Req 5: There exist x, who must x, and x x.
+			Req 5: Sometimes there exist x, who must x, and x x.
+			Req 5: There exist x, who must x, and globally x x.
+			Req 5: Sometimes there exist x, who must x, and globally x x.
+			Req 6: Sometimes there exist x, who must x or who shall x, and globally x x, or eventually there exist x, who shall x.
 		''')
 		
 		/*
@@ -305,47 +342,43 @@ class RequirementDSLParsingTest {
 		/*
 		 * Test of the ExistenceSentence rule
 		 * 
-		 * Req 1: ExistencePreface Actors, relativeClause,
-		 * Req 2: ExistencePreface Actors, relativeClause, Conjunction MainClause
-		 * Req 3: MainClause Conjunction ExistencePreface Actors, relativeClause, Conjunction MainClause
+		 * Req 1: ExistencePreface Actors, relativeClause.
+		 * Req 2: ExistencePreface Actors, relativeClause, Conjunction MainClause.
 		 */
 		testSequence('''
-			Req 1: There exist x, who must x,.
-			Req 1: There exists x, who must x,.
+			Req 1: There exist x, who must x.
+			Req 1: There exists x, who must x.
 			Req 2: There exist x, who must x, and x x.
-			Req 2: There exists x, who must x, and x x.
-			Req 3: x x and there exist x, who must x, and x x.
-			Req 3: x x and there exists x, who must x, and x x.
-			
+			Req 2: There exists x, who must x, and x x.	
 		''')
 		
 		/*
 		 * Test of the PropertySentence rule
 		 * 
-		 * Req 1: Actors Property Modality PredOrObject
-		 * Req 2: Actors Property Relation Modality PredOrObject
-		 * Req 3: Actors Property Modality Negation PredOrObject
-		 * Req 4: Actors Property Relation Modality Negation PredOrObject
-		 * Req 5: Actors Property Modality AuxiliaryVerb PredOrObject
-		 * Req 6: Actors Property Relation Modality AuxiliaryVerb PredOrObject
-		 * Req 7: Actors Property Modality Negation AuxiliaryVerb PredOrObject
-		 * Req 8: Actors Property Relation Modality Negation AuxiliaryVerb PredOrObject
-		 * Req 9: Actors Property Modality PredOrObject SentenceEnding
-		 * Req 10: Actors Property Relation Modality PredOrObject SentenceEnding
-		 * Req 11: Actors Property Modality Negation PredOrObject SentenceEnding
-		 * Req 12: Actors Property Relation Modality Negation PredOrObject SentenceEnding
-		 * Req 13: Actors Property Modality AuxiliaryVerb PredOrObject SentenceEnding
-		 * Req 14: Actors Property Relation Modality AuxiliaryVerb PredOrObject SentenceEnding
-		 * Req 15: Actors Property Modality Negation AuxiliaryVerb PredOrObject SentenceEnding
-		 * Req 16: Actors Property Relation Modality Negation AuxiliaryVerb PredOrObject SentenceEnding
-		 * Req 17: Actors Property AuxNeg PredOrObject
-		 * Req 18: Actors Property AuxNeg Constraints
-		 * Req 19: Actors Property Relation AuxNeg PredOrObject
-		 * Req 20: Actors Property Relation AuxNeg constraints
-		 * Req 21: Actors Property AuxNeg PredOrObject SentenceEnding
-		 * Req 22: Actors Property AuxNeg Constraints SentenceEnding
-		 * Req 23: Actors Property Relation AuxNeg PredOrObject SentenceEnding
-		 * Req 24: Actors Property Relation AuxNeg constraints SentenceEnding
+		 * Req 1: ActorProperties Modality PredOrObject
+		 * Req 2: ActorProperties Relation Modality PredOrObject
+		 * Req 3: ActorProperties Modality Negation PredOrObject
+		 * Req 4: ActorProperties Relation Modality Negation PredOrObject
+		 * Req 5: ActorProperties Modality AuxiliaryVerb PredOrObject
+		 * Req 6: ActorProperties Relation Modality AuxiliaryVerb PredOrObject
+		 * Req 7: ActorProperties Modality Negation AuxiliaryVerb PredOrObject
+		 * Req 8: ActorProperties Relation Modality Negation AuxiliaryVerb PredOrObject
+		 * Req 9: ActorProperties Modality PredOrObject SentenceEnding
+		 * Req 10: ActorProperties Relation Modality PredOrObject SentenceEnding
+		 * Req 11: ActorProperties Modality Negation PredOrObject SentenceEnding
+		 * Req 12: ActorProperties Relation Modality Negation PredOrObject SentenceEnding
+		 * Req 13: ActorProperties Modality AuxiliaryVerb PredOrObject SentenceEnding
+		 * Req 14: ActorProperties Relation Modality AuxiliaryVerb PredOrObject SentenceEnding
+		 * Req 15: ActorProperties Modality Negation AuxiliaryVerb PredOrObject SentenceEnding
+		 * Req 16: ActorProperties Relation Modality Negation AuxiliaryVerb PredOrObject SentenceEnding
+		 * Req 17: ActorProperties AuxNeg PredOrObject
+		 * Req 18: ActorProperties AuxNeg Constraints
+		 * Req 19: ActorProperties Relation AuxNeg PredOrObject
+		 * Req 20: ActorProperties Relation AuxNeg constraints
+		 * Req 21: ActorProperties AuxNeg PredOrObject SentenceEnding
+		 * Req 22: ActorProperties AuxNeg Constraints SentenceEnding
+		 * Req 23: ActorProperties Relation AuxNeg PredOrObject SentenceEnding
+		 * Req 24: ActorProperties Relation AuxNeg constraints SentenceEnding
 		 */ 
 		testSequence('''
 			Req 1: x's x shall x.
@@ -378,11 +411,17 @@ class RequirementDSLParsingTest {
 		/*
 		 * Test of the relativeClause rule
 		 * 
-		 * Req 1: ExistencePreface Actors, relativeSentence Conjunction ConditionalClause,
+		 * Req 1: ExistencePreface Actors, relativeSentence.
+		 * Req 2: ExistencePreface Actors, relativeSentence Conjunction relativeSentence.
+		 * Req 3: ExistencePreface Actors, relativeSentence, ConditionalClause.
+		 * Req 3: ExistencePreface Actors, relativeSentence Conjunction relativeSentence, ConditionalClause.
 		 */ 
 		testSequence('''
-			Req 1: There exists x, who must x and when x x,.
-			Req 1: There exists x, who must x or when x x,.
+			Req 1: There exists x, who must x.
+			Req 2: There exists x, who must x or who must x.
+			Req 3: There exists x, who must x, if x x.
+			Req 3: There exists x, who must x if x x.
+			Req 3: There exists x, who must x or who must x, when x x.
 			
 		''')
 		
@@ -401,23 +440,23 @@ class RequirementDSLParsingTest {
 		 * Req 10: ExistencePreface Actors, RelativePronounsObject PredicateSentence,
 		 */ 
 		testSequence('''
-			Req 1: There exists x, which must x,.
-			Req 1: There exists x, who must x,.
-			Req 1: There exists x, that must x,.
-			Req 2: There exists x, which must not x,.
-			Req 3: There exists x, who must x in x,.
-			Req 4: There exists x, that must not x in x,.
-			Req 5: There exists x, which x,.
-			Req 6: There exists x, who is not x,.
-			Req 7: There exists x, that x in x,.
-			Req 8: There exists x, who are not x in x,.
-			Req 9: There exists x, whose x must x,.
-			Req 9: There exists x, whom x must x,.
-			Req 10: There exists x, whose x x,.
-			Req 11: There exists x, whom x x,.
-			Req 12: There exists x, who be not x,.
-			Req 13: There exists x, who does not x,.
-			Req 14: There exists x, who has not x,.
+			Req 1: There exists x, which must x.
+			Req 1: There exists x, who must x.
+			Req 1: There exists x, that must x.
+			Req 2: There exists x, which must not x.
+			Req 3: There exists x, who must x in x.
+			Req 4: There exists x, that must not x in x.
+			Req 5: There exists x, which x.
+			Req 6: There exists x, who is not x.
+			Req 7: There exists x, that x in x.
+			Req 8: There exists x, who are not x in x.
+			Req 9: There exists x, whose x must x.
+			Req 9: There exists x, whom x must x.
+			Req 10: There exists x, whose x x.
+			Req 11: There exists x, whom x x.
+			Req 12: There exists x, who be not x.
+			Req 13: There exists x, who does not x.
+			Req 14: There exists x, who has not x.
 			
 		''')
 		
@@ -512,6 +551,25 @@ class RequirementDSLParsingTest {
 		''')
 		
 		/*
+		 * Test of the ActorProperties rule
+		 * property+=ObjectProperty rela+=Relation? (conjunction+=Conjunction property+=ObjectProperty rela+=Relation?)* 
+		 * Req 1: ObjectProperty 
+		 * Req 2: ObjectProperty Relation
+		 * Req 3: ObjectProperty Conjunction ObjectProperty
+		 * Req 3: ObjectProperty Relation Conjunction ObjectProperty
+		 * Req 4: ObjectProperty Conjunction ObjectProperty Relation
+		 * Req 4: ObjectProperty Relation Conjunction ObjectProperty Relation
+		 */ 
+		testSequence('''
+			Req 1: x´s x must x.
+			Req 2: x´s x in relation to x must x.
+			Req 3: x´s x and x´s x must x.
+			Req 3: x´s x in relation to x or x´s x must x.
+			Req 4: x´s x and x´s x in relation to x must x.
+			Req 4: x´s x in relation to x or x´s x in relation to x must x.
+		''')
+		
+		/*
 		 * Test of the Property rule
 		 * 
 		 * Req 1: Actors PROPERTY_TERM WORD WORD Modality Predicate
@@ -519,7 +577,13 @@ class RequirementDSLParsingTest {
 		 */ 
 		testSequence('''
 			Req 1: x´s x x must x.
+			Req 1: x´ x x must x.
+			Req 1: x' x x must x.
+			Req 1: x`x x must x.
 			Req 2: x´s "x" must x.
+			Req 2: x´ "x" must x.
+			Req 2: x' "x" must x.
+			Req 2: x`"x" must x.
 			//Req 2: x´s 'x' must x.
 			
 		''')
@@ -531,7 +595,6 @@ class RequirementDSLParsingTest {
 		 * Req 2: Actors Predicate Constraints Relation
 		 * Req 3: Actors Predicate Constraints Constraints Relation
 		 * Req 4: Actors Predicate Relation
-		 * Req 5: Actors Predicate Relation Constraints
 		 * Req 6: Actors Predicate Relation Constraints Constraints
 		 */ 
 		testSequence('''
@@ -539,7 +602,6 @@ class RequirementDSLParsingTest {
 			Req 2: x x in x in relation to x.
 			Req 3: x x in x to x in relation to x.
 			Req 4: x x in relation to x.
-			Req 5: x x in relation to x in x.
 			Req 6: x x in relation to x in x to x.
 			
 		''')
@@ -601,21 +663,21 @@ class RequirementDSLParsingTest {
 		/*
 		 * Test of the ExistencePreface rule
 		 * 
-		 * Req 1: 'There' 'exist' Actors, relativeClause,
-		 * Req 2: 'there' 'exist' Actors, relativeClause,
-		 * Req 3: 'There' 'exists' Actors, relativeClause,
-		 * Req 4: 'there' 'exists' Actors, relativeClause,
-		 * Req 5: 'T/there' Modifier 'exist/s' Actors, relativeClause,
+		 * Req 1: 'There' 'exist' Actors, relativeClause
+		 * Req 2: 'there' 'exist' Actors, relativeClause
+		 * Req 3: 'There' 'exists' Actors, relativeClause
+		 * Req 4: 'there' 'exists' Actors, relativeClause
+		 * Req 5: 'T/there' Modifier 'exist/s' Actors, relativeClause
 		 */ 
 		testSequence('''
-			Req 1: There exist x, who x,.
-			Req 2: there exist x, who x,.
-			Req 3: There exists x, who x,.
-			Req 4: there exists x, who x,.
-			Req 5: There always exist x, who x,.
-			Req 5: there always exist x, who x,.
-			Req 5: There always exists x, who x,.
-			Req 5: there always exists x, who x,.
+			Req 1: There exist x, who x.
+			Req 2: there exist x, who x.
+			Req 3: There exists x, who x.
+			Req 4: there exists x, who x.
+			Req 5: There always exist x, who x.
+			Req 5: there always exist x, who x.
+			Req 5: There always exists x, who x.
+			Req 5: there always exists x, who x.
 			
 		''')
 		
@@ -674,6 +736,22 @@ class RequirementDSLParsingTest {
 			Req 6: x x in relation to x´s x and to x´s x.
 			Req 6: x x in relation to x´s x or to x´s x.
 			Req 7: x x in relation to x and to x or to x.
+			
+		''')
+		
+		/*
+		 * Test of the Constraints rule
+		 * 
+		 * Req 1: ObjectConstraint and ObjectConstraint
+		 * Req 2: UnitConstraints and ObjectConstraint
+		 * Req 3: SetConstraint and ObjectConstraint
+		 * Req 3: TimeConstraint and ObjectConstraint
+		 */ 
+		testSequence('''
+			Req 1: x x in x and in x.
+			Req 2: x x in 1.0 and in x.
+			Req 3: x x in {x} and in x.
+			Req 4: x x in 1 sec and in x to x.
 			
 		''')
 		

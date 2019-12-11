@@ -20,8 +20,10 @@ class cDadasSceneAbstractionFilter : public cConditionTriggeredFilter
 		
 		cOutputPin m_oCategorizationOutput;
 		
-		cObjectPtr<IMediaTypeDescription> m_pCoderDesc;
 		
+		cKernelMutex kernelMutex;
+		cKernelTimeout m_oTimeout;
+		tBool m_bTimeout;
 		
 	public:
 		cDadasSceneAbstractionFilter(const tChar* __info);
@@ -44,7 +46,7 @@ class cDadasSceneAbstractionFilter : public cConditionTriggeredFilter
 		
 	protected: 
 		tResult OnTrigger(adtf::IPin* pSource, adtf::IMediaSample* pSample, __exception = NULL);
-		tCategorization Evaluate(IMediaSample* pSceneSample, IMediaSample* pTimeSample);
+		tCategorization* Evaluate(IMediaSample* pSceneSample, IMediaSample* pTimeSample);
 		tResult TransmitEvaluationResult(tCategorization* evaluationResult);
 		void LOG(cString mes);
 };

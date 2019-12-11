@@ -7,11 +7,11 @@
 * 
 */
 
-#include dtypes.h
-#include stdafx.h
-#include requirement_types.h
-#include system-types.h
-#include abstract_function_filter.h
+#include "dtypes.h"
+#include "stdafx.h"
+#include "requirement_types.h"
+#include "system_types.h"
+#include "abstract_function_filter.h"
 
 tBool debugOpt = tFalse;
 
@@ -22,7 +22,7 @@ cDadasAbstractFunctionFilter::cDadasAbstractFunctionFilter(const tChar* __info) 
 {
 	kernelMutex.Create();
 	
-	SetPropertyInt("timeout", $timeout_value$);
+	SetPropertyInt("timeout", 500000000);
 	SetPropertyStr("timeout" NSSUBPROP_DESCRIPTION,
 		"Demo timeout that will issue a warning when no trigger has occurred "
 		"in the specified amount of time (microseconds). 0 disables the timeout.");
@@ -40,13 +40,17 @@ tResult cDadasAbstractFunctionFilter::Init(tInitStage eStage, __exception)
 	
 	if (eStage == StageFirst)
 	{
-		cObjectPtr<IMediaType> pCategorizationInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_CATEGORIZATION);
+		cObjectPtr<IMediaType> pCategorizationInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_CATEGORIZATION);
 		RETURN_IF_FAILED(m_oCategorizationInput.Create("categorization", pCategorizationInput, this));
 		RETURN_IF_FAILED(RegisterPin(&m_oCategorizationInput));
 		
-		cObjectPtr<IMediaType> pConcreteTargetsInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_DADAS_CONCRETETARGETS);
+		cObjectPtr<IMediaType> pConcreteTargetsInput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_CONCRETE_TARGETS);
 		RETURN_IF_FAILED(m_oConcreteTargetsInput.Create("concreteTargets", pConcreteTargetsInput, this));
 		RETURN_IF_FAILED(RegisterPin(&m_oConcreteTargetsInput));
+		
+		cObjectPtr<IMediaType> pTargetsOutput = new cMediaType(MEDIATYPE_DADAS, MEDIASUBTYPE_TARGETS);
+		RETURN_IF_FAILED(m_oTargetsOutput.Create("targets", pTargetsOutput, this));
+		RETURN_IF_FAILED(RegisterPin(&m_oTargetsOutput));
 		
 	}
 	else if (eStage == StageNormal)
@@ -175,7 +179,7 @@ tResult cDadasAbstractFunctionFilter::OnTrigger(adtf::IPin* pSource, adtf::IMedi
 	//Lock Sample
 	kernelMutex.Enter();
 	
-	tBool evaluationResult = Evaluate(&pCategorizationSample, &pConcreteTargetsSample);
+	tBool evaluationResult = Evaluate(pCategorizationSample, pConcreteTargetsSample);
 	
 	kernelMutex.Leave();
 	
@@ -186,10 +190,19 @@ tResult cDadasAbstractFunctionFilter::OnTrigger(adtf::IPin* pSource, adtf::IMedi
 
 tBool cDadasAbstractFunctionFilter::Evaluate(IMediaSample* pCategorizationSample, IMediaSample* pConcreteTargetsSample)
 {
+	return false;
 }
 
 tResult cDadasAbstractFunctionFilter::TransmitEvaluationResult(tBool* evaluationResult)
 {
+	cObjectPtr<IMediaSample> pNewSample;
+	RETURN_IF_FAILED(AllocMediaSample((tVoid**)&pNewSample));
+	
+	RETURN_IF_FAILED(pNewSample->Update(_clock->GetStreamTime(), &evaluationResult, sizeof(tBool), 0));
+	
+	RETURN_IF_FAILED(m_oTargetsOutput.Transmit(pNewSample));
+	
+	RETURN_NOERROR;
 }
 
 void cDadasAbstractFunctionFilter::LOG(cString mes)

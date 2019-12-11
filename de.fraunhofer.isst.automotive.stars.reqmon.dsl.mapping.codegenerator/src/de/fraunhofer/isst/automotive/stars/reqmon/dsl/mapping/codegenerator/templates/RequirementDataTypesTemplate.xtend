@@ -3,6 +3,10 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.tem
 import java.util.List
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.AbstractModelInformationHelper
 
+/**
+ * This class generates the requirement data types.
+ * @author sgraf
+ */
 class RequirementDataTypesTemplate {
 	
 	AbstractModelInformationHelper helper
@@ -17,30 +21,50 @@ class RequirementDataTypesTemplate {
 	#ifndef «includeGardsBegin»
 	#define «includeGardsBegin»
 		
-	«structs»
-	«enums»
+	«types»
 		
 	#endif
 	'''
+	
+	// TODO: The order of the structs and enums is important
+	// TODO: The names should be different from the system type names
+	// TODO: the enum values must be unambiguously
 	
 	def void setModelInformationHelper(AbstractModelInformationHelper helper) {
 		this.helper = helper
 	}
 			
 	def private getIncludeGardsBegin() '''
-		REQUIREMENT_DATA_TYPES.H
+		REQUIREMENT_DATA_TYPES_H
 	'''
 	
+	def private getTypes() {
+		val struc = structs
+		val en = enums
+		val examp = exampleStruct
+		return 
+		'''
+		«en»
+		
+		«struc»
+		«examp»
+		'''
+	}
 	
 	def private getStructs() '''
 	«FOR obj : helper.getReqObjects»
-	struct t«obj.toFirstUpper» «obj.getReqInheritance»{
+	struct tReq«obj.toFirstUpper» «obj.getReqInheritance»{
 		«FOR attr : helper.getReqAttribute(obj)»
 		«IF attr.charAt(0).compareTo('e') === 0»«attr»«ELSE»«attr.toFirstUpper»«ENDIF» «attr»;
 		«ENDFOR»
 	};
 	
 	«ENDFOR»
+	'''
+	
+	def private getExampleStruct() '''
+	struct tCategorization {
+	};
 	'''
 	
 	def private getReqInheritance(String obj) {
