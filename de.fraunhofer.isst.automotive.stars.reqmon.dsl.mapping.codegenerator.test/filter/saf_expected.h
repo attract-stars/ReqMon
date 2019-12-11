@@ -10,7 +10,6 @@ class cDadasSceneAbstractionFilter : public cFilter
 		
 		cOutputPin m_oCategorizationOutput;
 		
-		cObjectPtr<IMediaTypeDescription> m_pCoderDesc;
 		
 		
 	public:
@@ -34,7 +33,7 @@ class cDadasSceneAbstractionFilter : public cFilter
 		
 	protected: 
 		tResult ProcessSample(IMediaSample* pSample);
-		tCategorization Evaluate(tScene scene);
+		tCategorization* Evaluate(const tScene* scene);
 		tResult TransmitEvaluationResult(tCategorization* evaluationResult);
 		void LOG(cString mes);
 };

@@ -181,7 +181,7 @@ class FilterHeaderTemplate {
 	
 	def private getTransmitEvaluationResultParameters() {
 		if (isEvaluationReturnType) {
-			'''«helper.getEvaluateReturnType»* evaluationResult'''
+			'''«helper.getEvaluateReturnTypeAsPointer» evaluationResult'''
 		}
 	}
 	
@@ -198,7 +198,7 @@ class FilterHeaderTemplate {
 	}
 	
 	def private isEvaluationReturnType() {
-		return helper.getEvaluateReturnType.toString.compareTo("") !== 0
+		return helper.getEvaluateReturnTypeAsPointer.toString.compareTo("") !== 0
 	}
 	 
 	

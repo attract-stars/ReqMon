@@ -84,7 +84,7 @@ abstract class AbstractModelInformationHelper {
 		list.add("dtypes")
 		list.add("stdafx")
 		list.add("requirement_types")
-		list.add("system-types")
+		list.add("system_types")
 		switch(filtertype) {
 			case ABSTRACT_FUNCTION:
 			{
@@ -93,7 +93,7 @@ abstract class AbstractModelInformationHelper {
 			}
 			case FUNCTIONAL_CORRECTNESS_ORACLE:
 			{
-				list.add("function_correctness_oracle_filter")
+				list.add("functional_correctness_oracle_filter")
 				return list
 			}
 			case SCENE_ABSTRACTION:
@@ -170,7 +170,13 @@ abstract class AbstractModelInformationHelper {
 	 * Returns a template for the private members of the header.
 	 * The default value is an empty String.
 	 */
-	def CharSequence getHeaderTemplatePrivateMembers() ''''''
+	def CharSequence getHeaderTemplatePrivateMembers() '''
+	«IF isTriggeredFilter»
+	cKernelMutex kernelMutex;
+	cKernelTimeout m_oTimeout;
+	tBool m_bTimeout;
+	«ENDIF»
+	'''
 	
 	/**
 	 * Returns a template for the private functions of the header.
@@ -187,7 +193,27 @@ abstract class AbstractModelInformationHelper {
 	/**
 	 * Returns an evaluate method declaration. For example: "tReturnType Evaluate(paramType paramName, ..);"
 	 */
-	def CharSequence getEvaluateMethod() '''«getEvaluateReturnType» Evaluate(«true.getEvaluateParameters»);'''
+	def CharSequence getEvaluateMethod() {
+		switch(filtertype) {
+			case ABSTRACT_FUNCTION:
+			{
+				'''«getEvaluateReturnType» Evaluate(«true.getEvaluateParameters»);'''
+			}
+			case FUNCTIONAL_CORRECTNESS_ORACLE:
+			{
+				'''«getEvaluateReturnType» Evaluate(«true.getEvaluateParameters»);'''	
+			}
+			case SCENE_ABSTRACTION:
+			{ 
+				'''«getEvaluateReturnTypeAsPointer» Evaluate(«true.getEvaluateParameters»);'''	
+			}
+			case TEST_COVERAGE_MONITOR:
+			{
+				'''«getEvaluateReturnType» Evaluate(«true.getEvaluateParameters»);'''	
+			}
+		}
+	}
+
 	
 	/**
 	 * Returns default evaluate parameters with type when isTyped is true.
@@ -195,7 +221,7 @@ abstract class AbstractModelInformationHelper {
 	def CharSequence getEvaluateParameters(boolean isTyped) {
 		val inputs = getInputPins
 		val num = getInputPins.size
-		val type = '''«IF isTyped»«IF num === 1»«inputs.get(0).pinObjectType» «ELSE»IMediaSample* «ENDIF»«ELSE»&«ENDIF»'''
+		val type = '''«IF isTyped»«IF num === 1»const «inputs.get(0).pinObjectType»* «ELSE»IMediaSample* «ENDIF»«ELSE»«ENDIF»'''
 		
 		if (num == 1) {
 			return '''«type»«inputs.get(0).pinObjectName»'''
@@ -245,7 +271,7 @@ abstract class AbstractModelInformationHelper {
 		'''
 		kernelMutex.Create();
 		
-		SetPropertyInt("timeout", $timeout_value$);
+		SetPropertyInt("timeout", 500000000);
 		SetPropertyStr("timeout" NSSUBPROP_DESCRIPTION,
 			"Demo timeout that will issue a warning when no trigger has occurred "
 			"in the specified amount of time (microseconds). 0 disables the timeout.");
@@ -410,6 +436,27 @@ abstract class AbstractModelInformationHelper {
 		}
 	}
 	
+	def CharSequence getGetEvaluateReturnTypeOnlySafAsPointer() {
+		switch(filtertype) {
+			case ABSTRACT_FUNCTION: '''tBool'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''tBool'''
+			case SCENE_ABSTRACTION: '''«IF getOutputPins.size === 1»«getOutputPins.get(0).pinObjectType»*«ENDIF»'''
+			case TEST_COVERAGE_MONITOR: '''tBool'''
+			default: '''tBool'''
+		}
+	}
+	
+	def CharSequence getGetEvaluateReturnTypeAsPointer() {
+		switch(filtertype) {
+			case ABSTRACT_FUNCTION: '''tBool*'''
+			case FUNCTIONAL_CORRECTNESS_ORACLE: '''tBool*'''
+			case SCENE_ABSTRACTION: '''«IF getOutputPins.size === 1»«getOutputPins.get(0).pinObjectType»*«ENDIF»'''
+			case TEST_COVERAGE_MONITOR: '''tBool*'''
+			default: '''tBool'''
+		}
+	}
+	
+	
 	/**
 	 * Returns a template for more actions in the OnTrigger method. The default value is an empty String.
 	 */
@@ -548,6 +595,8 @@ abstract class AbstractModelInformationHelper {
 	def List<String> getMediaSubTypes() {
 		new ArrayList
 	}
+	
+	
 	
 	
 	

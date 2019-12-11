@@ -128,7 +128,7 @@ class CMakeListsTemplate {
 	
 	if(NOT WIN32)
 		if(NOT USING_ICC)
-			message(STATUS "hallooooooo ")
+			#message(STATUS "hallooooooo ")
 			SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wno-unused -Wno-unknown-pragmas -Wno-reorder -Wno-sign-compare -Wno-write-strings -Wno-switch -Wno-uninitialized -Wno-unused-but-set-variable -fpermissive")
 		else()
 			SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -gcc -pragma-optimization-level=GCC -fvisibility=extern -ansi -std=c++0x -D_REENTRANT -Wall -Werror -Wcheck -Wformat -Wmissing-declarations -Wmissing-prototypes -Wpointer-arith -Wuninitialized -Wmain -Wcomment -Wpragma-once -Wshadow -fdata-sections -pthread -wd1418 -wd193 -wd869 -wd981 -wd444 -wd7 -wd10156 -we1572 -we1 -gcc-name=gcc-4.4 -gxx-name=g++-4.4  -Wno-unused -Wno-unknown-pragmas -Wno-reorder -Wno-sign-compare -Wno-write-strings -Wno-switch -Wno-uninitialized -Wno-unused-but-set-variable -fpermissive")
@@ -178,7 +178,7 @@ class CMakeListsTemplate {
 		add_subdirectory(abstract_function_filter)
 		add_subdirectory(functional_correctness_oracle_filter)
 		add_subdirectory(scene_abstraction_filter)
-		add_subdirectory(types)
+		#add_subdirectory(types)
 	endif(BUILD_MONITOR)
 	'''
 	
@@ -190,10 +190,10 @@ class CMakeListsTemplate {
 	
 	SET(_FILTER_HEADERS_
 		"«type.filterName.toString.toLowerCase».h"
-		"../types/stdafx.h"
-		"../types/dtypes.h"
-		"../types/system_types.h"
-		"../types/requirement_types.h"
+		"stdafx.h"
+		"dtypes.h"
+		"system_types.h"
+		"requirement_types.h"
 		)
 	
 	SET(_FILTER_SOURCES_
@@ -208,7 +208,6 @@ class CMakeListsTemplate {
 	
 	get_filename_component(PARENT_DIR ${CMAKE_CURRENT_SOURCE_DIR} PATH)
 	FILE(RELATIVE_PATH SOLUTION_FOLDER_DIR ${CMAKE_SOURCE_DIR} ${PARENT_DIR})
-	adtf_set_folder(${_FILTER_NAME_} ${SOLUTION_FOLDER_DIR})
 	'''
 	
 	/**

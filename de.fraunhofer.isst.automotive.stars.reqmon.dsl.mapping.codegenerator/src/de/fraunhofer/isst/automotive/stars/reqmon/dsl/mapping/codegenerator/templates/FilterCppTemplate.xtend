@@ -75,7 +75,7 @@ class FilterCppTemplate {
 		
 	def private getIncludes()'''
 	«FOR include : helper.includes»
-	#include «include».h
+	#include "«include».h"
 	«ENDFOR»
 	'''
 	
@@ -360,14 +360,14 @@ class FilterCppTemplate {
 		
 		kernelMutex.Leave();
 		
-		«IF helper.getEvaluateReturnType.toString.compareTo("") !== 0»TransmitEvaluationResult(&evaluationResult);«ENDIF»
+		«IF helper.getGetEvaluateReturnType.toString.compareTo("") !== 0»TransmitEvaluationResult(&evaluationResult);«ENDIF»
 		
 		RETURN_NOERROR;
 	}
 	'''
 	
 	def private getEvaluateReturnTypeAndName() {
-		val temp = helper.getEvaluateReturnType
+		val temp = helper.getGetEvaluateReturnType
 		if (temp.toString.compareTo("") !== 0) {
 			'''«temp» evaluationResult = '''
 		}
@@ -413,41 +413,27 @@ class FilterCppTemplate {
 	tResult «helper.getClassName»::ProcessSample(IMediaSample* pSample)
 	{
 		{
-			__sample_read_lock(pMediaSample, «inputPin.pinObjectType», pData);
+			__sample_read_lock(pSample, «inputPin.pinObjectType», pData);
 		
-			«outputPin.pinObjectType» evaluationResult = Evaluate(&pData);
+			«outputPin.pinObjectType»* evaluationResult = Evaluate(pData);
+		
+			TransmitEvaluationResult(evaluationResult);
 		
 		}
-	
-		TransmitEvaluationResult(&evaluationResult);
 	
 		RETURN_NOERROR;
 	}
 	'''
 	
 	def private getEvaluate() {
-		if (helper.inputPins.size == 1 && helper.outputPins.size == 1) {
-			getEvaluateForOneInOutput(helper.inputPins.get(0), helper.outputPins.get(0))
-		}
-		else if (helper.inputPins.size > 1) {
-			getEvaluateForMoreInputs
-		}
-	}
-	
-	
-	def private getEvaluateForOneInOutput(Pin in, Pin out) '''
-	«out.pinObjectType» «helper.getClassName»::Evaluate(«in.pinObjectType»* «in.pinObjectName»)
-	{
-		«helper.getTemplateEvaluateContent»
-	}
 	'''
-	
-	def private getEvaluateForMoreInputs() '''
-	«helper.getEvaluateReturnType» «helper.getClassName»::Evaluate(«helper.getEvaluateParameters(true)»)
+	«helper.getEvaluateReturnTypeOnlySafAsPointer» «helper.getClassName»::Evaluate(«helper.getEvaluateParameters(true)»)
 	{
 		«helper.templateEvaluateContent»
 	}
 	'''
+	}
+	
 	
 	def private getTransmitEvaluationResult() '''
 	tResult «helper.getClassName»::TransmitEvaluationResult(«transmitEvaluationResultParameters»«moreTransmitEvaluationResultParameters»)
@@ -460,19 +446,24 @@ class FilterCppTemplate {
 		val temp = helper.templateTransmitContent
 		if ((temp === null || temp.toString.compareTo("") === 0) && helper.outputPins.size === 1) {
 			'''
-			cObjectPtr<IMediaSample> pMediaSample;
-			RETURN_IF_FAILED(AllocMediaSample((tVoid**)&pMediaSample));
+			cObjectPtr<IMediaSample> pNewSample;
+			RETURN_IF_FAILED(AllocMediaSample((tVoid**)&pNewSample));
 			
-			RETURN_IF_FAILED(pNewSample->Update(_clock->GetStreamTime(), &evaluationResult, sizeof(«helper.getEvaluateReturnType»), 0));
+			RETURN_IF_FAILED(pNewSample->Update(_clock->GetStreamTime(), &evaluationResult, sizeof(«helper.getGetEvaluateReturnType»), 0));
 			
-			RETURN_IF_FAILED(«helper.outputPins.get(0).pinName».Transmit(pMediaSample));
+			RETURN_IF_FAILED(«helper.outputPins.get(0).pinName».Transmit(pNewSample));
+			
+			RETURN_NOERROR;
 			'''
+		}
+		else {
+			'''RETURN_NOERROR;'''
 		}
 	}
 	
 	def private getTransmitEvaluationResultParameters() {
 		if (isEvaluationReturnType) {
-			'''«helper.getEvaluateReturnType»* evaluationResult'''
+			'''«helper.getEvaluateReturnTypeAsPointer» evaluationResult'''
 		}
 	}
 	
@@ -489,7 +480,7 @@ class FilterCppTemplate {
 	}
 	
 	def private isEvaluationReturnType() {
-		return helper.getEvaluateReturnType.toString.compareTo("") !== 0
+		return helper.getEvaluateReturnTypeAsPointer.toString.compareTo("") !== 0
 	}
 	
 	def private getPrivateMethods() '''«helper.getTemplatePrivateMethods»'''

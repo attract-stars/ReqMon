@@ -11,8 +11,15 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.MessageNode
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.List
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.Type
 
+/**
+ * This class generates the system data types.
+ * @author sgraf
+ */
 class SystemDataTypesTemplate {
 	
+	/**
+	 * Generates the system data types.
+	 */
 	def CharSequence generateTemplate(IMappingModel model) '''
 	#ifndef «includeGardsBegin»
 	#define «includeGardsBegin»
@@ -25,9 +32,13 @@ class SystemDataTypesTemplate {
 	
 	#endif
 	'''
+	
+	// TODO: The order of the structs and enums is important
+	// TODO: The names should be different from the requirement type names
+	// TODO: the enum values must be unambiguously
 			
 	def private getIncludeGardsBegin() '''
-		SYSTEM_DATA_TYPES.H
+		SYSTEM_DATA_TYPES_H
 	'''
 	
 	/**
@@ -179,11 +190,11 @@ class SystemDataTypesTemplate {
 	def private compileAttributes(ClassNode node) '''
 		«FOR attr : node.attribute»
 		«IF attr.attrtype.type.type !== null»
-		«attr.compileType»
+		«attr.compileType»;
 		«ELSEIF attr.attrtype.type.list !== null»
-		«attr.compileList»
+		«attr.compileList»;
 		«ELSEIF attr.attrtype.type.newtype !== null»
-		«attr.attrtype.type.newtype.name»
+		«attr.attrtype.type.newtype.name»;
 		«ENDIF»
 		«ENDFOR»
 	'''
@@ -224,7 +235,7 @@ class SystemDataTypesTemplate {
 		if (!attr.attrtype.type.list.type.empty) {
 			val splitted = attr.name.split(' ')
 			if (splitted.length != 2) return ''''''
-			return '''«splitted.get(0)»* «splitted.get(1)»;'''
+			return '''«splitted.get(0)»* «splitted.get(1)»'''
 		}
 	}
 	
