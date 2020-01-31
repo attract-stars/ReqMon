@@ -309,6 +309,7 @@ class RequirementDSLParsingTest {
 		 * Req 2: ExistencePreface Actors, relativeClause, Conjunction MainClause
 		 * Req 3: MainClause Conjunction ExistencePreface Actors, relativeClause, Conjunction MainClause
 		 */
+		 //TODO THIS SEQUENCE THROWS ERROS
 		testSequence('''
 			Req 1: There exist x, who must x,.
 			Req 1: There exists x, who must x,.
@@ -316,7 +317,6 @@ class RequirementDSLParsingTest {
 			Req 2: There exists x, who must x, and x x.
 			Req 3: x x and there exist x, who must x, and x x.
 			Req 3: x x and there exists x, who must x, and x x.
-			
 		''')
 		
 		/*

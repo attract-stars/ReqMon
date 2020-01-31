@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Codegenerator
-Bundle-SymbolicName: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test;singleton:=true
+Bundle-SymbolicName: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.tests;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Fragment-Host: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui
 Automatic-Module-Name: de.fraunhofer.isst.automotive.stars.reqmon.mapping.ui.test

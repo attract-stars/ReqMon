@@ -4,6 +4,7 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.parser
 
 import com.google.inject.Inject
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.analytics.repository.RequirementElementMappingRepository
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.RequirementType
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.RequirementController
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.SemanticTextElement
@@ -11,6 +12,8 @@ import de.fraunhofer.isst.stars.requirementDSL.RequirementModel
 import de.fraunhofer.isst.stars.tests.RequirementDSLInjectorProvider
 import java.io.File
 import java.io.FileOutputStream
+import java.nio.channels.FileChannel
+import java.nio.channels.FileLock
 import java.util.ArrayList
 import java.util.List
 import java.util.stream.Stream
@@ -18,7 +21,6 @@ import org.apache.commons.io.FileUtils
 import org.assertj.core.api.SoftAssertions
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.swt.widgets.Display
 import org.eclipse.xtext.resource.FileExtensionProvider
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.extensions.InjectionExtension
@@ -33,14 +35,13 @@ import org.junit.jupiter.api.^extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import java.util.Observer
-import java.util.Observable
-
-import static org.mockito.Mockito.*;
-import org.mockito.MockitoAnnotations
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement
+import org.mockito.MockitoAnnotations
+
+import static org.mockito.Mockito.*
+import java.io.RandomAccessFile
+import java.util.concurrent.TimeUnit
 
 /** 
  * @author mmauritz
@@ -78,8 +79,21 @@ package class RequirementDslParserTest {
 
 	@AfterAll
 	static def package void tearDownAfterAll() throws Exception {
-		// PROBLEM TEST FILES ARE STILL LOCKED!
-		// FileUtils.deleteDirectory(new File(testfolder));
+		//WAIT For all files to get lock
+		//TimeUnit.MILLISECONDS.sleep(100);
+		val testFolderFile = new File(testfolder)
+		try {
+			for(File file : testFolderFile.listFiles) {
+				val raFile = new RandomAccessFile(file.absolutePath,"rw");
+				raFile.channel.lock().release();//Release any lock
+			}
+			//After all files are unlocked from test -> delete them
+			FileUtils.cleanDirectory(testFolderFile)
+			FileUtils.deleteDirectory(testFolderFile);
+		} catch (Exception exception) {
+			System.err.println("Unable to Delete Test Files: "+exception.toString());
+		}
+
 	}
 
 	/** 
@@ -184,12 +198,12 @@ package class RequirementDslParserTest {
 		val actual = reqAnalyzer.analyze(model);
 		softly.assertThat(actual.size()).^as("Checking size of result (analysis rerun):").isEqualTo(result.size());
 		softly.assertThat(actual).^as("Test %s for correct semantic analysis (analysis rerun)", id).
-			containsExactlyInAnyOrder(result);
+			containsOnlyElementsOf(result);
 		// Here it should take the prvious result 
 		val rerun = reqAnalyzer.analyze(model);
 		softly.assertThat(rerun.size()).^as("Checking size of result (analysis rerun):").isEqualTo(result.size());
 		softly.assertThat(rerun).^as("Test %s for correct semantic analysis (analysis rerun)", id).
-			containsExactlyInAnyOrder(result);
+			containsOnlyElementsOf(result);
 		softly.assertAll();
 		RequirementElementMappingRepository.getInstance().clear();
 	}
@@ -211,12 +225,12 @@ package class RequirementDslParserTest {
 		val actual = reqAnalyzer.analyze(model);
 		softly.assertThat(actual.size()).^as("Checking size of result (analysis rerun):").isEqualTo(result.size());
 		softly.assertThat(actual).^as("Test %s for correct semantic analysis (analysis rerun)", id).
-			containsExactlyInAnyOrder(result);
+			containsOnlyElementsOf(result);
 		// Here it should take the prvious result 
 		val rerun = reqAnalyzer.analyze(model);
 		softly.assertThat(rerun.size()).^as("Checking size of result (analysis rerun):").isEqualTo(result.size());
 		softly.assertThat(rerun).^as("Test %s for correct semantic analysis (analysis rerun)", id).
-			containsExactlyInAnyOrder(result);
+			containsOnlyElementsOf(result);
 		softly.assertAll();
 		RequirementElementMappingRepository.getInstance().clear();
 		resource.unload();
@@ -241,8 +255,7 @@ package class RequirementDslParserTest {
 		verify(reqConMock,times(1)).updateList(reqCaptor.capture())
 		softly.assertThat(reqCaptor.value.size()).^as("Checking size of result (analysis rerun):").isEqualTo(
 			result.size());
-		softly.assertThat(reqCaptor.value).^as("Test %s for correct semantic analysis (analysis rerun)", id).
-			containsExactlyInAnyOrder(result);
+		softly.assertThat(reqCaptor.value).^as("Test %s for correct semantic analysis (analysis rerun)", id).containsOnlyElementsOf(result);
 		// Here it should take the prvious result 
 //		val rc2 = new RequirementController(getDisplay());
 		reqAnalyzer.execute(reqConMock, uri.toFileString);
@@ -250,18 +263,11 @@ package class RequirementDslParserTest {
 		softly.assertThat(reqCaptor.getValue().size()).^as("Checking size of result (analysis rerun):").isEqualTo(
 			result.size());
 		softly.assertThat(reqCaptor.value).^as("Test %s for correct semantic analysis (analysis rerun)", id).
-			containsExactlyInAnyOrder(result);
+			containsOnlyElementsOf(result);
 		softly.assertAll();
 		RequirementElementMappingRepository.getInstance().clear();
 		resource.unload();
 		resource.delete(null);
 	}
 
-	def private Display getDisplay() {
-		var display = Display.getCurrent();
-		// may be null if outside the UI thread
-		if (display === null)
-			display = Display.getDefault();
-		return display;
-	}
 }

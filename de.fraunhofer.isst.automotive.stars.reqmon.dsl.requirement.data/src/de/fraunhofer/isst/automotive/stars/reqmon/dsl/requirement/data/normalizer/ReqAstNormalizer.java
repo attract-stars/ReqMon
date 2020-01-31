@@ -20,6 +20,7 @@ import org.eclipse.xtext.EcoreUtil2;
 
 import de.fraunhofer.isst.stars.requirementDSL.Actor;
 import de.fraunhofer.isst.stars.requirementDSL.ActorProperties;
+import de.fraunhofer.isst.stars.requirementDSL.ActorProperty;
 import de.fraunhofer.isst.stars.requirementDSL.Actors;
 import de.fraunhofer.isst.stars.requirementDSL.AuxNeg;
 import de.fraunhofer.isst.stars.requirementDSL.Clause;
@@ -29,9 +30,9 @@ import de.fraunhofer.isst.stars.requirementDSL.Constraints;
 import de.fraunhofer.isst.stars.requirementDSL.Existence;
 import de.fraunhofer.isst.stars.requirementDSL.ModalitySentence;
 import de.fraunhofer.isst.stars.requirementDSL.Object;
-import de.fraunhofer.isst.stars.requirementDSL.ObjectProperty;
 import de.fraunhofer.isst.stars.requirementDSL.PredicateSentence;
 import de.fraunhofer.isst.stars.requirementDSL.PropertySentence;
+import de.fraunhofer.isst.stars.requirementDSL.RelObjectProperty;
 import de.fraunhofer.isst.stars.requirementDSL.RelObjects;
 import de.fraunhofer.isst.stars.requirementDSL.Relation;
 import de.fraunhofer.isst.stars.requirementDSL.RelativeClause;
@@ -396,12 +397,12 @@ public class ReqAstNormalizer {
 			// Container can be ExistenceSentence, ModalitySentence,PredicateSentence ->
 			// These have to be duplicated for each actor
 			EObject clauses = (sentence.eContainer());// clauses to add copy sentenced
-			ObjectProperty firstProperty = null;
+			ActorProperty firstProperty = null;
 			for (int i = 0; i < properties.getProperty().size(); i++) {
 				if (i == 0) {
 					firstProperty = properties.getProperty().get(0);
 				} else {
-					ObjectProperty prop = properties.getProperty().get(i);
+					ActorProperty prop = properties.getProperty().get(i);
 					// clone the sentence
 					PropertySentence copiedSentence = (PropertySentence) copier.copy(sentence);
 
@@ -440,7 +441,7 @@ public class ReqAstNormalizer {
 		}
 	}
 
-	private boolean isPluralProperty(ObjectProperty firstProperty) {
+	private boolean isPluralProperty(ActorProperty firstProperty) {
 		EList<String> propertyWords = firstProperty.getProperty().getProperty();
 		if (propertyWords.isEmpty() || propertyWords.get(propertyWords.size() - 1).endsWith("s")) {
 			return true;
@@ -496,7 +497,7 @@ public class ReqAstNormalizer {
 				if (i == 0 && first == null) {
 					first = relObj.getProperty().get(0);// only set if there are only objectproperties
 				} else {
-					ObjectProperty prop = relObj.getProperty().get(i);
+					RelObjectProperty prop = relObj.getProperty().get(i);
 					// clone the sentence
 					EObject copiedSentence = copier.copy(sentence);
 					RelObjects copiedRelObjects = getCopiedRelObjects(relObj, copiedSentence);
@@ -527,7 +528,7 @@ public class ReqAstNormalizer {
 			} else {// instanceof ObjectProperty
 				// Remove the old actors
 				relObj.getProperty().clear();
-				relObj.getProperty().add((ObjectProperty) first);
+				relObj.getProperty().add((RelObjectProperty) first);
 				relObj.getRelConj().clear();
 				// Dont lower case relation as it can be in the first sentence beginning
 			}
@@ -554,10 +555,7 @@ public class ReqAstNormalizer {
 	 */
 	private RelObjects getCopiedRelObjects(RelObjects obj, EObject sentence) {
 		// Backtrack where we are here
-		if (obj.eContainer().eContainer() instanceof PropertySentence) {
-			return ((PropertySentence) sentence).getRela().getRelElements();
-			// we can now go in into relation directly
-		} else if (obj.eContainer().eContainer() instanceof SentenceBegin) {
+		if (obj.eContainer().eContainer() instanceof SentenceBegin) {
 			// get RelObjects via SentenceBegin
 			if (sentence instanceof PredicateSentence) {
 				return ((PredicateSentence) sentence).getBegin().getRela().getRelElements();
@@ -580,6 +578,24 @@ public class ReqAstNormalizer {
 			} else {
 				logger.error(
 						"Type of Sentence" + sentence.toString() + "is not supported for route via 'SentenceEnding' ");
+				return null;
+			}
+		} else if (obj.eContainer().eContainer() instanceof ActorProperty) {
+			ActorProperty origAProp = (ActorProperty) obj.eContainer().eContainer();
+			if (origAProp.eContainer().eContainer() instanceof PropertySentence) {
+				EList<ActorProperty> copiedProperies = ((PropertySentence) sentence).getProperties().getProperty();
+				for (ActorProperty actorProperty : copiedProperies) {
+					if (actorProperty.getObject().getObject().equals(origAProp.getObject().getObject()) && actorProperty
+							.getProperty().getProperty().equals(origAProp.getProperty().getProperty())) {
+						return actorProperty.getRela().getRelElements();
+					}
+				}
+				logger.error("Matchin RelObject to " + obj.toString() + " has not been found in PropertySentence: "
+						+ sentence.toString());
+				return null;
+			} else {
+				logger.error("2 Containers above ActorProperty" + origAProp.toString()
+						+ " should be PropertySentence but is not: " + origAProp.eContainer().eContainer().toString());
 				return null;
 			}
 		} else {

@@ -2,7 +2,6 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.adapter
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.RequirementType
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.SemanticTextElement
-import de.fraunhofer.isst.stars.requirementDSL.Modality
 import de.fraunhofer.isst.stars.requirementDSL.RequirementDSLFactory
 import org.assertj.core.api.SoftAssertions
 import org.junit.jupiter.api.AfterEach
@@ -157,7 +156,7 @@ package class SemanticTextElementSwitchTest {
 		actor41.actor = "Barnie"
 		actors41.actors.addAll(actor41)
 		sent41.actors = actors41
-		sent41.modelity = Modality.MUST
+		sent41.modelity = "must"
 		sent41.auxiliarVerb = "gun"
 		val pred41 = RequirementDSLFactory.eINSTANCE.createPredicate();
 		pred41.predicates.addAll("trinking");
@@ -181,7 +180,7 @@ package class SemanticTextElementSwitchTest {
 		actor42.actor = "Barnie"
 		actors42.actors.addAll(actor42)
 		sent42.actors = actors42
-		sent41.modelity = Modality.MUST
+		sent41.modelity = "must"
 		sent42.auxiliarVerb = "gun"
 		val pred42 = RequirementDSLFactory.eINSTANCE.createPredicate();
 		pred42.predicates.addAll("trinking");
@@ -207,7 +206,7 @@ package class SemanticTextElementSwitchTest {
 		actor51.actor = "Barnie"
 		actors51.actors.addAll(actor51)
 		sent51.actors = actors51
-		sent51.modelity = Modality.MUST
+		sent51.modelity = "must"
 		sent51.negation = true
 		sent51.auxiliarVerb = "gun"
 		val pred51 = RequirementDSLFactory.eINSTANCE.createPredicate();
@@ -232,7 +231,7 @@ package class SemanticTextElementSwitchTest {
 		actor52.actor = "Barnie"
 		actors52.actors.addAll(actor52)
 		sent52.actors = actors52
-		sent41.modelity = Modality.MUST
+		sent41.modelity = "must"
 		sent51.negation = true
 		sent52.auxiliarVerb = "gun"
 		val pred52 = RequirementDSLFactory.eINSTANCE.createPredicate();
@@ -393,7 +392,7 @@ package class SemanticTextElementSwitchTest {
 		val sent11 = RequirementDSLFactory.eINSTANCE.createRelativeSentence();
 		// 'which' | 'who' | 'that'
 		sent11.pronoun = "which";
-		sent11.modelity = Modality.MUST;
+		sent11.modelity = "must";
 		sent11.negation = false
 		val pred11 = RequirementDSLFactory.eINSTANCE.createPredicate();
 		// predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
@@ -416,7 +415,7 @@ package class SemanticTextElementSwitchTest {
 		val sent12 = RequirementDSLFactory.eINSTANCE.createRelativeSentence();
 		// 'which' | 'who' | 'that'
 		sent12.pronoun = "which";
-		sent12.modelity = Modality.MUST;
+		sent12.modelity = "must";
 		sent12.negation = false
 		val pred12 = RequirementDSLFactory.eINSTANCE.createPredicate();
 		// predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
@@ -441,7 +440,7 @@ package class SemanticTextElementSwitchTest {
 		val sent21 = RequirementDSLFactory.eINSTANCE.createRelativeSentence();
 		// 'which' | 'who' | 'that'
 		sent21.pronoun = "who";
-		sent21.modelity = Modality.MUST;
+		sent21.modelity = "must";
 		sent21.negation = false
 		val pred21 = RequirementDSLFactory.eINSTANCE.createPredicate();
 		// predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
@@ -462,8 +461,8 @@ package class SemanticTextElementSwitchTest {
 		obj21.object.addAll("park", "spot");
 		objConstr21.object = obj21;
 		const21.constraint = objConstr21;
-		consts21.constraint = const21;
-		sent21.constraints.addAll(consts21);
+		consts21.constraint.add(const21);
+		sent21.constraints = consts21;
 		relClause21.sentence = sent21;
 		existClause21.relativeClause = relClause21;
 		val actors21 = RequirementDSLFactory.eINSTANCE.createActors();
@@ -481,7 +480,7 @@ package class SemanticTextElementSwitchTest {
 		val sent22 = RequirementDSLFactory.eINSTANCE.createRelativeSentence();
 		// 'which' | 'who' | 'that'
 		sent22.pronoun = "who";
-		sent22.modelity = Modality.MUST;
+		sent22.modelity = "must";
 		sent22.negation = false
 		val pred22 = RequirementDSLFactory.eINSTANCE.createPredicate();
 		// predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
@@ -502,8 +501,8 @@ package class SemanticTextElementSwitchTest {
 		obj22.object.addAll("park", "spot");
 		objConstr22.object = obj22;
 		const22.constraint = objConstr22;
-		consts22.constraint = const22;
-		sent22.constraints.addAll(consts22);
+		consts22.constraint.add(const22);
+		sent22.constraints = consts22;
 		relClause22.sentence = sent22;
 		existClause22.relativeClause = relClause22;
 		val actors22 = RequirementDSLFactory.eINSTANCE.createActors();
@@ -571,7 +570,7 @@ package class SemanticTextElementSwitchTest {
 		val sent41 = RequirementDSLFactory.eINSTANCE.createRelativeSentence();
 		// 'which' | 'who' | 'that'
 		sent41.pronoun = "which";
-		sent41.modelity = Modality.MUST;
+		sent41.modelity = "must";
 		sent41.negation = false
 		val pred41 = RequirementDSLFactory.eINSTANCE.createPredicate();
 		// predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
@@ -594,7 +593,7 @@ package class SemanticTextElementSwitchTest {
 		val sent42 = RequirementDSLFactory.eINSTANCE.createRelativeSentence();
 		// 'which' | 'who' | 'that'
 		sent42.pronoun = "which";
-		sent42.modelity = Modality.MUST;
+		sent42.modelity = "must";
 		sent42.negation = false
 		val pred42 = RequirementDSLFactory.eINSTANCE.createPredicate();
 		// predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
@@ -918,11 +917,11 @@ package class SemanticTextElementSwitchTest {
 
 		softly.assertAll();
 	}
-
-	@Test def package void testCaseObjectPropertyObjectProperty() {
+	
+	@Test def package void testCaseRelObjectPropertyRelObjectProperty() {
 		// ObjectProperty:	object=Object property=Property
 		// PROPERTY_TERM relativ='relative'? (property+=WORD+ | property+=STRING)
-		val objProp1 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val objProp1 = RequirementDSLFactory.eINSTANCE.createRelObjectProperty;
 		val obj1 = RequirementDSLFactory.eINSTANCE.createObject();
 		obj1.object.addAll("car", "truck")
 		objProp1.object = obj1
@@ -930,24 +929,24 @@ package class SemanticTextElementSwitchTest {
 		prop1.property.addAll("position");
 		objProp1.property = prop1
 		val resElement1 = new SemanticTextElement("car truck's position", RequirementType.FUNCTION);
-		sw.caseObjectProperty(objProp1);
+		sw.caseRelObjectProperty(objProp1);
 		assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
 		assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry("car truck's position",
 			resElement1);
-		val objProp12 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val objProp12 = RequirementDSLFactory.eINSTANCE.createRelObjectProperty();
 		val obj12 = RequirementDSLFactory.eINSTANCE.createObject();
 		obj12.object.addAll("car", "truck")
 		objProp12.object = obj12
 		val prop12 = RequirementDSLFactory.eINSTANCE.createProperty();
 		prop12.property.addAll("position");
 		objProp12.property = prop12
-		sw.caseObjectProperty(objProp12);
+		sw.caseRelObjectProperty(objProp12);
 		assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
 		assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry("car truck's position",
 			resElement1);
 		sw.lookup.clear
 
-		val objProp2 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val objProp2 = RequirementDSLFactory.eINSTANCE.createRelObjectProperty();
 		val obj2 = RequirementDSLFactory.eINSTANCE.createObject();
 		obj2.object.addAll("car", "truck")
 		objProp2.object = obj2
@@ -956,11 +955,11 @@ package class SemanticTextElementSwitchTest {
 		prop2.property.addAll("position");
 		objProp2.property = prop2
 		val resElement2 = new SemanticTextElement("car truck's relative position", RequirementType.FUNCTION);
-		sw.caseObjectProperty(objProp2);
+		sw.caseRelObjectProperty(objProp2);
 		assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
 		assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry(
 			"car truck's relative position", resElement2);
-		val objProp22 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val objProp22 = RequirementDSLFactory.eINSTANCE.createRelObjectProperty();
 		val obj22 = RequirementDSLFactory.eINSTANCE.createObject();
 		obj22.object.addAll("car", "truck")
 		objProp22.object = obj22
@@ -968,13 +967,13 @@ package class SemanticTextElementSwitchTest {
 		prop22.relativ = "relative";
 		prop22.property.addAll("position");
 		objProp22.property = prop22
-		sw.caseObjectProperty(objProp22);
+		sw.caseRelObjectProperty(objProp22);
 		assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
 		assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry(
 			"car truck's relative position", resElement2);
 		sw.lookup.clear
 
-		val objProp3 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val objProp3 = RequirementDSLFactory.eINSTANCE.createRelObjectProperty();
 		val obj3 = RequirementDSLFactory.eINSTANCE.createObject();
 		obj3.object.addAll("car", "truck")
 		objProp3.object = obj3
@@ -982,23 +981,106 @@ package class SemanticTextElementSwitchTest {
 		prop3.property.addAll("house", "spot");
 		objProp3.property = prop3
 		val resElement3 = new SemanticTextElement("car truck's house spot", RequirementType.FUNCTION);
-		sw.caseObjectProperty(objProp3);
+		sw.caseRelObjectProperty(objProp3);
 		assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
 		assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry("car truck's house spot",
 			resElement3);
-		val objProp32 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val objProp32 = RequirementDSLFactory.eINSTANCE.createRelObjectProperty();
 		val obj32 = RequirementDSLFactory.eINSTANCE.createObject();
 		obj32.object.addAll("car", "truck")
 		objProp32.object = obj32
 		val prop32 = RequirementDSLFactory.eINSTANCE.createProperty();
 		prop32.property.addAll("house", "spot");
 		objProp32.property = prop32
-		sw.caseObjectProperty(objProp32);
+		sw.caseRelObjectProperty(objProp32);
 		assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
 		assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry("car truck's house spot",
 			resElement3);
 		sw.lookup.clear
 	}
+
+//TODO
+	@Test def package void testCaseActorPropertyActorProperty() {
+		// ObjectProperty:	object=Object property=Property
+		// PROPERTY_TERM relativ='relative'? (property+=WORD+ | property+=STRING)
+		val actProp1 = RequirementDSLFactory.eINSTANCE.createActorProperty();
+		val obj1 = RequirementDSLFactory.eINSTANCE.createObject();
+		obj1.object.addAll("car", "truck")
+		actProp1.object = obj1
+		val prop1 = RequirementDSLFactory.eINSTANCE.createProperty();
+		prop1.property.addAll("position");
+		actProp1.property = prop1
+		val resElement1 = new SemanticTextElement("car truck's position", RequirementType.FUNCTION);
+		sw.caseActorProperty(actProp1);
+		assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
+		assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry("car truck's position",
+			resElement1);
+		val actProp12 = RequirementDSLFactory.eINSTANCE.createActorProperty();
+		val obj12 = RequirementDSLFactory.eINSTANCE.createObject();
+		obj12.object.addAll("car", "truck")
+		actProp12.object = obj12
+		val prop12 = RequirementDSLFactory.eINSTANCE.createProperty();
+		prop12.property.addAll("position");
+		actProp12.property = prop12
+		sw.caseActorProperty(actProp12);
+		assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
+		assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry("car truck's position",
+			resElement1);
+		sw.lookup.clear
+
+		val actProp2 = RequirementDSLFactory.eINSTANCE.createActorProperty();
+		val obj2 = RequirementDSLFactory.eINSTANCE.createObject();
+		obj2.object.addAll("car", "truck")
+		actProp2.object = obj2
+		val prop2 = RequirementDSLFactory.eINSTANCE.createProperty();
+		prop2.relativ = "relative";
+		prop2.property.addAll("position");
+		actProp2.property = prop2
+		val resElement2 = new SemanticTextElement("car truck's relative position", RequirementType.FUNCTION);
+		sw.caseActorProperty(actProp2);
+		assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
+		assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry(
+			"car truck's relative position", resElement2);
+		val actProp22 = RequirementDSLFactory.eINSTANCE.createActorProperty();
+		val obj22 = RequirementDSLFactory.eINSTANCE.createObject();
+		obj22.object.addAll("car", "truck")
+		actProp22.object = obj22
+		val prop22 = RequirementDSLFactory.eINSTANCE.createProperty();
+		prop22.relativ = "relative";
+		prop22.property.addAll("position");
+		actProp22.property = prop22
+		sw.caseActorProperty(actProp22);
+		assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
+		assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry(
+			"car truck's relative position", resElement2);
+		sw.lookup.clear
+
+		val actProp3 = RequirementDSLFactory.eINSTANCE.createActorProperty();
+		val obj3 = RequirementDSLFactory.eINSTANCE.createObject();
+		obj3.object.addAll("car", "truck")
+		actProp3.object = obj3
+		val prop3 = RequirementDSLFactory.eINSTANCE.createProperty();
+		prop3.property.addAll("house", "spot");
+		actProp3.property = prop3
+		val resElement3 = new SemanticTextElement("car truck's house spot", RequirementType.FUNCTION);
+		sw.caseActorProperty(actProp3);
+		assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
+		assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry("car truck's house spot",
+			resElement3);
+		val actProp32 = RequirementDSLFactory.eINSTANCE.createActorProperty();
+		val obj32 = RequirementDSLFactory.eINSTANCE.createObject();
+		obj32.object.addAll("car", "truck")
+		actProp32.object = obj32
+		val prop32 = RequirementDSLFactory.eINSTANCE.createProperty();
+		prop32.property.addAll("house", "spot");
+		actProp32.property = prop32
+		sw.caseActorProperty(actProp32);
+		assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
+		assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry("car truck's house spot",
+			resElement3);
+		sw.lookup.clear
+	}
+
 
 	@Test def package void testCasePropertySentencePropertySentence() {
 //		actors=Actors property=Property rela=Relation? modality=Modality negation?=Negation? auxiliarVerb=AuxiliaryVerb? predObj=PredOrObject  ending=SentenceEnding? |
@@ -1007,15 +1089,15 @@ package class SemanticTextElementSwitchTest {
 		// TEST 1 Predicate
 		val sent11 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp11 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp11 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp11 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object11 = RequirementDSLFactory.eINSTANCE.createObject();
 		object11.object.addAll("Barnie")
-		objProp11.object = object11
+		actProp11.object = object11
 		val prop11 = RequirementDSLFactory.eINSTANCE.createProperty();
 //		prop11.relativ = "relative"
 		prop11.property.addAll("mum")
-		objProp11.property = prop11;
-		actorProp11.property.addAll(objProp11)
+		actProp11.property = prop11;
+		actorProp11.property.addAll(actProp11)
 		sent11.properties = actorProp11
 		val pred11 = RequirementDSLFactory.eINSTANCE.createPredicate();
 		pred11.predicates.addAll("trinking", "tea");
@@ -1027,41 +1109,36 @@ package class SemanticTextElementSwitchTest {
 			"<Barnie's mum> trinking tea", resElement1);
 		val sent12 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp12 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp12 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp12 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object12 = RequirementDSLFactory.eINSTANCE.createObject();
 		object12.object.addAll("Barnie")
-		objProp12.object = object12
+		actProp12.object = object12
 		val prop12 = RequirementDSLFactory.eINSTANCE.createProperty();
 //		prop12.relativ = "relative"
 		prop12.property.addAll("mum")
-		objProp12.property = prop12;
-		actorProp12.property.addAll(objProp12)
+		actProp12.property = prop12;
+		actorProp12.property.addAll(actProp12)
 		sent12.properties = actorProp11
 		val pred12 = RequirementDSLFactory.eINSTANCE.createPredicate();
 		pred12.predicates.addAll("trinking", "tea");
 		sent12.predicate = pred12
 		sw.casePropertySentence(sent12);
 		softly.assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
-		softly.assertThat(sw.lookup).^as("
-
-Analysis of
-Property Element
-in Lookup
-:").containsEntry("<Barnie's mum> trinking tea", resElement1);
+		softly.assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry("<Barnie's mum> trinking tea", resElement1);
 		sw.lookup.clear()
 
 		// TEST 2 Relative Property
 		val sent21 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp21 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp21 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp21 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object21 = RequirementDSLFactory.eINSTANCE.createObject();
 		object21.object.addAll("Barnie")
-		objProp21.object = object21
+		actProp21.object = object21
 		val prop21 = RequirementDSLFactory.eINSTANCE.createProperty();
 		prop21.relativ = "relative"
 		prop21.property.addAll("mum")
-		objProp21.property = prop21;
-		actorProp21.property.addAll(objProp21)
+		actProp21.property = prop21;
+		actorProp21.property.addAll(actProp21)
 		sent21.properties = actorProp21
 		val pred21 = RequirementDSLFactory.eINSTANCE.createPredicate();
 		pred21.predicates.addAll("trinking", "tea");
@@ -1073,15 +1150,15 @@ in Lookup
 			"<Barnie's relative mum> trinking tea", resElement2);
 		val sent22 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp22 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp22 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp22 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object22 = RequirementDSLFactory.eINSTANCE.createObject();
 		object22.object.addAll("Barnie")
-		objProp22.object = object22
+		actProp22.object = object22
 		val prop22 = RequirementDSLFactory.eINSTANCE.createProperty();
 		prop22.relativ = "relative"
 		prop22.property.addAll("mum")
-		objProp22.property = prop22;
-		actorProp22.property.addAll(objProp22)
+		actProp22.property = prop22;
+		actorProp22.property.addAll(actProp22)
 		sent22.properties = actorProp22
 		val pred22 = RequirementDSLFactory.eINSTANCE.createPredicate();
 		pred22.predicates.addAll("trinking", "tea");
@@ -1095,14 +1172,14 @@ in Lookup
 		// TEST 3 Property with Relation
 		val sent31 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp31 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp31 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp31 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object31 = RequirementDSLFactory.eINSTANCE.createObject();
 		object31.object.addAll("Barnie")
-		objProp31.object = object31
+		actProp31.object = object31
 		val prop31 = RequirementDSLFactory.eINSTANCE.createProperty();
 		prop31.property.addAll("mum")
-		objProp31.property = prop31;
-		actorProp31.property.addAll(objProp31)
+		actProp31.property = prop31;
+		actorProp31.property.addAll(actProp31)
 		sent31.properties = actorProp31
 		val rel31 = RequirementDSLFactory.eINSTANCE.createRelation();
 		rel31.relDel = "in relation to"
@@ -1111,7 +1188,7 @@ in Lookup
 		obj61.object.addAll("daddy")
 		relObj31.object.addAll(obj61);
 		rel31.relElements = relObj31
-		sent31.rela = rel31
+		actProp31.rela = rel31;
 		val pred31 = RequirementDSLFactory.eINSTANCE.createPredicate();
 		pred31.predicates.addAll("trinking", "tea");
 		sent31.predicate = pred31
@@ -1123,14 +1200,14 @@ in Lookup
 			"<Barnie's mum in relation to daddy> trinking tea", resElement3);
 		val sent32 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp32 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp32 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp32 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object32 = RequirementDSLFactory.eINSTANCE.createObject();
 		object32.object.addAll("Barnie")
-		objProp32.object = object32
+		actProp32.object = object32
 		val prop32 = RequirementDSLFactory.eINSTANCE.createProperty();
 		prop32.property.addAll("mum")
-		objProp32.property = prop32;
-		actorProp32.property.addAll(objProp32)
+		actProp32.property = prop32;
+		actorProp32.property.addAll(actProp32)
 		sent32.properties = actorProp32
 		val rel32 = RequirementDSLFactory.eINSTANCE.createRelation();
 		rel32.relDel = "in relation to"
@@ -1139,7 +1216,7 @@ in Lookup
 		obj62.object.addAll("daddy")
 		relObj32.object.addAll(obj62);
 		rel32.relElements = relObj32
-		sent32.rela = rel32
+		actProp32.rela = rel32
 		val pred32 = RequirementDSLFactory.eINSTANCE.createPredicate();
 		pred32.predicates.addAll("trinking", "tea");
 		sent32.predicate = pred32
@@ -1152,15 +1229,15 @@ in Lookup
 		// TEST 4 Predicate PredicateObject
 		val sent41 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp41 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp41 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp41 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object41 = RequirementDSLFactory.eINSTANCE.createObject();
 		object41.object.addAll("Barnie")
-		objProp41.object = object41
+		actProp41.object = object41
 		val prop41 = RequirementDSLFactory.eINSTANCE.createProperty();
 //		prop41.relativ = "relative"
 		prop41.property.addAll("mum")
-		objProp41.property = prop41;
-		actorProp41.property.addAll(objProp41)
+		actProp41.property = prop41;
+		actorProp41.property.addAll(actProp41)
 		sent41.properties = actorProp41
 		val pred41 = RequirementDSLFactory.eINSTANCE.createPredicate();
 		val obj41 = RequirementDSLFactory.eINSTANCE.createPredicateObject();
@@ -1179,15 +1256,15 @@ in Lookup
 			resElement4);
 		val sent42 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp42 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp42 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp42 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object42 = RequirementDSLFactory.eINSTANCE.createObject();
 		object42.object.addAll("Barnie")
-		objProp42.object = object42
+		actProp42.object = object42
 		val prop42 = RequirementDSLFactory.eINSTANCE.createProperty();
 //		prop42.relativ = "relative"
 		prop42.property.addAll("mum")
-		objProp42.property = prop42;
-		actorProp42.property.addAll(objProp42)
+		actProp42.property = prop42;
+		actorProp42.property.addAll(actProp42)
 		sent42.properties = actorProp42
 		val pred42 = RequirementDSLFactory.eINSTANCE.createPredicate();
 		val obj42 = RequirementDSLFactory.eINSTANCE.createPredicateObject();
@@ -1208,17 +1285,17 @@ in Lookup
 		// TEST 5 Auxiliar Predicate
 		val sent51 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp51 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp51 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp51 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object51 = RequirementDSLFactory.eINSTANCE.createObject();
 		object51.object.addAll("Barnie")
-		objProp51.object = object51
+		actProp51.object = object51
 		val prop51 = RequirementDSLFactory.eINSTANCE.createProperty();
 //		prop51.relativ = "relative"
 		prop51.property.addAll("mum")
-		objProp51.property = prop51;
-		actorProp51.property.addAll(objProp51)
+		actProp51.property = prop51;
+		actorProp51.property.addAll(actProp51)
 		sent51.properties = actorProp51
-		sent51.modality = Modality.MUST
+		sent51.modality = "must"
 //		sent51.negation = true;
 		sent51.auxiliarVerb = "be"
 		val pred51 = RequirementDSLFactory.eINSTANCE.createPredicate();
@@ -1231,17 +1308,17 @@ in Lookup
 			"<Barnie's mum> be trinking tea", resElement5);
 		val sent52 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp52 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp52 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp52 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object52 = RequirementDSLFactory.eINSTANCE.createObject();
 		object52.object.addAll("Barnie")
-		objProp52.object = object52
+		actProp52.object = object52
 		val prop52 = RequirementDSLFactory.eINSTANCE.createProperty();
 //		prop52.relativ = "relative"
 		prop52.property.addAll("mum")
-		objProp52.property = prop52;
-		actorProp52.property.addAll(objProp52)
+		actProp52.property = prop52;
+		actorProp52.property.addAll(actProp52)
 		sent52.properties = actorProp52
-		sent52.modality = Modality.MUST
+		sent52.modality = "must"
 //		sent52.negation = true;
 		sent52.auxiliarVerb = "be"
 		val pred52 = RequirementDSLFactory.eINSTANCE.createPredicate();
@@ -1256,17 +1333,17 @@ in Lookup
 		// TEST 6 - NEGATION
 		val sent61 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp61 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp61 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp61 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object61 = RequirementDSLFactory.eINSTANCE.createObject();
 		object61.object.addAll("Barnie")
-		objProp61.object = object61
+		actProp61.object = object61
 		val prop61 = RequirementDSLFactory.eINSTANCE.createProperty();
 //		prop61.relativ = "relative"
 		prop61.property.addAll("mum")
-		objProp61.property = prop61;
-		actorProp61.property.addAll(objProp61)
+		actProp61.property = prop61;
+		actorProp61.property.addAll(actProp61)
 		sent61.properties = actorProp61
-		sent61.modality = Modality.MUST
+		sent61.modality = "must"
 		sent61.negation = true;
 		sent61.auxiliarVerb = "be"
 		val pred61 = RequirementDSLFactory.eINSTANCE.createPredicate();
@@ -1279,7 +1356,7 @@ in Lookup
 			"<Barnie's mum> be trinking tea", resElement6);
 		val sent62 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp62 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp62 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val objProp62 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object62 = RequirementDSLFactory.eINSTANCE.createObject();
 		object62.object.addAll("Barnie")
 		objProp62.object = object62
@@ -1289,7 +1366,7 @@ in Lookup
 		objProp62.property = prop62;
 		actorProp62.property.addAll(objProp62)
 		sent62.properties = actorProp62
-		sent62.modality = Modality.MUST
+		sent62.modality = "must"
 		sent62.negation = true;
 		sent62.auxiliarVerb = "be"
 		val pred62 = RequirementDSLFactory.eINSTANCE.createPredicate();
@@ -1304,17 +1381,17 @@ in Lookup
 		// TEST 7 Auxiliar PredicateObject
 		val sent71 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp71 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp71 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp71 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object71 = RequirementDSLFactory.eINSTANCE.createObject();
 		object71.object.addAll("Barnie")
-		objProp71.object = object71
+		actProp71.object = object71
 		val prop71 = RequirementDSLFactory.eINSTANCE.createProperty();
 //		prop71.relativ = "relative"
 		prop71.property.addAll("mum")
-		objProp71.property = prop71;
-		actorProp71.property.addAll(objProp71)
+		actProp71.property = prop71;
+		actorProp71.property.addAll(actProp71)
 		sent71.properties = actorProp71
-		sent71.modality = Modality.MUST
+		sent71.modality = "must"
 //		sent71.negation = true;
 		sent71.auxiliarVerb = "be"
 		val pred71 = RequirementDSLFactory.eINSTANCE.createPredicate
@@ -1334,17 +1411,17 @@ in Lookup
 			"<Barnie's mum> be tea", resElement7);
 		val sent72 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp72 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp72 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp72 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object72 = RequirementDSLFactory.eINSTANCE.createObject();
 		object72.object.addAll("Barnie")
-		objProp72.object = object72
+		actProp72.object = object72
 		val prop72 = RequirementDSLFactory.eINSTANCE.createProperty();
 //		prop72.relativ = "relative"
 		prop72.property.addAll("mum")
-		objProp72.property = prop72;
-		actorProp72.property.addAll(objProp72)
+		actProp72.property = prop72;
+		actorProp72.property.addAll(actProp72)
 		sent72.properties = actorProp72
-		sent72.modality = Modality.MUST
+		sent72.modality = "must"
 //		sent72.negation = true;
 		sent72.auxiliarVerb = "be"
 		val pred72 = RequirementDSLFactory.eINSTANCE.createPredicate();
@@ -1367,15 +1444,15 @@ in Lookup
 		// actors=Actors property=Property rela=Relation? auxNeg=AuxNeg (predObj=PredOrObject | constraints=Constraints) ending=SentenceEnding?
 		val sent81 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp81 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp81 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp81 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object81 = RequirementDSLFactory.eINSTANCE.createObject();
 		object81.object.addAll("Barnie")
-		objProp81.object = object81
+		actProp81.object = object81
 		val prop81 = RequirementDSLFactory.eINSTANCE.createProperty();
 //		prop81.relativ = "relative"
 		prop81.property.addAll("mum")
-		objProp81.property = prop81;
-		actorProp81.property.addAll(objProp81)
+		actProp81.property = prop81;
+		actorProp81.property.addAll(actProp81)
 		sent81.properties = actorProp81
 		val aux81 = RequirementDSLFactory.eINSTANCE.createAuxNeg();
 		aux81.auxiliarVerbNeg = "doesn\'t"
@@ -1390,15 +1467,15 @@ in Lookup
 			"<Barnie's mum> does trinking tea", resElement8);
 		val sent82 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp82 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp82 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp82 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object82 = RequirementDSLFactory.eINSTANCE.createObject();
 		object82.object.addAll("Barnie")
-		objProp82.object = object82
+		actProp82.object = object82
 		val prop82 = RequirementDSLFactory.eINSTANCE.createProperty();
 //		prop82.relativ = "relative"
 		prop82.property.addAll("mum")
-		objProp82.property = prop82;
-		actorProp82.property.addAll(objProp82)
+		actProp82.property = prop82;
+		actorProp82.property.addAll(actProp82)
 		sent82.properties = actorProp82
 		val aux82 = RequirementDSLFactory.eINSTANCE.createAuxNeg();
 		aux82.auxiliarVerbNeg = "doesn\'t"
@@ -1415,7 +1492,7 @@ in Lookup
 		// TEST 9 AUXNEG	 PREDOBJ
 		val sent91 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp91 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp91 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val objProp91 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object91 = RequirementDSLFactory.eINSTANCE.createObject();
 		object91.object.addAll("Barnie")
 		objProp91.object = object91
@@ -1445,15 +1522,15 @@ in Lookup
 			"<Barnie's mum> do tea", resElement9);
 		val sent92 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp92 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp92 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp92 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object92 = RequirementDSLFactory.eINSTANCE.createObject();
 		object92.object.addAll("Barnie")
-		objProp92.object = object92
+		actProp92.object = object92
 		val prop92 = RequirementDSLFactory.eINSTANCE.createProperty();
 //		prop92.relativ = "relative"
 		prop92.property.addAll("mum")
-		objProp92.property = prop92;
-		actorProp92.property.addAll(objProp92)
+		actProp92.property = prop92;
+		actorProp92.property.addAll(actProp92)
 		sent92.properties = actorProp92
 		val aux92 = RequirementDSLFactory.eINSTANCE.createAuxNeg();
 		aux92.auxiliarVerbNeg = "don\'t"
@@ -1474,96 +1551,18 @@ in Lookup
 			"<Barnie's mum> do tea", resElement9);
 		sw.lookup.clear()
 
-		// TEST 10 AUXNEG	 Constraint
-		// actors=Actors property=Property rela=Relation? auxNeg=AuxNeg (predObj=PredOrObject | constraints=Constraints) ending=SentenceEnding?
-		val sent101 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
-		val actorProp101 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp101 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
-		val object101 = RequirementDSLFactory.eINSTANCE.createObject();
-		object101.object.addAll("Barnie")
-		objProp101.object = object101
-		val prop101 = RequirementDSLFactory.eINSTANCE.createProperty();
-//		prop101.relativ = "relative"
-		prop101.property.addAll("mum")
-		objProp101.property = prop101;
-		actorProp101.property.addAll(objProp101)
-		sent101.properties = actorProp101
-		val aux101 = RequirementDSLFactory.eINSTANCE.createAuxNeg();
-		aux101.auxiliarVerbNeg = "doesn\'t"
-		sent101.auxNeg = aux101
-		val consts101 = RequirementDSLFactory.eINSTANCE.createConstraints();
-		val const101 = RequirementDSLFactory.eINSTANCE.createConstraint();
-		val conOrd101 = RequirementDSLFactory.eINSTANCE.createConstraintOrdinators();
-//		conOrd101.stuffing = 
-		conOrd101.adverbial = "on"
-//		conOrd101.comperator = value
-		const101.ordinator = conOrd101;
-		val objConstr101 = RequirementDSLFactory.eINSTANCE.createObjectConstraint();
-		val obj101 = RequirementDSLFactory.eINSTANCE.createObject();
-		val pre101 = RequirementDSLFactory.eINSTANCE.createPreNominative();
-		pre101.article = "the"
-		obj101.article = pre101;
-		obj101.object.addAll("park", "spot");
-		objConstr101.object = obj101;
-		const101.constraint = objConstr101;
-		consts101.constraint = const101;
-		sent101.constraints = consts101
-		sw.casePropertySentence(sent101);
-		val resElement10 = new SemanticTextElement("<Barnie's mum> does on park spot", RequirementType.RELATION);
-		softly.assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
-		softly.assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry(
-			"<Barnie's mum> does on park spot", resElement10);
-		val sent102 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
-		val actorProp102 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp102 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
-		val object102 = RequirementDSLFactory.eINSTANCE.createObject();
-		object102.object.addAll("Barnie")
-		objProp102.object = object102
-		val prop102 = RequirementDSLFactory.eINSTANCE.createProperty();
-//		prop102.relativ = "relative"
-		prop102.property.addAll("mum")
-		objProp102.property = prop102;
-		actorProp102.property.addAll(objProp102)
-		sent102.properties = actorProp102
-		val aux102 = RequirementDSLFactory.eINSTANCE.createAuxNeg();
-		aux102.auxiliarVerbNeg = "doesn\'t"
-		sent102.auxNeg = aux102
-		val consts102 = RequirementDSLFactory.eINSTANCE.createConstraints();
-		val const102 = RequirementDSLFactory.eINSTANCE.createConstraint();
-		val conOrd102 = RequirementDSLFactory.eINSTANCE.createConstraintOrdinators();
-//		conOrd102.stuffing = 
-		conOrd102.adverbial = "on"
-//		conOrd102.comperator = value
-		const102.ordinator = conOrd102;
-		val objConstr102 = RequirementDSLFactory.eINSTANCE.createObjectConstraint();
-		val obj102 = RequirementDSLFactory.eINSTANCE.createObject();
-		val pre102 = RequirementDSLFactory.eINSTANCE.createPreNominative();
-		pre102.article = "the"
-		obj102.article = pre102;
-		obj102.object.addAll("park", "spot");
-		objConstr102.object = obj102;
-		const102.constraint = objConstr102;
-		consts102.constraint = const102;
-		sent102.constraints = consts102
-		sw.casePropertySentence(sent102);
-		sw.casePropertySentence(sent102);
-		softly.assertThat(sw.lookup).^as("Analysis of Lookup Size:").hasSize(1);
-		softly.assertThat(sw.lookup).^as("Analysis of Property Element in Lookup:").containsEntry(
-			"<Barnie's mum> does on park spot", resElement10);
-		sw.lookup.clear()
-
 		// TEST 11 - Sentence Ending
 		val sent111 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp111 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp111 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp111 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object111 = RequirementDSLFactory.eINSTANCE.createObject();
 		object111.object.addAll("Barnie")
-		objProp111.object = object111
+		actProp111.object = object111
 		val prop111 = RequirementDSLFactory.eINSTANCE.createProperty();
 //		prop111.relativ = "relative"
 		prop111.property.addAll("mum")
-		objProp111.property = prop111;
-		actorProp111.property.addAll(objProp111)
+		actProp111.property = prop111;
+		actorProp111.property.addAll(actProp111)
 		sent111.properties = actorProp111
 		val pred111 = RequirementDSLFactory.eINSTANCE.createPredicate();
 		pred111.predicates.addAll("trinking", "tea");
@@ -1587,15 +1586,15 @@ in Lookup
 			"<Barnie's mum> trinking tea on house boot", resElement11);
 		val sent112 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp112 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp112 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp112 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object112 = RequirementDSLFactory.eINSTANCE.createObject();
 		object112.object.addAll("Barnie")
-		objProp112.object = object112
+		actProp112.object = object112
 		val prop112 = RequirementDSLFactory.eINSTANCE.createProperty();
 //		prop112.relativ = "relative"
 		prop112.property.addAll("mum")
-		objProp112.property = prop112;
-		actorProp112.property.addAll(objProp112)
+		actProp112.property = prop112;
+		actorProp112.property.addAll(actProp112)
 		sent112.properties = actorProp112
 		val pred112 = RequirementDSLFactory.eINSTANCE.createPredicate();
 		pred112.predicates.addAll("trinking", "tea");
@@ -1621,15 +1620,15 @@ in Lookup
 		// actors=Actors property=Property rela=Relation? auxNeg=AuxNeg (predObj=PredOrObject | constraints=Constraints) ending=SentenceEnding?
 		val sent121 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp121 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp121 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp121 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object121 = RequirementDSLFactory.eINSTANCE.createObject();
 		object121.object.addAll("Barnie")
-		objProp121.object = object121
+		actProp121.object = object121
 		val prop121 = RequirementDSLFactory.eINSTANCE.createProperty();
 //		prop121.relativ = "relative"
 		prop121.property.addAll("mum")
-		objProp121.property = prop121;
-		actorProp121.property.addAll(objProp121)
+		actProp121.property = prop121;
+		actorProp121.property.addAll(actProp121)
 		sent121.properties = actorProp121
 		val aux121 = RequirementDSLFactory.eINSTANCE.createAuxNeg();
 		aux121.auxiliarVerbNeg = "doesn\'t"
@@ -1656,15 +1655,15 @@ in Lookup
 			"<Barnie's mum> does trinking tea on house boot", resElement12);
 		val sent122 = RequirementDSLFactory.eINSTANCE.createPropertySentence();
 		val actorProp122 = RequirementDSLFactory.eINSTANCE.createActorProperties();
-		val objProp122 = RequirementDSLFactory.eINSTANCE.createObjectProperty();
+		val actProp122 = RequirementDSLFactory.eINSTANCE.createActorProperty();
 		val object122 = RequirementDSLFactory.eINSTANCE.createObject();
 		object122.object.addAll("Barnie")
-		objProp122.object = object122
+		actProp122.object = object122
 		val prop122 = RequirementDSLFactory.eINSTANCE.createProperty();
 //		prop122.relativ = "relative"
 		prop122.property.addAll("mum")
-		objProp122.property = prop122;
-		actorProp122.property.addAll(objProp122)
+		actProp122.property = prop122;
+		actorProp122.property.addAll(actProp122)
 		sent122.properties = actorProp122
 		val aux122 = RequirementDSLFactory.eINSTANCE.createAuxNeg();
 		aux122.auxiliarVerbNeg = "doesn\'t"
@@ -1726,7 +1725,7 @@ in Lookup
 //		val sent21 = RequirementDSLFactory.eINSTANCE.createRelativeSentence();
 //		// 'which' | 'who' | 'that'
 //		sent21.pronoun = "which";
-//		sent21.modelity = Modality.MUST;
+//		sent21.modelity = "must";
 //		sent21.negation = false
 //		val pred21 = RequirementDSLFactory.eINSTANCE.createPredicate();
 //		// predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject

@@ -73,7 +73,7 @@ PropertySentence:
 ;
 
 ActorProperties:
-	property+=ObjectProperty rela+=Relation? (conjunction+=Conjunction property+=ObjectProperty rela+=Relation?)* 
+	property+=ActorProperty (conjunction+=Conjunction property+=ActorProperty)* 
 ;
 
 
@@ -83,9 +83,9 @@ SentenceBegin:
 
 SentenceEnding:
 	//SOLLTE nicht Relation in CONTRAINTS drin sein -> seems not to work
-	const+=Constraints+ |
-	const+=Constraints* rela=Relation |
-	rela=Relation const+=Constraints+
+	// warum nicht so???: const+=Constraints* rela=Relation const+=Constraints* 
+	constraints=Constraints rela=Relation? |
+	rela=Relation constraints=Constraints?
 ;
 
 /* =========== RELATIVE CLAUSE =========== */
@@ -98,9 +98,9 @@ RelativeClause:
 	sentence=RelativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*	
 ;
 RelativeSentence :
-	pronoun=RelativePronounsSubject modelity=Modality negation?=Negation? predicate=Predicate  constraints+=Constraints*  |
-	pronoun=RelativePronounsSubject (auxiliar=AuxiliaryVerb negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
-	pronoun=RelativePronounsSubject auxNeg=AuxiliaryVerbNegation predicate=Predicate  constraints+=Constraints* |
+	pronoun=RelativePronounsSubject modelity=Modality negation?=Negation? predicate=Predicate  constraints=Constraints?  |
+	pronoun=RelativePronounsSubject (auxiliar=AuxiliaryVerb negation?=Negation)? predicate=Predicate  constraints=Constraints? |
+	pronoun=RelativePronounsSubject auxNeg=AuxiliaryVerbNegation predicate=Predicate  constraints=Constraints? |
 	pronoun=RelativePronounsObject  (clause=ModalitySentence | clause=PredicateSentence)
 ;
 
@@ -154,11 +154,16 @@ Relation:
 ;
 
 RelObjects:
-	(object+=Object|property+=ObjectProperty) (relConj+=RelConjunction (object+=Object | property+=ObjectProperty))*
+	(object+=Object|property+=RelObjectProperty) (relConj+=RelConjunction (object+=Object | property+=RelObjectProperty))*
 ;
 
 
-ObjectProperty:
+ActorProperty:
+	object=Object property=Property rela=Relation?
+;
+
+//RelObject cannot have a relation because it is a relation
+RelObjectProperty:
 	object=Object property=Property
 ;
 
@@ -169,12 +174,15 @@ Property:
 /* =========== CONSTRAINTS =========== */
 
 Constraints:
-	(timeConstraint+=TimeConstraint | constraint+=Constraint) (conjunction+= Conjunction (timeConstraint+=TimeConstraint | constraint+=Constraint))*
+//	(timeConstraint+=TimeConstraint | constraint+=Constraint) (conjunction+= Conjunction (timeConstraint+=TimeConstraint | constraint+=Constraint))*
+//	(timeConstraint=TimeConstraint constraint=Constraint? | constraint=Constraint timeConstraint=TimeConstraint?) (conjunction+=Conjunction constraints=Constraint)?	
+	(timeConstraint+=TimeConstraint | constraint+=Constraint)+ (conjunction=Conjunction constraints=Constraints)?
 ;
 
 Constraint:
-	ordinator=ConstraintOrdinators (constraint=ObjectConstraint | constraint=UnitConstraints | constraint= SetConstraint)
-;	
+	ordinator=ConstraintOrdinators (constraint=ObjectConstraint | constraint=UnitConstraint | constraint=SetConstraint)
+;
+
 
 ConstraintOrdinators:
 	stuffing=StuffWord? adverbial=Adverbial comperator=Comperators?
@@ -194,16 +202,16 @@ ObjectConstraint:
 ;
 
 
-UnitConstraints:
-	 SingleValueConstraints | IntervallConstraints
+UnitConstraint:
+	 ( SingleValueConstraint | IntervallConstraint )
 ;
 
 
-IntervallConstraints:
-	'[' lower=Value','higher=Value ']'
+IntervallConstraint:
+	('[' lower=Value','higher=Value ']')
 ;
 
-SingleValueConstraints:
+SingleValueConstraint:
 	 value=Value
 ;
 
@@ -219,15 +227,16 @@ ObjectSet:
 ;
 
 Value:
-	IntValue| FloatValue
+	(IntValue| FloatValue)
 ;
 
 IntValue:
+	//PROBLEM WE HAVE A PROBLEM HERE WITH CONSTRAINTS: ANTLRWORKS CAN GENERATE DEBUGPARSER
 	value=INT unit=Unit? object+=WORD*
 ;
 
 FloatValue:
-	value=FLOAT  unit=Unit? object+=WORD*
+	value=FLOAT unit=Unit? object+=WORD*
 ;
 
 /* =========== BASIC TEXT BLOCKS / WORDS =========== */
@@ -351,11 +360,11 @@ RelativePronounsObject:
 /* =========== BASIC UNITS =========== */
 
 FLOAT returns ecore::EFloat:
-	INT'.'INT
+	(INT'.'INT)
 ;
 
 Unit:
-	 LengthUnits | PresureUnits | HeatUnits | MassUnits | VelcoityUnits | Cuvature
+	(LengthUnits | PresureUnits | HeatUnits | MassUnits | VelcoityUnits | Cuvature)
 ;
 
 

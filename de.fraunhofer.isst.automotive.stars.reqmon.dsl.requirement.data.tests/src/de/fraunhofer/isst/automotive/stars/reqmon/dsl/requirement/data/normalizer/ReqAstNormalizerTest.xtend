@@ -34,8 +34,8 @@ import static org.assertj.core.api.Assertions.assertThat
 /** 
  * @author mmauritz
  */
-@ExtendWith(InjectionExtension)
-@InjectWith(RequirementDSLInjectorProvider)
+@ExtendWith(typeof(InjectionExtension))
+@InjectWith(typeof(RequirementDSLInjectorProvider))
 package class ReqAstNormalizerTest {
 
 	@Inject package ParseHelper<RequirementModel> parseHelper
@@ -95,9 +95,11 @@ package class ReqAstNormalizerTest {
 
 		val expectedModel = parseHelper.parse(
 			"
-				Req 1: The system must not perform a lane change to any lane and the bus must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is behind the ego vehicle and the vehicle's relative velocity is more than 5 m/s.\n
-				"
+			Req 1: The system must not perform a lane change to any lane and the bus must not perform a lane change to any lane if a vehicle is on that lane and the vehicle is behind the ego vehicle and the vehicle's relative velocity is more than 5 m/s.\n
+			"
 		)
+		System.out.println(validationHelper === null ? "help null" : "help not null");
+		System.out.println(expectedModel === null ? "model null" : "model not null");
 		validationHelper.assertNoErrors(expectedModel);
 //      assertThat(normModel).^as("Model Comparison").isEqualTo(expectedModel);
 		// Compare the two models
@@ -185,7 +187,7 @@ package class ReqAstNormalizerTest {
 		val result2 = comparator.compare(scope2);
 		assertThat(result2.differences.size()).^as("EMF Compare Result:").isLessThanOrEqualTo(4); // for changes are -> is
 	}
-
+/*TODO
 	@Test def package void testRelObjectsNormalization() {
 
 		// Relations
@@ -271,4 +273,6 @@ package class ReqAstNormalizerTest {
 		val result2 = comparator.compare(scope2);
 		assertThat(result2.differences.size()).^as("EMF Compare Result:").isLessThanOrEqualTo(4); // for changes are -> is
 	}
+	*  
+	*/
 }

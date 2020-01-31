@@ -588,18 +588,18 @@ class RequirementDSLProposalProvider extends AbstractRequirementDSLProposalProvi
 		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
 	}
 	
-	override void complete_UnitConstraints(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-		super.complete_UnitConstraints(model, ruleCall, context, acceptor)
+	override void complete_UnitConstraint(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_UnitConstraint(model, ruleCall, context, acceptor)
 		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
 	}
 	
-	override void complete_IntervallConstraints(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-		super.complete_IntervallConstraints(model, ruleCall, context, acceptor)
+	override void complete_IntervallConstraint(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_IntervallConstraint(model, ruleCall, context, acceptor)
 		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
 	}
 	
-	override void complete_SingleValueConstraints(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-		super.complete_SingleValueConstraints(model, ruleCall, context, acceptor)
+	override void complete_SingleValueConstraint(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		super.complete_SingleValueConstraint(model, ruleCall, context, acceptor)
 		helpRuleComplete(ruleCall, context, acceptor, 0, 0, true)
 	}
 	

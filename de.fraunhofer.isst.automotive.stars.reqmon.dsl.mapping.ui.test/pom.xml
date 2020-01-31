@@ -9,7 +9,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test</artifactId>
+	<artifactId>de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.tests</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 
 	<build>
