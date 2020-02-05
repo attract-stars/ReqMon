@@ -23,6 +23,7 @@ Require-Bundle: org.eclipse.xtext;bundle-version="2.14.0",
  org.eclipse.core.runtime,
  org.assertj;bundle-version="1.7.1"
 Bundle-Vendor: Fraunhofer ISST.
-Import-Package: org.junit;version="4.12.0",
+Import-Package: org.apache.log4j;version="1.2.15",
+ org.junit;version="4.12.0",
  org.junit.jupiter.api;version="5.5.0",
  org.junit.jupiter.api.extension;version="5.5.0"
