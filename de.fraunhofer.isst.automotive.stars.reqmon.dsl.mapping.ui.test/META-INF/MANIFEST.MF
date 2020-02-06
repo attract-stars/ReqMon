@@ -19,7 +19,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.editors,
  org.eclipse.xtext.ui,
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui;bundle-version="1.0.0",
- de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.ui;bundle-version="1.0.0"
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.ui;bundle-version="1.0.0",
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition;bundle-version="1.0.0"
 Export-Package: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.logic.test,
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.moreTests,
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.test,

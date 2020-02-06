@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.parser.IParseResult;
 import org.eclipse.xtext.parser.IParser;
 
@@ -21,6 +22,8 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.ISy
  *
  */
 public class SystemImporter implements ISystemImporter {
+	
+	private EObject model;
 	
 	
 	@Override
@@ -54,12 +57,17 @@ public class SystemImporter implements ISystemImporter {
 			return false;
 		}
 		
-		System.out.println("Result is correct");
+		System.out.println("Result is correct: " + result.getRootASTElement());
+		model = result.getRootASTElement();
 		return true;
 	}
-	
-	
-	
+
+
+	public EObject getSystemModel() {
+		return model;
+	}
+
+
 
 
 }

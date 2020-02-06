@@ -2,6 +2,10 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor;
 
 import com.google.inject.Injector;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.text.source.LineNumberRulerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -23,6 +27,7 @@ public class MappingEditorHelper {
 	
 	private EmbeddedEditor editor;
 	private CostumResourceProvider provider;
+	private int index = 0;
 	
 	
 	/**
@@ -41,6 +46,8 @@ public class MappingEditorHelper {
         top.setLayout(new GridLayout());
 			
 		provider = dslInjector.getInstance(CostumResourceProvider.class);
+		provider.setIndex(index);
+		index++;
 		EmbeddedEditorFactory factory = dslInjector.getInstance(EmbeddedEditorFactory.class);
 		
 		editor = factory.newEditor((IEditedResourceProvider)provider).showErrorAndWarningAnnotations().withParent(parent);
@@ -72,6 +79,9 @@ public class MappingEditorHelper {
         top.setLayout(new GridLayout());
 			
 		provider = dslInjector.getInstance(CostumResourceProvider.class);
+		provider.setIndex(index);
+		index++;
+		
 		EmbeddedEditorFactory factory = dslInjector.getInstance(EmbeddedEditorFactory.class);
 		
 		editor = factory.newEditor((IEditedResourceProvider)provider).showErrorAndWarningAnnotations().withParent(parent);
@@ -79,8 +89,10 @@ public class MappingEditorHelper {
 		return editor;
 
 	}
-	
-	
+
+	public Resource getResource() {
+		return provider.getResource();
+	}
 	
 
 }

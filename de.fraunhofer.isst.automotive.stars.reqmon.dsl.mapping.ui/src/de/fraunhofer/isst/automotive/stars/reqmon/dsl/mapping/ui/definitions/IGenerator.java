@@ -1,5 +1,6 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions;
 
+
 /**
  * An implementation of this interface should generate code based on the mapping of the requirements with the system.
  * 
@@ -9,8 +10,10 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions;
 public interface IGenerator {
 	
 	/**
-	 * Generates code based on the mapping of the requirements with the system.
+	 * Generates code based on the informations of the given model.
+	 * @param model all informations that can be used for the code generation
+	 * @param projectName the name of the mapping project
 	 */
-	public void generate(); // TODO: parameters ?
+	public void generate(IMappingModel model, String projectName); 
 
 }

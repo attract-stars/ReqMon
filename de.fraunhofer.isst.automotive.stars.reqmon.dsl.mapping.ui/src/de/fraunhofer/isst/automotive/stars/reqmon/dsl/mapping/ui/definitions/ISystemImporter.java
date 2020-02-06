@@ -1,5 +1,6 @@
 package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions;
 
+import org.eclipse.emf.ecore.EObject;
 
 /**
  * An implementation of this class should be able to check, if the content of the imported system model file
@@ -17,6 +18,6 @@ public interface ISystemImporter {
 	 */
 	public boolean check(String path); 
 	
-	
+	public EObject getSystemModel();
 
 }

@@ -84,6 +84,8 @@ public class SerializationController {
 			fileStream = new FileOutputStream(new File(filename));
 			System.out.println("Save model as " + filename);
 			
+			//System.out.println("syspath: " + model.getSysPath());
+			
 			out = new ObjectOutputStream(fileStream);
 			
 			out.writeObject(model);
@@ -141,7 +143,10 @@ public class SerializationController {
 					//System.out.println("ReqType: " + req.getElementType());
 				}
 			}
+			System.out.println("Generator: " + saveModel.getGenLabel() + ", index: " 
+					+ saveModel.getGeneratorIndex());
 		*/	
+
 		} catch (FileNotFoundException e) {
 			System.out.println("No saved model!");
 			//e.printStackTrace();

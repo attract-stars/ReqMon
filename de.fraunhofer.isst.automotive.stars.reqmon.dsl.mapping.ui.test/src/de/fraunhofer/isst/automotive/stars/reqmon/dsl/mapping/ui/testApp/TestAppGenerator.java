@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IGenerator;
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMappingModel;
 
 /**
  * This class implements the IGenerator interface and creates a sample generator list.
@@ -63,9 +64,17 @@ public class TestAppGenerator implements IGenerator {
 		return "";
 	}
 	
-	@Override
+	
 	public void generate() {
 		System.out.println("Call the " + generateLabels.get(index));
+	}
+
+
+
+	@Override
+	public void generate(IMappingModel model, String projectName) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

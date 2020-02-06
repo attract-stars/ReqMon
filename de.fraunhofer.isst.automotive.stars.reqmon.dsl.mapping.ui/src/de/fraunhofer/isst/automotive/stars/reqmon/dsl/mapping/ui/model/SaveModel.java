@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMappingModel;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IRequirementElement;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.RequirementType;
 
@@ -16,7 +20,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.Requirem
  * @author sgraf
  *
  */
-public class SaveModel implements Serializable {
+public class SaveModel implements Serializable, IMappingModel {
 	
 	/**
 	 * Generated SerialVersionUID.
@@ -25,14 +29,54 @@ public class SaveModel implements Serializable {
 	private String reqPath;
 	private String sysPath;
 	private List<MappingObject> mappingObjects;
+	private String genLabel;
+	private int generatorIndex;
 	
+	// Exclude this fields from serialization
+	private transient List<Resource> mappingResourceList;
+	private transient List<? extends IRequirementElement> requirements;
+	private transient EObject systemModel;
 	
+
 	public SaveModel() {
 		reqPath = "";
 		sysPath = "";
 		mappingObjects = new ArrayList<MappingObject>();
+		
+		mappingResourceList = new ArrayList<Resource>();
+		requirements = new ArrayList<IRequirementElement>();
 	}
 	
+	@Override
+	public List<Resource> getMappingResourceList() {
+		return mappingResourceList;
+	}
+
+	@Override
+	public void setMappingResourceList(List<Resource> mappingResourceList) {
+		this.mappingResourceList = mappingResourceList;
+	}
+
+	@Override
+	public List<? extends IRequirementElement> getRequirementList() {
+		return requirements;
+	}
+
+	@Override
+	public void setRequirementList(List<? extends IRequirementElement> requirementList) {
+		this.requirements = requirementList;
+		
+	}
+
+	@Override
+	public EObject getSystemModel() {
+		return systemModel;
+	}
+
+	@Override
+	public void setSystemModel(EObject systemModel) {
+		this.systemModel = systemModel;
+	}
 	
 	/**
 	 * Returns the requirement list.
@@ -233,6 +277,22 @@ public class SaveModel implements Serializable {
 	 */
 	public void setMappingObjects(List<MappingObject> mappingObjects) {
 		this.mappingObjects = mappingObjects;
+	}
+
+	public String getGenLabel() {
+		return genLabel;
+	}
+
+	public void setGenLabel(String genLabel) {
+		this.genLabel = genLabel;
+	}
+
+	public int getGeneratorIndex() {
+		return generatorIndex;
+	}
+
+	public void setGeneratorIndex(int generatorIndex) {
+		this.generatorIndex = generatorIndex;
 	}
 	
 	

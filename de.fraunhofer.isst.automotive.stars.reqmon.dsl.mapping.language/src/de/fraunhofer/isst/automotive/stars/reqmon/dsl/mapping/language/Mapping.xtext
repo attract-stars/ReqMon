@@ -49,7 +49,7 @@ StructureID:
 ;
 
 ClassID:
-	def='class' clas=[system::ClassNode | STRING]? 
+	def='class' cla=[system::ClassNode | STRING]? 
 ;
 
 AttributeID:

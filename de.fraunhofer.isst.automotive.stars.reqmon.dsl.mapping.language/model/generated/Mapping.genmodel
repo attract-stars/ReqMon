@@ -38,7 +38,7 @@
     </genClasses>
     <genClasses ecoreClass="Mapping.ecore#//ClassID">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mapping.ecore#//ClassID/def"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//ClassID/clas"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mapping.ecore#//ClassID/cla"/>
     </genClasses>
     <genClasses ecoreClass="Mapping.ecore#//AttributeID">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mapping.ecore#//AttributeID/def"/>
