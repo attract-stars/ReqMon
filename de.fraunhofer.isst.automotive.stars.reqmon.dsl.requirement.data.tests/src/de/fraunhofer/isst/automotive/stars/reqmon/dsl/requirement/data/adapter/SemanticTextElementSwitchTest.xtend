@@ -398,7 +398,7 @@ package class SemanticTextElementSwitchTest {
 		// predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
 		pred11.predicates.addAll("is", "working");
 		sent11.predicate = pred11
-		relClause11.sentence = sent11;
+		relClause11.sentences.add(sent11);
 		existClause11.relativeClause = relClause11;
 		val actors11 = RequirementDSLFactory.eINSTANCE.createActors();
 		val actor11 = RequirementDSLFactory.eINSTANCE.createActor();
@@ -421,7 +421,7 @@ package class SemanticTextElementSwitchTest {
 		// predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
 		pred12.predicates.addAll("is", "working");
 		sent12.predicate = pred12
-		relClause12.sentence = sent12;
+		relClause12.sentences.add(sent12);
 		existClause12.relativeClause = relClause12;
 		val actors12 = RequirementDSLFactory.eINSTANCE.createActors();
 		val actor12 = RequirementDSLFactory.eINSTANCE.createActor();
@@ -463,7 +463,7 @@ package class SemanticTextElementSwitchTest {
 		const21.constraint = objConstr21;
 		consts21.constraint.add(const21);
 		sent21.constraints = consts21;
-		relClause21.sentence = sent21;
+		relClause21.sentences.add(sent21);
 		existClause21.relativeClause = relClause21;
 		val actors21 = RequirementDSLFactory.eINSTANCE.createActors();
 		val actor21 = RequirementDSLFactory.eINSTANCE.createActor();
@@ -503,7 +503,7 @@ package class SemanticTextElementSwitchTest {
 		const22.constraint = objConstr22;
 		consts22.constraint.add(const22);
 		sent22.constraints = consts22;
-		relClause22.sentence = sent22;
+		relClause22.sentences.add(sent22);
 		existClause22.relativeClause = relClause22;
 		val actors22 = RequirementDSLFactory.eINSTANCE.createActors();
 		val actor22 = RequirementDSLFactory.eINSTANCE.createActor();
@@ -528,7 +528,7 @@ package class SemanticTextElementSwitchTest {
 		// predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
 		pred31.predicates.addAll("building");
 		sent31.predicate = pred31
-		relClause31.sentence = sent31;
+		relClause31.sentences.add(sent31);
 		existClause31.relativeClause = relClause31;
 		val actors31 = RequirementDSLFactory.eINSTANCE.createActors();
 		val actor31 = RequirementDSLFactory.eINSTANCE.createActor();
@@ -551,7 +551,7 @@ package class SemanticTextElementSwitchTest {
 		// predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
 		pred32.predicates.addAll("building");
 		sent32.predicate = pred32
-		relClause32.sentence = sent32;
+		relClause32.sentences.add(sent32);
 		existClause32.relativeClause = relClause32;
 		val actors32 = RequirementDSLFactory.eINSTANCE.createActors();
 		val actor32 = RequirementDSLFactory.eINSTANCE.createActor();
@@ -576,7 +576,7 @@ package class SemanticTextElementSwitchTest {
 		// predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
 		pred41.predicates.addAll("is", "working");
 		sent41.predicate = pred41
-		relClause41.sentence = sent41;
+		relClause41.sentences.add(sent41);
 		existClause41.relativeClause = relClause41;
 		val actors41 = RequirementDSLFactory.eINSTANCE.createActors();
 		val actor41 = RequirementDSLFactory.eINSTANCE.createActor();
@@ -599,7 +599,7 @@ package class SemanticTextElementSwitchTest {
 		// predicates+=WORD+ | predicates+=STRING | predicates+=WORD+ object=PredicateObject
 		pred42.predicates.addAll("be", "bramming");
 		sent42.predicate = pred42
-		relClause42.sentence = sent42;
+		relClause42.sentences.add(sent42);
 		existClause42.relativeClause = relClause42;
 		val actors42 = RequirementDSLFactory.eINSTANCE.createActors();
 		val actor42 = RequirementDSLFactory.eINSTANCE.createActor();
@@ -999,7 +999,6 @@ package class SemanticTextElementSwitchTest {
 		sw.lookup.clear
 	}
 
-//TODO
 	@Test def package void testCaseActorPropertyActorProperty() {
 		// ObjectProperty:	object=Object property=Property
 		// PROPERTY_TERM relativ='relative'? (property+=WORD+ | property+=STRING)

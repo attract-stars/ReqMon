@@ -149,13 +149,11 @@ package class ReqAstNormalizerTest {
 			", "
 				Req 1: The vehicle must not alter in relation to the street if the vehicle's velocity has not changed.\n
 			", 4);
-		//TODO PROBLEMS HERE THE RELATION IS AUTOMATICALLY PUT TO THE END!!! SEE BELOW
 		val data7 = Arguments.of("
 				Req 1: In relation to the street and to the sky, the vehicle must not alter if the vehicle's velocity has not changed.\n
 			", "
 				Req 1: The vehicle's position must not altered in relation to the street and the vehicle's position must not altered in relation to the sky if the vehicle's velocity has not changed.\n
 			", 4);
-		//TODO PROBLEMS HERE THE RELATION IS AUTOMATICALLY PUT TO THE END!!! SEE BELOW
 		val data8 = Arguments.of("
 				Req 1: The vehicle's position must not altered in relation to the street and to the sky if the vehicle's velocity has not changed.\n
 			", "

@@ -27,9 +27,6 @@ import de.fraunhofer.isst.stars.requirementDSL.ConstraintOrdinators
 import de.fraunhofer.isst.stars.requirementDSL.SetConstraint
 import de.fraunhofer.isst.stars.requirementDSL.TimeConstraint
 import de.fraunhofer.isst.stars.requirementDSL.ObjectConstraint
-import de.fraunhofer.isst.stars.requirementDSL.UnitConstraints
-import de.fraunhofer.isst.stars.requirementDSL.IntervallConstraints
-import de.fraunhofer.isst.stars.requirementDSL.SingleValueConstraints
 import de.fraunhofer.isst.stars.requirementDSL.ValueSet
 import de.fraunhofer.isst.stars.requirementDSL.ObjectSet
 import de.fraunhofer.isst.stars.requirementDSL.IntValue
@@ -42,9 +39,11 @@ import de.fraunhofer.isst.stars.requirementDSL.Relation
 import org.eclipse.emf.common.util.EList
 import de.fraunhofer.isst.stars.requirementDSL.Conjunction
 import de.fraunhofer.isst.stars.requirementDSL.ActorProperties
-import de.fraunhofer.isst.stars.requirementDSL.ObjectProperty
 import de.fraunhofer.isst.stars.requirementDSL.ExistenceClause
-
+import de.fraunhofer.isst.stars.requirementDSL.RelObjectProperty
+import de.fraunhofer.isst.stars.requirementDSL.UnitConstraint
+import de.fraunhofer.isst.stars.requirementDSL.IntervallConstraint
+import de.fraunhofer.isst.stars.requirementDSL.SingleValueConstraint
 
 /**
  * Provides labels for EObjects.
@@ -209,8 +208,8 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 		"ActorProperties"
 	}
 	
-	def text(ObjectProperty op) {
-		"ObjectProperty"
+	def text(RelObjectProperty op) {
+		"RelObjectProperty"
 	}
 	
 	def text(Property ele) {
@@ -323,16 +322,16 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 		"ObjectConstraint"
 	}
 	
-	def text(UnitConstraints ele) {
+	def text(UnitConstraint ele) {
 		"UnitConstraint"
 	}
 	
-	def text(IntervallConstraints ele) {
-		"IntervallConstraints"
+	def text(IntervallConstraint ele) {
+		"IntervallConstraint"
 	}
 	
-	def text(SingleValueConstraints ele) {
-		"SingleValueConstraints"
+	def text(SingleValueConstraint ele) {
+		"SingleValueConstraint"
 	}
 	
 	def text(ValueSet ele) {

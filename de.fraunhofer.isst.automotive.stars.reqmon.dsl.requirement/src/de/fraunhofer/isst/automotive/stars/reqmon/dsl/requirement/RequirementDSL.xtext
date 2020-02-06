@@ -87,9 +87,8 @@ SentenceBegin:
 
 SentenceEnding:
 	//SOLLTE nicht Relation in CONTRAINTS drin sein -> seems not to work
-	const+=Constraints+ |
-	const+=Constraints* rela=Relation |
-	rela=Relation const+=Constraints+
+	constraints=Constraints rela=Relation? |
+    rela=Relation constraints=Constraints?
 ;
 
 /* =========== RELATIVE CLAUSE =========== */
@@ -98,7 +97,7 @@ SentenceEnding:
 RelativeClause:
 //  pronoun=RelativePronouns actors=Actors? modelity=Modality? negation?=Negation? predicate=Predicate constraints+=Constraints*
 //	sentence=RelativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*
-	sentence+=RelativeSentence (conjunction+=Conjunction sentence+=RelativeSentence)*	
+	sentences+=RelativeSentence (conjunction+=Conjunction sentences+=RelativeSentence)*	
 ;
 RelativeSentence :
 	pronoun=RelativePronounsSubject modelity=Modality negation?=Negation? predicate=Predicate  constraints=Constraints?  |

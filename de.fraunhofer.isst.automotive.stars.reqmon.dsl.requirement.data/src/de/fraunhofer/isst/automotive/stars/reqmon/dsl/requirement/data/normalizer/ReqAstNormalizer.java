@@ -318,14 +318,15 @@ public class ReqAstNormalizer {
 		}
 		if (sentence instanceof Existence) {
 			RelativeClause relClause = ((Existence) sentence).getRelativeClause();
-			RelativeSentence relSent = relClause.getSentence();
-			String auxiliar = relSent.getAuxiliar();
-			if (auxiliar != null) {
-				relSent.setAuxiliar(transposePluralVerb(auxiliar));
-			}
-			String auxNeg = relSent.getAuxNeg();
-			if (auxNeg != null) {
-				relSent.setAuxNeg(transposePluralVergNegation(auxNeg));
+			for (RelativeSentence relSent : relClause.getSentences()) {
+				String auxiliar = relSent.getAuxiliar();
+				if (auxiliar != null) {
+					relSent.setAuxiliar(transposePluralVerb(auxiliar));
+				}
+				String auxNeg = relSent.getAuxNeg();
+				if (auxNeg != null) {
+					relSent.setAuxNeg(transposePluralVergNegation(auxNeg));
+				}
 			}
 			// Further COnditional Clauses of RelativeClause have not be considered because
 			// they have their own actors
