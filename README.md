@@ -1,6 +1,6 @@
 # ReqMon
 
-ReqMon umfasst die Konzepion und Implementierung der Runtime Monitors im STARS Projekt.
+ReqMon umfasst die Konzeptionion und Implementierung der Runtime Monitors im STARS Projekt.
 
 
 ## Tools Libaries
@@ -44,20 +44,12 @@ Basierend auf den Syntaxbäumen der Anforderungen müssen jetzt die zentralen Sp
 * Weitere Sprachelemente der Anforderungen (z.B. Funktionen, Relationen) müssen identifiziert werden und in eine Formale Logik eingebracht werden
 * Anforderungen müssen als Formeln über die Logik ausgedrückt werden
 
-####Notwendige Arbeiten/ Entscheidungen:
-* Notwendige Sprachkonstrukte und zugehörige formale Sprache (STL, FOL, etc.) identifizieren
-
 ### 3. Schritt: Mapping von Anforderungen zu System
 Die Sprachelemente und Daten aus den Anforderungen müssen über dem Target-System interüretiert werden, um damit die Abstraktion des Monitoring bilden zu können und die abstrakte Beschreibung der Anforderungen aus den Daten des Target-Systems ableiten zu können.
 
 #### Input
 * Datenmodell, Logik, und Formeln der Anforderungen
 * Beschreibung der Systemdaten und den zugehörigen Zugriff
-
-#### Notwendige Arbeiten/ Entscheidungen:
-* Beschreibung der Systendaten 
-* Import der Systemdaten
-* Editor für manuelles Mapping der Logik und Systemdaten 
 
 ### 4. Schritt: Code-Generierung der Runtime Monitore
 Generierung von Source-Code zur Compilierung der Runtime Monitore für das Target-System von den Formeln der Anforderungen und den Mapping der Sprachelemente zu dem System
@@ -66,3 +58,6 @@ Generierung von Source-Code zur Compilierung der Runtime Monitore für das Targe
 * Art der Code-Generierung 
 * Engine für die Code-Generierung
 * Definition und Beschreibung für die Ausführung / Integration der Monitore mit dem System (Timing etc.)
+
+***
+The work was supported by the Fraunhofer Internal Programs under Grant No. Attract 015-618004
