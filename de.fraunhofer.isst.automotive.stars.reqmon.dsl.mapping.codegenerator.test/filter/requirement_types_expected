@@ -1,0 +1,31 @@
+#ifndef REQUIREMENT_DATA_TYPES_H
+#define REQUIREMENT_DATA_TYPES_H
+	
+	
+enum eReqLaneType { RESTRICTED = 0, EMERGENCY };
+	
+struct tReqLane {
+	//markings Markings;
+	//curvature Curvature;
+	eReqLaneType lane_type;
+};
+
+struct tReqVehicle {
+	int relative_velocity;
+	int distance;
+	int velocity;
+};
+
+struct tReqEgo_vehicle : tReqVehicle {
+};
+
+struct tReqDomain {
+};
+
+struct tReqDriver {
+};
+
+struct tCategorization {
+};
+	
+#endif

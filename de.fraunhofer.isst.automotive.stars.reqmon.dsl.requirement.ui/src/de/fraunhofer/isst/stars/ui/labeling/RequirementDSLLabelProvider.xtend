@@ -27,6 +27,9 @@ import de.fraunhofer.isst.stars.requirementDSL.ConstraintOrdinators
 import de.fraunhofer.isst.stars.requirementDSL.SetConstraint
 import de.fraunhofer.isst.stars.requirementDSL.TimeConstraint
 import de.fraunhofer.isst.stars.requirementDSL.ObjectConstraint
+import de.fraunhofer.isst.stars.requirementDSL.UnitConstraints
+import de.fraunhofer.isst.stars.requirementDSL.IntervallConstraints
+import de.fraunhofer.isst.stars.requirementDSL.SingleValueConstraints
 import de.fraunhofer.isst.stars.requirementDSL.ValueSet
 import de.fraunhofer.isst.stars.requirementDSL.ObjectSet
 import de.fraunhofer.isst.stars.requirementDSL.IntValue
@@ -39,11 +42,9 @@ import de.fraunhofer.isst.stars.requirementDSL.Relation
 import org.eclipse.emf.common.util.EList
 import de.fraunhofer.isst.stars.requirementDSL.Conjunction
 import de.fraunhofer.isst.stars.requirementDSL.ActorProperties
-import de.fraunhofer.isst.stars.requirementDSL.RelObjectProperty
-import de.fraunhofer.isst.stars.requirementDSL.ActorProperty
-import de.fraunhofer.isst.stars.requirementDSL.SingleValueConstraint
-import de.fraunhofer.isst.stars.requirementDSL.IntervallConstraint
-import de.fraunhofer.isst.stars.requirementDSL.UnitConstraint
+import de.fraunhofer.isst.stars.requirementDSL.ObjectProperty
+import de.fraunhofer.isst.stars.requirementDSL.ExistenceClause
+
 
 /**
  * Provides labels for EObjects.
@@ -86,6 +87,15 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 		}
 		else {
 			"ConditionalClause"
+		}
+	}
+	
+	def text(ExistenceClause ele) {
+		if (ele.modifier !== null) {
+			"ExistenceClause: " + ele.modifier.toString 
+		}
+		else {
+			"ExistenceClause"
 		}
 	}
 	
@@ -199,12 +209,8 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 		"ActorProperties"
 	}
 	
-	def text(RelObjectProperty op) {
-		"RelObjectProperty"
-	}
-	
-		def text(ActorProperty op) {
-		"ActorProperty"
+	def text(ObjectProperty op) {
+		"ObjectProperty"
 	}
 	
 	def text(Property ele) {
@@ -317,15 +323,15 @@ class RequirementDSLLabelProvider extends DefaultEObjectLabelProvider {
 		"ObjectConstraint"
 	}
 	
-	def text(UnitConstraint ele) {
+	def text(UnitConstraints ele) {
 		"UnitConstraint"
 	}
 	
-	def text(IntervallConstraint ele) {
+	def text(IntervallConstraints ele) {
 		"IntervallConstraints"
 	}
 	
-	def text(SingleValueConstraint ele) {
+	def text(SingleValueConstraints ele) {
 		"SingleValueConstraints"
 	}
 	

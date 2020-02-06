@@ -30,7 +30,7 @@ public class FileDirectoryCreator {
 	private String aff = "abstract_function_filter";
 	private String fcof = "functional_correctness_oracle_filter";
 	private String saf = "scene_abstraction_filter";
-	private String data = "types";
+	//private String data = "types";
 	private boolean isFirst;
 	private IFolder projectFolder;
 	private String projectName;
@@ -68,14 +68,14 @@ public class FileDirectoryCreator {
 				projectFolder.create(false, true, null);
 			}
 			
-			IFolder dataFolder = projectFolder.getFolder(data);
+			//IFolder dataFolder = projectFolder.getFolder(data);
 			IFolder affFolder = projectFolder.getFolder(aff);
 			IFolder fcofFolder = projectFolder.getFolder(fcof);
 			IFolder safFolder = projectFolder.getFolder(saf);
 			
-			if (!dataFolder.exists()) {
+			/*if (!dataFolder.exists()) {
 				dataFolder.create(false, true, null);
-			}
+			}*/
 			if (!affFolder.exists()) {
 				affFolder.create(false, true, null);
 			}
@@ -144,8 +144,43 @@ public class FileDirectoryCreator {
 	 * @param content the generated data types
 	 */
 	public void writeInFolder(String name, String content) {
-		String path = rootPath + projectName + "/" + data + "/" + name + ".h";
+		String path = rootPath + projectName + "/" + aff + "/" + name + ".h";
 		write(content,new File(path));
+		path = rootPath + projectName + "/" + fcof + "/" + name + ".h";
+		write(content,new File(path));
+		path = rootPath + projectName + "/" + saf + "/" + name + ".h";
+		write(content,new File(path));
+	}
+	
+	/**
+	 * Writes the given data type content into the file with the given name.
+	 * @param name the name of the data type file
+	 * @param type filter type
+	 * @param content the generated data types
+	 */
+	public void writeCMakeListsInFolder(String name, FilterType type, String content) {
+		String path = "";
+		if (type != null) {
+			path = rootPath + projectName + "/" + selectType(type) +  "/" + name + ".txt";
+		}
+		else {
+			path = rootPath + projectName + "/" + name + ".txt";
+		}
+		write(content,new File(path));
+	}
+	
+	private String selectType(FilterType type) {
+		switch(type) {
+		case ABSTRACT_FUNCTION:
+			return aff;
+		case FUNCTIONAL_CORRECTNESS_ORACLE:
+			return fcof;
+		case SCENE_ABSTRACTION:
+			return saf;
+		case TEST_COVERAGE_MONITOR:
+			return "";
+		default: return "";
+		}
 	}
 	
 	/**

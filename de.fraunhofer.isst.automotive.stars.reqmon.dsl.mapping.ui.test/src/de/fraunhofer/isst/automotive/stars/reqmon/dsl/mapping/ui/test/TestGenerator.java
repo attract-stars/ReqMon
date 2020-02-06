@@ -24,7 +24,7 @@ public class TestGenerator implements IGenerator {
 
 
 	@Override
-	public void generate(IMappingModel model, String projectName) {
+	public void generate(IMappingModel model) {
 		if (model.getMappingResourceList() != null) {
 			System.out.println("Resource list size: " + model.getMappingResourceList().size());
 		}

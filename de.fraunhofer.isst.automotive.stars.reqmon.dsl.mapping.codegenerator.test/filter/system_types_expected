@@ -1,0 +1,151 @@
+#ifndef SYSTEM_DATA_TYPES_H
+#define SYSTEM_DATA_TYPES_H
+
+
+enum eLaneType {
+	NOT_EXISTING = 0, 
+	NORMAL_LANE, 
+	FORBIDDEN_LANE, 
+	SPLIT_LANE_NORMAL
+};
+
+enum eLaneMarking {
+	SOLID = 0, 
+	NORMAL
+};
+
+enum eLocation {
+	FRONTEGO = 0, 
+	FRONTLEFT, 
+	FRONTRIGHT, 
+	REAREGO, 
+	REARLEFT, 
+	UNKNOWN_LOC
+};
+
+enum eEnvironment {
+	HIGHWAY = 0, UNKNOWN_ENV
+};
+
+enum eAutoboxClearance {
+	DRIVERHANDSON = 0, 
+	DRIVERSTEERINGLEFT, 
+	NODRIVERACTION
+};
+
+struct tObject {	
+	float velocity;
+	float lane_center_offset;
+	float front_distance;
+	float back_distance;
+};
+
+struct tEgo : tObject {};
+
+struct tLane {	
+	float curvature;
+	eLaneType laneType;
+	eLaneMarking laneMarkingLeft;
+	eLaneMarking laneMarkingRight;
+};
+
+// classes
+struct tScene {	
+	tEgo ego;
+	tLane* lanes;
+	tObject* objects;
+	eEnvironment environment;
+	eAutoboxClearance autoboxClearance;
+};
+
+
+
+/*
+struct tScene {	
+	int ego;
+	int lanes;
+	string objects;
+	string environment;
+	bool autoboxClearance;
+};*/
+
+
+
+/*struct tLane {	
+	float curvature;
+	int laneType;
+	bool laneMarkingLeft;
+	bool laneMarkingRight;
+};*/
+
+
+
+
+
+
+// signals
+struct tVelocity {
+	int sig_ref;
+	char* datatype;
+	float max_value;
+	float min_value;
+	float preferred_value;
+	float step_size;
+};
+
+struct tLane_center_offset {
+	int sig_ref;
+	char* datatype;
+	float max_value;
+	float min_value;
+	float preferred_value;
+	float step_size;
+};
+
+struct tFront_distance {
+	int sig_ref;
+	char* datatype;
+	float max_value;
+	float min_value;
+	float preferred_value;
+	float step_size;
+};
+
+struct tBack_distance {
+	int sig_ref;
+	char* datatype;
+	float max_value;
+	float min_value;
+	float preferred_value;
+	float step_size;
+};
+
+struct tLeft_distance {
+	int sig_ref;
+	char* datatype;
+	float max_value;
+	float min_value;
+	float preferred_value;
+	float step_size;
+};
+
+struct tRight_distance {
+	int sig_ref;
+	char* datatype;
+	float max_value;
+	float min_value;
+	float preferred_value;
+	float step_size;
+};
+
+struct tCurvature {
+	int sig_ref;
+	char* datatype;
+	float max_value;
+	float min_value;
+	float preferred_value;
+	float step_size;
+};
+
+
+#endif

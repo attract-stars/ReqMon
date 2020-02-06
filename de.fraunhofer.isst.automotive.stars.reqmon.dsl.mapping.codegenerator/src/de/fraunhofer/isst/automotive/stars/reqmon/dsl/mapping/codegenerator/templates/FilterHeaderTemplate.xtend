@@ -30,6 +30,8 @@ class FilterHeaderTemplate {
 	 */
 	private def getTemplate() {
 	'''
+	«helper.getComment»
+	
 	#define «helper.oidName» "«oidString»"
 	«moreDefines»
 	
@@ -70,7 +72,7 @@ class FilterHeaderTemplate {
 	'''
 	}
 	
-
+	
 	def private getOidString() '''«IF helper.getHeaderOidString !== null»«helper.getHeaderOidString»«ELSE»de.fraunhofer.isst.automotive.stars.reqmon.dsl.data.monitoring.«oidStringEnd»«ENDIF»'''
 	
 	def private getOidStringEnd() {
@@ -181,7 +183,7 @@ class FilterHeaderTemplate {
 	
 	def private getTransmitEvaluationResultParameters() {
 		if (isEvaluationReturnType) {
-			'''«helper.getEvaluateReturnType»* evaluationResult'''
+			'''«helper.getEvaluateReturnTypeAsPointer» evaluationResult'''
 		}
 	}
 	
@@ -198,7 +200,7 @@ class FilterHeaderTemplate {
 	}
 	
 	def private isEvaluationReturnType() {
-		return helper.getEvaluateReturnType.toString.compareTo("") !== 0
+		return helper.getEvaluateReturnTypeAsPointer.toString.compareTo("") !== 0
 	}
 	 
 	

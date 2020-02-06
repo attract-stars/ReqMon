@@ -19,6 +19,7 @@ public class MappingModel implements IMappingModel {
 	private List<Resource> mappingResourceList;
 	private List<? extends IRequirementElement> requirements;
 	private EObject systemModel;
+	private String projectName;
 	
 
 	@Override
@@ -50,6 +51,16 @@ public class MappingModel implements IMappingModel {
 	@Override
 	public void setSystemModel(EObject systemModel) {
 		this.systemModel = systemModel;
+	}
+
+	@Override
+	public String getProjectName() {
+		return projectName;
+	}
+
+	@Override
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 
 
