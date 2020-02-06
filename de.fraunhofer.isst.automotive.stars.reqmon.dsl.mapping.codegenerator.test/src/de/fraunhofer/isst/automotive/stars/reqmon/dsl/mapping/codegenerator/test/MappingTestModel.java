@@ -175,4 +175,16 @@ public class MappingTestModel implements IMappingModel {
 		return bounds;
 	}
 
+	@Override
+	public String getProjectName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setProjectName(String projectName) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

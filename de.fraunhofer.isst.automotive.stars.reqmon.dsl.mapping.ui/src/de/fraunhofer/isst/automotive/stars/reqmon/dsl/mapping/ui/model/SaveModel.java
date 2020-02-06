@@ -31,6 +31,7 @@ public class SaveModel implements Serializable, IMappingModel {
 	private List<MappingObject> mappingObjects;
 	private String genLabel;
 	private int generatorIndex;
+	private String projectName;
 	
 	// Exclude this fields from serialization
 	private transient List<Resource> mappingResourceList;
@@ -293,6 +294,16 @@ public class SaveModel implements Serializable, IMappingModel {
 
 	public void setGeneratorIndex(int generatorIndex) {
 		this.generatorIndex = generatorIndex;
+	}
+
+	@Override
+	public String getProjectName() {
+		return this.projectName;
+	}
+
+	@Override
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 	
 	

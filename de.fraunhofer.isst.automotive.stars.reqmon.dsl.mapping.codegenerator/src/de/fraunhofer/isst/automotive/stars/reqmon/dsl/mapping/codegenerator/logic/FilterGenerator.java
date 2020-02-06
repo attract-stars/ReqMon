@@ -40,10 +40,10 @@ public class FilterGenerator implements IGenerator {
 	private FileDirectoryCreator creator;
 
 	@Override
-	public void generate(IMappingModel model, String projectName) {
+	public void generate(IMappingModel model) {
 		System.out.println("FilterGenerator called!");
 		AbstractModelInformationHelper infoHelper = new ModelInformationHelperImpl(model);
-		setup(projectName);
+		setup(model.getProjectName());
 		
 		System.out.println("\n\nGenerated content:\n");
 		
@@ -54,7 +54,7 @@ public class FilterGenerator implements IGenerator {
 		ExampleCHeaderTemplate exampleTemp = new ExampleCHeaderTemplate();
 		CMakeListsTemplate cMakeTemp = new CMakeListsTemplate();
 		
-		SystemDataTypesTemplate sysDataTemp = new SystemDataTypesTemplate();
+		SystemDataTypesTemplate sysDataTemp = new SystemDataTypesTemplate(infoHelper);
 		RequirementDataTypesTemplate reqDataTemp = new RequirementDataTypesTemplate(infoHelper);
 		
 		generateFile(stdTypesTemp.generateTypesTemplate(), "dtypes");
@@ -66,7 +66,7 @@ public class FilterGenerator implements IGenerator {
 		generateFile(cMakeTemp.generateCMakeListForFilterFolder(FilterType.SCENE_ABSTRACTION), "CMakeLists", FilterType.SCENE_ABSTRACTION);
 		
 		generateAndAddToContentList(exampleTemp.generateExampleTemplate(model));
-		generateFile(sysDataTemp.generateTemplate(model), "system_types");
+		generateFile(sysDataTemp.generateTemplate(), "system_types");
 		generateFile(reqDataTemp.generateTemplate(), "requirement_types");
 		
 		generateFile(filterHeaderTemp.generateTemplate(FilterType.ABSTRACT_FUNCTION), FilterType.ABSTRACT_FUNCTION);

@@ -4,12 +4,9 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMa
 import org.eclipse.emf.ecore.EObject
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.Model
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.ClassNode
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.Types
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.SignalNode
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.AttributeNode
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.MessageNode
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.List
-import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.Type
+import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.AbstractModelInformationHelper
 
 /**
  * This class generates the system data types.
@@ -17,10 +14,20 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.sysDef.Type
  */
 class SystemDataTypesTemplate {
 	
+	AbstractModelInformationHelper helper
+	IMappingModel model
+	
+	new(AbstractModelInformationHelper helper) {
+		this.helper = helper
+		this.model = helper.model
+	}
+	
+
 	/**
 	 * Generates the system data types.
 	 */
-	def CharSequence generateTemplate(IMappingModel model) '''
+	def CharSequence generateTemplate() '''
+	«helper.getComment»
 	#ifndef «includeGardsBegin»
 	#define «includeGardsBegin»
 	
@@ -78,27 +85,27 @@ class SystemDataTypesTemplate {
 	}
 	
 	
-	def private getMessages(IMappingModel model) '''
+	/*def private getMessages(IMappingModel model) '''
 		«IF model.systemModel !== null»
 		«model.systemModel.message»
 		«ENDIF»
-	'''
+	'''*/
 	
-	def private getMessage(EObject obj) '''
+	/*def private getMessage(EObject obj) '''
 	«IF obj instanceof Model»
 		«obj.message.messageComponents»
 	«ENDIF»
-	'''
+	'''*/
 	
-	def private getMessage(Model model) {
+	/*def private getMessage(Model model) {
 		for (node : model.nodes) {
 			if (node.systemNode !== null && node.systemNode.messageNode !== null) {
 				return node.systemNode.messageNode
 			}
 		}
-	}
+	}*/
 	
-	def private getMessageComponents(MessageNode mess) '''
+	/*def private getMessageComponents(MessageNode mess) '''
 	«IF mess !== null»
 		struct t«mess.name.replace(" ", "_").toFirstUpper» {
 			tAllocation allocation;
@@ -106,7 +113,7 @@ class SystemDataTypesTemplate {
 		};
 	«ENDIF»
 	
-	'''
+	'''*/
 	
 	
 	/**

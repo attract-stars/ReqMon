@@ -47,5 +47,9 @@ public interface IMappingModel {
 	 * @param systemModel the system model
 	 */
 	public void setSystemModel(EObject systemModel);
+	
+	public String getProjectName();
+	
+	public void setProjectName(String projectName);
 
 }

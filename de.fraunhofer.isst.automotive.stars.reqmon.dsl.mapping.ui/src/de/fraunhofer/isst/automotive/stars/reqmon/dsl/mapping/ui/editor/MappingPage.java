@@ -943,9 +943,11 @@ public class MappingPage implements Observer, ValidateListener {
 				else if (savedReqList != null) {
 					savedModel.setRequirementList(savedReqList);
 				}
+				savedModel.setProjectName(editorName);
 				
 				// execute the selected generator
-				genCon.executeSelectedGenerator(savedModel, editorName);
+				genCon.executeSelectedGenerator(savedModel);
+
 			}
 		});
 		
