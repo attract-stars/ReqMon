@@ -151,17 +151,22 @@ Adverbial:
 
 /* =========== Relations =========== */
 
+ActorPropertyRelation:
+	relDel=RelationDelimiter relElements=RelObjects
+;
+
+
 Relation:
 	relDel=RelationDelimiter relElements=RelObjects
 ;
 
 RelObjects:
-	(object+=Object|property+=RelObjectProperty) (relConj+=RelConjunction (object+=Object | property+=RelObjectProperty))*
+	(object+=Object|object+=RelObjectProperty) (relConj+=RelConjunction (object+=Object | object+=RelObjectProperty))*
 ;
 
 
 ActorProperty:
-	object=Object property=Property rela=Relation?
+	object=Object property=Property rela=ActorPropertyRelation?
 ;
 
 //RelObject cannot have a relation because it is a relation

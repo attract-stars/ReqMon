@@ -493,7 +493,7 @@ package class SemanticStringSwitchTest {
 		prop3.property.addAll("position", "height");
 //		RelConjunction:	'and' 'to' | 'or' 'to';
 		objProp3.property = prop3;
-		relObj3.property.addAll(objProp3)
+		relObj3.object.addAll(objProp3)
 		rel3.relElements = relObj3;
 		end3.rela = rel3;
 		assertThat(sw.caseSentenceEnding(end3)).^as("Matching String Representation of SentenceEnding:").contains("5","sec", "Papa", "Pizza", "Puffer","position", "height", "in relation to");
@@ -541,7 +541,7 @@ package class SemanticStringSwitchTest {
 		prop4.property.addAll("position", "height");
 //		RelConjunction:	'and' 'to' | 'or' 'to';
 		objProp4.property=prop4;
-		relObj4.property.addAll(objProp4)
+		relObj4.object.addAll(objProp4)
 		rel4.relElements = relObj4;
 		end4.rela = rel4;
 		assertThat(sw.caseSentenceEnding(end4)).^as("Matching String Representation of SentenceEnding:").contains("park","spot", "Papa", "Pizza", "Puffer","position", "height", "in relation to");
@@ -678,7 +678,7 @@ package class SemanticStringSwitchTest {
 		prop7.property.addAll("position", "height");
 //		RelConjunction:	'and' 'to' | 'or' 'to';
 		objProp7.property = prop7;
-		relObj7.property.addAll(objProp7)
+		relObj7.object.addAll(objProp7)
 		rel7.relElements = relObj7;
 		end7.rela = rel7;
 		assertThat(sw.caseSentenceEnding(end7)).^as("Matching String Representation of SentenceEnding:").contains("park","spot", "data","lake", "Papa", "Pizza", "Puffer","position", "height", "in relation to");
@@ -736,7 +736,7 @@ package class SemanticStringSwitchTest {
 		prop8.property.addAll("position", "height");
 //		RelConjunction:	'and' 'to' | 'or' 'to';
 		objProp8.property=prop8;
-		relObj8.property.addAll(objProp8)
+		relObj8.object.addAll(objProp8)
 		rel8.relElements = relObj8;
 		end8.rela = rel8;
 		assertThat(sw.caseSentenceEnding(end8)).^as("Matching String Representation of SentenceEnding:").contains("park","spot", "5","sec", "Papa", "Pizza", "Puffer","position", "height", "in relation to");
@@ -1020,7 +1020,7 @@ package class SemanticStringSwitchTest {
 //		prop3.relativ="relative";
 		prop3.property.addAll("bus","lane");
 		objProp3.property=prop3
-		relObj3.property.addAll(objProp3)
+		relObj3.object.addAll(objProp3)
 		rel3.relElements = relObj3;
 		assertThat(sw.caseRelation(rel3)).^as("Matching String Representation of RelationObjectss:").contains("build","scheme","bus","lane");
 		
@@ -1060,7 +1060,7 @@ package class SemanticStringSwitchTest {
 		val con42 = RequirementDSLFactory.eINSTANCE.createRelConjunction();
 		con42.text = "and"
 		relObj4.relConj.addAll(con41,con42);
-		relObj4.property.addAll(objProp43);
+		relObj4.object.addAll(objProp43);
 		rel4.relElements = relObj4;
 		assertThat(sw.caseRelation(rel4)).^as("Matching String Representation of RelationObjectss:").contains("build","scheme","altar","mountain","brick","wall","car","park");
 	}
@@ -1107,7 +1107,7 @@ package class SemanticStringSwitchTest {
 //		prop3.relativ="relative";
 		prop3.property.addAll("bus","lane");
 		objProp3.property =prop3
-		relObj3.property.addAll(objProp3)
+		relObj3.object.addAll(objProp3)
 		softly.assertThat(sw.caseRelObjects(relObj3)).^as("Matching String Representation of RelationObjects:").contains("build","scheme","bus","lane");
 		
 		//Test 4: multiple Objects
@@ -1176,7 +1176,7 @@ package class SemanticStringSwitchTest {
 //		prop3.relativ="relative";
 		prop53.property.addAll("car","park");
 		objProp53.property = prop53
-		relObj5.property.addAll(objProp51,objProp52,objProp53);
+		relObj5.object.addAll(objProp51,objProp52,objProp53);
 		val con51 = RequirementDSLFactory.eINSTANCE.createRelConjunction();
 		con51.text = "and"
 		val con52 = RequirementDSLFactory.eINSTANCE.createRelConjunction();
@@ -1218,7 +1218,7 @@ package class SemanticStringSwitchTest {
 		prop63.property.addAll("car","park");
 		objProp63.property = prop63
 		relObj6.object.addAll(obj62);
-		relObj6.property.addAll(objProp61,objProp63);
+		relObj6.object.addAll(objProp61,objProp63);
 		val con61 = RequirementDSLFactory.eINSTANCE.createRelConjunction();
 		con61.text = "and"
 		val con62 = RequirementDSLFactory.eINSTANCE.createRelConjunction();
@@ -1485,7 +1485,7 @@ package class SemanticStringSwitchTest {
 //		prop3.relativ="relative";
 		prop3.property.addAll("bus","lane");
 		objProp3.property=prop3
-		relObj3.property.addAll(objProp3)
+		relObj3.object.addAll(objProp3)
 		rel3.relElements = relObj3;
 		beg3.rela = rel3;
 		assertThat(sw.caseSentenceBegin(beg3)).^as("Matching String Representation of SentenceBeginning:").contains("build","scheme","bus","lane");
@@ -1520,7 +1520,7 @@ package class SemanticStringSwitchTest {
 		prop43.property.addAll("car","park");
 		objProp43.property=prop43
 		relObj4.object.addAll(obj41,obj42);
-		relObj4.property.addAll(objProp43);
+		relObj4.object.addAll(objProp43);
 		val con41 = RequirementDSLFactory.eINSTANCE.createRelConjunction();
 		con41.text = "and"
 		val con42 = RequirementDSLFactory.eINSTANCE.createRelConjunction();

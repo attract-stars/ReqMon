@@ -5,9 +5,12 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.adapter;
 
 import java.util.StringJoiner;
 
+import org.eclipse.emf.ecore.EObject;
+
 import de.fraunhofer.isst.stars.requirementDSL.Actor;
 import de.fraunhofer.isst.stars.requirementDSL.ActorProperties;
 import de.fraunhofer.isst.stars.requirementDSL.ActorProperty;
+import de.fraunhofer.isst.stars.requirementDSL.ActorPropertyRelation;
 import de.fraunhofer.isst.stars.requirementDSL.Actors;
 import de.fraunhofer.isst.stars.requirementDSL.AuxNeg;
 import de.fraunhofer.isst.stars.requirementDSL.Constraint;
@@ -342,39 +345,79 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 	}
 
 	@Override
-	// TODO HERE WE CAN'T CONTAIN THE ORDER! OF OBJECT AND PROPERTY WITH RESPECT TO
-	// CONJUNCTION!
+	public String caseActorPropertyRelation(ActorPropertyRelation object) {
+		if (object == null)
+			return "";
+		StringJoiner objTxt = new StringJoiner(" ");
+		if (object.getRelDel() != null && !object.getRelDel().isEmpty()) {
+			objTxt.add(object.getRelDel());
+		}
+		if (object.getRelElements() != null) {
+//			objTxt.add("<" + caseRelObjects(object.getRelElements()) + ">");
+			objTxt.add(caseRelObjects(object.getRelElements()));
+		}
+		return objTxt.toString();
+	}
+
+//	@Override
+//	// TODO HERE WE CAN'T CONTAIN THE ORDER! OF OBJECT AND PROPERTY WITH RESPECT TO
+//	// CONJUNCTION!
+//	public String caseRelObjects(RelObjects object) {
+//		if (object == null)
+//			return "";
+//		// StringJoiner objTxt = new StringJoiner(";", "<", ">");
+//		StringJoiner relObjTxt = new StringJoiner(" ");
+//		// iterate over objects and add corresponding property
+//		// get the object for iteration over all objects
+//		if (object.getObject() != null && !object.getObject().isEmpty()) {
+//			StringJoiner objTxt = new StringJoiner(" ");
+//			// iterate overall objects - there should not be a property without object
+//			for (Object obj : object.getObject()) {
+//				// Object may consists of multiple string -> concatenate them
+//				if (obj.getRelativ() != null && !obj.getRelativ().isEmpty()) {
+//					objTxt.add(obj.getRelativ());
+//				}
+//				if (obj.getObject() != null && !obj.getObject().isEmpty()) {
+//					// Concatenate multi Word String
+//					for (String objStr : obj.getObject()) {
+//						objTxt.add(objStr);
+//					}
+//
+//				}
+//			}
+//			relObjTxt.add(objTxt.toString());
+//		}
+//		if (object.getProperty() != null && !object.getProperty().isEmpty()) {
+//			StringJoiner propTxt = new StringJoiner(" ");
+//			for (RelObjectProperty prop : object.getProperty()) {
+//				propTxt.add(caseRelObjectProperty(prop));
+//			}
+//			relObjTxt.add(propTxt.toString());
+//		}
+//		return relObjTxt.toString();
+//	}
+
+	@Override
+	// Rework to get the order over single object
 	public String caseRelObjects(RelObjects object) {
 		if (object == null)
 			return "";
-		// StringJoiner objTxt = new StringJoiner(";", "<", ">");
 		StringJoiner relObjTxt = new StringJoiner(" ");
 		// iterate over objects and add corresponding property
 		// get the object for iteration over all objects
 		if (object.getObject() != null && !object.getObject().isEmpty()) {
-			StringJoiner objTxt = new StringJoiner(" ");
 			// iterate overall objects - there should not be a property without object
-			for (Object obj : object.getObject()) {
-				// Object may consists of multiple string -> concatenate them
-				if (obj.getRelativ() != null && !obj.getRelativ().isEmpty()) {
-					objTxt.add(obj.getRelativ());
-				}
-				if (obj.getObject() != null && !obj.getObject().isEmpty()) {
-					// Concatenate multi Word String
-					for (String objStr : obj.getObject()) {
-						objTxt.add(objStr);
-					}
-
+			for (EObject obj : object.getObject()) {
+				// Decide if object or object property
+				if (obj instanceof Object) {
+					relObjTxt.add(caseRelObjects((RelObjects) obj));
+				} else if (obj instanceof RelObjectProperty) {
+					relObjTxt.add(caseRelObjectProperty((RelObjectProperty) obj));
+				} else {
+					// Error - Type not supported
+					return super.caseRelObjects(object);
 				}
 			}
-			relObjTxt.add(objTxt.toString());
-		}
-		if (object.getProperty() != null && !object.getProperty().isEmpty()) {
-			StringJoiner propTxt = new StringJoiner(" ");
-			for (RelObjectProperty prop : object.getProperty()) {
-				propTxt.add(caseRelObjectProperty(prop));
-			}
-			relObjTxt.add(propTxt.toString());
 		}
 		return relObjTxt.toString();
 	}
@@ -407,7 +450,7 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 			propText.add(caseProperty(object.getProperty()));
 		}
 		if (object.getRela() != null) {
-			propText.add(caseRelation(object.getRela()));
+			propText.add(caseActorPropertyRelation(object.getRela()));
 		}
 		return propText.toString();
 	}

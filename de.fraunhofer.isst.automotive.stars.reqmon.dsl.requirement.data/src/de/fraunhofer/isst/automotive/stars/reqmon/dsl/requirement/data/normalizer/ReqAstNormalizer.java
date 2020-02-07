@@ -11,28 +11,27 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.xtext.EcoreUtil2;
 
 import de.fraunhofer.isst.stars.requirementDSL.Actor;
 import de.fraunhofer.isst.stars.requirementDSL.ActorProperties;
 import de.fraunhofer.isst.stars.requirementDSL.ActorProperty;
+import de.fraunhofer.isst.stars.requirementDSL.ActorPropertyRelation;
 import de.fraunhofer.isst.stars.requirementDSL.Actors;
 import de.fraunhofer.isst.stars.requirementDSL.AuxNeg;
 import de.fraunhofer.isst.stars.requirementDSL.Clause;
 import de.fraunhofer.isst.stars.requirementDSL.Clauses;
 import de.fraunhofer.isst.stars.requirementDSL.Conjunction;
-import de.fraunhofer.isst.stars.requirementDSL.Constraints;
 import de.fraunhofer.isst.stars.requirementDSL.Existence;
 import de.fraunhofer.isst.stars.requirementDSL.ModalitySentence;
 import de.fraunhofer.isst.stars.requirementDSL.Object;
 import de.fraunhofer.isst.stars.requirementDSL.PredicateSentence;
 import de.fraunhofer.isst.stars.requirementDSL.PropertySentence;
-import de.fraunhofer.isst.stars.requirementDSL.RelObjectProperty;
 import de.fraunhofer.isst.stars.requirementDSL.RelObjects;
 import de.fraunhofer.isst.stars.requirementDSL.Relation;
 import de.fraunhofer.isst.stars.requirementDSL.RelativeClause;
@@ -90,9 +89,11 @@ public class ReqAstNormalizer {
 		Resource normalizedResource = model.eResource().getResourceSet().createResource(URI.createFileURI(file));
 		// COPY
 		normalizedModel = copier.copy(model);
+
 //		Collection results = copier.copyAll(eObjects);
 		copier.copyReferences();
 		// add copied model to new resource
+		EcoreUtil.resolveAll(normalizedModel);
 		normalizedResource.getContents().add(normalizedModel);
 		// Analyze
 		if (normalizedModel == null || !(normalizedModel instanceof RequirementModel)) {
@@ -113,31 +114,42 @@ public class ReqAstNormalizer {
 		if (begins != null && !begins.isEmpty()) {
 			resolveSentenceBegin(begins);
 		}
+		// normalizing
+		resolveActorConjunction(normalizedModel);
+		resolveresolveActorPropertyConjunction(normalizedModel);
+		resolveRelObjectConjunction(normalizedModel);
+		resolveActorRelObjectConjunction(normalizedModel);
+		resolveRelativeClause(normalizedModel);
+		resolveConstraints(normalizedModel);
 
-		// reset modeliterator
-		TreeIterator<EObject> modelIterator = normalizedModel.eAllContents();
-		while (modelIterator.hasNext()) {
-			EObject obj = modelIterator.next();
-			if (obj != null) {
-				if (obj instanceof Actors) {
-					logger.info("Resolving Actors: " + obj.toString());
-					resolveActorConjunction((Actors) obj);
-					modelIterator.prune();
-				} else if (obj instanceof ActorProperties) {
-					logger.info("Resolving Actor Properties: " + obj.toString());
-					resolveresolveActorPropertyConjunction((ActorProperties) obj);
-					modelIterator.prune();
-				} else if (obj instanceof RelObjects) {
-					logger.info("Resolving Relation Objects: " + obj.toString());
-					resolveRelObjectConjunction((RelObjects) obj);
-					modelIterator.prune();
-				} else if (obj instanceof Constraints) {
-					logger.info("Resolving Constraints: " + obj.toString());
-					resolveConstraints((Constraints) obj);
-					modelIterator.prune();
-				}
-			}
-		}
+//		// reset modeliterator
+//		TreeIterator<EObject> modelIterator = EcoreUtil.getAllContents(normalizedModel, true);
+////		normalizedModel.eAllContents();
+//		while (modelIterator.hasNext()) {
+//			EObject obj = modelIterator.next();
+//			if (obj != null) {
+//				if (obj instanceof Actors) {
+//					logger.info("Resolving Actors: " + obj.toString());
+////					modelIterator.prune();// TODO THIS DOES NOT CHANGE THE RELATIONS in ACTOR PROPERTIES BUT LEAD TO PROBLEMS!
+//				} else if (obj instanceof ActorProperties) {
+//					logger.info("Resolving Actor Properties: " + obj.toString());
+//					resolveresolveActorPropertyConjunction((ActorProperties) obj, modelIterator);
+////					modelIterator.prune();//TODO THIS DOES NOT CHANGE THE RELATIONS in ACTOR PROPERTIES BUT LEAD TO PROBLEMS!
+//				} else if (obj instanceof RelativeClause) {
+//					logger.info("Resolving RelativeClause: " + obj.toString());
+//					resolveRelativeClause((RelativeClause) obj, modelIterator);
+////					modelIterator.prune();
+//				} else if (obj instanceof RelObjects) {
+//					logger.info("Resolving Relation Objects: " + obj.toString());
+//					resolveRelObjectConjunction((RelObjects) obj, modelIterator);
+//					modelIterator.prune();// Prevents outofbounds error
+//				} else if (obj instanceof Constraints) {
+//					logger.info("Resolving Constraints: " + obj.toString());
+//					resolveConstraints((Constraints) obj, modelIterator);
+//					modelIterator.prune();
+//				}
+//			}
+//		}
 		logger.info("Finished normalizing model: " + model.toString());
 		// now save the content.
 		try {
@@ -148,7 +160,6 @@ public class ReqAstNormalizer {
 			e.printStackTrace();
 		}
 		return (RequirementModel) normalizedModel;
-
 	}
 
 	/**
@@ -226,57 +237,63 @@ public class ReqAstNormalizer {
 	/**
 	 * Resolves conjunction of actors in order for all actors have their own clause
 	 * 
-	 * @param the initial model for given requirements
+	 * @param modelIterator
+	 * 
+	 * @param the           initial model for given requirements
 	 * @return the resolved model
 	 */
-	protected void resolveActorConjunction(Actors actors) {
-		if (actors.getActors().size() > 1) {
-			logger.info("Normalizing Actors " + actors.toString());
-			Copier copier = new Copier();
-			// We need the top clause to duplicate it
-			EObject sentence = actors.eContainer();// Sentence to Copy
-			// Container can be ExistenceSentence, ModalitySentence,PredicateSentence ->
-			// These have to be duplicated for each actor
-			EObject clauses = (sentence.eContainer());// clauses to add copy sentenced
-			Actor firstActor = null;
-			for (int i = 0; i < actors.getActors().size(); i++) {// start with secon
-				if (i == 0) {
-					firstActor = actors.getActors().get(0);
-				} else {
-					Actor curActor = actors.getActors().get(i);
-					// clone the sentence
-					EObject copiedSentence = copier.copy(sentence);
-					Actors copyActors = getActorsFromSentence(copiedSentence);
-					if (copyActors != null && copyActors instanceof Actors) {
-						copyActors.getActors().clear();
-						copyActors.getActors().add(curActor);
-						copyActors.getConjunction().clear();
-						if (isPluralActor(curActor)) {
-							adaptPluralVerb((Clause) copiedSentence);
-						}
-						if (clauses != null && clauses instanceof Clauses) {
-							((Clauses) clauses).getClauses().add((Clause) copiedSentence);
-							((Clauses) clauses).getConjunction().add(actors.getConjunction().get(i - 1));// should
-																											// always
-
-						} else {
-							logger.error("Clause has not the anticipated type 'Clause'" + clauses.toString());
-						}
+	protected void resolveActorConjunction(EObject inputObj) {
+		List<Actors> actorsList = EcoreUtil2.getAllContentsOfType(inputObj, Actors.class);
+		for (Actors actors : actorsList) {
+			if (actors.getActors().size() > 1) {
+				logger.info("Normalizing Actors " + actors.toString());
+				Copier copier = new Copier();
+				// We need the top clause to duplicate it
+				EObject sentence = actors.eContainer();// Sentence to Copy
+				// Container can be ExistenceSentence, ModalitySentence,PredicateSentence ->
+				// These have to be duplicated for each actor
+				EObject clauses = (sentence.eContainer());// clauses to add copy sentenced
+				Actor firstActor = null;
+				for (int i = 0; i < actors.getActors().size(); i++) {// start with secon
+					// forward modelIterator
+					if (i == 0) {
+						firstActor = actors.getActors().get(0);
 					} else {
-						logger.error("Copied Actors has not anticipated type 'Actors'" + copyActors.toString());
-					}
+						Actor curActor = actors.getActors().get(i);
+						// clone the sentence
+						EObject copiedSentence = copier.copy(sentence);
+						Actors copyActors = getActorsFromSentence(copiedSentence);
+						if (copyActors != null && copyActors instanceof Actors) {
+							copyActors.getActors().clear();
+							copyActors.getActors().add(curActor);
+							copyActors.getConjunction().clear();
+							if (isPluralActor(curActor)) {
+								adaptPluralVerb((Clause) copiedSentence);
+							}
+							if (clauses != null && clauses instanceof Clauses) {
+								((Clauses) clauses).getClauses().add((Clause) copiedSentence);
+								((Clauses) clauses).getConjunction().add(actors.getConjunction().get(i - 1));// should
+																												// always
 
+							} else {
+								logger.error("Clause has not the anticipated type 'Clause'" + clauses.toString());
+							}
+						} else {
+							logger.error("Copied Actors has not anticipated type 'Actors'" + copyActors.toString());
+						}
+
+					}
 				}
+				// Remove the old actors
+				actors.getActors().clear();
+				actors.getActors().add(firstActor);
+				actors.getConjunction().clear();
+				// adapt verbs (singular - plural)
+				if (isPluralActor(firstActor)) {
+					adaptPluralVerb((Clause) sentence);
+				}
+				copier.copyReferences();
 			}
-			// Remove the old actors
-			actors.getActors().clear();
-			actors.getActors().add(firstActor);
-			actors.getConjunction().clear();
-			// adapt verbs (singular - plural)
-			if (isPluralActor(firstActor)) {
-				adaptPluralVerb((Clause) sentence);
-			}
-			copier.copyReferences();
 		}
 	}
 
@@ -386,59 +403,64 @@ public class ReqAstNormalizer {
 	 * Resolves conjunction of actor properties in order for all actor properties
 	 * have their own clause
 	 * 
-	 * @param the initial model for given requirements
+	 * @param modelIterator
+	 * 
+	 * @param the           initial model for given requirements
 	 * @return the resolved model
 	 */
-	protected void resolveresolveActorPropertyConjunction(ActorProperties properties) {
-		if (properties.getProperty().size() > 1) {
-			logger.info("Normalizing Actor Properties " + properties.toString());
-			Copier copier = new Copier();
-			// We need the top clause to duplicate it
-			EObject sentence = properties.eContainer();// Sentence to Copy
-			// Container can be ExistenceSentence, ModalitySentence,PredicateSentence ->
-			// These have to be duplicated for each actor
-			EObject clauses = (sentence.eContainer());// clauses to add copy sentenced
-			ActorProperty firstProperty = null;
-			for (int i = 0; i < properties.getProperty().size(); i++) {
-				if (i == 0) {
-					firstProperty = properties.getProperty().get(0);
-				} else {
-					ActorProperty prop = properties.getProperty().get(i);
-					// clone the sentence
-					PropertySentence copiedSentence = (PropertySentence) copier.copy(sentence);
-
-					ActorProperties copyProperties = copiedSentence.getProperties();
-					if (copyProperties != null && copyProperties instanceof ActorProperties) {
-						copyProperties.getProperty().clear();
-						copyProperties.getProperty().add(prop);
-						copyProperties.getConjunction().clear();
-						if (isPluralProperty(prop)) {
-							adaptPluralVerb(copiedSentence);
-						}
-						if (clauses != null && clauses instanceof Clauses) {
-							((Clauses) clauses).getClauses().add(copiedSentence);
-							((Clauses) clauses).getConjunction().add(properties.getConjunction().get(i - 1));// should
-																												// always
-						} else {
-							logger.error("Clause has not the anticipated type 'Clause'" + clauses.toString());
-						}
+	protected void resolveresolveActorPropertyConjunction(EObject inputObj) {
+		List<ActorProperties> actorPropList = EcoreUtil2.getAllContentsOfType(inputObj, ActorProperties.class);
+		for (ActorProperties properties : actorPropList) {
+			if (properties.getProperty().size() > 1) {
+				logger.info("Normalizing Actor Properties " + properties.toString());
+				Copier copier = new Copier();
+				// We need the top clause to duplicate it
+				EObject sentence = properties.eContainer();// Sentence to Copy
+				// Container can be ExistenceSentence, ModalitySentence,PredicateSentence ->
+				// These have to be duplicated for each actor
+				EObject clauses = (sentence.eContainer());// clauses to add copy sentenced
+				ActorProperty firstProperty = null;
+				for (int i = 0; i < properties.getProperty().size(); i++) {
+					if (i == 0) {
+						firstProperty = properties.getProperty().get(0);
 					} else {
-						logger.error("Copied Ibhect has not anticipated type 'Actor Properties'"
-								+ copyProperties.toString());
-					}
+						ActorProperty prop = properties.getProperty().get(i);
+						// clone the sentence
+						PropertySentence copiedSentence = (PropertySentence) copier.copy(sentence);
 
+						ActorProperties copyProperties = copiedSentence.getProperties();
+						if (copyProperties != null && copyProperties instanceof ActorProperties) {
+							copyProperties.getProperty().clear();
+							copyProperties.getProperty().add(prop);
+							copyProperties.getConjunction().clear();
+							if (isPluralProperty(prop)) {
+								adaptPluralVerb(copiedSentence);
+							}
+							if (clauses != null && clauses instanceof Clauses) {
+								((Clauses) clauses).getClauses().add(copiedSentence);
+								((Clauses) clauses).getConjunction().add(properties.getConjunction().get(i - 1));// should
+																													// always
+							} else {
+								logger.error("Clause has not the anticipated type 'Clause'" + clauses.toString());
+							}
+						} else {
+							logger.error("Copied Ibhect has not anticipated type 'Actor Properties'"
+									+ copyProperties.toString());
+						}
+
+					}
 				}
+				// Remove the old actors
+				properties.getProperty().clear();
+				properties.getProperty().add(firstProperty);
+				properties.getConjunction().clear();
+				// adapt verbs (singular - plural)
+				// Assuming Property always follow by singular
+				if (isPluralProperty(firstProperty)) {
+					adaptPluralVerb((Clause) sentence);
+				}
+				copier.copyReferences();
 			}
-			// Remove the old actors
-			properties.getProperty().clear();
-			properties.getProperty().add(firstProperty);
-			properties.getConjunction().clear();
-			// adapt verbs (singular - plural)
-			// Assuming Property always follow by singular
-			if (isPluralProperty(firstProperty)) {
-				adaptPluralVerb((Clause) sentence);
-			}
-			copier.copyReferences();
 		}
 	}
 
@@ -451,91 +473,225 @@ public class ReqAstNormalizer {
 		return false;
 	}
 
+	protected void resolveActorRelObjectConjunction(EObject inputObj) {
+		List<ActorPropertyRelation> actRelations = EcoreUtil2.getAllContentsOfType(inputObj,
+				ActorPropertyRelation.class);
+		for (ActorPropertyRelation actRel : actRelations) {
+			RelObjects relObj = actRel.getRelElements();
+//		if (relObj.getObject().size() > 1 || relObj.getProperty().size() > 1) {
+			if (relObj != null && relObj.getObject().size() > 1) {
+				logger.info("Normalizing Relative Objects and Object Properties " + relObj.toString());
+//			(object+=Object|property+=RelObjectProperty) (relConj+=RelConjunction (object+=Object | property+=RelObjectProperty))*
+				Copier copier = new Copier();
+				// We need the top clause to duplicate it
+				EObject sentence = getSentence(relObj);// Sentence to Copy
+				// These have to be duplicated for each actor
+				EObject clauses = (sentence.eContainer());// clauses to add copy sentenced
+				EObject first = null;
+				// Evaluate Objects
+				for (int i = 0; i < relObj.getObject().size(); i++) {
+					if (i == 0) {
+						first = relObj.getObject().get(0);
+					} else {
+						EObject obj = relObj.getObject().get(i);
+						// clone the sentence
+						EObject copiedSentence = copier.copy(sentence);
+						RelObjects copiedRelObjects = getCopiedActorRelObjects(relObj, copiedSentence);
+						if (copiedRelObjects != null) {
+							copiedRelObjects.getObject().clear();
+							copiedRelObjects.getObject().add(obj);
+							copiedRelObjects.getRelConj().clear();
+							lowerCaseRelation(copiedRelObjects);
+							if (clauses != null && clauses instanceof Clauses) {
+								((Clauses) clauses).getClauses().add((Clause) copiedSentence);
+								Conjunction clauseConj = RequirementDSLFactory.eINSTANCE.createConjunction();
+								clauseConj.setText(normalizeRelConjunction(relObj.getRelConj().get(i - 1).getText()));
+								clauseConj.setPriority(1);// low priority
+								((Clauses) clauses).getConjunction().add(clauseConj);
+							} else {
+								logger.error("Clause has not the anticipated type 'Clause'" + clauses.toString());
+							}
+						}
+					}
+				}
+//			//removed because Object Properties and Objects are handled identical
+//			// Evaluate Object Properties
+//			for (int i = 0; i < relObj.getProperty().size(); i++) {
+//				if (i == 0 && first == null) {
+//					first = relObj.getProperty().get(0);// only set if there are only objectproperties
+//				} else {
+//					RelObjectProperty prop = relObj.getProperty().get(i);
+//					// clone the sentence
+//					EObject copiedSentence = copier.copy(sentence);
+//					RelObjects copiedRelObjects = getCopiedRelObjects(relObj, copiedSentence);
+//					if (copiedRelObjects != null) {
+//						copiedRelObjects.getProperty().clear();
+//						copiedRelObjects.getProperty().add(prop);
+//						copiedRelObjects.getRelConj().clear();
+//						lowerCaseRelation(copiedRelObjects);
+//						if (clauses != null && clauses instanceof Clauses) {
+//							((Clauses) clauses).getClauses().add((Clause) copiedSentence);
+//							Conjunction clauseConj = RequirementDSLFactory.eINSTANCE.createConjunction();
+//							clauseConj.setText(relObj.getRelConj().get(i - 1).getText());
+//							clauseConj.setPriority(1);// low priority
+//							((Clauses) clauses).getConjunction().add(clauseConj);
+//						} else {
+//							logger.error("Clause has not the anticipated type 'Clause'" + clauses.toString());
+//						}
+//					}
+//				}
+//			}
+				// rework first element from which was copied
+				if (first instanceof Object) {
+					// Remove the old actors
+					relObj.getObject().clear();
+					relObj.getObject().add(first);
+					relObj.getRelConj().clear();
+					// Dont lower case relation as it can be in the first sentence beginning
+				}
+//			//removed because Object Properties and Objects are handled identical
+//			else {// instanceof ObjectProperty
+//				// Remove the old actors
+//				relObj.getProperty().clear();
+//				relObj.getProperty().add((RelObjectProperty) first);
+//				relObj.getRelConj().clear();
+//				// Dont lower case relation as it can be in the first sentence beginning
+//			}
+				copier.copyReferences();
+			}
+		}
+	}
+
+	private RelObjects getCopiedActorRelObjects(RelObjects obj, EObject sentence) {
+		if (obj.eContainer().eContainer() instanceof ActorProperty) {
+			ActorProperty origAProp = (ActorProperty) obj.eContainer().eContainer();
+			if (origAProp.eContainer().eContainer() instanceof PropertySentence) {
+				EList<ActorProperty> copiedProperies = ((PropertySentence) sentence).getProperties().getProperty();
+				for (ActorProperty actorProperty : copiedProperies) {
+					if (actorProperty.getObject().getObject().equals(origAProp.getObject().getObject()) && actorProperty
+							.getProperty().getProperty().equals(origAProp.getProperty().getProperty())) {
+						return actorProperty.getRela().getRelElements();
+					}
+				}
+				logger.error("Matchin RelObject to " + obj.toString() + " has not been found in PropertySentence: "
+						+ sentence.toString());
+				return null;
+			} else {
+				logger.error("2 Containers above ActorProperty" + origAProp.toString()
+						+ " should be PropertySentence but is not: " + origAProp.eContainer().eContainer().toString());
+				return null;
+			}
+		} else {
+			logger.error("Container of Object " + obj.toString() + " is not supported: " + obj.eContainer().toString());
+			return null;
+		}
+	}
+
 	/**
 	 * Resolves conjunction of objects in order for all actors have their own clause
 	 * 
-	 * @param the initial model for given requirements
+	 * @param modelIterator
+	 * 
+	 * @param the           initial model for given requirements
 	 * @return the resolved model
 	 */
-	protected void resolveRelObjectConjunction(RelObjects relObj) {
-		if (relObj.getObject().size() > 1 || relObj.getProperty().size() > 1) {
-			logger.info("Normalizing Relative Objects and Object Properties " + relObj.toString());
-			Copier copier = new Copier();
-			// We need the top clause to duplicate it
-			EObject sentence = getSentence(relObj);// Sentence to Copy
-			// These have to be duplicated for each actor
-			EObject clauses = (sentence.eContainer());// clauses to add copy sentenced
-			EObject first = null;
-			// Evaluate Objects
-			for (int i = 0; i < relObj.getObject().size(); i++) {
-				if (i == 0) {
-					first = relObj.getObject().get(0);
-				} else {
-					Object obj = relObj.getObject().get(i);
-					// clone the sentence
-					EObject copiedSentence = copier.copy(sentence);
-					RelObjects copiedRelObjects = getCopiedRelObjects(relObj, copiedSentence);
-					if (copiedRelObjects != null) {
-						copiedRelObjects.getObject().clear();
-						copiedRelObjects.getObject().add(obj);
-						copiedRelObjects.getProperty().clear();
-						copiedRelObjects.getRelConj().clear();
-						lowerCaseRelation(copiedRelObjects);
-						if (clauses != null && clauses instanceof Clauses) {
-							((Clauses) clauses).getClauses().add((Clause) copiedSentence);
-							Conjunction clauseConj = RequirementDSLFactory.eINSTANCE.createConjunction();
-							clauseConj.setText(relObj.getRelConj().get(i - 1).getText());
-							clauseConj.setPriority(1);// low priority
-							((Clauses) clauses).getConjunction().add(clauseConj);
-						} else {
-							logger.error("Clause has not the anticipated type 'Clause'" + clauses.toString());
+	protected void resolveRelObjectConjunction(EObject inputObj) {
+		List<Relation> relations = EcoreUtil2.getAllContentsOfType(inputObj, Relation.class);
+		for (Relation rel : relations) {
+			RelObjects relObj = rel.getRelElements();
+//		if (relObj.getObject().size() > 1 || relObj.getProperty().size() > 1) {
+			if (relObj != null && relObj.getObject().size() > 1) {
+				logger.info("Normalizing Relative Objects and Object Properties " + relObj.toString());
+//			(object+=Object|property+=RelObjectProperty) (relConj+=RelConjunction (object+=Object | property+=RelObjectProperty))*
+				Copier copier = new Copier();
+				// We need the top clause to duplicate it
+				EObject sentence = getSentence(relObj);// Sentence to Copy
+				// These have to be duplicated for each actor
+				EObject clauses = (sentence.eContainer());// clauses to add copy sentenced
+				EObject first = null;
+				// Evaluate Objects
+				for (int i = 0; i < relObj.getObject().size(); i++) {
+					if (i == 0) {
+						first = relObj.getObject().get(0);
+					} else {
+						EObject obj = relObj.getObject().get(i);
+						// clone the sentence
+						EObject copiedSentence = copier.copy(sentence);
+						RelObjects copiedRelObjects = getCopiedRelationObjects(relObj, copiedSentence);
+						if (copiedRelObjects != null) {
+							copiedRelObjects.getObject().clear();
+							copiedRelObjects.getObject().add(obj);
+							copiedRelObjects.getRelConj().clear();
+							lowerCaseRelation(copiedRelObjects);
+							if (clauses != null && clauses instanceof Clauses) {
+								((Clauses) clauses).getClauses().add((Clause) copiedSentence);
+								Conjunction clauseConj = RequirementDSLFactory.eINSTANCE.createConjunction();
+								clauseConj.setText(normalizeRelConjunction(relObj.getRelConj().get(i - 1).getText()));
+								clauseConj.setPriority(1);// low priority
+								((Clauses) clauses).getConjunction().add(clauseConj);
+							} else {
+								logger.error("Clause has not the anticipated type 'Clause'" + clauses.toString());
+							}
 						}
 					}
 				}
-			}
-			// Evaluate Object Properties
-			for (int i = 0; i < relObj.getProperty().size(); i++) {
-				if (i == 0 && first == null) {
-					first = relObj.getProperty().get(0);// only set if there are only objectproperties
-				} else {
-					RelObjectProperty prop = relObj.getProperty().get(i);
-					// clone the sentence
-					EObject copiedSentence = copier.copy(sentence);
-					RelObjects copiedRelObjects = getCopiedRelObjects(relObj, copiedSentence);
-					if (copiedRelObjects != null) {
-						copiedRelObjects.getProperty().clear();
-						copiedRelObjects.getProperty().add(prop);
-						copiedRelObjects.getRelConj().clear();
-						lowerCaseRelation(copiedRelObjects);
-						if (clauses != null && clauses instanceof Clauses) {
-							((Clauses) clauses).getClauses().add((Clause) copiedSentence);
-							Conjunction clauseConj = RequirementDSLFactory.eINSTANCE.createConjunction();
-							clauseConj.setText(relObj.getRelConj().get(i - 1).getText());
-							clauseConj.setPriority(1);// low priority
-							((Clauses) clauses).getConjunction().add(clauseConj);
-						} else {
-							logger.error("Clause has not the anticipated type 'Clause'" + clauses.toString());
-						}
-					}
+//			//removed because Object Properties and Objects are handled identical
+//			// Evaluate Object Properties
+//			for (int i = 0; i < relObj.getProperty().size(); i++) {
+//				if (i == 0 && first == null) {
+//					first = relObj.getProperty().get(0);// only set if there are only objectproperties
+//				} else {
+//					RelObjectProperty prop = relObj.getProperty().get(i);
+//					// clone the sentence
+//					EObject copiedSentence = copier.copy(sentence);
+//					RelObjects copiedRelObjects = getCopiedRelObjects(relObj, copiedSentence);
+//					if (copiedRelObjects != null) {
+//						copiedRelObjects.getProperty().clear();
+//						copiedRelObjects.getProperty().add(prop);
+//						copiedRelObjects.getRelConj().clear();
+//						lowerCaseRelation(copiedRelObjects);
+//						if (clauses != null && clauses instanceof Clauses) {
+//							((Clauses) clauses).getClauses().add((Clause) copiedSentence);
+//							Conjunction clauseConj = RequirementDSLFactory.eINSTANCE.createConjunction();
+//							clauseConj.setText(relObj.getRelConj().get(i - 1).getText());
+//							clauseConj.setPriority(1);// low priority
+//							((Clauses) clauses).getConjunction().add(clauseConj);
+//						} else {
+//							logger.error("Clause has not the anticipated type 'Clause'" + clauses.toString());
+//						}
+//					}
+//				}
+//			}
+				// rework first element from which was copied
+				if (first instanceof Object) {
+					// Remove the old actors
+					relObj.getObject().clear();
+					relObj.getObject().add(first);
+					relObj.getRelConj().clear();
+					// Dont lower case relation as it can be in the first sentence beginning
 				}
+//			//removed because Object Properties and Objects are handled identical
+//			else {// instanceof ObjectProperty
+//				// Remove the old actors
+//				relObj.getProperty().clear();
+//				relObj.getProperty().add((RelObjectProperty) first);
+//				relObj.getRelConj().clear();
+//				// Dont lower case relation as it can be in the first sentence beginning
+//			}
+				copier.copyReferences();
 			}
-			// rework first element from which was copied
-			if (first instanceof Object) {
-				// Remove the old actors
-				relObj.getObject().clear();
-				relObj.getObject().add((Object) first);
-				relObj.getRelConj().clear();
-				// Dont lower case relation as it can be in the first sentence beginning
-			} else {// instanceof ObjectProperty
-				// Remove the old actors
-				relObj.getProperty().clear();
-				relObj.getProperty().add((RelObjectProperty) first);
-				relObj.getRelConj().clear();
-				// Dont lower case relation as it can be in the first sentence beginning
-			}
-			copier.copyReferences();
 		}
+	}
 
+	private String normalizeRelConjunction(String text) {
+		if (text.contains("and")) {
+			return "and";
+		}
+		if (text.contains("or")) {
+			return "or";
+		}
+		// ERROR -should not happen
+		return "ERROR";
 	}
 
 	private void lowerCaseRelation(RelObjects obj) {
@@ -554,7 +710,7 @@ public class ReqAstNormalizer {
 	 * @param obj      the original RelObjects
 	 * @param sentence the copied Sentence
 	 */
-	private RelObjects getCopiedRelObjects(RelObjects obj, EObject sentence) {
+	private RelObjects getCopiedRelationObjects(RelObjects obj, EObject sentence) {
 		// Backtrack where we are here
 		if (obj.eContainer().eContainer() instanceof SentenceBegin) {
 			// get RelObjects via SentenceBegin
@@ -581,24 +737,6 @@ public class ReqAstNormalizer {
 						"Type of Sentence" + sentence.toString() + "is not supported for route via 'SentenceEnding' ");
 				return null;
 			}
-		} else if (obj.eContainer().eContainer() instanceof ActorProperty) {
-			ActorProperty origAProp = (ActorProperty) obj.eContainer().eContainer();
-			if (origAProp.eContainer().eContainer() instanceof PropertySentence) {
-				EList<ActorProperty> copiedProperies = ((PropertySentence) sentence).getProperties().getProperty();
-				for (ActorProperty actorProperty : copiedProperies) {
-					if (actorProperty.getObject().getObject().equals(origAProp.getObject().getObject()) && actorProperty
-							.getProperty().getProperty().equals(origAProp.getProperty().getProperty())) {
-						return actorProperty.getRela().getRelElements();
-					}
-				}
-				logger.error("Matchin RelObject to " + obj.toString() + " has not been found in PropertySentence: "
-						+ sentence.toString());
-				return null;
-			} else {
-				logger.error("2 Containers above ActorProperty" + origAProp.toString()
-						+ " should be PropertySentence but is not: " + origAProp.eContainer().eContainer().toString());
-				return null;
-			}
 		} else {
 			logger.error("Container of Object " + obj.toString() + " is not supported: " + obj.eContainer().toString());
 			return null;
@@ -606,21 +744,25 @@ public class ReqAstNormalizer {
 	}
 
 	private EObject getSentence(RelObjects obj) {
-		if (obj.eContainer().eContainer() instanceof PropertySentence) {
-			return obj.eContainer().eContainer(); // Relation for actors properties
+		if (obj.eContainer().eContainer().eContainer().eContainer() instanceof PropertySentence) {
+			return obj.eContainer().eContainer().eContainer().eContainer(); // Relation via actors properties
 		} else {
 			return obj.eContainer().eContainer().eContainer();// via SentenceBegin/ SentenceEnding
 		}
+	}
+
+	protected void resolveRelativeClause(EObject inputObj) {
+		// TODO Auto-generated method stub
+
 	}
 
 	/**
 	 * Resolves conjunction of constraints in order for all constraints have their
 	 * own clause
 	 * 
-	 * @param the initial model for given requirements
-	 * @return the resolved model
+	 * @param inputObj
 	 */
-	protected void resolveConstraints(Constraints obj) {
+	protected void resolveConstraints(EObject inputObj) {
 		// TODO we currently omit this but include it if we introtuce conjunction of
 		// constraints
 	}

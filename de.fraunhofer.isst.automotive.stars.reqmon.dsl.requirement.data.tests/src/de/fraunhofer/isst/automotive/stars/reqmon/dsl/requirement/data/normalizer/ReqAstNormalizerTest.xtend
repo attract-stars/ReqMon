@@ -106,6 +106,7 @@ package class ReqAstNormalizerTest {
 	@AfterEach def package void tearDown() throws Exception {
 	}
 
+	//TODO SOME OF THE ERROR BOUNDS ARE WAY TOO HIGH
 	def static Stream<Arguments> createTestData() {
 		// arguments For tests are input model and expected model and error bound
 		// ACtor Normalization
@@ -144,22 +145,40 @@ package class ReqAstNormalizerTest {
 			", 4);
 		// SentenceBegin
 		// SentenceBeginNormalization
-		val data9 = Arguments.of("
+		val data7 = Arguments.of("
 				Req 1:  In relation to the street, the vehicle must not alter if the vehicle's velocity has not changed.\n
 			", "
 				Req 1: The vehicle must not alter in relation to the street if the vehicle's velocity has not changed.\n
 			", 4);
-		val data7 = Arguments.of("
+		val data8 = Arguments.of("
 				Req 1: In relation to the street and to the sky, the vehicle must not alter if the vehicle's velocity has not changed.\n
 			", "
-				Req 1: The vehicle's position must not altered in relation to the street and the vehicle's position must not altered in relation to the sky if the vehicle's velocity has not changed.\n
-			", 4);
-		val data8 = Arguments.of("
-				Req 1: The vehicle's position must not altered in relation to the street and to the sky if the vehicle's velocity has not changed.\n
+				Req 1: The vehicle's position must not alter in relation to the street and the vehicle's position must not alter in relation to the sky if the vehicle's velocity has not changed.\n
+			", 31);
+		val data9 = Arguments.of("
+				Req 1: The vehicle's position must not alter in relation to the street and to the sky if the vehicle's velocity has not changed.\n
 			", "
-				Req 1: The vehicle's position must not altered in relation to the street and the vehicle's position must not altered in relation to the sky if the vehicle's velocity has not changed.\n
+				Req 1: The vehicle's position must not alter in relation to the street and the vehicle's position must not alter in relation to the sky if the vehicle's velocity has not changed.\n
 			", 4);
-		return Stream.of(data1, data2, data3, data4, data5, data6, data7, data8, data9);
+		val data10 = Arguments.of("
+				Req 1: The vehicle's position in relation to the street and to the sky and the bus' size in relation to the length and to the height must not alter if the vehicle's velocity has not changed.\n
+			", "
+				Req 1: The vehicle's position must not alter in relation to the street and the vehicle's position must not alter in relation to the sky and the bus' size must not alter in relation to the length and the bus' size must not alter in relation to the height if the vehicle's velocity has not changed.\n
+			", 34);	
+			val data11 = Arguments.of("
+				Req 1: The vehicle's position and the bus' size must not alter in relation to the street and to the sky if the vehicle's velocity has not changed.\n
+			", "
+				Req 1: The vehicle's position must not alter in relation to the street and the vehicle's position must not alter in relation to the sky and the bus' size must not alter in relation to the length and the bus' size must not alter in relation to the height if the vehicle's velocity has not changed.\n
+			", 31);	
+			val data12 = Arguments.of("
+				Req 1: The vehicle's position in relation to the street and to the sky and the bus' size in relation to the length and to the height must not alter in relation to the world and to the hell if the vehicle's velocity has not changed.\n
+			", "
+				Req 1: The vehicle's position must not alter in relation to the street and the vehicle's position must not alter in relation to the sky and the bus' size must not alter in relation to the length and the bus' size must not alter in relation to the height if the vehicle's velocity has not changed.\n
+			",96);
+		
+			//TODO CONSTRAINTS ARE MISSING -> double object and double time and
+			//TODO RELATIVE CLAUSE IS MSSING
+		return Stream.of(data1, data2, data3, data4, data5, data6, data7, data8, data9,data10,data11,data12);
 	}
 
 	@ParameterizedTest

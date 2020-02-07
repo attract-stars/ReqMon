@@ -1180,7 +1180,7 @@ package class SemanticTextElementSwitchTest {
 		actProp31.property = prop31;
 		actorProp31.property.addAll(actProp31)
 		sent31.properties = actorProp31
-		val rel31 = RequirementDSLFactory.eINSTANCE.createRelation();
+		val rel31 = RequirementDSLFactory.eINSTANCE.createActorPropertyRelation();
 		rel31.relDel = "in relation to"
 		val relObj31 = RequirementDSLFactory.eINSTANCE.createRelObjects();
 		val obj61 = RequirementDSLFactory.eINSTANCE.createObject();
@@ -1208,7 +1208,7 @@ package class SemanticTextElementSwitchTest {
 		actProp32.property = prop32;
 		actorProp32.property.addAll(actProp32)
 		sent32.properties = actorProp32
-		val rel32 = RequirementDSLFactory.eINSTANCE.createRelation();
+		val rel32 = RequirementDSLFactory.eINSTANCE.createActorPropertyRelation();
 		rel32.relDel = "in relation to"
 		val relObj32 = RequirementDSLFactory.eINSTANCE.createRelObjects();
 		val obj62 = RequirementDSLFactory.eINSTANCE.createObject();

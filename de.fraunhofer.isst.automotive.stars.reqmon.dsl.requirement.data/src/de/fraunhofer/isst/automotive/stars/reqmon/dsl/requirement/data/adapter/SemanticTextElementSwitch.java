@@ -178,7 +178,7 @@ public class SemanticTextElementSwitch extends RequirementDSLSwitch<SemanticText
 			actorPropTxt.add(semanticStringSwitch.caseProperty(object.getProperty()));
 		}
 		if (object.getRela() != null) {
-			actorPropTxt.add(semanticStringSwitch.caseRelation(object.getRela()));
+			actorPropTxt.add(semanticStringSwitch.caseActorPropertyRelation(object.getRela()));
 		}
 		if (elementLookup.containsKey(actorPropTxt.toString())) {
 			return elementLookup.get(actorPropTxt.toString());
