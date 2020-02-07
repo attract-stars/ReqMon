@@ -233,6 +233,6 @@ class MappingParsingTest {
 		val result = parseHelper.parse(seq)
 		Assertions.assertNotNull(result)
 		val errors = result.eResource.errors
-		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
+		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: ï¿½errors.join(", ")ï¿½''')
 	}
 }

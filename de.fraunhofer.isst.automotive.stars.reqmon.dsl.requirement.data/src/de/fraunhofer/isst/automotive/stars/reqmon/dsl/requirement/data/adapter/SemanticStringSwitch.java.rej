@@ -1,0 +1,88 @@
+diff a/de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data/src/de/fraunhofer/isst/automotive/stars/reqmon/dsl/requirement/data/adapter/SemanticStringSwitch.java b/de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data/src/de/fraunhofer/isst/automotive/stars/reqmon/dsl/requirement/data/adapter/SemanticStringSwitch.java	(rejected hunks)
+@@ -402,37 +402,65 @@
+ 		return objTxt.toString();
+ 	}
+ 
++//	@Override
++//	// TODO HERE WE CAN'T CONTAIN THE ORDER! OF OBJECT AND PROPERTY WITH RESPECT TO
++//	// CONJUNCTION!
++//	public String caseRelObjects(RelObjects object) {
++//		if (object == null)
++//			return "";
++//		// StringJoiner objTxt = new StringJoiner(";", "<", ">");
++//		StringJoiner relObjTxt = new StringJoiner(" ");
++//		// iterate over objects and add corresponding property
++//		// get the object for iteration over all objects
++//		if (object.getObject() != null && !object.getObject().isEmpty()) {
++//			StringJoiner objTxt = new StringJoiner(" ");
++//			// iterate overall objects - there should not be a property without object
++//			for (Object obj : object.getObject()) {
++//				// Object may consists of multiple string -> concatenate them
++//				if (obj.getRelativ() != null && !obj.getRelativ().isEmpty()) {
++//					objTxt.add(obj.getRelativ());
++//				}
++//				if (obj.getObject() != null && !obj.getObject().isEmpty()) {
++//					// Concatenate multi Word String
++//					for (String objStr : obj.getObject()) {
++//						objTxt.add(objStr);
++//					}
++//
++//				}
++//			}
++//			relObjTxt.add(objTxt.toString());
++//		}
++//		if (object.getProperty() != null && !object.getProperty().isEmpty()) {
++//			StringJoiner propTxt = new StringJoiner(" ");
++//			for (RelObjectProperty prop : object.getProperty()) {
++//				propTxt.add(caseRelObjectProperty(prop));
++//			}
++//			relObjTxt.add(propTxt.toString());
++//		}
++//		return relObjTxt.toString();
++//	}
++
++	@Override
++	// Rework to get the order over single object
+ 	public String caseRelObjects(RelObjects object) {
+ 		if (object == null)
+ 			return "";
+-		// StringJoiner objTxt = new StringJoiner(";", "<", ">");
+ 		StringJoiner relObjTxt = new StringJoiner(" ");
+ 		// iterate over objects and add corresponding property
+ 		// get the object for iteration over all objects
+ 		if (object.getObject() != null && !object.getObject().isEmpty()) {
+-			StringJoiner objTxt = new StringJoiner(" ");
+ 			// iterate overall objects - there should not be a property without object
+-			for (Object obj : object.getObject()) {
+-				// Object may consists of multiple string -> concatenate them
+-				if (obj.getRelativ() != null && !obj.getRelativ().isEmpty()) {
+-					objTxt.add(obj.getRelativ());
++			for (EObject obj : object.getObject()) {
++				// Decide if object or object property
++				if (obj instanceof Object) {
++					relObjTxt.add(caseRelObjects((RelObjects) obj));
++				} else if (obj instanceof RelObjectProperty) {
++					relObjTxt.add(caseRelObjectProperty((RelObjectProperty) obj));
++				} else {
++					// Error - Type not supported
++					return super.caseRelObjects(object);
+ 				}
+-				if (obj.getObject() != null && !obj.getObject().isEmpty()) {
+-					// Concatenate multi Word String
+-					for (String objStr : obj.getObject()) {
+-						objTxt.add(objStr);
+-					}
+-
+-				}
+-			}
+-			relObjTxt.add(objTxt.toString());
+-		}
+-		if (object.getProperty() != null && !object.getProperty().isEmpty()) {
+-			StringJoiner propTxt = new StringJoiner(" ");
+-			for (RelObjectProperty prop : object.getProperty()) {
+-				propTxt.add(caseRelObjectProperty(prop));
+ 			}
+-			relObjTxt.add(propTxt.toString());
+ 		}
+ 		return relObjTxt.toString();
+ 	}
