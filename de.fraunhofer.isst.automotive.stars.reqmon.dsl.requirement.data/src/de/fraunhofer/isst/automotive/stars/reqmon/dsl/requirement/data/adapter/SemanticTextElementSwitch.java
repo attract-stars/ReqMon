@@ -1,3 +1,24 @@
+/*******************************************************************************
+ * Copyright (C) 2020 Fraunhofer ISST
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ ******************************************************************************/
 /**
  * 
  */
@@ -15,13 +36,13 @@ import com.google.common.collect.Lists;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor.RequirementType;
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.SemanticTextElement;
 import de.fraunhofer.isst.stars.requirementDSL.Actor;
-import de.fraunhofer.isst.stars.requirementDSL.Constraints;
+import de.fraunhofer.isst.stars.requirementDSL.ActorProperty;
 import de.fraunhofer.isst.stars.requirementDSL.Existence;
 import de.fraunhofer.isst.stars.requirementDSL.ModalitySentence;
 import de.fraunhofer.isst.stars.requirementDSL.Object;
-import de.fraunhofer.isst.stars.requirementDSL.ObjectProperty;
 import de.fraunhofer.isst.stars.requirementDSL.PredicateSentence;
 import de.fraunhofer.isst.stars.requirementDSL.PropertySentence;
+import de.fraunhofer.isst.stars.requirementDSL.RelObjectProperty;
 import de.fraunhofer.isst.stars.requirementDSL.RelativeClause;
 import de.fraunhofer.isst.stars.requirementDSL.RelativeSentence;
 import de.fraunhofer.isst.stars.requirementDSL.util.RequirementDSLSwitch;
@@ -167,9 +188,31 @@ public class SemanticTextElementSwitch extends RequirementDSLSwitch<SemanticText
 		}
 	}
 
+	@Override
+	public SemanticTextElement caseActorProperty(ActorProperty object) {
+		System.out.println("Analyzing: " + object.toString());
+		StringJoiner actorPropTxt = new StringJoiner(" ");
+		if (object.getObject() != null) {
+			actorPropTxt.add(semanticStringSwitch.caseObject(object.getObject()) + "\'s");
+		}
+		if (object.getProperty() != null) {
+			actorPropTxt.add(semanticStringSwitch.caseProperty(object.getProperty()));
+		}
+		if (object.getRela() != null) {
+			actorPropTxt.add(semanticStringSwitch.caseActorPropertyRelation(object.getRela()));
+		}
+		if (elementLookup.containsKey(actorPropTxt.toString())) {
+			return elementLookup.get(actorPropTxt.toString());
+		} else {
+			SemanticTextElement texElement = new SemanticTextElement(actorPropTxt.toString(), RequirementType.FUNCTION);
+			elementLookup.put(actorPropTxt.toString(), texElement);
+			return texElement;
+		}
+	}
+
 	// TODO PROBLEM IF PROPERTY IS IN RELATION -> RELATION NOT CONSIDERED
 	@Override
-	public SemanticTextElement caseObjectProperty(ObjectProperty object) {
+	public SemanticTextElement caseRelObjectProperty(RelObjectProperty object) {
 		System.out.println("Analyzing: " + object.toString());
 		StringJoiner objPropTxt = new StringJoiner(" ");
 		if (object.getObject() != null) {
@@ -178,7 +221,6 @@ public class SemanticTextElementSwitch extends RequirementDSLSwitch<SemanticText
 		if (object.getProperty() != null) {
 			objPropTxt.add(semanticStringSwitch.caseProperty(object.getProperty()));
 		}
-		// TODO SHOULD NOT HERE BE THE RELATION!?
 		if (elementLookup.containsKey(objPropTxt.toString())) {
 			return elementLookup.get(objPropTxt.toString());
 		} else {
@@ -200,9 +242,6 @@ public class SemanticTextElementSwitch extends RequirementDSLSwitch<SemanticText
 			// for "<"... ">" encapsulation of actor's properties
 			StringJoiner actorPropTxt = new StringJoiner(" ", "<", ">");// DOUBLE "<" ">" due to actors
 			actorPropTxt.add(semanticStringSwitch.caseActorProperties(object.getProperties()));
-			if (object.getRela() != null) {
-				actorPropTxt.add(semanticStringSwitch.caseRelation(object.getRela()));
-			}
 			objTxt.add(actorPropTxt.toString());
 		}
 
@@ -216,9 +255,6 @@ public class SemanticTextElementSwitch extends RequirementDSLSwitch<SemanticText
 		}
 		if (object.getPredicate() != null) {
 			objTxt.add(semanticStringSwitch.casePredicate(object.getPredicate()));
-		}
-		if (object.getConstraints() != null) {
-			objTxt.add(semanticStringSwitch.caseConstraints(object.getConstraints()));
 		}
 		if (object.getEnding() != null) {
 			objTxt.add(semanticStringSwitch.caseSentenceEnding(object.getEnding()));
@@ -251,14 +287,9 @@ public class SemanticTextElementSwitch extends RequirementDSLSwitch<SemanticText
 		if (object.getPredicate() != null) {
 			objTxt.add(semanticStringSwitch.casePredicate(object.getPredicate()));
 		}
-		if (object.getConstraints() != null && !object.getConstraints().isEmpty()) {
-			for (Constraints con : object.getConstraints()) {
-				String constrainTxt = semanticStringSwitch.caseConstraints(con);
-				// Avoid adding whitespaces for time constraints which are not considered
-				if (!constrainTxt.isEmpty()) {
-					objTxt.add(constrainTxt);
-				}
-			}
+		if (object.getConstraints() != null) {
+			// Avoid adding whitespaces for time constraints which are not considered
+			objTxt.add(semanticStringSwitch.caseConstraints(object.getConstraints()));
 		}
 		// Clauses are analyzed by the specific cases in this class
 		// Save

@@ -1,3 +1,24 @@
+/*******************************************************************************
+ * Copyright (C) 2020 Fraunhofer ISST
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ ******************************************************************************/
 /**
  * 
  */
@@ -5,8 +26,12 @@ package de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.adapter;
 
 import java.util.StringJoiner;
 
+import org.eclipse.emf.ecore.EObject;
+
 import de.fraunhofer.isst.stars.requirementDSL.Actor;
 import de.fraunhofer.isst.stars.requirementDSL.ActorProperties;
+import de.fraunhofer.isst.stars.requirementDSL.ActorProperty;
+import de.fraunhofer.isst.stars.requirementDSL.ActorPropertyRelation;
 import de.fraunhofer.isst.stars.requirementDSL.Actors;
 import de.fraunhofer.isst.stars.requirementDSL.AuxNeg;
 import de.fraunhofer.isst.stars.requirementDSL.Constraint;
@@ -14,22 +39,22 @@ import de.fraunhofer.isst.stars.requirementDSL.ConstraintOrdinators;
 import de.fraunhofer.isst.stars.requirementDSL.Constraints;
 import de.fraunhofer.isst.stars.requirementDSL.FloatValue;
 import de.fraunhofer.isst.stars.requirementDSL.IntValue;
-import de.fraunhofer.isst.stars.requirementDSL.IntervallConstraints;
+import de.fraunhofer.isst.stars.requirementDSL.IntervallConstraint;
 import de.fraunhofer.isst.stars.requirementDSL.Object;
 import de.fraunhofer.isst.stars.requirementDSL.ObjectConstraint;
-import de.fraunhofer.isst.stars.requirementDSL.ObjectProperty;
 import de.fraunhofer.isst.stars.requirementDSL.ObjectSet;
 import de.fraunhofer.isst.stars.requirementDSL.Predicate;
 import de.fraunhofer.isst.stars.requirementDSL.PredicateObject;
 import de.fraunhofer.isst.stars.requirementDSL.Property;
+import de.fraunhofer.isst.stars.requirementDSL.RelObjectProperty;
 import de.fraunhofer.isst.stars.requirementDSL.RelObjects;
 import de.fraunhofer.isst.stars.requirementDSL.Relation;
 import de.fraunhofer.isst.stars.requirementDSL.SentenceBegin;
 import de.fraunhofer.isst.stars.requirementDSL.SentenceEnding;
 import de.fraunhofer.isst.stars.requirementDSL.SetConstraint;
-import de.fraunhofer.isst.stars.requirementDSL.SingleValueConstraints;
+import de.fraunhofer.isst.stars.requirementDSL.SingleValueConstraint;
 import de.fraunhofer.isst.stars.requirementDSL.TimeConstraint;
-import de.fraunhofer.isst.stars.requirementDSL.UnitConstraints;
+import de.fraunhofer.isst.stars.requirementDSL.UnitConstraint;
 import de.fraunhofer.isst.stars.requirementDSL.Value;
 import de.fraunhofer.isst.stars.requirementDSL.ValueSet;
 import de.fraunhofer.isst.stars.requirementDSL.util.RequirementDSLSwitch;
@@ -37,6 +62,7 @@ import de.fraunhofer.isst.stars.requirementDSL.util.RequirementDSLSwitch;
 /**
  * @author mmauritz Process the text of the AST Elements.
  */
+//TODO listing for e.g. actor and object have not and inserted! Change?
 public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 
 	@Override
@@ -83,12 +109,12 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 	}
 
 	@Override
-	public String caseSingleValueConstraints(SingleValueConstraints object) {
+	public String caseSingleValueConstraint(SingleValueConstraint object) {
 		return caseValue(object.getValue());
 	}
 
 	@Override
-	public String caseIntervallConstraints(IntervallConstraints object) {
+	public String caseIntervallConstraint(IntervallConstraint object) {
 		StringBuilder objTxt = new StringBuilder();
 		objTxt.append("[");
 		objTxt.append(caseValue(object.getLower()));
@@ -115,15 +141,15 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 	}
 
 	@Override
-	public String caseUnitConstraints(UnitConstraints object) {
-		if (object instanceof SingleValueConstraints) {
-			return caseSingleValueConstraints((SingleValueConstraints) object);
+	public String caseUnitConstraint(UnitConstraint object) {
+		if (object instanceof SingleValueConstraint) {
+			return caseSingleValueConstraint((SingleValueConstraint) object);
 		}
-		if (object instanceof IntervallConstraints) {
-			return caseIntervallConstraints((IntervallConstraints) object);
+		if (object instanceof IntervallConstraint) {
+			return caseIntervallConstraint((IntervallConstraint) object);
 
 		}
-		return super.caseUnitConstraints(object);// Should never happen
+		return super.caseUnitConstraint(object);// Should never happen
 	}
 
 	@Override
@@ -203,15 +229,8 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 	public String caseSentenceEnding(SentenceEnding object) {
 		StringJoiner objTxt = new StringJoiner(" ");
 		// constraints
-		if (object.getConst() != null && !object.getConst().isEmpty()) {
-			for (Constraints con : object.getConst()) {
-				if (con.getConstraint() != null) {
-					objTxt.add(caseConstraint(con.getConstraint()));
-				}
-				if (con.getTimeConstraint() != null) {
-					objTxt.add(caseTimeConstraint(con.getTimeConstraint()));
-				}
-			}
+		if (object.getConstraints() != null) {
+			objTxt.add(caseConstraints(object.getConstraints()));
 		}
 		// Relation
 		if (object.getRela() != null) {
@@ -230,8 +249,8 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 			if (object.getOrdinator() != null) {
 				objTxt.add(caseConstraintOrdinators(object.getOrdinator()));
 			}
-			if (object.getConstraint() instanceof UnitConstraints) {
-				objTxt.add(caseUnitConstraints((UnitConstraints) object.getConstraint()));
+			if (object.getConstraint() instanceof UnitConstraint) {
+				objTxt.add(caseUnitConstraint((UnitConstraint) object.getConstraint()));
 			}
 			if (object.getConstraint() instanceof ObjectConstraint) {
 				objTxt.add(caseObjectConstraint((ObjectConstraint) object.getConstraint()));
@@ -319,8 +338,12 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 	public String caseActors(Actors object) {
 		if (object != null && !object.getActors().isEmpty()) {
 			StringJoiner actorsStr = new StringJoiner(" ");
-			for (Actor act : object.getActors()) {
-				actorsStr.add(caseActor(act));
+			for (int i = 0; i < object.getActors().size(); i++) {
+				actorsStr.add(caseActor(object.getActors().get(i)));
+				if (object.getConjunction() != null && !object.getConjunction().isEmpty()
+						&& i < object.getConjunction().size()) {
+					actorsStr.add(object.getConjunction().get(i).getText());
+				}
 			}
 			return actorsStr.toString();
 		}
@@ -343,43 +366,85 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 	}
 
 	@Override
+	public String caseActorPropertyRelation(ActorPropertyRelation object) {
+		if (object == null)
+			return "";
+		StringJoiner objTxt = new StringJoiner(" ");
+		if (object.getRelDel() != null && !object.getRelDel().isEmpty()) {
+			objTxt.add(object.getRelDel());
+		}
+		if (object.getRelElements() != null) {
+//			objTxt.add("<" + caseRelObjects(object.getRelElements()) + ">");
+			objTxt.add(caseRelObjects(object.getRelElements()));
+		}
+		return objTxt.toString();
+	}
+
+//	@Override
+//	// TODO HERE WE CAN'T CONTAIN THE ORDER! OF OBJECT AND PROPERTY WITH RESPECT TO
+//	// CONJUNCTION!
+//	public String caseRelObjects(RelObjects object) {
+//		if (object == null)
+//			return "";
+//		// StringJoiner objTxt = new StringJoiner(";", "<", ">");
+//		StringJoiner relObjTxt = new StringJoiner(" ");
+//		// iterate over objects and add corresponding property
+//		// get the object for iteration over all objects
+//		if (object.getObject() != null && !object.getObject().isEmpty()) {
+//			StringJoiner objTxt = new StringJoiner(" ");
+//			// iterate overall objects - there should not be a property without object
+//			for (Object obj : object.getObject()) {
+//				// Object may consists of multiple string -> concatenate them
+//				if (obj.getRelativ() != null && !obj.getRelativ().isEmpty()) {
+//					objTxt.add(obj.getRelativ());
+//				}
+//				if (obj.getObject() != null && !obj.getObject().isEmpty()) {
+//					// Concatenate multi Word String
+//					for (String objStr : obj.getObject()) {
+//						objTxt.add(objStr);
+//					}
+//
+//				}
+//			}
+//			relObjTxt.add(objTxt.toString());
+//		}
+//		if (object.getProperty() != null && !object.getProperty().isEmpty()) {
+//			StringJoiner propTxt = new StringJoiner(" ");
+//			for (RelObjectProperty prop : object.getProperty()) {
+//				propTxt.add(caseRelObjectProperty(prop));
+//			}
+//			relObjTxt.add(propTxt.toString());
+//		}
+//		return relObjTxt.toString();
+//	}
+
+	@Override
+	// Rework to get the order over single object
 	public String caseRelObjects(RelObjects object) {
 		if (object == null)
 			return "";
-		// StringJoiner objTxt = new StringJoiner(";", "<", ">");
 		StringJoiner relObjTxt = new StringJoiner(" ");
 		// iterate over objects and add corresponding property
 		// get the object for iteration over all objects
 		if (object.getObject() != null && !object.getObject().isEmpty()) {
-			StringJoiner objTxt = new StringJoiner(" ");
 			// iterate overall objects - there should not be a property without object
-			for (Object obj : object.getObject()) {
-				// Object may consists of multiple string -> concatenate them
-				if (obj.getRelativ() != null && !obj.getRelativ().isEmpty()) {
-					objTxt.add(obj.getRelativ());
-				}
-				if (obj.getObject() != null && !obj.getObject().isEmpty()) {
-					// Concatenate multi Word String
-					for (String objStr : obj.getObject()) {
-						objTxt.add(objStr);
-					}
-
+			for (EObject obj : object.getObject()) {
+				// Decide if object or object property
+				if (obj instanceof Object) {
+					relObjTxt.add(caseObject((Object) obj));
+				} else if (obj instanceof RelObjectProperty) {
+					relObjTxt.add(caseRelObjectProperty((RelObjectProperty) obj));
+				} else {
+					// Error - Type not supported
+					return super.caseRelObjects(object);
 				}
 			}
-			relObjTxt.add(objTxt.toString());
-		}
-		if (object.getProperty() != null && !object.getProperty().isEmpty()) {
-			StringJoiner propTxt = new StringJoiner(" ");
-			for (ObjectProperty prop : object.getProperty()) {
-				propTxt.add(caseObjectProperty(prop));
-			}
-			relObjTxt.add(propTxt.toString());
 		}
 		return relObjTxt.toString();
 	}
 
 	@Override
-	public String caseObjectProperty(ObjectProperty object) {
+	public String caseRelObjectProperty(RelObjectProperty object) {
 		if (object == null)
 			return "";
 		StringJoiner propText = new StringJoiner(" ");
@@ -389,6 +454,24 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 		}
 		if (object.getProperty() != null) {
 			propText.add(caseProperty(object.getProperty()));
+		}
+		return propText.toString();
+	}
+
+	@Override
+	public String caseActorProperty(ActorProperty object) {
+		if (object == null)
+			return "";
+		StringJoiner propText = new StringJoiner(" ");
+		// Check for property and make sure not to be out of bounds
+		if (object.getObject() != null) {
+			propText.add(caseObject(object.getObject()) + "\'s");
+		}
+		if (object.getProperty() != null) {
+			propText.add(caseProperty(object.getProperty()));
+		}
+		if (object.getRela() != null) {
+			propText.add(caseActorPropertyRelation(object.getRela()));
 		}
 		return propText.toString();
 	}
@@ -427,15 +510,31 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 
 	@Override
 	public String caseConstraints(Constraints object) {
-		// its an exclusive OR
-		if (object.getConstraint() != null) {
-			return caseConstraint(object.getConstraint());
+		if (object == null)
+			return "";
+		StringJoiner txt = new StringJoiner(" ");
+		// Constraint
+		if (object.getConstraint() != null && !object.getConstraint().isEmpty()) {
+			for (Constraint cont : object.getConstraint()) {
+				txt.add(caseConstraint(cont));
+			}
 		}
-		// Time Constraint has not be manually mapped
-		if (object.getTimeConstraint() != null) {
-			return caseTimeConstraint(object.getTimeConstraint());
+		// Time Constraint
+		if (object.getTimeConstraint() != null && !object.getTimeConstraint().isEmpty()) {
+			for (TimeConstraint time : object.getTimeConstraint()) {
+				txt.add(caseTimeConstraint(time));
+			}
 		}
-		return "";
+		// Conjunction of Constraints
+		if (object.getConjunction() != null) {
+			if (object.getConstraints() == null) {
+				// ERROR -> should both be set if one is set
+				// TODO LOG ERROR
+			}
+			txt.add(object.getConjunction().getText());
+			txt.add(caseConstraints(object.getConstraints()));
+		}
+		return txt.toString();
 	}
 
 	@Override
@@ -454,7 +553,7 @@ public class SemanticStringSwitch extends RequirementDSLSwitch<String> {
 		// Check for property and make sure not to be out of bounds
 		if (object.getProperty() != null && !object.getProperty().isEmpty()) {
 			for (int i = 0; i < object.getProperty().size(); i++) {
-				propText.add(caseObjectProperty(object.getProperty().get(i)));
+				propText.add(caseActorProperty(object.getProperty().get(i)));
 				// TODO TAKE OUT IF only SINGLE ELEMENTS ARE
 				if (object.getConjunction() != null && !object.getConjunction().isEmpty()
 						&& i < object.getConjunction().size()) {

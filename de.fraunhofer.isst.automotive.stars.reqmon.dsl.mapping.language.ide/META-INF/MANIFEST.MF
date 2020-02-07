@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Automatic-Module-Name: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.ide
 Bundle-ManifestVersion: 2
 Bundle-Name: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.ide
-Bundle-Vendor: My Company
+Bundle-Vendor: Fraunhofer ISST
 Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.ide; singleton:=true
 Bundle-ActivationPolicy: lazy

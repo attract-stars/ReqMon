@@ -17,3 +17,18 @@ Require-Bundle: org.eclipse.core.runtime,
  de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui;bundle-version="1.0.0",
  org.apache.log4j
 Bundle-ActivationPolicy: lazy
+Export-Package: de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data;uses:="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions,de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.editor,de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.analytics",
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.adapter;
+  uses:="de.fraunhofer.isst.stars.requirementDSL,
+   de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data.analytics,
+   org.eclipse.emf.common.notify,
+   de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data,
+   de.fraunhofer.isst.stars.requirementDSL.util,
+   org.eclipse.emf.ecore.util",
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.normalizer;uses:="de.fraunhofer.isst.stars.requirementDSL,org.apache.log4j",
+ de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.parser;
+  uses:="org.eclipse.emf.ecore,
+   de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions,
+   org.eclipse.emf.common.util,
+   org.eclipse.xtext.resource,
+   org.apache.log4j"

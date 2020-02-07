@@ -1,3 +1,24 @@
+/*******************************************************************************
+ * Copyright (C) 2020 Fraunhofer ISST
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ ******************************************************************************/
 grammar de.fraunhofer.isst.stars.RequirementDSL with org.eclipse.xtext.common.Terminals hidden(WS, ML_COMMENT, SL_COMMENT, WS_HYPHEN)
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
@@ -77,7 +98,7 @@ PropertySentence:
 ;
 
 ActorProperties:
-	property+=ObjectProperty rela+=Relation? (conjunction+=Conjunction property+=ObjectProperty rela+=Relation?)* 
+	property+=ActorProperty (conjunction+=Conjunction property+=ActorProperty)* 
 ;
 
 
@@ -87,7 +108,8 @@ SentenceBegin:
 
 SentenceEnding:
 	//SOLLTE nicht Relation in CONTRAINTS drin sein -> seems not to work
-	(const+=Constraints+ | const+=Constraints* rela=Relation |rela=Relation const+=Constraints+)
+	constraints=Constraints rela=Relation? |
+    rela=Relation constraints=Constraints?
 ;
 
 /* =========== RELATIVE CLAUSE =========== */
@@ -96,12 +118,12 @@ SentenceEnding:
 RelativeClause:
 //  pronoun=RelativePronouns actors=Actors? modelity=Modality? negation?=Negation? predicate=Predicate constraints+=Constraints*
 //	sentence=RelativeSentence (conjunction+=Conjunction condClauses+=ConditionalClause)*
-	sentence+=RelativeSentence (conjunction+=Conjunction sentence+=RelativeSentence)*	
+	sentences+=RelativeSentence (conjunction+=Conjunction sentences+=RelativeSentence)*	
 ;
 RelativeSentence :
-	pronoun=RelativePronounsSubject modelity=Modality negation?=Negation? predicate=Predicate  constraints+=Constraints*  |
-	pronoun=RelativePronounsSubject (auxiliar=AuxiliaryVerb negation?=Negation)? predicate=Predicate  constraints+=Constraints* |
-	pronoun=RelativePronounsSubject auxNeg=AuxiliaryVerbNegation predicate=Predicate  constraints+=Constraints* |
+	pronoun=RelativePronounsSubject modelity=Modality negation?=Negation? predicate=Predicate  constraints=Constraints?  |
+	pronoun=RelativePronounsSubject (auxiliar=AuxiliaryVerb negation?=Negation)? predicate=Predicate  constraints=Constraints? |
+	pronoun=RelativePronounsSubject auxNeg=AuxiliaryVerbNegation predicate=Predicate  constraints=Constraints? |
 	pronoun=RelativePronounsObject  (clause=ModalitySentence | clause=PredicateSentence)
 ;
 
@@ -150,16 +172,26 @@ Adverbial:
 
 /* =========== Relations =========== */
 
+ActorPropertyRelation:
+	relDel=RelationDelimiter relElements=RelObjects
+;
+
+
 Relation:
 	relDel=RelationDelimiter relElements=RelObjects
 ;
 
 RelObjects:
-	(object+=Object|property+=ObjectProperty) (relConj+=RelConjunction (object+=Object | property+=ObjectProperty))*
+	(object+=Object|object+=RelObjectProperty) (relConj+=RelConjunction (object+=Object | object+=RelObjectProperty))*
 ;
 
 
-ObjectProperty:
+ActorProperty:
+	object=Object property=Property rela=ActorPropertyRelation?
+;
+
+//RelObject cannot have a relation because it is a relation
+RelObjectProperty:
 	object=Object property=Property
 ;
 
@@ -170,12 +202,15 @@ Property:
 /* =========== CONSTRAINTS =========== */
 
 Constraints:
-	(timeConstraint+=TimeConstraint | constraint+=Constraint) (conjunction+= Conjunction (timeConstraint+=TimeConstraint | constraint+=Constraint))*
+//	(timeConstraint+=TimeConstraint | constraint+=Constraint) (conjunction+= Conjunction (timeConstraint+=TimeConstraint | constraint+=Constraint))*
+//	(timeConstraint=TimeConstraint constraint=Constraint? | constraint=Constraint timeConstraint=TimeConstraint?) (conjunction+=Conjunction constraints=Constraint)?	
+	(timeConstraint+=TimeConstraint | constraint+=Constraint)+ (conjunction=Conjunction constraints=Constraints)?
 ;
 
 Constraint:
-	ordinator=ConstraintOrdinators (constraint=ObjectConstraint | constraint=UnitConstraints | constraint= SetConstraint)
-;	
+	ordinator=ConstraintOrdinators (constraint=ObjectConstraint | constraint=UnitConstraint | constraint=SetConstraint)
+;
+
 
 ConstraintOrdinators:
 	stuffing=StuffWord? adverbial=Adverbial comperator=Comperators?
@@ -195,16 +230,16 @@ ObjectConstraint:
 ;
 
 
-UnitConstraints:
-	 SingleValueConstraints | IntervallConstraints
+UnitConstraint:
+	 ( SingleValueConstraint | IntervallConstraint )
 ;
 
 
-IntervallConstraints:
-	'[' lower=Value','higher=Value ']'
+IntervallConstraint:
+	('[' lower=Value','higher=Value ']')
 ;
 
-SingleValueConstraints:
+SingleValueConstraint:
 	 value=Value
 ;
 
@@ -220,15 +255,16 @@ ObjectSet:
 ;
 
 Value:
-	IntValue| FloatValue
+	(IntValue| FloatValue)
 ;
 
 IntValue:
+	//PROBLEM WE HAVE A PROBLEM HERE WITH CONSTRAINTS: ANTLRWORKS CAN GENERATE DEBUGPARSER
 	value=INT unit=Unit? object+=WORD*
 ;
 
 FloatValue:
-	value=FLOAT  unit=Unit? object+=WORD*
+	value=FLOAT unit=Unit? object+=WORD*
 ;
 
 /* =========== BASIC TEXT BLOCKS / WORDS =========== */
@@ -352,11 +388,11 @@ RelativePronounsObject:
 /* =========== BASIC UNITS =========== */
 
 FLOAT returns ecore::EFloat:
-	INT'.'INT
+	(INT'.'INT)
 ;
 
 Unit:
-	 LengthUnits | PresureUnits | HeatUnits | MassUnits | VelcoityUnits | Cuvature
+	(LengthUnits | PresureUnits | HeatUnits | MassUnits | VelcoityUnits | Cuvature)
 ;
 
 

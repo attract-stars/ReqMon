@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.fraunhofer.isst.automotive.stars.reqmon.feature"
+      label="Requirement Monitoring Generation"
+      version="1.0.0.qualifier">
+
+   <description url="http://www.example.com/description">
+      Generation of Requirements Monitors
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      Copyright Fraunhofer ISST
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.data"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.ide"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.language.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.parser"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition.ide"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemdefinition.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.systemimporter"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ide"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

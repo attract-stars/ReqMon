@@ -86,3 +86,6 @@ local.properties
 
 *.orig
 de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.tests/.__synthetic0_norm.reqDSL
+*.aird
+*.antlr-generator-3.2.0-patch.jar
+*/model/generated/*
