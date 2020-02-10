@@ -93,4 +93,4 @@ de.fraunhofer.isst.automotive.stars.reqmon.dsl.requirement.data.tests/.__synthet
 *.aird
 *.antlr-generator-3.2.0-patch.jar
 */model/generated/*
-*/fiter-gen/
+*/fiter-gen/*
