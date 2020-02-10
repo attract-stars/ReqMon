@@ -18,11 +18,15 @@ src-gen
 *.ser
 
 ### Eclipse ###
-*target*
+#*target*
 #*.jar
 *.war
 *.ear
 *.class
+
+###  mvn  ###
+*/target/
+
 
 # eclipse specific git ignore
 *.pydevproject
@@ -62,7 +66,7 @@ local.properties
 .buildpath
 
 # sbteclipse plugin
-.target
+#.target
 
 # Tern plugin
 .tern-project
