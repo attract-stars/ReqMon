@@ -35,13 +35,15 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMa
 import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions.AbstractModelInformationHelper;
 
 public class FilterTemplateTest {
-	
+
+	private static final String ENCODING = "UTF-8";
+
 	@Test
 	public void generateFilterTest() {
 		FilterGenerator gen = new FilterGenerator();
 		IMappingModel model = new MappingTestModel();
 		AbstractModelInformationHelper infoHelper = new ModelInformationTestHelper(model, 1);
-		
+
 		ArrayList<String> files = new ArrayList<String>();
 		files.add("aff.h");
 		files.add("aff.cpp");
@@ -49,19 +51,19 @@ public class FilterTemplateTest {
 		files.add("fcof.cpp");
 		files.add("saf.h");
 		files.add("saf.cpp");
-		//files.add("test_coverage_monitor_filter.h");
-		//files.add("test_coverage_monitor_filter.cpp");
-		
+		// files.add("test_coverage_monitor_filter.h");
+		// files.add("test_coverage_monitor_filter.cpp");
+
 		files.add("data_types.h");
-		
+
 		gen.setup(files);
 		gen.generate(infoHelper);
-		
+
 		checkEquality("aff", true);
 		checkEquality("fcof", true);
 		checkEquality("saf", true);
 		checkEquality("data_types", false);
-		
+
 		files = new ArrayList<String>();
 		files.add("aff.h");
 		files.add("aff.cpp");
@@ -73,23 +75,20 @@ public class FilterTemplateTest {
 		infoHelper = new ModelInformationTestHelper(model, 2);
 		gen.setup(files);
 		gen.generate(infoHelper);
-		
+
 		checkEquality("saf_two_inputs", true);
-		
+
 	}
-	
-	
+
 	private void checkEquality(String filename, boolean isCpp) {
 		try {
-			assertTrue("The files differ!", FileUtils.contentEquals(
-					new File("filter/" + filename + "_expected.h"),
-					new File("filter-gen/" + filename + ".h")
-				));
+			assertTrue("The files differ!",
+					FileUtils.contentEqualsIgnoreEOL(new File("filter/" + filename + "_expected.h"),
+							new File("filter-gen/" + filename + ".h"), ENCODING));
 			if (isCpp) {
-				assertTrue("The files differ!", FileUtils.contentEquals(
-						new File("filter/" + filename + "_expected.cpp"),
-						new File("filter-gen/" + filename + ".cpp")
-					));
+				assertTrue("The files differ!",
+						FileUtils.contentEqualsIgnoreEOL(new File("filter/" + filename + "_expected.cpp"),
+								new File("filter-gen/" + filename + ".cpp"), ENCODING));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
