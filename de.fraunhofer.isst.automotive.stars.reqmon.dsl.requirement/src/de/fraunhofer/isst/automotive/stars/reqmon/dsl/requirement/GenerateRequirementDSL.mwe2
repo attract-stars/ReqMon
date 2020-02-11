@@ -64,7 +64,8 @@ Workflow {
 				debugGrammar=true
 				options = {
 					// smaller files for  ANTLR WORKS -> but still not working
-			        classSplitting = true
+					//This fails on mac os -> therefore false
+			        classSplitting = false
 			        casesPerSpecialStateSwitch= "200"
 			        fieldsPerClass = "200"
 			        methodsPerClass = "200"
