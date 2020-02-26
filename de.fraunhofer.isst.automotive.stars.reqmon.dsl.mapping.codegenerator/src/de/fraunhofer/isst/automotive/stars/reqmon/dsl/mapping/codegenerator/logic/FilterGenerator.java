@@ -25,10 +25,14 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.eclipse.xtend.lib.macro.file.Path;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.InMemoryFileSystemAccess;
 
@@ -52,6 +56,7 @@ import de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.ui.definitions.IMa
  * @author sgraf
  *
  */
+//TODO HIER WERDEN MIT ANDEREN METHODEN NICHT DIE AUFRUFE IM TOOL GETESTET
 public class FilterGenerator implements IGenerator {
 
 	private List<String> contentList;
@@ -137,7 +142,8 @@ public class FilterGenerator implements IGenerator {
 	 */
 	public void setup(List<String> filesNames) {
 		// setup
-		filePath = "filter-gen/";
+		//TODO hier fehlt der korrekte Test ordner
+		filePath = "./filter-gen/";
 		fsa = new InMemoryFileSystemAccess();
 		contentList = new ArrayList<String>();
 		files = filesNames;
@@ -193,7 +199,9 @@ public class FilterGenerator implements IGenerator {
 				System.out.println("Error: the size of the generated filter contents is not equal with the size of the file names!");
 				return;
 			}
-			
+			if(!Paths.get(filePath).toFile().isDirectory()) {
+				Paths.get(filePath).toFile().mkdirs();
+			}
 			for (int i = 0; i < contentList.size(); i++) {
 				writer = new BufferedWriter(new FileWriter(filePath.concat(files.get(i))));
 				String text = contentList.get(i);

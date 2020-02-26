@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  ******************************************************************************/
-package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.test;
+package de.fraunhofer.isst.automotive.stars.reqmon.dsl.mapping.codegenerator.definitions;
 
 import static org.junit.Assert.assertEquals;
 
