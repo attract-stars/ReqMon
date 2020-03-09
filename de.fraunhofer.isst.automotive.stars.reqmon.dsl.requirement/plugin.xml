@@ -7,16 +7,4 @@
 			class = "de.fraunhofer.isst.stars.requirementDSL.RequirementDSLPackage"
 			genModel = "model/generated/RequirementDSL.genmodel" />
 	</extension>
- <extension
-       id="reqmon"
-       point="org.eclipse.core.runtime.products">
-    <product
-          application="org.eclipse.ui.ide.workbench"
-          name="Requirements Monitor Generation">
-       <property
-             name="appName"
-             value="Requirements Monitor Generation">
-       </property>
-    </product>
- </extension>
 </plugin>
