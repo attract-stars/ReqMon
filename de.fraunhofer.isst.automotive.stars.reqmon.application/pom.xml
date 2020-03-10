@@ -31,6 +31,6 @@
 	</parent>
 
 	<artifactId>de.fraunhofer.isst.automotive.stars.reqmon.application</artifactId>
-	<packaging>eclipse-repository</packaging>
+	<packaging>eclipse-plugin</packaging>
 	
 </project>
